@@ -98,41 +98,41 @@ Deferred to after first client or first revenue.
 
 ## Traceability
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| BRAND-01    | TBD   | Pending |
-| BRAND-02    | TBD   | Pending |
-| LAND-01     | TBD   | Pending |
-| LAND-02     | TBD   | Pending |
-| LAND-03     | TBD   | Pending |
-| LAND-04     | TBD   | Pending |
-| LAND-05     | TBD   | Pending |
-| LAND-06     | TBD   | Pending |
-| POC-01      | TBD   | Pending |
-| POC-02      | TBD   | Pending |
-| POC-03      | TBD   | Pending |
-| POC-04      | TBD   | Pending |
-| PKG-01      | TBD   | Pending |
-| PKG-02      | TBD   | Pending |
-| PKG-03      | TBD   | Pending |
-| PKG-04      | TBD   | Pending |
-| LEAD-01     | TBD   | Pending |
-| LEAD-02     | TBD   | Pending |
-| LEAD-03     | TBD   | Pending |
-| LEAD-04     | TBD   | Pending |
-| CONT-01     | TBD   | Pending |
-| CONT-02     | TBD   | Pending |
-| CONT-03     | TBD   | Pending |
-| CONT-04     | TBD   | Pending |
-| CONT-05     | TBD   | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| BRAND-01    | Phase 1 | Pending |
+| BRAND-02    | Phase 1 | Pending |
+| POC-01      | Phase 2 | Pending |
+| POC-02      | Phase 2 | Pending |
+| POC-03      | Phase 2 | Pending |
+| POC-04      | Phase 2 | Pending |
+| LAND-01     | Phase 3 | Pending |
+| LAND-02     | Phase 3 | Pending |
+| LAND-03     | Phase 3 | Pending |
+| LAND-04     | Phase 3 | Pending |
+| LAND-05     | Phase 3 | Pending |
+| LAND-06     | Phase 3 | Pending |
+| PKG-01      | Phase 3 | Pending |
+| PKG-02      | Phase 3 | Pending |
+| PKG-03      | Phase 3 | Pending |
+| PKG-04      | Phase 3 | Pending |
+| CONT-01     | Phase 4 | Pending |
+| CONT-02     | Phase 4 | Pending |
+| CONT-03     | Phase 4 | Pending |
+| CONT-04     | Phase 4 | Pending |
+| CONT-05     | Phase 4 | Pending |
+| LEAD-01     | Phase 4 | Pending |
+| LEAD-02     | Phase 4 | Pending |
+| LEAD-03     | Phase 4 | Pending |
+| LEAD-04     | Phase 4 | Pending |
 
 **Coverage:**
 
 - v1 requirements: 25 total
-- Mapped to phases: 0
-- Unmapped: 25 ⚠️
+- Mapped to phases: 25
+- Unmapped: 0
 
 ---
 
 _Requirements defined: 2026-02-27_
-_Last updated: 2026-02-27 after initial definition_
+_Last updated: 2026-02-27 after roadmap creation (all requirements mapped)_

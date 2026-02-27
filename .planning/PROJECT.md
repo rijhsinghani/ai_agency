@@ -43,7 +43,9 @@ Local service businesses save real money and recover real revenue through AI-pow
 - Strong product development and small business experience
 - Technically fluent with APIs, MCPs, Claude Code (daily user)
 - Has a YouTube channel (currently photography content, low views) that will be pivoted
+- Has an existing LLC: **Raj Photo Video** — will leverage this entity, email, and resources
 - Can manage large complex projects but doesn't want to build apps
+- Funnel: YouTube/Instagram → Landing page → Book a call (Google Calendar)
 
 **Market opportunity:**
 
