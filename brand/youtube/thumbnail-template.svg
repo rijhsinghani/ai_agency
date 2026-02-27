@@ -3,12 +3,16 @@
   <title>Sameer Automations — Video Thumbnail Template</title>
 
   <defs>
-    <!-- Main background gradient: darkest left, lighter toward headshot area -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1A1A1A"/>
-      <stop offset="55%" stop-color="#1A1A1A"/>
-      <stop offset="100%" stop-color="#202020"/>
-    </linearGradient>
+    <!-- Grain filter (system architecture texture) -->
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+
+    <!-- Grid dot pattern (replaces linear grid) -->
+    <pattern id="gridDots" width="48" height="48" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="24" r="0.6" fill="#A8A29E" opacity="0.05"/>
+    </pattern>
 
     <!-- Purple glow behind text area -->
     <radialGradient id="textGlow" cx="30%" cy="50%" r="50%">
@@ -24,15 +28,10 @@
 
     <!-- Headshot fade: left edge fades into dark bg -->
     <linearGradient id="headshotFade" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#1A1A1A" stop-opacity="1"/>
-      <stop offset="30%" stop-color="#1A1A1A" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#1A1A1A" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#0E0E0E" stop-opacity="1"/>
+      <stop offset="30%" stop-color="#0E0E0E" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#0E0E0E" stop-opacity="0"/>
     </linearGradient>
-
-    <!-- Subtle grid pattern for texture -->
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#222222" stroke-width="0.5"/>
-    </pattern>
 
     <!-- Clip for headshot placeholder rounded rect -->
     <clipPath id="headshotClip">
@@ -41,16 +40,29 @@
   </defs>
 
   <!-- ===================== BACKGROUND ===================== -->
-  <rect width="1280" height="720" fill="url(#bgGrad)"/>
-  <rect width="1280" height="720" fill="url(#grid)"/>
+  <rect width="1280" height="720" fill="#0E0E0E"/>
+  <rect width="1280" height="720" filter="url(#grain)" opacity="0.04"/>
+  <rect width="1280" height="720" fill="url(#gridDots)"/>
   <rect width="1280" height="720" fill="url(#textGlow)"/>
+
+  <!-- ===================== CONNECTION NODES + PATHS (background) ===================== -->
+  <g opacity="0.5">
+    <circle cx="100" cy="120" r="2.5" fill="#4DD9E8" opacity="0.5"/>
+    <circle cx="280" cy="160" r="2.5" fill="#7B2FBE" opacity="0.5"/>
+    <circle cx="180" cy="650" r="2.5" fill="#FF8A4C" opacity="0.5"/>
+    <circle cx="700" cy="100" r="2" fill="#D4A574" opacity="0.4"/>
+    <circle cx="680" cy="620" r="2.5" fill="#9B4FDE" opacity="0.5"/>
+
+    <path d="M 100 120 Q 190 130 280 160" stroke="#4DD9E8" stroke-width="0.8" fill="none" opacity="0.2" stroke-dasharray="4 6"/>
+    <path d="M 280 160 Q 240 400 180 650" stroke="#7B2FBE" stroke-width="0.8" fill="none" opacity="0.15" stroke-dasharray="4 6"/>
+    <path d="M 700 100 Q 695 360 680 620" stroke="#9B4FDE" stroke-width="0.8" fill="none" opacity="0.15" stroke-dasharray="4 6"/>
+  </g>
 
   <!-- ===================== HEADSHOT AREA (right side) ===================== -->
   <!-- Placeholder box for creator headshot photo -->
   <rect x="760" y="20" width="500" height="640" fill="url(#headshotGrad)" rx="8" opacity="0.8"/>
 
   <!-- Headshot placeholder indicator -->
-  <!-- Person silhouette icon, centered in headshot zone: cx=1010, cy=310 -->
   <circle cx="1010" cy="240" r="70" fill="#2E2E2E"/>
   <path d="M 880 500 Q 880 380 1010 380 Q 1140 380 1140 500 L 1140 640 L 880 640 Z" fill="#2E2E2E"/>
 
@@ -61,7 +73,7 @@
   <text
     x="1010"
     y="560"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'DM Sans', system-ui, sans-serif"
     font-size="20"
     fill="#555555"
     text-anchor="middle"
@@ -76,7 +88,6 @@
   <rect x="0" y="0" width="8" height="720" fill="#7B2FBE"/>
 
   <!-- Logo icon: top-left corner, small -->
-  <!-- Original viewBox 100x108, rendered at ~54x58px -->
   <g transform="translate(28, 28) scale(0.54)">
     <path
       d="M 75 10 L 25 10 C 12 10 5 20 5 32 C 5 44 12 54 25 54 L 75 54 C 88 54 95 64 95 76 C 95 88 88 98 75 98 L 25 98"
@@ -89,11 +100,11 @@
     <circle cx="25" cy="98" r="5" fill="#9B4FDE"/>
   </g>
 
-  <!-- Channel name: top-left, next to logo -->
+  <!-- Channel name -->
   <text
     x="90"
     y="62"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'Outfit', system-ui, sans-serif"
     font-size="20"
     font-weight="700"
     letter-spacing="3"
@@ -105,7 +116,7 @@
   <text
     x="28"
     y="200"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'DM Sans', system-ui, sans-serif"
     font-size="16"
     fill="#555555"
     letter-spacing="2"
@@ -115,18 +126,18 @@
   <text
     x="28"
     y="320"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'Outfit', system-ui, sans-serif"
     font-size="86"
     font-weight="900"
     fill="#FFFFFF"
     letter-spacing="-2"
   >YOUR TITLE</text>
 
-  <!-- Title line 2 placeholder (shorter, bold, highlighted) -->
+  <!-- Title line 2 placeholder -->
   <text
     x="28"
     y="430"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'Outfit', system-ui, sans-serif"
     font-size="86"
     font-weight="900"
     fill="#FFFFFF"
@@ -134,15 +145,18 @@
     opacity="0.85"
   >GOES HERE</text>
 
-  <!-- Purple highlight bar: sits behind a key word -->
-  <!-- Use this as a colored accent under/behind a single emphasized word -->
-  <rect x="28" y="442" width="340" height="10" fill="#7B2FBE" rx="3"/>
+  <!-- Dashed accent line with connection node (replaces solid highlight bar) -->
+  <line x1="28" y1="447" x2="358" y2="447" stroke="#7B2FBE" stroke-width="2" stroke-dasharray="4 6" opacity="0.6"/>
+  <circle cx="362" cy="447" r="3.5" fill="#4DD9E8" opacity="0.7"/>
+
+  <!-- Connection node accents near CASE STUDY tag -->
+  <circle cx="20" cy="658" r="3" fill="#4DD9E8" opacity="0.6"/>
 
   <!-- Subtitle / stat line -->
   <text
     x="28"
     y="540"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'DM Sans', system-ui, sans-serif"
     font-size="30"
     font-weight="400"
     fill="#9B4FDE"
@@ -157,7 +171,7 @@
   <text
     x="118"
     y="664"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'Outfit', system-ui, sans-serif"
     font-size="16"
     font-weight="700"
     fill="#FFFFFF"
@@ -169,7 +183,7 @@
   <text
     x="1252"
     y="664"
-    font-family="'Arial', Helvetica, sans-serif"
+    font-family="'DM Sans', system-ui, sans-serif"
     font-size="16"
     fill="#555555"
     text-anchor="end"
