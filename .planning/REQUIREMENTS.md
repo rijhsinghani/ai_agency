@@ -11,7 +11,7 @@ Requirements for initial launch. Each maps to roadmap phases.
 
 ### Brand & Foundation
 
-- [x] **BRAND-01**: Agency has a name, registered domain, and branded email address _(name done, domain + email pending)_
+- [x] **BRAND-01**: Agency has a name and brand identity _(complete — using existing rajphotovideo.com email)_
 - [x] **BRAND-02**: Agency has minimal visual identity (logo, color palette, typography) _(complete)_
 
 ### Go-Live (NEW — split from old Sales Surface)
@@ -113,7 +113,7 @@ Deferred to after first client or first revenue.
 
 | Requirement | Phase   | Status  |
 | ----------- | ------- | ------- |
-| BRAND-01    | Phase 1 | Partial |
+| BRAND-01    | Phase 1 | Done    |
 | BRAND-02    | Phase 1 | Done    |
 | LIVE-01     | Phase 1 | Pending |
 | LIVE-02     | Phase 1 | Done    |

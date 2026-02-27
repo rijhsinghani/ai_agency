@@ -102,7 +102,8 @@ Local service businesses save real money and recover real revenue through AI-pow
 | Pivot existing YouTube channel                | Existing channel (photography) has infrastructure, pivot to automation content for business owners | — Pending |
 | Content targets business owners, not builders | Audience = potential clients. Show results, not process                                            | — Pending |
 | Claude Code + MCPs as tooling (not no-code)   | More powerful, more customizable, plays to founder's strengths                                     | — Pending |
+| No custom domain registration                 | GitHub Pages URL is sufficient for now. Custom domain can be added later if needed.                | Decided   |
 
 ---
 
-_Last updated: 2026-02-26 after initialization_
+_Last updated: 2026-02-27 — removed domain registration requirement_

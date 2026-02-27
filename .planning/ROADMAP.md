@@ -21,16 +21,15 @@
 
 ### Phase 1: Brand & Go-Live
 
-**Goal**: The agency looks real and is reachable — domain registered, landing page deployed, booking link functional, YouTube channel updated
+**Goal**: The agency looks real and is reachable — landing page deployed, booking link functional, YouTube channel updated
 **Depends on**: Nothing (first phase)
 **Requirements**: BRAND-01, BRAND-02, LIVE-01, LIVE-02, LIVE-03
 **Success Criteria** (what must be TRUE):
 
-1. Domain registered (sameerautomations.com) with branded email working
-2. Logo, color palette, and brand voice exist and are applied consistently
-3. Landing page is deployed and publicly accessible (not just a local file)
-4. Google Calendar booking link works end-to-end (visitor can book a 15-min call)
-5. YouTube channel has updated branding (banner, profile pic, name, about, handle)
+1. Logo, color palette, and brand voice exist and are applied consistently
+2. Landing page is deployed and publicly accessible (not just a local file)
+3. Google Calendar booking link works end-to-end (visitor can book a 15-min call)
+4. YouTube channel has updated branding (banner, profile pic, name, about, handle)
    **Plans**: TBD
 
 ---

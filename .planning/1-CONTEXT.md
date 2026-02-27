@@ -11,7 +11,7 @@
 | Decision         | Choice                                                     | Reasoning                                                                                                                    |
 | ---------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | Brand name       | **Sameer Automations**                                     | Personal brand. Solo operator where the founder IS the differentiator. "I build automations for small businesses."           |
-| Domain           | **sameerautomations.com**                                  | Confirmed available (NXDOMAIN). .com is mandatory for SMB trust.                                                             |
+| Domain           | **No custom domain** — using GitHub Pages URL              | Not registering a domain. Landing page lives on GitHub Pages. Custom domain can be added later if needed.                    |
 | Entity structure | DBA under Raj Photo Video LLC                              | Not the focus — move fast, leverage existing legal structure                                                                 |
 | "AI" in name     | **No**                                                     | Research: 51% trust gap, AI washing stigma, trades/SMB owners are skeptical. Use "AI" in taglines/copy, not the brand name.  |
 | Scope            | **USA national**                                           | Not geographically limited                                                                                                   |
@@ -70,13 +70,11 @@
 
 ### Phase 1 Deliverables (BRAND-01 + BRAND-02)
 
-1. **Domain**: Register sameerautomations.com
-2. **Branded email**: sameer@sameerautomations.com (Google Workspace or equivalent)
-3. **Logo**: Simple but intentional — AI-assisted design via Canva/Figma MCP
-4. **Color palette**: Dark, premium tones (defined, documented)
-5. **Typography**: Clean, sharp font pairing (defined, documented)
-6. **Email signature**: Branded, professional
-7. **Social profiles**: Updated with new brand (LinkedIn at minimum)
+1. **Logo**: Simple but intentional — AI-assisted design via Canva/Figma MCP
+2. **Color palette**: Dark, premium tones (defined, documented)
+3. **Typography**: Clean, sharp font pairing (defined, documented)
+4. **Email signature**: Branded, professional
+5. **Social profiles**: Updated with new brand (LinkedIn at minimum)
 
 ### NOT in Phase 1
 

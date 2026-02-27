@@ -12,24 +12,24 @@
 
 **Brand Voice:** See `brand/brand-voice.md` for full guide. Personal brand under Sameer's name, peer-to-peer tone, NOT niche-locked.
 
-**Current Focus:** Phase 1 — close out remaining go-live items (domain, deploy, YouTube uploads)
+**Current Focus:** Phase 1 — close out remaining go-live items (deploy, YouTube uploads)
 
 ---
 
 ## Current Position
 
-| Field         | Value                                                               |
-| ------------- | ------------------------------------------------------------------- |
-| Current Phase | 1 — Brand & Go-Live (closing out)                                   |
-| Phase 1       | ~90% — landing page + brand done, domain + deploy + YouTube pending |
-| Phase 2       | Plans exist — YouTube content strategy + outreach docs ready        |
-| Phase 3       | Not started — triggered only when first client signs                |
-| Phase 4       | Not started — triggered by real case study from Phase 3             |
+| Field         | Value                                                        |
+| ------------- | ------------------------------------------------------------ |
+| Current Phase | 1 — Brand & Go-Live (closing out)                            |
+| Phase 1       | ~95% — landing page + brand done, deploy + YouTube pending   |
+| Phase 2       | Plans exist — YouTube content strategy + outreach docs ready |
+| Phase 3       | Not started — triggered only when first client signs         |
+| Phase 4       | Not started — triggered by real case study from Phase 3      |
 
 **Progress:**
 
 ```
-Phase 1: Brand & Go-Live        [█████████ ] 90%  ← Domain, deploy, YouTube uploads
+Phase 1: Brand & Go-Live        [█████████▌] 95%  ← Deploy, YouTube uploads
 Phase 2: Go to Market            [██        ] 20%  ← Plans + outreach docs exist
 Phase 3: First Client Delivery   [          ]  0%  ← Only when client signs
 Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
@@ -65,6 +65,7 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 - **Cal.com removed** — replaced with Google Calendar (Google Workspace) everywhere
 - **Mock testimonials OK for now** — will replace with real ones after Phase 3
 - **GitHub repos as portfolio** — existing automations (Studio S, bookkeeping, etc.) serve as proof of capability
+- **No custom domain** — not registering sameerautomations.com. Landing page on GitHub Pages. Using existing rajphotovideo.com email. Custom domain later if needed.
 
 ### Brand Voice (documented in `brand/brand-voice.md`)
 
@@ -76,7 +77,7 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 
 ### Critical Sequencing (market-first)
 
-1. Brand/domain before any outreach or selling
+1. Brand/landing page before any outreach or selling
 2. Landing page live before driving any traffic
 3. Marketing and outreach BEFORE building any automation infrastructure
 4. Build only when a client signs and pays
@@ -126,8 +127,7 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 
 ### Phase 1 — Close Out
 
-- [ ] Register domain (sameerautomations.com) + set up branded email
-- [ ] Deploy landing page (Vercel, Netlify, or similar — static hosting)
+- [ ] Deploy landing page (GitHub Pages is live — consider custom domain later if needed)
 - [ ] MANUAL: Upload YouTube banner to Studio
 - [ ] MANUAL: Upload YouTube profile pic to Studio
 - [ ] MANUAL: Change channel name to "Sameer Automations"
@@ -148,7 +148,6 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 
 ## Blockers
 
-- Domain registration needed before deploy (manual action)
 - YouTube uploads are manual (can't automate via API without approval)
 
 ---
@@ -182,7 +181,6 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 - [ ] MANUAL: Paste about section text
 - [ ] MANUAL: Set handle to @SameerAutomates
 - [ ] MANUAL: Set old photography videos to Unlisted
-- [ ] MANUAL: Register domain (sameerautomations.com) + branded email
 - [ ] MANUAL: Record origin story video (Video 1 from content plan)
 - [ ] MANUAL: Build prospecting list (Google Maps / Yelp)
 - [ ] MANUAL: Start cold outreach using templates in ops/outreach/
