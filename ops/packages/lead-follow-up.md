@@ -15,7 +15,7 @@ Every new lead — whether they fill out your contact form, click your Facebook 
 
 - Workflow connecting your lead source (web form, Google Ads webhook, Facebook Lead Ads, or missed call trigger) to the AI qualification engine
 - AI-powered conversational lead qualification via SMS — a short 2-3 message exchange that asks the right questions automatically
-- Calendar booking via Cal.com or Google Calendar — prospect self-books from your available slots, no back-and-forth
+- Calendar booking via Google Calendar Appointment Scheduling — prospect self-books from your available slots, no back-and-forth
 - Confirmation SMS and email sent to the prospect on booking
 - Notification to you (email or SMS) the moment a new appointment lands
 - Integration with your existing CRM, or a simple Notion/Airtable lead log if you don't have one
@@ -56,7 +56,7 @@ The $2,500 build fee pays back in under one month. The $350/mo retainer costs le
 Before work begins, you'll need to supply:
 
 - **Lead source access:** credentials or webhook URL from your web form, ad platform (Facebook, Google), or phone system
-- **Calendar access:** Google Calendar login or Cal.com account (one will be created for you if needed)
+- **Calendar access:** Google Calendar login (Google Calendar Appointment Scheduling will be configured for you if needed)
 - **Phone number:** an existing business number to send texts from, or permission to set up a new one
 - **CRM or logging preference:** tell us where you want leads tracked (existing CRM, Notion, Airtable, Google Sheet, or we'll recommend one)
 - **Business hours and availability:** so the calendar only shows slots you actually want booked

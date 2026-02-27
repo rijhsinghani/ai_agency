@@ -33,13 +33,13 @@ These are the tools used to build the actual automation products delivered to cl
 
 ### Supporting Libraries / Services
 
-| Tool                | Tier                                 | Purpose                                                                                   | When to Use                                                                                 |
-| ------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Playwright MCP      | Free (open source)                   | Browser automation — scraping, form fills, web-based workflows                            | When a client's system has no API and requires UI interaction                               |
-| Supabase            | Free (500MB DB, 50K monthly actives) | Lightweight database for storing automation state, leads, logs                            | When N8N's built-in data storage isn't enough; avoid full RDS overhead                      |
-| OpenAI / Claude API | Pay-as-you-go                        | LLM calls inside automations (classification, summarization, drafting)                    | For automations requiring reasoning; Claude Haiku for cost-sensitive high-volume tasks      |
-| Cal.com             | Free forever                         | Scheduling / appointment booking embedded in automations                                  | Lead follow-up PoC needs a booking link; Cal.com free tier is the most generous in category |
-| Webhooks (native)   | Free                                 | Trigger N8N workflows from external events (form submissions, CRM changes, Stripe events) | Standard glue between systems; no cost                                                      |
+| Tool                                   | Tier                                 | Purpose                                                                                   | When to Use                                                                                        |
+| -------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Playwright MCP                         | Free (open source)                   | Browser automation — scraping, form fills, web-based workflows                            | When a client's system has no API and requires UI interaction                                      |
+| Supabase                               | Free (500MB DB, 50K monthly actives) | Lightweight database for storing automation state, leads, logs                            | When N8N's built-in data storage isn't enough; avoid full RDS overhead                             |
+| OpenAI / Claude API                    | Pay-as-you-go                        | LLM calls inside automations (classification, summarization, drafting)                    | For automations requiring reasoning; Claude Haiku for cost-sensitive high-volume tasks             |
+| Google Calendar Appointment Scheduling | Included in Google Workspace         | Scheduling / appointment booking embedded in automations                                  | Lead follow-up PoC needs a booking link; already included in Google Workspace — no additional cost |
+| Webhooks (native)                      | Free                                 | Trigger N8N workflows from external events (form submissions, CRM changes, Stripe events) | Standard glue between systems; no cost                                                             |
 
 ### Development Tools
 
@@ -188,17 +188,17 @@ The channel pivot is from photography to AI automation for business owners. Targ
 
 ## Alternatives Considered
 
-| Recommended       | Alternative            | When to Use Alternative                                                                                                                                                            |
-| ----------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| N8N (self-hosted) | Make.com ($9/mo)       | If you don't want to manage a VPS; Make is simpler to maintain than self-hosted N8N and cheaper than N8N cloud                                                                     |
-| N8N (self-hosted) | Zapier                 | Only if a client integration exists only in Zapier's 8,000-app catalog; never use Zapier for your own production automations — per-task billing is economically punishing at scale |
-| Framer            | Carrd ($9/yr)          | If you want the absolute cheapest possible landing page with zero design effort; Carrd is functional but looks dated                                                               |
-| Framer            | Webflow ($18/mo)       | If you need a multi-page site with a real CMS and blog; not needed in phase 1                                                                                                      |
-| Notion (CRM)      | Airtable ($20/mo)      | When you need relational data across multiple clients, linked automations status, and formula fields; upgrade when Notion feels limiting                                           |
-| PandaDoc (free)   | Google Docs + Docusign | If PandaDoc's 5 doc/mo limit is hit before upgrading; functional fallback but loses integrated payment                                                                             |
-| Stripe            | PayPal                 | Only if a specific client cannot pay by card and insists on PayPal; accept it, but default to Stripe                                                                               |
-| Descript          | DaVinci Resolve (free) | If producing cinematic, high-production-value content; DaVinci is overkill for screen recording-heavy automation demos                                                             |
-| Cal.com (free)    | Calendly ($10/mo)      | If you prefer Calendly's UX; Cal.com free is functionally equivalent for solo use and saves $10/mo                                                                                 |
+| Recommended                            | Alternative                         | When to Use Alternative                                                                                                                                                            |
+| -------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| N8N (self-hosted)                      | Make.com ($9/mo)                    | If you don't want to manage a VPS; Make is simpler to maintain than self-hosted N8N and cheaper than N8N cloud                                                                     |
+| N8N (self-hosted)                      | Zapier                              | Only if a client integration exists only in Zapier's 8,000-app catalog; never use Zapier for your own production automations — per-task billing is economically punishing at scale |
+| Framer                                 | Carrd ($9/yr)                       | If you want the absolute cheapest possible landing page with zero design effort; Carrd is functional but looks dated                                                               |
+| Framer                                 | Webflow ($18/mo)                    | If you need a multi-page site with a real CMS and blog; not needed in phase 1                                                                                                      |
+| Notion (CRM)                           | Airtable ($20/mo)                   | When you need relational data across multiple clients, linked automations status, and formula fields; upgrade when Notion feels limiting                                           |
+| PandaDoc (free)                        | Google Docs + Docusign              | If PandaDoc's 5 doc/mo limit is hit before upgrading; functional fallback but loses integrated payment                                                                             |
+| Stripe                                 | PayPal                              | Only if a specific client cannot pay by card and insists on PayPal; accept it, but default to Stripe                                                                               |
+| Descript                               | DaVinci Resolve (free)              | If producing cinematic, high-production-value content; DaVinci is overkill for screen recording-heavy automation demos                                                             |
+| Google Calendar Appointment Scheduling | Calendly ($10/mo) or Cal.com (free) | Already included in Google Workspace — no reason to pay for or set up a separate scheduling tool                                                                                   |
 
 ---
 
@@ -248,19 +248,19 @@ The channel pivot is from photography to AI automation for business owners. Targ
 
 ## Version / Pricing Compatibility Notes
 
-| Tool     | Free Tier                                 | Entry Paid                               | Notes                                                                      |
-| -------- | ----------------------------------------- | ---------------------------------------- | -------------------------------------------------------------------------- |
-| N8N      | Community (self-hosted, unlimited)        | Starter €24/mo cloud                     | Self-hosted Community is free forever; infrastructure cost is $5-20/mo VPS |
-| Framer   | Free with watermark                       | Basic $10/mo                             | Basic ($10) is the minimum for a live professional site; no watermark      |
-| Notion   | Unlimited pages, 10 guests, 7-day history | Plus $10/seat/mo                         | Free tier is genuinely sufficient for solo CRM through phase 1             |
-| PandaDoc | 5 docs/mo, e-sign, payment collection     | Essentials $19/mo                        | 5 doc/month covers 2-3 closes/month; upgrade triggers when pipeline scales |
-| Stripe   | No monthly fee                            | Invoicing Starter: 0.4% per paid invoice | ACH (0.8%) is cheaper than card (2.9%) for large invoices — enable it      |
-| Cal.com  | Free forever (unlimited event types)      | Teams $15/user/mo                        | Free tier covers all solo scheduling needs                                 |
-| Descript | 60 min/mo, 720p, watermarked              | Creator $15/mo                           | Free tier fine for testing; Creator tier needed for production publishing  |
-| Loom     | Unlimited videos up to 5 min each (free)  | Business $15/user/mo                     | Free tier sufficient for client delivery walkthroughs                      |
-| Resend   | 3,000 emails/mo, 100/day (free)           | Pro $20/mo (50K emails)                  | Free tier covers all automation emails at early stage                      |
-| Bland AI | Pay-as-you-go (~$0.09/min)                | Enterprise custom                        | No minimum monthly; only pay for actual calls made                         |
-| Twilio   | $0 (pay-as-you-go)                        | No tiers; usage-based                    | $15 credit on signup; SMS ~$0.0079/msg; good for lead follow-up SMS        |
+| Tool                                   | Free Tier                                 | Entry Paid                                | Notes                                                                          |
+| -------------------------------------- | ----------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
+| N8N                                    | Community (self-hosted, unlimited)        | Starter €24/mo cloud                      | Self-hosted Community is free forever; infrastructure cost is $5-20/mo VPS     |
+| Framer                                 | Free with watermark                       | Basic $10/mo                              | Basic ($10) is the minimum for a live professional site; no watermark          |
+| Notion                                 | Unlimited pages, 10 guests, 7-day history | Plus $10/seat/mo                          | Free tier is genuinely sufficient for solo CRM through phase 1                 |
+| PandaDoc                               | 5 docs/mo, e-sign, payment collection     | Essentials $19/mo                         | 5 doc/month covers 2-3 closes/month; upgrade triggers when pipeline scales     |
+| Stripe                                 | No monthly fee                            | Invoicing Starter: 0.4% per paid invoice  | ACH (0.8%) is cheaper than card (2.9%) for large invoices — enable it          |
+| Google Calendar Appointment Scheduling | Included in Google Workspace              | N/A (already paying for Google Workspace) | Included with Google Workspace — no additional cost for appointment scheduling |
+| Descript                               | 60 min/mo, 720p, watermarked              | Creator $15/mo                            | Free tier fine for testing; Creator tier needed for production publishing      |
+| Loom                                   | Unlimited videos up to 5 min each (free)  | Business $15/user/mo                      | Free tier sufficient for client delivery walkthroughs                          |
+| Resend                                 | 3,000 emails/mo, 100/day (free)           | Pro $20/mo (50K emails)                   | Free tier covers all automation emails at early stage                          |
+| Bland AI                               | Pay-as-you-go (~$0.09/min)                | Enterprise custom                         | No minimum monthly; only pay for actual calls made                             |
+| Twilio                                 | $0 (pay-as-you-go)                        | No tiers; usage-based                     | $15 credit on signup; SMS ~$0.0079/msg; good for lead follow-up SMS            |
 
 ---
 
@@ -278,7 +278,7 @@ The channel pivot is from photography to AI automation for business owners. Targ
 - [Stripe Invoicing pricing — Stripe Support](https://support.stripe.com/questions/stripe-invoicing-pricing) — 0.4% invoicing fee confirmed
 - [CapCut vs Descript 2026 — fahimai.com](https://www.fahimai.com/capcut-vs-descript) — Tool capabilities and free tier comparison
 - [Loom Pricing 2026 — supademo.com](https://supademo.com/blog/loom-pricing) — Free tier (5 min videos, unlimited) confirmed
-- [Cal.com vs Calendly 2026 — schedulingkit.com](https://schedulingkit.com/pricing-guides/cal-com-pricing) — Free forever plan verified
+- Google Calendar Appointment Scheduling — included in Google Workspace; confirmed available at calendar.google.com under Calendar Settings → Appointment schedules
 - [Resend vs SendGrid 2026 — sequenzy.com](https://www.sequenzy.com/versus/resend-vs-sendgrid) — Free tier (3K/mo, 100/day) verified
 - [Bland AI Review 2026 — lindy.ai](https://www.lindy.ai/blog/bland-ai-review) — Pricing (~$0.09/min) and integration verified
 - [Claude Code MCP Docs — Anthropic](https://code.claude.com/docs/en/mcp) — MCP ecosystem current state

@@ -24,7 +24,7 @@ Requirements for initial launch. Each maps to roadmap phases.
 ### Core Product (PoC)
 
 - [ ] **POC-01**: Lead follow-up automation is built and working (new lead → AI qualifies → books appointment → sends confirmation)
-- [ ] **POC-02**: Automation uses N8N + Claude/LLM + Twilio/Resend + Cal.com stack
+- [ ] **POC-02**: Automation uses N8N + Claude/LLM + Twilio/Resend + Google Calendar Appointment Scheduling stack
 - [ ] **POC-03**: PoC is documented as a case study with before/after metrics (response time, leads captured, estimated revenue recovered)
 - [ ] **POC-04**: PoC has a video walkthrough recorded (screen recording + narration, 3-5 minutes)
 
@@ -56,7 +56,7 @@ Deferred to after first client or first revenue.
 
 ### Sales Infrastructure
 
-- **SALE-01**: Discovery call booking (Cal.com) with value discovery script
+- **SALE-01**: Discovery call booking (Google Calendar Appointment Scheduling) with value discovery script
 - **SALE-02**: Proposal template with 3-tier pricing (Starter/Professional/Growth)
 - **SALE-03**: Client agreement template (scope, deliverables, 50/50 payment, IP, liability, retainer, exit clause)
 - **SALE-04**: Invoicing system via Stripe (one-time build fees + recurring retainer billing)

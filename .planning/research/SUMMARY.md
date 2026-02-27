@@ -26,7 +26,7 @@ The two highest-risk failure modes are both behavioral, not technical: (1) build
 - **Twilio / Bland AI** — Telephony layer. Twilio for SMS/webhooks (pay-as-you-go, ~$0.008/SMS), Bland AI for voice qualification (~$0.09/min). No monthly minimums.
 - **Resend** — Transactional email from automations. Free tier: 3,000/mo. Simpler DX than SendGrid for this use case.
 - **Supabase** — State storage when N8N's built-in storage isn't enough. Free tier (500MB, 50K monthly actives) covers Phase 1.
-- **Cal.com** — Scheduling. Free forever for solo use. No reason to pay for Calendly.
+- **Google Calendar Appointment Scheduling** — Scheduling. Included in Google Workspace. No reason to pay for Calendly or Cal.com.
 
 **Business Ops Layer (running the agency):**
 
@@ -171,7 +171,7 @@ Delivers:
 - Pricing framework (value-based, documented before first conversation)
 - Client agreement template (numbered deliverables, explicit exclusions, retainer as required line item)
 - Discovery call script (quantification framework)
-- Booking system (Cal.com, embedded + tested)
+- Booking system (Google Calendar Appointment Scheduling, embedded + tested)
 
 Features from FEATURES.md: Business name + domain, branded email, invoicing (Stripe setup), discovery call script
 Pitfalls prevented: Undercharging, scope creep, no retainer revenue, skipping discovery
@@ -198,7 +198,7 @@ Pitfalls prevented: No social proof at launch, non-reusable automation architect
 
 Exit criterion: PoC is live and running for the agency's own inquiries. Case study has specific before/after numbers. Scaffold is documented and parameterized. Adversarial test cases pass. Client-readable log exists.
 
-Research flag: Phase-level research likely needed for N8N workflow patterns, Twilio/Cal.com integration specifics.
+Research flag: Phase-level research likely needed for N8N workflow patterns, Twilio/Google Calendar integration specifics.
 
 ---
 
@@ -277,7 +277,7 @@ Research flag: Standard patterns — agency eats its own dog food; builds alread
 
 | Area         | Confidence | Notes                                                                                                                                                                                            |
 | ------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Stack        | HIGH       | All tools verified against 2026 pricing sources. N8N, Framer, Stripe, Cal.com all confirmed. Alternatives table well-reasoned.                                                                   |
+| Stack        | HIGH       | All tools verified against 2026 pricing sources. N8N, Framer, Stripe, Google Calendar Appointment Scheduling all confirmed. Alternatives table well-reasoned.                                    |
 | Features     | HIGH       | Market patterns well-established across multiple agency operator sources. Client-facing automation priorities consistent across research.                                                        |
 | Architecture | MEDIUM     | Business model patterns consistent across sources; specific time allocation ratios (hours per phase, client capacity numbers) are estimated, not benchmarked. Core structural patterns reliable. |
 | Pitfalls     | HIGH       | Multiple independent sources converging on same failure modes. Scope creep, undercharging, and burnout are universal across agency models.                                                       |
@@ -311,7 +311,7 @@ Research supports $1,500-3,000 build fee + $200-500/mo retainer as the initial p
 - n8n vs Make vs Zapier 2026 — Digidop
 - Framer Pricing 2026 — letaiworkforme.com
 - Stripe Invoicing pricing — Stripe Support
-- Cal.com vs Calendly 2026 — schedulingkit.com
+- Google Calendar Appointment Scheduling (included in Google Workspace — replaced Cal.com)
 - Loom Pricing 2026 — supademo.com
 - Resend vs SendGrid 2026 — sequenzy.com
 - Bland AI Review 2026 — lindy.ai

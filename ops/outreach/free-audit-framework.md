@@ -222,7 +222,7 @@ These 3 gaps are likely costing [Business Name] approximately [X] leads per mont
 
 Want to talk through what fixing these would look like for your business?
 
-30 minutes, no obligation: [Cal.com booking link]
+30 minutes, no obligation: [Google Calendar booking link]
 ```
 
 ---
@@ -260,4 +260,4 @@ Run through this before you finalize any audit output:
 - [ ] No technical jargon appears anywhere (no "automation," "workflow," "API," "webhook," "AI")
 - [ ] The "what a fix looks like" section describes an outcome, not a technology
 - [ ] The combined estimate uses their actual average job value, not a generic number
-- [ ] The Cal.com link is correct and goes to a live booking page
+- [ ] The Google Calendar booking link is correct and goes to a live booking page

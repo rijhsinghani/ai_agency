@@ -66,7 +66,7 @@ The existing channel (photography content, low views) will be transformed in-pla
 3. Update channel name to "Sameer Automations" → YouTube Studio > Customization > Basic Info
 4. Paste about section text → YouTube Studio > Customization > Basic Info > Description
 5. Paste channel keywords → YouTube Studio > Customization > Basic Info > Keywords
-6. Set handle to @SameerAutomations (if available)
+6. Set handle to @SameerAutomates (if available)
 
 **Old photography videos:** Set all existing photography videos to "Unlisted" — do not delete (keep the channel history) but remove them from public view so the channel presents a clean, focused slate from day one.
 
@@ -74,93 +74,96 @@ The existing channel (photography content, low views) will be transformed in-pla
 
 **The cardinal rule for every piece of content:**
 
-> Show what the business owner's life looks like AFTER the automation exists. Never explain how it was built.
+> Sameer is not a vendor. He is a small business owner who built his way out of operational chaos and now helps others do the same. Every piece of content should feel like advice from someone who has been there.
 
 Wrong frame: "I built this N8N workflow with a Claude API node that fires a webhook..."
-Right frame: "This dentist's practice went from losing 40% of after-hours leads to booking them automatically while she sleeps."
+Right frame: "I was losing leads at night in my own business. I fixed it. Here's what that looks like."
 
 Every title, hook, thumbnail, and script must answer one question for the viewer: **"What does this do for MY business?"**
 
+Show the outcome, not the mechanism. Reference real results — from Sameer's own business or from clients — with actual numbers. Never explain the technology unless asked. Never pitch. Demonstrate.
+
 ### First 5 Video Topics
 
-#### Video 1 — The PoC Demo (Core Sales Asset)
+#### Video 1 — Origin Story (Core Brand Asset)
 
-**Title:** "I Built an AI System That Follows Up Every Lead — And Here's Exactly What Happened"
+**Title:** "I automated my own business. Here's what happened."
 
-**Thumbnail:** Side-by-side. Left: missed call icon, angry face, "$0". Right: phone ringing, calendar booked, "$$$". Bold text: "EVERY LEAD GETS FOLLOWED UP"
+**Thumbnail:** Photo of Sameer, direct eye contact. Text: "I AUTOMATED MY OWN BUSINESS" on dark background with purple accent.
 
 **Hook (first 30 seconds):**
-"Every single time you miss a call or don't respond to a lead within 5 minutes — there's a 78% chance that lead is gone to your competitor. This is a real number. I built a system that makes sure that never happens again. Here's exactly what it does, in real time."
+"I was running a wedding photography business. I was losing leads because I was on shoots when calls came in, and nobody followed up fast enough. So I built a system to fix it. Leads came in, got a text within 60 seconds, got a booking link, booked themselves. I wasn't touching it. That system is why I'm here."
 
 **Outline:**
 
-1. The problem: missed leads and slow follow-up kill revenue (2 min) — state the pain in dollars, not statistics. "If you're getting 20 leads a month and losing 8 of them at $500 each, that's $4,000 gone. Every month."
-2. The demo (screen recording, 4 min) — show a new lead coming in, the AI qualifying them via SMS, the booking link sent automatically, the calendar confirmation. No code. Just the outcome. Narrate what the business owner sees and what happens without them lifting a finger.
-3. The before/after numbers (1 min) — from the Phase 2 case study. Real response time, real leads captured.
-4. CTA (30 sec) — "If you want this for your business, link in the description. 30-minute call, no obligation."
+1. The origin (2 min) — Raj Photo Video. The operational chaos of running a service business solo: missed calls, slow follow-up, leads choosing the competitor who responded faster. Make it specific and personal.
+2. What Sameer actually built (2 min, screen recording) — show the automation that ran in his own business. Not a demo environment. The real thing. Narrate what each step does in plain English.
+3. What changed (1 min) — the before and after, in numbers. Response time, leads captured, time saved per week. Real figures.
+4. The pivot (1 min) — "Other business owners started asking me to build the same thing for them. So I did." This is not a pitch — it's a natural conclusion to the story.
+5. CTA (30 sec) — "If you're running a business and losing leads to slow follow-up, link in the description. 30-minute call, no obligation."
 
-**Format:** Screen recording (OBS) + talking head (cut-to). Total length: 7-10 minutes.
+**Format:** Talking head with screen recording cut-ins. Total length: 7-10 minutes.
 
 **Tools:** OBS for screen capture, Descript for editing, Canva for thumbnail.
 
 ---
 
-#### Video 2 — The Explainer for Skeptics
+#### Video 2 — What's Actually Worth Automating
 
-**Title:** "What AI Automation Actually Is (And Why Your Business Probably Needs It)"
+**Title:** "What's actually worth automating in a small business (and what isn't)"
 
-**Thumbnail:** Photo of Sameer, text: "AI FOR YOUR BUSINESS — No Tech Skills Required"
+**Thumbnail:** Photo of Sameer, text: "WHAT'S WORTH AUTOMATING" on dark background.
 
 **Hook (first 30 seconds):**
-"Everyone's talking about AI right now. Most of it is noise for people like you — plumbers, contractors, dentists — running real businesses. But there are a few specific things AI is genuinely useful for in your business, and I'm going to show you exactly what they are."
+"Not everything in your business should be automated. A lot of what people try to automate first is the wrong stuff. I'm going to walk you through the three things that actually move the needle — and why they matter more than anything else."
 
 **Outline:**
 
-1. What AI automation is NOT (1 min) — not robots, not chatGPT for writing blog posts, not replacing your team. Keep it grounded.
-2. What it IS for a local service business (2 min) — the three jobs AI actually does well: respond to leads instantly, send follow-up sequences, book appointments automatically.
-3. The three biggest time-and-money drains in a service business (3 min) — walk through missed calls, slow follow-up, manual scheduling. Quantify each with a real dollar example.
-4. How automation connects to each one (2 min) — one slide per problem. "Here's what happens before. Here's what happens after."
+1. What automation is NOT (1 min) — not robots, not ChatGPT writing blog posts, not replacing your team. Keep it grounded. This is about systems that handle the boring, repetitive work so you don't have to.
+2. The three highest-ROI automations for small businesses (3 min) — missed call text-back, lead follow-up sequence, appointment reminders and review requests. Quantify each: time saved, revenue recovered, response rate improvement.
+3. What's not worth automating yet (1 min) — complex customer conversations, anything requiring judgment, anything you haven't done manually enough to know how it should work.
+4. How to decide what to automate first (2 min) — the simple test: "Is this happening more than 10 times a week? Is it the same every time? Could a text message or email handle it?" If yes to all three, it's automatable.
 5. CTA (30 sec) — "Book a free 30-minute call. I'll tell you which one would have the biggest impact on your business."
 
-**Format:** Talking head with simple on-screen text/graphics. No screen recording needed. Length: 8-10 minutes.
+**Format:** Talking head with simple on-screen text. No screen recording needed. Length: 8-10 minutes.
 
 **Tools:** iPhone or webcam, Descript for editing, simple on-screen text via Descript.
 
 ---
 
-#### Video 3 — Industry-Specific Case Study (Plumbers / Contractors)
+#### Video 3 — Behind-the-Scenes Build
 
-**Title:** "How a Plumbing Business Stopped Losing Leads at Night (Without Hiring Anyone)"
+**Title:** "Building a missed call system live — what it looks like and what it does"
 
-**Thumbnail:** Plumber image + phone + calendar. Text: "LEADS BOOKED WHILE YOU SLEEP"
+**Thumbnail:** Screen recording still of the automation running. Text: "BUILT LIVE — ZERO CODE" on dark background.
 
 **Hook (first 30 seconds):**
-"It's 9 PM. Someone's toilet is overflowing. They call three plumbers. Two don't answer. One sends an instant text: 'Got your message — here's a link to book a time that works for you.' Who gets the job? The one who responded. Even if it was a robot."
+"I'm going to show you exactly how I build one of these automations. Not the finished product — the actual build. What a business owner asked for, what I built, where it got complicated, and what the final result looks like running in real time."
 
 **Outline:**
 
-1. The missed-call problem for trades specifically (2 min) — field crews can't answer phones. Owners are on jobsites. After-hours calls go to voicemail. This is where 30-40% of leads die.
-2. Walk through the exact automation (screen demo, 3 min) — missed call → automatic text within 60 seconds → AI asks what they need → sends booking link → calendar booked. Show it happening in real time.
-3. Results: response time went from "whenever I call back" to 60 seconds. Lead capture went up. Real numbers from the PoC case study, framed as if it were a client result (it is — the agency's own automation running live).
-4. What this costs vs. what it recovers (1 min) — one recovered lead at $800 LTV pays for months of service. Show the math simply.
-5. CTA — "This is exactly what I set up for businesses. Link below."
+1. The client's problem (1 min) — frame it as a real request from a real business. "They were losing after-hours leads because nobody was available to respond." Use the business type and the pain, not the name.
+2. Walk through the build (screen recording, 4 min) — show the automation being constructed. Don't explain the technical details — narrate what each step does in plain English. "This part watches for a missed call. This part sends the text. This part logs the response."
+3. The finished system running (2 min) — show the automation in real time with a test lead. Missed call → text within 60 seconds → AI response → booking link sent → calendar event created.
+4. The result (1 min) — before and after with real numbers. Response time, leads captured, time the owner gets back per week.
+5. CTA (30 sec)
 
-**Format:** Talking head intro/outro + screen recording for demo. Length: 8-10 minutes.
+**Format:** Screen recording with narration, talking head intro/outro. Length: 8-10 minutes.
 
 ---
 
 #### Video 4 — Short-Form / YouTube Short
 
-**Title:** "This One Automation Recovers $4,000 a Month in Lost Leads"
+**Title:** "Missed calls are costing you more than you think"
 
-**Hook (first 3 seconds):** "Every time your phone rings and you miss it — you're losing this much money." [hold up paper with $4,000/month written on it]
+**Hook (first 3 seconds):** "Every time your phone rings and you miss it — you're handing a job to your competitor." [direct to camera, no prop needed]
 
 **Script (60 seconds total):**
 
-- 0-3s: Hook with dollar amount
-- 3-15s: The problem — most service businesses miss 30-40% of inbound leads just because they're busy
-- 15-35s: Quick screen flash of the automation running — "I built a system. Lead comes in. Text goes out in 60 seconds. Link to book. Done."
-- 35-50s: Real number — "One client is now booking 8 more leads per month that used to fall through. At $500 each, that's $4,000."
+- 0-3s: Hook — the missed call framing
+- 3-15s: The problem — most small businesses miss 30-40% of inbound leads just because they're busy or off-hours. There's no system catching them.
+- 15-35s: Quick screen flash of the automation running — "I built a system. Call comes in, you're busy, an automatic text goes out in 60 seconds. It asks what they need and sends a booking link. Done."
+- 35-50s: Real number — "8 more leads booked per month that used to fall through. At $500 each, that's $4,000 a month from a system that costs $200."
 - 50-60s: CTA — "Link in bio if you want this for your business."
 
 **Format:** Vertical (9:16). Talking head with fast cuts. Auto-captions via CapCut.
@@ -169,24 +172,25 @@ Every title, hook, thumbnail, and script must answer one question for the viewer
 
 ---
 
-#### Video 5 — Appointment Reminder / Review Request Explainer
+#### Video 5 — Case Study with Real Numbers
 
-**Title:** "Stop Chasing Clients: Set This Up Once and Never Send a Reminder Again"
+**Title:** "3 automations. One small business. Here's what the numbers looked like after 60 days."
 
-**Thumbnail:** Phone with checkmarks appearing automatically. Text: "SET IT AND FORGET IT"
+**Thumbnail:** Before/after number comparison. Text: "THE 60-DAY RESULTS" on dark background with purple accent.
 
 **Hook (first 30 seconds):**
-"How much time do you spend every week sending appointment reminders and following up after jobs? Most business owners I talk to — it's 2-4 hours. That's 100-200 hours a year on something a system can do while you're on the job."
+"I'm going to show you a real result from a real business — response time, leads captured, reviews gained — after 60 days of running the same system I build for clients. These are actual numbers, not projections."
 
 **Outline:**
 
-1. The time cost of manual reminders (1 min) — quantify with hours and dollar amount. "At $75/hr, that's $7,500-15,000 a year in your time."
-2. Demo: appointment reminder sequence (screen recording, 3 min) — show how booking triggers an automatic sequence: 48 hours before, 24 hours before, 1 hour before. Each is a text/email. The owner does nothing.
-3. Demo: post-job review request (screen recording, 2 min) — show how job completion triggers an automatic review ask. Personalized, timed correctly, zero effort.
-4. The compound effect (1 min) — more reviews = more visibility = more leads. The automation pays for itself through Google ranking alone.
-5. CTA (30 sec)
+1. The starting point (1 min) — describe the business (by industry and pain, not by name). What was broken: missed calls, slow follow-up, no review system.
+2. The 3 automations built (1 min) — missed call text-back, lead follow-up sequence, post-job review request. Name each, say what it does in one sentence.
+3. The 60-day results (3 min, with screen recording or graphics) — for each automation: what the metric was before, what it is now. Use actual numbers. Response time, leads per month, review count, estimated revenue recovered.
+4. What it cost vs. what it returned (1 min) — show the math. Monthly retainer vs. revenue recovered from additional bookings.
+5. What this looks like in other industries (1 min) — the same pain (missed calls, slow follow-up, no reviews) shows up in any service business. The system adapts.
+6. CTA (30 sec)
 
-**Format:** Talking head + screen recording. Length: 8-10 minutes.
+**Format:** Talking head + screen recording or data graphics. Length: 8-10 minutes.
 
 ---
 
@@ -194,13 +198,13 @@ Every title, hook, thumbnail, and script must answer one question for the viewer
 
 Publish consistently. One video per week minimum, two per week if bandwidth allows.
 
-| Week   | Video                       | Type          |
-| ------ | --------------------------- | ------------- |
-| Week 1 | Video 1 — PoC Demo          | Long-form     |
-| Week 2 | Video 4 — Short-form        | YouTube Short |
-| Week 3 | Video 2 — Explainer         | Long-form     |
-| Week 4 | Video 3 — Case Study        | Long-form     |
-| Week 5 | Video 5 — Reminders/Reviews | Long-form     |
+| Week   | Video                             | Type          |
+| ------ | --------------------------------- | ------------- |
+| Week 1 | Video 1 — Origin Story            | Long-form     |
+| Week 2 | Video 4 — Short-form              | YouTube Short |
+| Week 3 | Video 2 — What's Worth Automating | Long-form     |
+| Week 4 | Video 3 — Behind-the-Scenes Build | Long-form     |
+| Week 5 | Video 5 — Case Study with Numbers | Long-form     |
 
 **Short-form repurposing:** After each long-form video, cut 1-2 60-second Shorts from the best moments. Publish on YouTube Shorts, Instagram Reels. This doubles output from one recording session.
 
@@ -209,7 +213,7 @@ Publish consistently. One video per week minimum, two per week if bandwidth allo
 All thumbnails follow the same visual template (`brand/youtube/thumbnail-template.svg`):
 
 - **Background:** Dark (#1A1A1A) or deep purple gradient
-- **Focal image:** Sameer's face (left side) OR relevant business-type image (phone, plumber, calendar)
+- **Focal image:** Sameer's face (left side) OR relevant outcome image (phone, calendar, before/after numbers)
 - **Big bold text:** 3-5 words maximum. Use the outcome, not the method. "LEADS WHILE YOU SLEEP" not "AI Automation Demo"
 - **Color accent:** Purple (#7B2FBE) for text highlights or borders
 - **No clutter:** Thumbnails work at thumbnail size. If you can't read it small, it's too complex.
@@ -315,7 +319,7 @@ OPTION A (review signal): "I noticed a few of your reviews mention response time
 
 OPTION B (website signal): "I checked out your website and noticed there's no way for someone to book or leave their info after hours. In a business like yours, that's probably costing you leads every week."
 
-OPTION C (general pain signal): "For most [plumbers/contractors/dentists] in [City], the biggest revenue leak isn't marketing — it's leads that call or contact you and never hear back within a few minutes. That gap is where competitors win."
+OPTION C (general pain signal): "For most [business type]s in [City], the biggest revenue leak isn't marketing — it's leads that call or contact you and never hear back within a few minutes. That gap is where competitors win."
 
 I build AI systems that automatically follow up every lead within 60 seconds — even at 2 AM — qualify them, and book appointments without you touching anything.
 
@@ -332,7 +336,7 @@ sameer@rajphotovideo.com
 ```
 Hi [First Name] — I came across [Business Name] and noticed [specific observation].
 
-I help [business type]s in [City] automatically follow up every lead and book appointments without lifting a finger.
+I build systems that automatically follow up every lead and book appointments — without you lifting a finger.
 
 I took a quick look at your setup and found a couple of things worth flagging. Would a quick breakdown be useful? No cost.
 
@@ -392,7 +396,7 @@ If it's useful, great. If not, no worries — you've lost nothing.
 
 But if even one of those gaps is costing you a lead per week, fixing it more than pays for itself.
 
-Happy to jump on a 30-minute call if you want to go deeper: [Cal.com link]
+Happy to jump on a 30-minute call if you want to go deeper: [Google Calendar booking link]
 
 — Sameer
 ```
@@ -535,7 +539,7 @@ Combined estimate: These 3 gaps are likely costing [Business Name] approximately
 [X] leads per month. At an average job value of [$X], that's [$X/month].
 
 Want to talk through what fixing these would look like for your business?
-30 minutes, no obligation: [Cal.com link]
+30 minutes, no obligation: [Google Calendar booking link]
 ```
 
 **The Loom version:** Record a 3-minute screen recording of you walking through this document on screen, then showing their actual website, Google profile, and the specific gaps you found. This is far more persuasive than text alone.
@@ -556,7 +560,7 @@ Want to talk through what fixing these would look like for your business?
 6. Change channel name to "Sameer Automations"
 7. Paste about section from `brand/youtube/about-section.md` into Description
 8. Paste keywords from `brand/youtube/channel-keywords.md` into Keywords field (comma-separated, first 15-20 tags)
-9. Go to Handle — set to @SameerAutomations if available. If taken, try @SameerAutomates or @SameerAI
+9. Go to Handle — set to @SameerAutomates
 10. Set all existing photography videos to Unlisted
 11. Verify: search "Sameer Automations" on YouTube — confirm profile pic, banner, and about section all display correctly
 
@@ -603,7 +607,7 @@ Work through videos in the order they appear in Section 2. Video 1 first — it'
 **Step 1: Script (60-90 min)**
 
 - Write a full script using the outlines in Section 2 as your starting point
-- Use Claude to help draft and refine — prompt: "Write a YouTube script for a non-technical plumber or dentist audience. Here's my outline: [outline]. The tone should be direct, confident, and outcome-focused. No technical jargon. No mention of code or tools."
+- Use Claude to help draft and refine — prompt: "Write a YouTube script for a non-technical small business owner audience. Here's my outline: [outline]. The tone should be direct, confident, peer-level, and outcome-focused. No technical jargon. No mention of code or tools. No emojis. Reference brand-voice.md for tone guidance."
 - Read the script out loud before recording — it should sound like how you actually talk
 
 **Step 2: Record (1-2 hours)**
@@ -637,7 +641,7 @@ Work through videos in the order they appear in Section 2. Video 1 first — it'
 **Step 6: Publish**
 
 - Upload to YouTube Studio
-- Write title and description — use Claude to optimize: "Write a YouTube title and description for this video [describe the video]. Target audience: non-technical local business owners (plumbers, contractors, dentists). Optimize for search. Include a CTA to book a call."
+- Write title and description — use Claude to optimize: "Write a YouTube title and description for this video [describe the video]. Target audience: non-technical small business owners. Optimize for search. Include a CTA to book a call. Tone: direct, peer-level, no jargon. Sentence case for the title."
 - Add all channel tags from `brand/youtube/channel-keywords.md` to the video tags
 - Set premiere for the upload schedule (see Section 2)
 - Upload the Short to YouTube Shorts within 48 hours of the main video
@@ -680,7 +684,7 @@ Use this to confirm each Phase 4 success criterion is met before calling the pha
 - [ ] All photography videos set to Unlisted
 - [ ] First video published is about AI automation for business owners
 - [ ] Channel banner, profile pic, name, and about section all reflect new direction
-- [ ] Search "Sameer Automations" on YouTube — channel appears with correct branding
+- [ ] Search "Sameer Automations" or "@SameerAutomates" on YouTube — channel appears with correct branding
 
 ### CONT-02: Channel Branding Updated
 
@@ -689,7 +693,7 @@ Use this to confirm each Phase 4 success criterion is met before calling the pha
 - [ ] Channel name set to "Sameer Automations"
 - [ ] About section matches `brand/youtube/about-section.md` copy
 - [ ] Channel keywords set (paste from `brand/youtube/channel-keywords.md`)
-- [ ] Handle set to @SameerAutomations (or closest available)
+- [ ] Handle set to @SameerAutomates
 
 ### CONT-03: First 5 Video Topics Planned
 
@@ -708,13 +712,15 @@ Use this to confirm each Phase 4 success criterion is met before calling the pha
 
 ### CONT-05: Content Speaks to Business Owners
 
-Review each published video against this checklist:
+Review each published video against this checklist. Also verify against `brand/brand-voice.md` before publishing.
 
 - [ ] Does the title reference a business outcome, not a technical feature?
 - [ ] Is the first 30 seconds focused on a business owner's specific pain point?
 - [ ] Does the video avoid technical jargon (N8N, webhook, API, Claude, nodes)?
 - [ ] Does the video show outcomes and results, not code or configuration?
-- [ ] Could a non-technical plumber or dentist understand this video completely?
+- [ ] Could a non-technical small business owner understand this video completely?
+- [ ] Is the tone peer-level — speaking as someone who has been there, not as a vendor pitching a product?
+- [ ] Are there no emojis, no buzzwords, no jargon per brand-voice.md style rules?
 
 ### LEAD-01: Cold Outreach System Exists
 
@@ -724,7 +730,7 @@ Review each published video against this checklist:
 - [ ] DM versions of all three templates written and saved
 - [ ] Email signature configured in Gmail from `brand/email-signature.html`
 - [ ] Loom account set up (free tier)
-- [ ] Cal.com booking link inserted into Day 7 template
+- [ ] Google Calendar booking link inserted into Day 7 template
 
 ### LEAD-02: Prospecting List Built
 
@@ -758,19 +764,23 @@ Review each published video against this checklist:
 
 ### The Business Owner Test
 
-Before publishing any video or sending any message, ask: **"If I were a plumber who has never heard of AI, would this make sense to me? Would it feel relevant to my business?"**
+Before publishing any video or sending any message, ask: **"If I were a small business owner who is stretched thin right now — busy, skeptical, and not interested in tech — would this feel relevant to me? Would the first 10 seconds earn the next 10?"**
 
-If the answer is no — rewrite it. The target customer is not a developer, not someone who reads tech blogs, not someone who knows what N8N is. They run a business. They are busy. They respond to pain points and dollar amounts.
+If the answer is no — rewrite it. The target is any business owner losing time or money to a manual process they haven't fixed yet. They are not a developer. They are not reading tech blogs. They respond to their own pain, described back to them accurately, followed by a result they can verify.
+
+Cross-check every piece of content against `brand/brand-voice.md` before publishing. The voice attributes are direct, peer-level, confident, practical, and transparent. If the content sounds like a vendor pitch, it fails the test.
 
 ### What to Say When Asked "How Does It Work?"
 
-In outreach and early conversations, resist the urge to explain the technology. Instead:
+In outreach and early conversations, resist the urge to explain the technology. Explain what the business owner experiences.
 
 **Wrong:** "I use N8N with a Claude AI node to trigger a Twilio webhook that sends personalized SMS..."
 
-**Right:** "When someone calls and you can't answer, they get a text within 60 seconds. The AI asks what they need, sends them a booking link, and puts it on your calendar. You find out about it when you check your phone."
+**Right:** "When someone calls and you can't answer, they get a text within 60 seconds. It asks what they need, sends a booking link, and the appointment lands on your calendar. You find out about it when you check your phone."
 
-The mechanism is irrelevant. The outcome is everything.
+The mechanism is irrelevant. The outcome is everything. If they push and want to know how it works technically, say: "There are a few tools involved that handle the routing and the messaging. What matters is what it does on your end — and that's what I can show you."
+
+This principle applies everywhere: YouTube, outreach, discovery calls, follow-up Looms. Lead with what it does for them. The technology is never the story.
 
 ### One-Week Rhythm
 

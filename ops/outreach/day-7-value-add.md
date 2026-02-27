@@ -35,7 +35,7 @@ If it's useful, great. If not, no worries — you've lost nothing.
 
 But if even one of those gaps is costing you a lead per week, fixing it more than pays for itself.
 
-Happy to jump on a 30-minute call if you want to go deeper: [Cal.com booking link]
+Happy to jump on a 30-minute call if you want to go deeper: [Google Calendar booking link]
 
 — Sameer
 sameer@rajphotovideo.com

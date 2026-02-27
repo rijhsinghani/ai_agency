@@ -407,18 +407,18 @@ Phase 5: Operations Automation
 
 ### External Services
 
-| Service                | Integration Pattern                                                      | Notes                                              |
-| ---------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
-| Calendly / Cal.com     | Embed on landing page; trigger qualification email on booking            | Free tier sufficient for early stage               |
-| Stripe / Wave          | Invoice generation, deposit collection, retainer billing                 | Wave is free; Stripe for cards                     |
-| n8n / Make             | Workflow orchestration for client automations                            | Self-hosted n8n for cost control at scale          |
-| Claude API             | AI intelligence layer inside automations                                 | Core capability; budget for token costs in pricing |
-| YouTube                | Content distribution; long-form case studies                             | Pivoted channel; first content platform            |
-| LinkedIn               | Content distribution; professional credibility                           | Repurposed clips from YouTube                      |
-| Notion / Obsidian      | Knowledge base; templates; client notes                                  | Markdown-first for portability                     |
-| GitHub                 | Version control for automation code; templates library                   | Private repo per client; shared templates repo     |
-| Zapier (lightweight)   | Simple trigger connections when n8n is overkill                          | Use sparingly; $0 for low-volume tasks             |
-| GoHighLevel (optional) | All-in-one CRM + landing pages + booking — used by many agency operators | Higher cost; evaluate at 3+ clients                |
+| Service                                | Integration Pattern                                                      | Notes                                              |
+| -------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
+| Google Calendar Appointment Scheduling | Embed on landing page; trigger qualification email on booking            | Included in Google Workspace — no additional cost  |
+| Stripe / Wave                          | Invoice generation, deposit collection, retainer billing                 | Wave is free; Stripe for cards                     |
+| n8n / Make                             | Workflow orchestration for client automations                            | Self-hosted n8n for cost control at scale          |
+| Claude API                             | AI intelligence layer inside automations                                 | Core capability; budget for token costs in pricing |
+| YouTube                                | Content distribution; long-form case studies                             | Pivoted channel; first content platform            |
+| LinkedIn                               | Content distribution; professional credibility                           | Repurposed clips from YouTube                      |
+| Notion / Obsidian                      | Knowledge base; templates; client notes                                  | Markdown-first for portability                     |
+| GitHub                                 | Version control for automation code; templates library                   | Private repo per client; shared templates repo     |
+| Zapier (lightweight)                   | Simple trigger connections when n8n is overkill                          | Use sparingly; $0 for low-volume tasks             |
+| GoHighLevel (optional)                 | All-in-one CRM + landing pages + booking — used by many agency operators | Higher cost; evaluate at 3+ clients                |
 
 ### Internal Boundaries
 

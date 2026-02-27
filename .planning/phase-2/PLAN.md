@@ -17,19 +17,19 @@ A fully automated lead follow-up pipeline that:
 1. Captures a new inquiry via a web form on the landing page
 2. Sends the lead data to N8N via webhook
 3. Claude qualifies the lead (AI scoring + personalized reply)
-4. Books an appointment on Google Calendar via Cal.com
+4. Books an appointment via Google Calendar Appointment Scheduling
 5. Sends a confirmation email via Resend (and optionally SMS via Twilio)
 
 The automation runs live for the agency's own inquiries. Every real lead that comes in goes through this pipeline. That real usage generates metrics for the case study and demo footage for the video.
 
 ### Requirements Coverage
 
-| Requirement | What Satisfies It                                                    |
-| ----------- | -------------------------------------------------------------------- |
-| POC-01      | N8N workflow: form → qualify → book → confirm                        |
-| POC-02      | Stack: N8N + Claude API + Resend + Cal.com (Google Calendar backend) |
-| POC-03      | Case study doc with before/after metrics                             |
-| POC-04      | 3-5 min OBS screen recording + narration                             |
+| Requirement | What Satisfies It                                                         |
+| ----------- | ------------------------------------------------------------------------- |
+| POC-01      | N8N workflow: form → qualify → book → confirm                             |
+| POC-02      | Stack: N8N + Claude API + Resend + Google Calendar Appointment Scheduling |
+| POC-03      | Case study doc with before/after metrics                                  |
+| POC-04      | 3-5 min OBS screen recording + narration                                  |
 
 ### Effort Breakdown
 
@@ -48,20 +48,20 @@ Everything that must exist before writing a single N8N node.
 
 ### Accounts to Create / Verify
 
-| Service       | Action                                                | URL                   | Cost           |
-| ------------- | ----------------------------------------------------- | --------------------- | -------------- |
-| Railway       | Create account, set up project                        | railway.app           | Free/$5 hobby  |
-| Anthropic API | Get API key (claude-haiku-4-5 for lead qualification) | console.anthropic.com | Pay-as-you-go  |
-| Cal.com       | Create account, set up event type                     | cal.com               | Free           |
-| Resend        | Create account, verify domain                         | resend.com            | Free (3K/mo)   |
-| Twilio        | Create account, get a phone number                    | twilio.com            | ~$1/mo + usage |
-| Supabase      | Create project (lead log/state storage)               | supabase.com          | Free           |
+| Service         | Action                                                       | URL                   | Cost                         |
+| --------------- | ------------------------------------------------------------ | --------------------- | ---------------------------- |
+| Railway         | Create account, set up project                               | railway.app           | Free/$5 hobby                |
+| Anthropic API   | Get API key (claude-haiku-4-5 for lead qualification)        | console.anthropic.com | Pay-as-you-go                |
+| Google Calendar | Set up Appointment Scheduling (included in Google Workspace) | calendar.google.com   | Included in Google Workspace |
+| Resend          | Create account, verify domain                                | resend.com            | Free (3K/mo)                 |
+| Twilio          | Create account, get a phone number                           | twilio.com            | ~$1/mo + usage               |
+| Supabase        | Create project (lead log/state storage)                      | supabase.com          | Free                         |
 
 ### Domain / Email
 
 - Resend requires a verified sending domain. Use `rajphotovideo.com` or wait for `sameerautomations.com` to be registered.
 - Set up a DNS TXT record for Resend domain verification (takes 5-30 min to propagate).
-- Confirm Cal.com event type uses Google Calendar as the backend (connect Google account in Cal.com settings).
+- Set up Google Calendar Appointment Scheduling (available in Google Workspace under Calendar settings → Appointment schedules).
 
 ### API Keys to Collect
 
@@ -73,7 +73,7 @@ RESEND_API_KEY=re_...
 TWILIO_ACCOUNT_SID=AC...
 TWILIO_AUTH_TOKEN=...
 TWILIO_PHONE_NUMBER=+1...
-CAL_COM_API_KEY=cal_...
+GOOGLE_CALENDAR_APPOINTMENT_LINK=[Google Calendar booking link]
 SUPABASE_URL=https://...supabase.co
 SUPABASE_ANON_KEY=eyJ...
 N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
@@ -133,7 +133,8 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
 [Book Appointment]   [Send Nurture Email]
     |                       |
     v                       v
-[Cal.com API Node]   [Resend: Low-fit reply]
+[Google Calendar     [Resend: Low-fit reply]
+ Booking Link Node]
   - Create booking         (still polite, keep warm)
   - Pass lead name/email
   - Returns: booking URL
@@ -202,13 +203,13 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
    - Wait for deploy (~3-5 min), open the Railway-provided URL
    - Log in to N8N admin UI with credentials you set
 
-2. **Set Up Cal.com**
-   - Create account at cal.com
-   - Connect your Google account (Settings → Calendars → Google Calendar)
-   - Create event type: "Discovery Call — 30 min"
-   - Set availability (e.g., Mon-Fri 10am-5pm)
-   - Copy your personal booking URL (e.g., `cal.com/sameer/discovery`)
-   - Generate API key (Settings → Developer → API Keys)
+2. **Set Up Google Calendar Appointment Scheduling**
+   - Open Google Calendar (already available in Google Workspace)
+   - Click "Other calendars" → "Create new calendar" (optional: dedicated "Appointments" calendar)
+   - In Calendar settings → "Appointment schedules" → Create a new schedule
+   - Name it "Discovery Call — 30 min", set availability (e.g., Mon-Fri 10am-5pm)
+   - Copy your personal booking page link (auto-generated by Google Calendar)
+   - This link is your [Google Calendar booking link] — set up in Phase 2
 
 3. **Set Up Resend**
    - Create account at resend.com
@@ -251,7 +252,7 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
    - Add: Resend (paste API key)
    - Add: Twilio (SID + Auth Token)
    - Add: Supabase (URL + anon key)
-   - Add: HTTP Header Auth (for Cal.com — header: `Authorization`, value: `Bearer cal_...`)
+   - Note: Google Calendar Appointment Scheduling uses OAuth2 via Google account — no separate API key needed for the booking link approach
 
 7. **Verify Webhook URL**
    - In N8N: Create a new workflow → Add Webhook node → copy the webhook URL
@@ -347,32 +348,17 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
 - True path → Book appointment flow
 - False path → Nurture email flow
 
-**Step 6a (True path): Cal.com Booking Node**
+**Step 6a (True path): Google Calendar Booking Link Node**
 
-- Type: `HTTP Request`
-- Method: POST
-- URL: `https://api.cal.com/v1/bookings`
-- Headers: `Authorization: Bearer {{ $credentials.calComApiKey }}`
-- Body:
-  ```json
-  {
-    "eventTypeId": <your_event_type_id>,
-    "start": "<next available slot — see note below>",
-    "responses": {
-      "name": "{{ $('Set Fields').first().json.name }}",
-      "email": "{{ $('Set Fields').first().json.email }}"
-    },
-    "timeZone": "America/New_York",
-    "language": "en",
-    "metadata": {}
-  }
-  ```
-  > Note: For the PoC, you can use Cal.com's booking page URL in the confirmation email rather than programmatically creating a booking. The simpler pattern: send lead the booking link, let them self-schedule. This avoids the slot-selection complexity. Use programmatic booking for Phase 3+ when you want zero-click automation.
+- Type: `Set` (just pass the booking link through — no API call needed for PoC)
+- Set field: `calendar_link` = `[Google Calendar booking link]`
 
-**Simpler Cal.com approach for PoC:**
+  > Note: For the PoC, include the Google Calendar Appointment Scheduling booking link in the confirmation email rather than programmatically creating a booking. The simpler pattern: send lead the booking link, let them self-schedule. This avoids slot-selection API complexity. Use Google Calendar API for programmatic booking in Phase 3+ when you want zero-click automation.
 
-- Skip the Cal.com API booking call
-- Include `cal.com/sameer/discovery` link in the confirmation email
+**Simpler Google Calendar approach for PoC:**
+
+- Skip any API booking call
+- Include `[Google Calendar booking link]` in the confirmation email
 - Track "link sent" in Supabase as the proxy for booking
 
 **Step 6b (False path): Low-Fit Nurture Email**
@@ -387,7 +373,7 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
     "from": "Sameer <sameer@rajphotovideo.com>",
     "to": ["{{ $('Set Fields').first().json.email }}"],
     "subject": "Got your message — quick note from Sameer",
-    "html": "<p>Hi {{ $('Set Fields').first().json.name }},</p><p>Thanks for reaching out about AI automation for your business. {{ $('Parse Claude').first().json.reply }}</p><p>If you'd like to explore what's possible, feel free to book a quick 30-minute call anytime: <a href='https://cal.com/sameer/discovery'>cal.com/sameer/discovery</a></p><p>Best,<br>Sameer</p>"
+    "html": "<p>Hi {{ $('Set Fields').first().json.name }},</p><p>Thanks for reaching out about AI automation for your business. {{ $('Parse Claude').first().json.reply }}</p><p>If you'd like to explore what's possible, feel free to book a quick 30-minute call anytime: <a href='[Google Calendar booking link]'>[Google Calendar booking link]</a></p><p>Best,<br>Sameer</p>"
   }
   ```
 
@@ -400,7 +386,7 @@ N8N_WEBHOOK_URL=https://your-n8n.railway.app/webhook/lead-intake
     "from": "Sameer <sameer@rajphotovideo.com>",
     "to": ["{{ $('Set Fields').first().json.email }}"],
     "subject": "Let's talk — here's how to book a call, {{ $('Set Fields').first().json.name }}",
-    "html": "<p>Hi {{ $('Set Fields').first().json.name }},</p><p>{{ $('Parse Claude').first().json.reply }}</p><p>Book your free 30-minute discovery call here:<br><a href='https://cal.com/sameer/discovery' style='background:#7B2FBE;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin:16px 0;'>Book Your Call</a></p><p>Talk soon,<br>Sameer<br><small>Sameer Automations — Smart systems. Built for your business.</small></p>"
+    "html": "<p>Hi {{ $('Set Fields').first().json.name }},</p><p>{{ $('Parse Claude').first().json.reply }}</p><p>Book your free 30-minute discovery call here:<br><a href='[Google Calendar booking link]' style='background:#7B2FBE;color:white;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block;margin:16px 0;'>Book Your Call</a></p><p>Talk soon,<br>Sameer<br><small>Sameer Automations — Smart systems. Built for your business.</small></p>"
   }
   ```
 
@@ -568,7 +554,7 @@ Write `content/case-studies/lead-follow-up-poc.md` with this structure:
 
 - Response time: Under 30 seconds (automated)
 - Leads captured: 100% of form submissions receive a reply
-- Bookings generated: Count of calls booked via Cal.com
+- Bookings generated: Count of calls booked via Google Calendar Appointment Scheduling
 - Time freed: Hours not spent on manual follow-up
 
 **Metrics Template:**
@@ -635,7 +621,7 @@ Show before/after stats on screen.
 [4:00-4:30] CTA
 "If you want this for your business — plumbing, HVAC, dental, real estate —
 book a free call and I'll show you what it looks like for your specific situation."
-Show cal.com link. End on face/logo.
+Show [Google Calendar booking link]. End on face/logo.
 ```
 
 **Recording checklist:**
@@ -698,16 +684,16 @@ Show cal.com link. End on face/logo.
 | Format    | Plain text, include STOP opt-out                                 |
 | Condition | Only fires if `phone` field is not empty                         |
 
-### Cal.com
+### Google Calendar Appointment Scheduling
 
-| Item         | Detail                                            |
-| ------------ | ------------------------------------------------- |
-| Plan         | Free forever                                      |
-| Backend      | Google Calendar                                   |
-| Event type   | "Discovery Call — 30 min"                         |
-| Booking link | `cal.com/sameer/discovery`                        |
-| PoC approach | Send link in email (vs. programmatic API booking) |
-| API          | Available for future automation of slot selection |
+| Item         | Detail                                                                |
+| ------------ | --------------------------------------------------------------------- |
+| Plan         | Included in Google Workspace (already have it)                        |
+| Backend      | Google Calendar (native)                                              |
+| Event type   | "Discovery Call — 30 min"                                             |
+| Booking link | [Google Calendar booking link — set up in Phase 2]                    |
+| PoC approach | Send link in email (vs. programmatic API booking)                     |
+| API          | Google Calendar API available for future automation of slot selection |
 
 ### Supabase
 
@@ -724,17 +710,17 @@ Show cal.com link. End on face/logo.
 
 ## 6. Risk & Mitigations
 
-| Risk                             | Likelihood | Impact                    | Mitigation                                                                                     |
-| -------------------------------- | ---------- | ------------------------- | ---------------------------------------------------------------------------------------------- |
-| Resend domain verification fails | Medium     | Blocks email sending      | Have a fallback: use Gmail SMTP via N8N until domain verified                                  |
-| Railway N8N deploy fails         | Low        | Blocks everything         | Alternative: Render.com (has N8N template too) or local N8N + ngrok for PoC testing            |
-| Claude API rate limits           | Low        | Slows qualification       | Haiku has high rate limits; add 1-second delay node if needed                                  |
-| Cal.com API complexity           | Medium     | Delays booking automation | Use link-based approach (send URL) for PoC; API booking is Phase 3                             |
-| Twilio number blocked            | Low        | SMS fails                 | SMS is optional in PoC; email confirmation is the primary path                                 |
-| N8N workflow crashes mid-run     | Low        | Lead lost                 | Enable N8N execution logging; set up error workflow to alert Sameer                            |
-| Webhook URL exposed publicly     | Medium     | Spam submissions          | Add a simple secret token check at the top of the workflow (IF header token != expected, stop) |
-| No real leads during testing     | Medium     | No case study data        | Use test submissions; document test data as "simulated leads" in case study if needed          |
-| Form submits but N8N is down     | Low        | Silent failure            | Add Railway uptime monitoring (Railway has built-in health checks); email Sameer on failure    |
+| Risk                             | Likelihood | Impact                                     | Mitigation                                                                                                 |
+| -------------------------------- | ---------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| Resend domain verification fails | Medium     | Blocks email sending                       | Have a fallback: use Gmail SMTP via N8N until domain verified                                              |
+| Railway N8N deploy fails         | Low        | Blocks everything                          | Alternative: Render.com (has N8N template too) or local N8N + ngrok for PoC testing                        |
+| Claude API rate limits           | Low        | Slows qualification                        | Haiku has high rate limits; add 1-second delay node if needed                                              |
+| Google Calendar API complexity   | Low        | Minimal — link-based approach used for PoC | Use Google Calendar Appointment Scheduling link (send URL) for PoC; Google Calendar API booking is Phase 3 |
+| Twilio number blocked            | Low        | SMS fails                                  | SMS is optional in PoC; email confirmation is the primary path                                             |
+| N8N workflow crashes mid-run     | Low        | Lead lost                                  | Enable N8N execution logging; set up error workflow to alert Sameer                                        |
+| Webhook URL exposed publicly     | Medium     | Spam submissions                           | Add a simple secret token check at the top of the workflow (IF header token != expected, stop)             |
+| No real leads during testing     | Medium     | No case study data                         | Use test submissions; document test data as "simulated leads" in case study if needed                      |
+| Form submits but N8N is down     | Low        | Silent failure                             | Add Railway uptime monitoring (Railway has built-in health checks); email Sameer on failure                |
 
 ### Spam Protection for Webhook
 
@@ -777,7 +763,7 @@ How to confirm each success criterion is fully met before calling Phase 2 comple
 - [ ] N8N is self-hosted on Railway (not N8N cloud, not Zapier)
 - [ ] Claude API (Anthropic) is the LLM used for qualification (not OpenAI)
 - [ ] Resend is the email delivery service (not SendGrid, not SMTP only)
-- [ ] Cal.com booking link is in the confirmation email (Google Calendar backend)
+- [ ] Google Calendar Appointment Scheduling booking link is in the confirmation email
 - [ ] Twilio sends SMS (at least verified in test mode, even if not required for every lead)
 
 ### POC-03: Case study exists

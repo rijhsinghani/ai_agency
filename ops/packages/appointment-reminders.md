@@ -15,7 +15,7 @@ You stop wasting drive time on empty jobs. If they need to reschedule, they can 
 
 ## What's Included
 
-- Integration with your booking system (Cal.com, Google Calendar, Jobber, Housecall Pro, or similar)
+- Integration with your booking system (Google Calendar, Jobber, Housecall Pro, or similar)
 - 24-hour reminder via SMS and email with job details, appointment time, and a confirm/reschedule link
 - 1-hour reminder via SMS: shorter, friendlier tone, with your phone number in case they need to reach you urgently
 - Reschedule link routes directly to your booking page — customers can pick a new time themselves, no phone call required
@@ -59,7 +59,7 @@ For higher-ticket services (HVAC maintenance, dental visits), the math improves 
 
 Before work begins, you'll need to supply:
 
-- **Booking system access:** login or API credentials for Cal.com, Google Calendar, Jobber, Housecall Pro, or whichever tool you use to manage appointments
+- **Booking system access:** login or API credentials for Google Calendar, Jobber, Housecall Pro, or whichever tool you use to manage appointments
 - **Customer phone numbers in appointment records:** the system needs a phone number attached to each booking to send the reminder — most modern booking tools collect this at booking time
 - **Customer email addresses:** for the 24-hour email reminder (optional if SMS-only is preferred)
 - **Preferred reminder timing:** the standard is 24 hours and 1 hour before — let us know if you'd like different intervals

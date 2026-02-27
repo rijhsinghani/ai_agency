@@ -57,7 +57,7 @@ Every new lead — whether they fill out your contact form, click your Facebook 
 
 - N8N workflow connecting your lead source (web form, Google Ads webhook, Facebook Lead Ads, or missed call trigger) to the AI qualification engine
 - Claude API integration for conversational lead qualification via SMS (2-3 message exchange)
-- Calendar booking via Cal.com or Google Calendar — prospect self-books from available slots
+- Calendar booking via Google Calendar Appointment Scheduling — prospect self-books from available slots
 - Confirmation SMS + email to prospect on booking
 - Notification to owner (email or SMS) when new appointment is booked
 - Integration with your existing CRM or a simple Notion/Airtable lead log if none exists
@@ -137,7 +137,7 @@ Customer books a job for Thursday. Today is Monday. By Thursday, half of them ha
 
 **What's included:**
 
-- Integration with your booking system (Cal.com, Google Calendar, Jobber, Housecall Pro, or similar)
+- Integration with your booking system (Google Calendar, Jobber, Housecall Pro, or similar)
 - 24-hour reminder SMS + email with job details, technician name (optional), and a confirm/reschedule link
 - 1-hour reminder SMS: shorter, friendlier tone, phone number to call if needed
 - Reschedule link routes to your booking page — no phone tag required
@@ -334,13 +334,13 @@ Monthly: $XXX/mo
 
 **Current state:** `#book` section exists with a heading and placeholder booking interface.
 
-**Change:** Wire the booking CTA to an actual Cal.com or Google Calendar booking link.
+**Change:** Wire the booking CTA to the Google Calendar Appointment Scheduling booking link.
 
 **Options (in order of preference):**
 
-1. **Cal.com embed** (free): `<div class="cal-embed" data-cal-link="sameer/discovery-call"></div>` — renders inline, no redirect. Best UX.
-2. **Cal.com redirect**: Button href points to `https://cal.com/sameer/discovery-call` — simplest, functional.
-3. **Google Calendar Appointment Schedule**: Google Workspace free tier supports appointment scheduling. Button routes to the public scheduling link.
+1. **Google Calendar Appointment Scheduling embed**: Use an iframe embed of the booking page — renders inline, no redirect. Best UX.
+2. **Google Calendar redirect**: Button href points to `[Google Calendar booking link]` — simplest, functional.
+3. **Google Calendar push notification / webhook**: For advanced integrations, use the Google Calendar API to receive booking events and trigger follow-up automations.
 
 **CTA copy across the page:**
 
@@ -414,7 +414,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 4. **Build Template 3: Review Request** — See Section 5.3. Depends on a job-completion trigger source — build with a generic webhook trigger that can be mapped to any scheduling app.
 
-5. **Build Template 4: Appointment Reminders** — See Section 5.4. Depends on calendar integration. Build with Google Calendar trigger; document Cal.com and Jobber as alternative triggers.
+5. **Build Template 4: Appointment Reminders** — See Section 5.4. Depends on calendar integration. Build with Google Calendar trigger; document Jobber as an alternative trigger.
 
 6. **Build Template 5: Quote Follow-Up** — See Section 5.5. Uses Claude API for message personalization. Build last as it introduces AI-generated text variants.
 
@@ -448,7 +448,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 6. **Insert Case Study section** (`#case-study`) — New section between `#results` and the existing Pricing section. Build with placeholder video card and placeholder metrics. Use the case study section structure from Section 3D above.
 
-7. **Update booking section** (`#book`) — Replace existing placeholder with actual Cal.com embed or link. Update the copy to match the "Let's find your leaks" framing from Section 3E.
+7. **Update booking section** (`#book`) — Replace existing placeholder with actual Google Calendar Appointment Scheduling embed or link. Update the copy to match the "Let's find your leaks" framing from Section 3E.
 
 8. **Add sticky mobile CTA** — Add the sticky bottom bar HTML just before `</body>`. Show only on mobile (`lg:hidden`).
 
@@ -473,7 +473,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 3. **CTA flow test** — Click every CTA button on the page and verify it routes correctly:
    - Hero "Book a Call" → `#book` section
    - Package card "Book a Call" buttons → `#book` section
-   - `#book` section booking link → Cal.com or Google Calendar page (actual booking flow works)
+   - `#book` section booking link → Google Calendar Appointment Scheduling page (actual booking flow works)
    - Footer links function
 
 4. **Load time check** — Open Chrome DevTools > Lighthouse > Performance. Target: Lighthouse performance score above 80. If below: check image sizes, remove unused CSS, add `loading="lazy"` to any images.
@@ -482,11 +482,11 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 6. **N8N template smoke tests** — Run each template with one real test input (not simulated). Verify the full chain executes: trigger → AI processing → output (SMS/email/calendar booking) → log entry.
 
-7. **Booking flow end-to-end** — Book an actual discovery call through the CTA. Verify: confirmation email arrives, calendar invite is created, booking appears in Cal.com or Google Calendar dashboard.
+7. **Booking flow end-to-end** — Book an actual discovery call through the CTA. Verify: confirmation email arrives, calendar invite is created, booking appears in Google Calendar dashboard.
 
 8. **Document launch-readiness** — Update `STATE.md`:
    - Mark Phase 3 progress
-   - Record: landing page URL, Cal.com booking link, N8N template locations
+   - Record: landing page URL, Google Calendar booking link, N8N template locations
    - Note any known issues or follow-up items
 
 **Deliverable:** Landing page passes all tests. N8N templates smoke-tested. Phase 3 success criteria verified against the checklist in Section 6.
@@ -545,8 +545,8 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 9. Send Booking SMS via Twilio
    → Body: "Sounds good! Here's a link to book a time that works for you: {calendar_link}. Takes about 30 seconds to grab a slot."
 
-10. Wait for Booking Confirmation (Webhook from Cal.com)
-    → Cal.com fires a webhook when booking is completed
+10. Wait for Booking Confirmation (Google Calendar push notification / webhook)
+    → Google Calendar fires a push notification when booking is completed
 
 11. Send Confirmation SMS via Twilio
     → Body: "You're all set! I've got you booked for [date/time]. You'll get a reminder the day before. See you then!"
@@ -563,7 +563,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 - Twilio (SMS send + receive)
 - Claude API (message classification and qualification)
-- Cal.com (booking link + webhook)
+- Google Calendar Appointment Scheduling (booking link + push notification)
 - Notion or Airtable (lead log)
 - Resend (owner notification email)
 
@@ -571,7 +571,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 - `BUSINESS_NAME`, `OWNER_NAME`, `BUSINESS_TYPE`
 - `TWILIO_NUMBER` (business Twilio number)
-- `CALENDAR_LINK` (Cal.com or Google Calendar scheduling link)
+- `CALENDAR_LINK` (Google Calendar Appointment Scheduling booking link)
 - `NOTION_DATABASE_ID` or `AIRTABLE_BASE_ID`
 - System prompt context (services offered, pricing ranges if sharing upfront)
 
@@ -705,7 +705,7 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 **Trigger:**
 
 - Google Calendar: new event created in a specific calendar (polling via N8N's Google Calendar node)
-- Alternative: Cal.com booking webhook, Jobber/Housecall Pro scheduled job webhook
+- Alternative: Jobber/Housecall Pro scheduled job webhook
 
 **Workflow steps:**
 
@@ -738,14 +738,14 @@ Tasks are ordered. Complete each before starting the next — do not parallelize
 
 **Integrations required:**
 
-- Google Calendar (trigger) or Cal.com webhook
+- Google Calendar (trigger)
 - Twilio (SMS)
 - Resend (email)
 - Notion or Airtable (log)
 
 **Customization points:**
 
-- Calendar trigger source (Google Calendar, Cal.com, Jobber)
+- Calendar trigger source (Google Calendar, Jobber)
 - Reminder timing (24h and 1h are defaults; can add 48h)
 - Reply keywords for cancel/reschedule
 - Post-appointment review integration: on/off
@@ -862,10 +862,10 @@ Use this checklist to confirm each Phase 3 success criterion is met before decla
 
 - [ ] "Book a Free 20-Min Intro Call" button exists in the hero section
 - [ ] "Book a Call" CTA exists in each package card
-- [ ] `#book` section has working booking functionality (Cal.com embed or link)
+- [ ] `#book` section has working booking functionality (Google Calendar Appointment Scheduling embed or link)
 - [ ] Clicking the CTA from the hero routes to the booking section or external booking page
 - [ ] Booking flow tested end-to-end: click → booking page loads → select time → confirm → receive confirmation email
-- [ ] Booking appears in owner's calendar after test booking
+- [ ] Booking appears in Google Calendar after test booking
 
 ### Success Criterion 6: N8N templates exist for minimum 3 packages
 
