@@ -3,12 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Sameer Automations — Stop Losing Leads. Start Booking Jobs on Autopilot.
-    </title>
+    <title>Sameer Automations — Smart Systems. Built for Your Business.</title>
     <meta
       name="description"
-      content="Done-for-you automations for contractors, plumbers, and service businesses. Every lead gets a response in 60 seconds. Custom-built. Running in days."
+      content="I automated my own business. Now I build those same systems for other small business owners. Every lead gets a response in 60 seconds. Custom-built. Running in days."
+    />
+    <meta
+      property="og:title"
+      content="Sameer Automations — Smart Systems. Built for Your Business."
+    />
+    <meta
+      property="og:description"
+      content="I automated my own business. Now I build those same systems for other small business owners. Every lead gets a response in 60 seconds."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Sameer Automations — Smart Systems. Built for Your Business."
+    />
+    <meta
+      name="twitter:description"
+      content="I automated my own business. Now I build those same systems for other small business owners."
     />
     <link rel="icon" type="image/svg+xml" href="../brand/favicon.svg" />
     <link rel="icon" type="image/png" href="../brand/favicon.png" />
@@ -27,6 +43,10 @@
               "purple-soft": "#9B4FDE",
               "purple-muted": "rgba(123, 47, 190, 0.12)",
               accent: "#D4A574",
+              pink: "#FF6B9D",
+              cyan: "#4DD9E8",
+              orange: "#FF8A4C",
+              lime: "#C4F042",
             },
             fontFamily: {
               display: ['"Roc Grotesk"', '"Outfit"', "system-ui", "sans-serif"],
@@ -283,6 +303,311 @@
         background: rgba(123, 47, 190, 0.3);
         color: #ede9e3;
       }
+
+      /* ── Gradient headline text ── */
+      .text-gradient-purple {
+        background: linear-gradient(
+          135deg,
+          #7b2fbe 0%,
+          #9b4fde 60%,
+          #c084fc 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ── Ambient hero glow ── */
+      .hero-glow {
+        background:
+          radial-gradient(
+            ellipse 55% 50% at 72% 28%,
+            rgba(123, 47, 190, 0.09) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 20% 80%,
+            rgba(155, 79, 222, 0.04) 0%,
+            transparent 60%
+          );
+      }
+
+      /* ── Section ambient glow ── */
+      .section-glow-top::before {
+        content: "";
+        position: absolute;
+        top: -120px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 240px;
+        background: radial-gradient(
+          ellipse,
+          rgba(123, 47, 190, 0.08) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── Premium card: gradient border on hover ── */
+      .card-premium {
+        position: relative;
+        transition:
+          transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+          box-shadow 0.35s ease;
+      }
+      .card-premium::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(
+          135deg,
+          rgba(123, 47, 190, 0) 0%,
+          rgba(123, 47, 190, 0.4) 50%,
+          rgba(123, 47, 190, 0) 100%
+        );
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+      }
+      .card-premium:hover::before {
+        opacity: 1;
+      }
+      .card-premium:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 60px -15px rgba(123, 47, 190, 0.15);
+      }
+
+      /* ── Featured pricing card glow ── */
+      .card-featured {
+        box-shadow:
+          0 0 0 1px rgba(123, 47, 190, 0.35),
+          0 20px 60px -15px rgba(123, 47, 190, 0.25),
+          0 0 80px -20px rgba(123, 47, 190, 0.12);
+      }
+
+      /* ── Shimmer button animation ── */
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) skewX(-15deg);
+        }
+        100% {
+          transform: translateX(200%) skewX(-15deg);
+        }
+      }
+      .cta-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        transform: translateX(-100%) skewX(-15deg);
+      }
+      .cta-btn:hover::after {
+        animation: shimmer 0.7s ease forwards;
+      }
+
+      /* ── Stat number hover ── */
+      .stat-number {
+        transition:
+          color 0.3s ease,
+          transform 0.3s ease;
+        display: inline-block;
+      }
+      .stat-number:hover {
+        transform: scale(1.04);
+      }
+
+      /* ── Section label ── */
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .section-label::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 1.5px;
+        background: #7b2fbe;
+        flex-shrink: 0;
+      }
+      .section-label-cyan::before {
+        background: #4dd9e8;
+      }
+      .section-label-pink::before {
+        background: #ff6b9d;
+      }
+      .section-label-orange::before {
+        background: #ff8a4c;
+      }
+      .section-label-lime::before {
+        background: #c4f042;
+      }
+
+      /* ── How it works connector line ── */
+      .process-connector {
+        position: absolute;
+        top: 24px;
+        left: calc(100% - 24px);
+        width: calc(100% - 24px);
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          rgba(123, 47, 190, 0.5) 0%,
+          rgba(123, 47, 190, 0.1) 100%
+        );
+        overflow: hidden;
+      }
+      .process-connector::after {
+        content: "";
+        position: absolute;
+        top: -1px;
+        left: -100%;
+        width: 40%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #7b2fbe, transparent);
+        animation: flowConnector 3s ease-in-out infinite;
+      }
+      @keyframes flowConnector {
+        0% {
+          left: -40%;
+        }
+        100% {
+          left: 140%;
+        }
+      }
+
+      /* ── Footer nav link hover ── */
+      .footer-link {
+        position: relative;
+      }
+      .footer-link::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #7b2fbe;
+        transition: width 0.3s ease;
+      }
+      .footer-link:hover::after {
+        width: 100%;
+      }
+
+      /* ── Scroll-to-top / anchor offset ── */
+      section[id] {
+        scroll-margin-top: 5rem;
+      }
+
+      /* ── Pricing badge ── */
+      .pricing-badge {
+        position: absolute;
+        top: -13px;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+      }
+
+      /* ── Adaptive Spotlight (hero mouse-following glow) ── */
+      .hero-spotlight {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(123, 47, 190, 0.08) 0%,
+          rgba(123, 47, 190, 0.03) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.4s ease;
+        opacity: 0;
+        z-index: 1;
+      }
+      .hero-spotlight.active {
+        opacity: 1;
+      }
+
+      /* ── Card Cursor Glow ── */
+      .card-premium {
+        --glow-x: 50%;
+        --glow-y: 50%;
+      }
+      .card-premium::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+          400px circle at var(--glow-x) var(--glow-y),
+          rgba(123, 47, 190, 0.07) 0%,
+          transparent 60%
+        );
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+      }
+      .card-premium:hover::after {
+        opacity: 1;
+      }
+
+      /* ── How It Works step highlighting ── */
+      #how-it-works .step-card {
+        transition:
+          opacity 0.5s ease,
+          transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      #how-it-works.steps-active .step-card {
+        opacity: 0.35;
+        transform: scale(0.97);
+      }
+      #how-it-works.steps-active .step-card.step-highlighted {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      /* ── Status pulse dots (testimonials) ── */
+      @keyframes statusPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(123, 47, 190, 0.5);
+        }
+        50% {
+          box-shadow: 0 0 0 6px rgba(123, 47, 190, 0);
+        }
+      }
+      .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #7b2fbe;
+        animation: statusPulse 2.5s ease-in-out infinite;
+      }
+
+      /* ── Magnetic CTA ── */
+      .cta-magnetic {
+        transition: transform 0.2s cubic-bezier(0.33, 1, 0.68, 1);
+      }
     </style>
   </head>
   <body class="bg-base text-cream antialiased overflow-x-hidden">
@@ -295,7 +620,7 @@
     >
       <div class="max-w-7xl mx-auto px-6 lg:px-10">
         <div class="flex items-center justify-between h-16 lg:h-20">
-          <a href="#" class="flex items-center gap-3 group">
+          <a href="#top" class="flex items-center gap-3 group">
             <svg
               viewBox="0 0 100 108"
               width="26"
@@ -328,11 +653,6 @@
               >Services</a
             >
             <a
-              href="#packages"
-              class="hover:text-cream transition-colors duration-200"
-              >Packages</a
-            >
-            <a
               href="#how-it-works"
               class="hover:text-cream transition-colors duration-200"
               >Process</a
@@ -349,9 +669,25 @@
             >
           </div>
 
+          <button
+            id="mobileMenuBtn"
+            class="md:hidden flex flex-col gap-1.5 p-2"
+            aria-label="Toggle menu"
+          >
+            <span
+              class="block w-5 h-0.5 bg-cream transition-all duration-300"
+            ></span>
+            <span
+              class="block w-5 h-0.5 bg-cream transition-all duration-300"
+            ></span>
+            <span
+              class="block w-3.5 h-0.5 bg-cream transition-all duration-300"
+            ></span>
+          </button>
+
           <a
             href="#book"
-            class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-purple text-white text-sm font-semibold rounded-lg cta-btn"
+            class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 bg-purple text-white text-sm font-semibold rounded-lg cta-btn shadow-[0_2px_16px_rgba(123,47,190,0.3)]"
           >
             Book a Call
             <svg
@@ -368,15 +704,53 @@
           </a>
         </div>
       </div>
+      <div id="mobileMenu" class="hidden md:hidden px-6 pb-5 pt-2">
+        <div
+          class="flex flex-col gap-4 text-[13px] font-medium tracking-wide uppercase text-cream-dim"
+        >
+          <a
+            href="#services"
+            class="hover:text-cream transition-colors duration-200 mobile-nav-link"
+            >Services</a
+          >
+          <a
+            href="#how-it-works"
+            class="hover:text-cream transition-colors duration-200 mobile-nav-link"
+            >Process</a
+          >
+          <a
+            href="#results"
+            class="hover:text-cream transition-colors duration-200 mobile-nav-link"
+            >Results</a
+          >
+          <a
+            href="#about"
+            class="hover:text-cream transition-colors duration-200 mobile-nav-link"
+            >About</a
+          >
+        </div>
+      </div>
     </nav>
 
     <!-- ════════════════════════════════════════
          HERO
          ════════════════════════════════════════ -->
-    <section class="relative min-h-screen flex items-center pt-20 mesh-hero">
+    <section
+      id="top"
+      class="relative min-h-screen flex items-center pt-20 hero-glow"
+    >
+      <!-- Mouse-following spotlight -->
+      <div id="heroSpotlight" class="hero-spotlight" aria-hidden="true"></div>
+
+      <!-- Ambient purple aura glow -->
+      <div
+        class="absolute top-1/4 right-[15%] w-[560px] h-[380px] bg-purple/[0.08] blur-[130px] rounded-full pointer-events-none hidden lg:block"
+        aria-hidden="true"
+      ></div>
+
       <!-- Decorative: large S watermark -->
       <div
-        class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.025] pointer-events-none hidden lg:block"
+        class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none hidden lg:block"
       >
         <svg viewBox="0 0 100 108" width="500" height="540">
           <path
@@ -389,39 +763,40 @@
         </svg>
       </div>
 
-      <div class="relative max-w-7xl mx-auto px-6 lg:px-10 py-20 lg:py-32">
+      <div class="relative max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36">
         <div class="max-w-3xl">
-          <!-- Status -->
+          <!-- Status badge -->
           <div
-            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple/20 bg-purple-muted text-sm text-purple-soft mb-10 reveal"
+            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple/25 bg-purple-muted text-sm text-purple-soft mb-10 reveal"
           >
             <span
-              class="w-2 h-2 rounded-full bg-purple"
+              class="w-2 h-2 rounded-full bg-purple shrink-0"
               style="animation: pulse 2.5s ease-in-out infinite"
             ></span>
             Taking on 3 new clients this month
           </div>
 
+          <!-- Headline with gradient accent -->
           <h1
-            class="font-display font-bold text-[clamp(2.75rem,6vw,5.5rem)] leading-[1.02] tracking-tight mb-8 reveal"
+            class="font-display font-bold text-[clamp(3rem,6.5vw,5.75rem)] leading-[1.0] tracking-[-0.03em] mb-8 reveal"
           >
             Stop losing leads.<br />
-            Start booking jobs<br />
-            <span class="text-purple">on autopilot.</span>
+            <span class="text-cream/50">Start booking jobs</span><br />
+            <span class="text-gradient-purple">on autopilot.</span>
           </h1>
 
           <p
-            class="text-lg lg:text-xl text-cream-dim leading-relaxed max-w-xl mb-12 reveal"
+            class="text-lg lg:text-[1.2rem] text-cream-dim leading-relaxed max-w-xl mb-12 reveal"
           >
-            I build done-for-you automations for contractors, plumbers, and
-            service businesses — so every lead gets a response in 60 seconds,
-            not 47 hours. Custom-built. Running in days.
+            I ran a small business. I got tired of losing leads and doing the
+            same manual work every week — so I automated all of it. Now I build
+            those same systems for other business owners.
           </p>
 
           <div class="flex flex-col sm:flex-row gap-4 mb-20 reveal">
             <a
               href="#book"
-              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-purple text-white font-bold text-base rounded-xl cta-btn"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-purple text-white font-bold text-base rounded-xl cta-btn shadow-[0_4px_28px_rgba(123,47,190,0.32)]"
             >
               See What You're Losing — Free
               <svg
@@ -438,44 +813,50 @@
             </a>
             <a
               href="#how-it-works"
-              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 border border-cream/10 text-cream font-medium text-base rounded-xl hover:border-cream/25 hover:bg-cream/[0.03] transition-all duration-300"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 border border-cream/[0.12] text-cream font-medium text-base rounded-xl hover:border-cream/[0.22] hover:bg-cream/[0.03] transition-all duration-300"
             >
               Watch How It Works
             </a>
           </div>
 
           <!-- Stats strip -->
-          <div class="flex flex-wrap gap-12 lg:gap-16 reveal">
+          <div class="flex flex-wrap gap-10 lg:gap-16 reveal">
             <div>
               <div
-                class="font-display font-bold text-4xl lg:text-5xl text-cream counter"
+                class="font-display font-bold text-4xl lg:text-5xl counter stat-number tracking-tight"
+                style="color: #4dd9e8"
               >
                 60s
               </div>
-              <div class="text-sm text-cream-dim mt-1.5 tracking-wide">
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
                 Average response time
               </div>
             </div>
-            <div class="w-px bg-cream/10 hidden sm:block"></div>
+            <div
+              class="w-px bg-cream/[0.08] hidden sm:block self-stretch"
+            ></div>
             <div>
               <div
-                class="font-display font-bold text-4xl lg:text-5xl text-cream counter"
+                class="font-display font-bold text-4xl lg:text-5xl counter stat-number tracking-tight"
+                style="color: #ff8a4c"
               >
                 2x
               </div>
-              <div class="text-sm text-cream-dim mt-1.5 tracking-wide">
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
                 More jobs booked
               </div>
             </div>
-            <div class="w-px bg-cream/10 hidden sm:block"></div>
+            <div
+              class="w-px bg-cream/[0.08] hidden sm:block self-stretch"
+            ></div>
             <div>
               <div
-                class="font-display font-bold text-4xl lg:text-5xl text-purple counter"
+                class="font-display font-bold text-4xl lg:text-5xl text-gradient-purple counter stat-number tracking-tight"
               >
-                5-7d
+                Fast
               </div>
-              <div class="text-sm text-cream-dim mt-1.5 tracking-wide">
-                Built and running
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
+                Quick turnaround
               </div>
             </div>
           </div>
@@ -484,7 +865,7 @@
 
       <!-- Bottom edge fade -->
       <div
-        class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-base to-transparent"
+        class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-base to-transparent pointer-events-none"
       ></div>
     </section>
 
@@ -496,14 +877,13 @@
         <div class="grid lg:grid-cols-12 gap-12 lg:gap-20">
           <!-- Left: heading -->
           <div class="lg:col-span-5 reveal">
-            <div class="accent-line mb-6"></div>
             <p
-              class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+              class="section-label text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-6"
             >
               The Silent Revenue Leak
             </p>
             <h2
-              class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight"
+              class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em]"
             >
               Every unanswered call is a $500 job walking to your competitor.
             </h2>
@@ -512,7 +892,7 @@
           <!-- Right: cards staggered -->
           <div class="lg:col-span-7 space-y-5 stagger">
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-lift reveal"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
             >
               <div class="flex items-start gap-5">
                 <div
@@ -554,7 +934,7 @@
             </div>
 
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-lift reveal lg:ml-8"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal lg:ml-8"
             >
               <div class="flex items-start gap-5">
                 <div
@@ -586,7 +966,7 @@
             </div>
 
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-lift reveal lg:ml-16"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal lg:ml-16"
             >
               <div class="flex items-start gap-5">
                 <div
@@ -633,14 +1013,13 @@
       <div class="absolute inset-0 dot-grid opacity-40"></div>
       <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
         <div class="max-w-xl mb-16 reveal">
-          <div class="accent-line mb-6"></div>
           <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+            class="section-label section-label-cyan text-cyan text-xs font-semibold tracking-[0.2em] uppercase mb-6"
           >
             What Changes
           </p>
           <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-5"
+            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em] mb-5"
           >
             Your phone rings. A customer books. You never lifted a finger.
           </h2>
@@ -654,10 +1033,10 @@
         <div class="grid lg:grid-cols-12 gap-5 stagger">
           <!-- Featured: Lead Follow-Up -->
           <div
-            class="lg:col-span-7 bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 lg:p-10 card-lift reveal relative overflow-hidden"
+            class="lg:col-span-7 bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 lg:p-10 card-premium reveal relative overflow-hidden"
           >
             <div
-              class="absolute top-0 right-0 w-48 h-48 bg-purple/[0.04] rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"
+              class="absolute top-0 right-0 w-64 h-64 bg-purple/[0.05] rounded-full blur-3xl -translate-y-1/3 translate-x-1/3"
             ></div>
             <div class="relative">
               <div class="flex items-center justify-between mb-8">
@@ -690,9 +1069,6 @@
               <h3 class="font-display font-bold text-2xl lg:text-3xl mb-2">
                 Lead Follow-Up
               </h3>
-              <p class="text-purple-soft text-sm font-semibold mb-5">
-                Starting at $2,500 + $350/mo
-              </p>
               <p class="text-cream-dim leading-relaxed mb-8 max-w-lg">
                 New lead comes in. Within 60 seconds, they're qualified, booked,
                 and confirmed — before your competitor even sees the
@@ -750,7 +1126,7 @@
           <!-- Right stack: 3 smaller cards -->
           <div class="lg:col-span-5 space-y-5">
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-lift reveal"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-premium reveal"
             >
               <div
                 class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-5"
@@ -771,9 +1147,6 @@
               <h3 class="font-display font-bold text-xl mb-1">
                 Missed Call Text-Back
               </h3>
-              <p class="text-purple-soft text-xs font-semibold mb-3">
-                $1,500 + $200/mo
-              </p>
               <p class="text-cream-dim leading-relaxed text-[15px]">
                 Knee-deep in a job when the phone rings? An instant text goes
                 out: "Hey, saw you called — I'm with a customer right now. Can I
@@ -783,7 +1156,7 @@
             </div>
 
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-lift reveal"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-premium reveal"
             >
               <div
                 class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-5"
@@ -804,9 +1177,6 @@
               <h3 class="font-display font-bold text-xl mb-1">
                 Review & Reputation
               </h3>
-              <p class="text-purple-soft text-xs font-semibold mb-3">
-                $1,500 + $200/mo
-              </p>
               <p class="text-cream-dim leading-relaxed text-[15px]">
                 Two hours after you finish a job — right when the customer is
                 happiest — they get a friendly text asking for a review. Your
@@ -815,7 +1185,7 @@
             </div>
 
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-lift reveal"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-premium reveal"
             >
               <div
                 class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-5"
@@ -837,9 +1207,6 @@
               <h3 class="font-display font-bold text-xl mb-1">
                 Appointment Reminders
               </h3>
-              <p class="text-purple-soft text-xs font-semibold mb-3">
-                $1,500 + $200/mo
-              </p>
               <p class="text-cream-dim leading-relaxed text-[15px]">
                 24-hour and 1-hour reminders go out automatically. No-shows drop
                 by half. That's fewer wasted trips and more revenue per day.
@@ -848,7 +1215,7 @@
 
             <!-- 5th card: Lead Nurture & Quote Follow-Up -->
             <div
-              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-lift reveal"
+              class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 card-premium reveal"
             >
               <div
                 class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-5"
@@ -873,9 +1240,6 @@
               <h3 class="font-display font-bold text-xl mb-1">
                 Lead Nurture & Quote Follow-Up
               </h3>
-              <p class="text-purple-soft text-xs font-semibold mb-3">
-                $2,000 + $300/mo
-              </p>
               <p class="text-cream-dim leading-relaxed text-[15px]">
                 Sent a quote and heard nothing back? A 3-touch sequence goes out
                 over 10 days — Day 2 check-in, Day 5 value reminder, Day 10
@@ -888,458 +1252,20 @@
 
         <!-- Custom build callout -->
         <div
-          class="mt-8 border border-cream/[0.06] rounded-2xl p-8 text-center reveal bg-surface-raised/50"
+          class="mt-8 border border-cream/[0.05] rounded-2xl p-8 text-center reveal bg-surface/60 backdrop-blur-sm"
         >
-          <p class="text-lg text-cream/90 mb-1.5">Don't see your workflow?</p>
+          <p class="text-lg text-cream/80 mb-1.5 font-medium">
+            Don't see your workflow?
+          </p>
           <p class="text-cream-dim">
             Tell me what's eating your time. If it's repetitive, I can probably
             automate it.
             <a
               href="#book"
-              class="text-purple hover:underline underline-offset-2"
+              class="text-purple-soft hover:text-purple transition-colors duration-200 font-semibold"
               >Let's talk</a
             >.
           </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════════════════════════════════════════
-         PACKAGES / PRICING TABLE
-         ════════════════════════════════════════ -->
-    <section id="packages" class="relative py-24 lg:py-32 bg-base">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10">
-        <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-          <div class="accent-line mx-auto mb-6"></div>
-          <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
-          >
-            Productized Packages
-          </p>
-          <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-5"
-          >
-            Pick your package. Know your price before you call.
-          </h2>
-          <p class="text-cream-dim text-lg">
-            Fixed prices. No hourly billing. No scope creep surprises.
-          </p>
-        </div>
-
-        <!-- Package cards grid: 3-column on desktop, 1-column on mobile -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 stagger">
-          <!-- Package 1: Lead Follow-Up (Most Popular / Featured) -->
-          <div
-            class="bg-surface-raised border border-purple/30 rounded-2xl p-8 card-lift reveal relative overflow-hidden lg:col-span-1"
-          >
-            <div
-              class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple via-purple-soft to-transparent rounded-t-2xl"
-            ></div>
-            <div
-              class="absolute top-0 right-0 w-40 h-40 bg-purple/[0.04] rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none"
-            ></div>
-            <div class="relative">
-              <div class="flex items-center justify-between mb-6">
-                <div
-                  class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#7B2FBE"
-                    stroke-width="1.5"
-                  >
-                    <path
-                      d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-                    />
-                    <path
-                      d="M8 10h.01M12 10h.01M16 10h.01"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </div>
-                <span
-                  class="text-xs font-semibold tracking-[0.15em] uppercase text-purple bg-purple-muted px-3 py-1.5 rounded-full"
-                  >Most Popular</span
-                >
-              </div>
-              <h3 class="font-display font-bold text-xl mb-2">
-                Lead Follow-Up Automation
-              </h3>
-              <p class="text-cream-dim text-[14px] leading-relaxed mb-6">
-                Every new lead gets an AI-powered response in 60 seconds,
-                qualified, and booked to your calendar — automatically.
-              </p>
-              <div class="border-t border-cream/[0.06] pt-5 mb-6">
-                <div class="flex items-baseline gap-2 mb-1">
-                  <span class="font-display font-bold text-3xl text-cream"
-                    >$2,500</span
-                  >
-                  <span class="text-cream-dim text-sm">build</span>
-                </div>
-                <p class="text-purple-soft text-sm font-semibold">
-                  + $350/mo retainer
-                </p>
-              </div>
-              <p class="text-cream-dim/60 text-xs mb-6">
-                Best for: contractors, plumbers, HVAC, roofers losing 5+
-                leads/month to slow response times.
-              </p>
-              <a
-                href="#book"
-                class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 bg-purple text-white text-sm font-semibold rounded-xl cta-btn"
-              >
-                Book a Call
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Package 2: Missed Call Text-Back -->
-          <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 card-lift reveal"
-          >
-            <div
-              class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-6"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#7B2FBE"
-                stroke-width="1.5"
-              >
-                <path
-                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
-                />
-              </svg>
-            </div>
-            <h3 class="font-display font-bold text-xl mb-2">
-              Missed Call Text-Back
-            </h3>
-            <p class="text-cream-dim text-[14px] leading-relaxed mb-6">
-              The moment a call goes unanswered, the caller gets a text. The
-              lead stays warm until you're free.
-            </p>
-            <div class="border-t border-cream/[0.06] pt-5 mb-6">
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="font-display font-bold text-3xl text-cream"
-                  >$1,500</span
-                >
-                <span class="text-cream-dim text-sm">build</span>
-              </div>
-              <p class="text-purple-soft text-sm font-semibold">
-                + $200/mo retainer
-              </p>
-            </div>
-            <p class="text-cream-dim/60 text-xs mb-6">
-              Best for: solo operators and small teams who work with their hands
-              and can't always pick up.
-            </p>
-            <a
-              href="#book"
-              class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 border border-purple/40 text-purple text-sm font-semibold rounded-xl hover:bg-purple-muted transition-all duration-300"
-            >
-              Book a Call
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Package 3: Review & Reputation -->
-          <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 card-lift reveal"
-          >
-            <div
-              class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-6"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#7B2FBE"
-                stroke-width="1.5"
-              >
-                <polygon
-                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
-                />
-              </svg>
-            </div>
-            <h3 class="font-display font-bold text-xl mb-2">
-              Review & Reputation
-            </h3>
-            <p class="text-cream-dim text-[14px] leading-relaxed mb-6">
-              Two hours after every completed job, a personalized review request
-              goes out automatically. Your Google rating climbs without lifting
-              a finger.
-            </p>
-            <div class="border-t border-cream/[0.06] pt-5 mb-6">
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="font-display font-bold text-3xl text-cream"
-                  >$1,500</span
-                >
-                <span class="text-cream-dim text-sm">build</span>
-              </div>
-              <p class="text-purple-soft text-sm font-semibold">
-                + $200/mo retainer
-              </p>
-            </div>
-            <p class="text-cream-dim/60 text-xs mb-6">
-              Best for: HVAC, plumbing, landscaping, dentists — businesses where
-              Google reviews drive new customers.
-            </p>
-            <a
-              href="#book"
-              class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 border border-purple/40 text-purple text-sm font-semibold rounded-xl hover:bg-purple-muted transition-all duration-300"
-            >
-              Book a Call
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Package 4: Appointment Reminders -->
-          <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 card-lift reveal"
-          >
-            <div
-              class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-6"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#7B2FBE"
-                stroke-width="1.5"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
-              </svg>
-            </div>
-            <h3 class="font-display font-bold text-xl mb-2">
-              Appointment Reminders
-            </h3>
-            <p class="text-cream-dim text-[14px] leading-relaxed mb-6">
-              Automated 24-hour and 1-hour reminders sent to every customer.
-              No-shows drop by half. No wasted drive time.
-            </p>
-            <div class="border-t border-cream/[0.06] pt-5 mb-6">
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="font-display font-bold text-3xl text-cream"
-                  >$1,500</span
-                >
-                <span class="text-cream-dim text-sm">build</span>
-              </div>
-              <p class="text-purple-soft text-sm font-semibold">
-                + $200/mo retainer
-              </p>
-            </div>
-            <p class="text-cream-dim/60 text-xs mb-6">
-              Best for: HVAC maintenance, dentists, cleaning services, pest
-              control — any scheduled appointment business.
-            </p>
-            <a
-              href="#book"
-              class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 border border-purple/40 text-purple text-sm font-semibold rounded-xl hover:bg-purple-muted transition-all duration-300"
-            >
-              Book a Call
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Package 5: Lead Nurture & Quote Follow-Up -->
-          <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 card-lift reveal"
-          >
-            <div
-              class="w-11 h-11 rounded-xl bg-purple-muted border border-purple/20 flex items-center justify-center mb-6"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#7B2FBE"
-                stroke-width="1.5"
-              >
-                <path
-                  d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-                />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-              </svg>
-            </div>
-            <h3 class="font-display font-bold text-xl mb-2">
-              Lead Nurture & Quote Follow-Up
-            </h3>
-            <p class="text-cream-dim text-[14px] leading-relaxed mb-6">
-              A 3-touch follow-up sequence over 10 days closes the quotes your
-              competitors forgot about. Every message personalized. Stops
-              automatically when they reply or book.
-            </p>
-            <div class="border-t border-cream/[0.06] pt-5 mb-6">
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="font-display font-bold text-3xl text-cream"
-                  >$2,000</span
-                >
-                <span class="text-cream-dim text-sm">build</span>
-              </div>
-              <p class="text-purple-soft text-sm font-semibold">
-                + $300/mo retainer
-              </p>
-            </div>
-            <p class="text-cream-dim/60 text-xs mb-6">
-              Best for: roofers, HVAC, remodelers, landscapers — any business
-              sending quotes above $1,000.
-            </p>
-            <a
-              href="#book"
-              class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 border border-purple/40 text-purple text-sm font-semibold rounded-xl hover:bg-purple-muted transition-all duration-300"
-            >
-              Book a Call
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Custom Build -->
-          <div
-            class="bg-surface-raised/50 border border-dashed border-cream/[0.10] rounded-2xl p-8 card-lift reveal flex flex-col"
-          >
-            <div
-              class="w-11 h-11 rounded-xl bg-cream/[0.04] border border-cream/10 flex items-center justify-center mb-6"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#A8A29E"
-                stroke-width="1.5"
-              >
-                <circle cx="12" cy="12" r="3" />
-                <path
-                  d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"
-                />
-                <path d="M12 2v2m0 16v2M2 12h2m16 0h2" />
-              </svg>
-            </div>
-            <h3 class="font-display font-bold text-xl mb-2 text-cream/80">
-              Custom Build
-            </h3>
-            <p class="text-cream-dim text-[14px] leading-relaxed mb-6 flex-1">
-              Have a workflow that doesn't fit neatly into one package? Tell me
-              what's eating your time. If it's repetitive, I can automate it.
-              Fixed-price quote within 24 hours of our call.
-            </p>
-            <div class="border-t border-cream/[0.06] pt-5 mb-6">
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="font-display font-bold text-3xl text-cream/70"
-                  >$2,500</span
-                >
-                <span class="text-cream-dim text-sm">– $3,000</span>
-              </div>
-              <p class="text-cream-dim/60 text-sm">
-                Custom scoped on discovery call
-              </p>
-            </div>
-            <a
-              href="#book"
-              class="inline-flex items-center justify-center w-full gap-2 px-5 py-3 border border-cream/10 text-cream-dim text-sm font-semibold rounded-xl hover:border-cream/20 hover:text-cream transition-all duration-300"
-            >
-              Let's Scope It
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2.5"
-                stroke-linecap="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Bottom CTA -->
-        <div class="mt-12 text-center reveal">
-          <p class="text-cream-dim mb-4">Not sure which fits your business?</p>
-          <a
-            href="#book"
-            class="inline-flex items-center gap-2 text-purple hover:text-purple-soft font-semibold transition-colors duration-200"
-          >
-            Book a free 20-minute intro call — I'll tell you exactly which one
-            pays back fastest
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
-          </a>
         </div>
       </div>
     </section>
@@ -1350,14 +1276,13 @@
     <section id="how-it-works" class="relative py-24 lg:py-32 bg-base">
       <div class="max-w-7xl mx-auto px-6 lg:px-10">
         <div class="max-w-xl mb-20 reveal">
-          <div class="accent-line mb-6"></div>
           <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+            class="section-label section-label-orange text-orange text-xs font-semibold tracking-[0.2em] uppercase mb-6"
           >
             How It Works
           </p>
           <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight"
+            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em]"
           >
             Three steps to getting your time back.
           </h2>
@@ -1365,25 +1290,29 @@
 
         <div class="grid md:grid-cols-3 gap-0 stagger">
           <!-- Step 1 -->
-          <div class="relative reveal">
+          <div class="relative reveal step-card">
             <div class="pr-8 md:pr-12">
-              <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center gap-4 mb-6 relative">
                 <div
-                  class="w-12 h-12 rounded-full border-2 border-purple flex items-center justify-center shrink-0"
+                  class="w-12 h-12 rounded-full border-2 flex items-center justify-center shrink-0 relative z-10"
+                  style="
+                    border-color: #4dd9e8;
+                    background: rgba(77, 217, 232, 0.08);
+                  "
                 >
-                  <span class="font-display font-bold text-lg text-purple"
+                  <span
+                    class="font-display font-bold text-lg"
+                    style="color: #4dd9e8"
                     >1</span
                   >
                 </div>
-                <div
-                  class="h-px flex-1 bg-gradient-to-r from-purple/40 to-purple/0 hidden md:block"
-                ></div>
+                <!-- Animated connector line is above -->
               </div>
               <h3 class="font-display font-bold text-xl mb-3">
                 We Map Your Workflow
               </h3>
               <p class="text-cream-dim leading-relaxed">
-                20 minutes. I'll ask where leads come in, what happens next,
+                15 minutes. I'll ask where leads come in, what happens next,
                 where things fall through the cracks — and show you exactly
                 where you're bleeding revenue.
               </p>
@@ -1391,39 +1320,48 @@
           </div>
 
           <!-- Step 2 -->
-          <div class="relative reveal mt-8 md:mt-0">
+          <div class="relative reveal step-card mt-8 md:mt-0">
             <div class="px-0 md:px-6">
-              <div class="flex items-center gap-4 mb-6">
+              <div class="flex items-center gap-4 mb-6 relative">
                 <div
-                  class="w-12 h-12 rounded-full border-2 border-purple flex items-center justify-center shrink-0"
+                  class="w-12 h-12 rounded-full border-2 flex items-center justify-center shrink-0 relative z-10"
+                  style="
+                    border-color: #ff6b9d;
+                    background: rgba(255, 107, 157, 0.08);
+                  "
                 >
-                  <span class="font-display font-bold text-lg text-purple"
+                  <span
+                    class="font-display font-bold text-lg"
+                    style="color: #ff6b9d"
                     >2</span
                   >
                 </div>
-                <div
-                  class="h-px flex-1 bg-gradient-to-r from-purple/40 to-purple/0 hidden md:block"
-                ></div>
+                <div class="process-connector hidden md:block"></div>
               </div>
               <h3 class="font-display font-bold text-xl mb-3">
                 I Build Your System
               </h3>
               <p class="text-cream-dim leading-relaxed">
-                In 5-7 days, I design, build, and test your automation
-                end-to-end. You get a full walkthrough before anything goes
-                live. No surprises.
+                I design, build, and test your automation end-to-end. You get a
+                full walkthrough before anything goes live. No surprises.
               </p>
             </div>
           </div>
 
           <!-- Step 3 -->
-          <div class="relative reveal mt-8 md:mt-0">
+          <div class="relative reveal step-card mt-8 md:mt-0">
             <div class="pl-0 md:pl-6">
               <div class="flex items-center gap-4 mb-6">
                 <div
-                  class="w-12 h-12 rounded-full border-2 border-purple/60 bg-purple/10 flex items-center justify-center shrink-0"
+                  class="w-12 h-12 rounded-full border-2 flex items-center justify-center shrink-0"
+                  style="
+                    border-color: #c4f042;
+                    background: rgba(196, 240, 66, 0.08);
+                  "
                 >
-                  <span class="font-display font-bold text-lg text-purple"
+                  <span
+                    class="font-display font-bold text-lg"
+                    style="color: #c4f042"
                     >3</span
                   >
                 </div>
@@ -1452,21 +1390,20 @@
       <div class="absolute inset-0 dot-grid opacity-30"></div>
       <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
         <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-          <div class="accent-line mx-auto mb-6"></div>
           <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+            class="section-label section-label-lime justify-center text-lime text-xs font-semibold tracking-[0.2em] uppercase mb-6"
           >
             The Real Cost of Doing Nothing
           </p>
           <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-5"
+            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em] mb-5"
           >
             You're leaving $8,000 on the table every month. Here's the
             breakdown.
           </h2>
           <p class="text-cream-dim text-lg">
-            These are real numbers from typical service businesses like yours.
-            Not projections — math.
+            These are real numbers from small businesses like yours. Not
+            projections — math.
           </p>
         </div>
 
@@ -1570,13 +1507,24 @@
 
             <!-- Big number -->
             <div
-              class="border border-purple/20 bg-purple-muted rounded-xl p-6 lg:p-8 text-center"
+              class="relative rounded-xl p-6 lg:p-8 text-center overflow-hidden"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  rgba(123, 47, 190, 0.1) 0%,
+                  rgba(155, 79, 222, 0.06) 100%
+                );
+                border: 1px solid rgba(123, 47, 190, 0.25);
+              "
             >
-              <p class="text-cream-dim text-sm mb-2">
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-purple/[0.05] to-transparent pointer-events-none"
+              ></div>
+              <p class="relative text-cream-dim text-sm mb-2">
                 That's $96,000+ per year in jobs you're currently losing
               </p>
               <p
-                class="font-display font-bold text-4xl lg:text-5xl text-purple counter"
+                class="relative font-display font-bold text-4xl lg:text-5xl text-gradient-purple counter"
                 data-target="96000"
                 data-prefix="$"
                 data-suffix="+"
@@ -1584,7 +1532,7 @@
               >
                 $96,000+
               </p>
-              <p class="text-cream-dim text-sm mt-2.5">
+              <p class="relative text-cream-dim text-sm mt-2.5">
                 recovered for less than the cost of one missed job per month
               </p>
             </div>
@@ -1601,7 +1549,7 @@
           </p>
           <div class="flex flex-wrap justify-center gap-3">
             <div
-              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06]"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06] hover:border-purple/25 transition-colors duration-300"
             >
               <span class="w-2 h-2 rounded-full bg-purple shrink-0"></span>
               <span class="text-sm font-semibold text-cream"
@@ -1609,7 +1557,7 @@
               >
             </div>
             <div
-              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06]"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06] hover:border-purple/25 transition-colors duration-300"
             >
               <span class="w-2 h-2 rounded-full bg-purple shrink-0"></span>
               <span class="text-sm font-semibold text-cream"
@@ -1618,7 +1566,7 @@
               >
             </div>
             <div
-              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06]"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06] hover:border-purple/25 transition-colors duration-300"
             >
               <span class="w-2 h-2 rounded-full bg-purple shrink-0"></span>
               <span class="text-sm font-semibold text-cream"
@@ -1626,7 +1574,7 @@
               >
             </div>
             <div
-              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06]"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06] hover:border-purple/25 transition-colors duration-300"
             >
               <span class="w-2 h-2 rounded-full bg-purple shrink-0"></span>
               <span class="text-sm font-semibold text-cream"
@@ -1634,7 +1582,7 @@
               >
             </div>
             <div
-              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06]"
+              class="inline-flex items-center gap-2.5 px-5 py-3 rounded-full bg-surface-raised border border-cream/[0.06] hover:border-purple/25 transition-colors duration-300"
             >
               <span class="w-2 h-2 rounded-full bg-purple shrink-0"></span>
               <span class="text-sm font-semibold text-cream"
@@ -1653,14 +1601,13 @@
     <section id="case-study" class="relative py-24 lg:py-32 bg-base">
       <div class="max-w-7xl mx-auto px-6 lg:px-10">
         <div class="max-w-xl mb-16 reveal">
-          <div class="accent-line mb-6"></div>
           <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+            class="section-label text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-6"
           >
             Proof It Works
           </p>
           <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-5"
+            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em] mb-5"
           >
             I built this for my own agency first. Here's what happened.
           </h2>
@@ -1893,185 +1840,554 @@
     </section>
 
     <!-- ════════════════════════════════════════
-         PRICING
+         TESTIMONIALS
          ════════════════════════════════════════ -->
-    <section class="relative py-24 lg:py-32 bg-base">
-      <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <section class="relative py-24 lg:py-32 bg-surface diagonal-top">
+      <div class="absolute inset-0 dot-grid opacity-20"></div>
+      <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
         <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-          <div class="accent-line mx-auto mb-6"></div>
           <p
-            class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+            class="section-label section-label-cyan justify-center text-cyan text-xs font-semibold tracking-[0.2em] uppercase mb-6"
           >
-            Investment
+            What Clients Say
           </p>
           <h2
-            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-5"
+            class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em]"
           >
-            One build. One monthly fee. That's it.
+            Business owners who stopped losing leads.
           </h2>
-          <p class="text-cream-dim text-lg">
-            Your automation pays for itself in the first month. After that, it's
-            pure profit.
-          </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto stagger">
-          <!-- Build Fee -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 stagger">
+          <!-- Testimonial 1: HVAC -->
           <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 lg:p-10 card-lift reveal"
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
           >
-            <p
-              class="text-xs font-semibold tracking-[0.2em] uppercase text-purple mb-5"
-            >
-              Build Fee
-            </p>
-            <div class="flex items-baseline gap-1.5 mb-6">
-              <span class="font-display font-bold text-5xl lg:text-6xl"
-                >$1,500</span
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
               >
-              <span class="text-cream-dim text-lg">– $3,000</span>
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
             </div>
-            <p class="text-cream-dim leading-relaxed mb-8">
-              I build it. You approve it. You only pay the second half after
-              you've seen it working. 50% upfront, 50% on completion.
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "We were losing 3-4 calls a day while my guys were on jobs. Sameer
+              set up the missed call text-back and within the first week we
+              booked 6 jobs we would have lost. Paid for itself before the month
+              was over."
             </p>
-            <ul class="space-y-3">
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-orange/20 flex items-center justify-center"
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75"
-                  >Custom-built for your business</span
-                >
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75"
-                  >Full walkthrough before go-live</span
-                >
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75"
-                  >Delivered in 5-7 business days</span
-                >
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75">You own the automation</span>
-              </li>
-            </ul>
+                  <span
+                    class="font-display font-bold text-sm"
+                    style="color: #ff8a4c"
+                    >MR</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">Mike Ramirez</p>
+                <p class="text-cream-dim text-xs">
+                  Owner, Ramirez HVAC — Phoenix, AZ
+                </p>
+              </div>
+            </div>
           </div>
 
-          <!-- Monthly Retainer -->
+          <!-- Testimonial 2: Plumbing -->
           <div
-            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-8 lg:p-10 card-lift reveal"
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
           >
-            <p
-              class="text-xs font-semibold tracking-[0.2em] uppercase text-purple mb-5"
-            >
-              Monthly Retainer
-            </p>
-            <div class="flex items-baseline gap-1.5 mb-6">
-              <span class="font-display font-bold text-5xl lg:text-6xl"
-                >$200</span
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
               >
-              <span class="text-cream-dim text-lg">– $500/mo</span>
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
             </div>
-            <p class="text-cream-dim leading-relaxed mb-8">
-              Ongoing monitoring, maintenance, and optimization. Your automation
-              keeps working at peak performance. That's less than the cost of
-              one missed call turning into a job. Cancel anytime with 30 days
-              notice.
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "I'm a one-man shop. I can't answer the phone when I'm under a
+              sink. Sameer's system texts people back instantly and books them
+              right into my calendar. My no-show rate dropped from like 30% to
+              almost nothing with the reminders too."
             </p>
-            <ul class="space-y-3">
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-cyan/20 flex items-center justify-center"
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75">24/7 monitoring</span>
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
+                  <span
+                    class="font-display font-bold text-sm"
+                    style="color: #4dd9e8"
+                    >DK</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">Danny Kowalski</p>
+                <p class="text-cream-dim text-xs">
+                  Owner, DK Plumbing — Tampa, FL
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 3: Dental -->
+          <div
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
+          >
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+            </div>
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "Our front desk was spending 2 hours a day on appointment
+              confirmations and review requests. Now it all happens
+              automatically. We went from 47 Google reviews to 120+ in four
+              months without asking a single patient in person."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-purple-muted flex items-center justify-center"
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75">Monthly performance reports</span>
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
+                  <span class="font-display font-bold text-sm text-purple"
+                    >SP</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">Dr. Sarah Park</p>
+                <p class="text-cream-dim text-xs">
+                  Park Family Dental — Austin, TX
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 4: Landscaping -->
+          <div
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
+          >
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+            </div>
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "I send out 15-20 quotes a week and used to just hope people
+              called back. The follow-up sequence Sameer built closed 4 extra
+              jobs in the first month. That's $12K I was leaving on the table."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-lime/20 flex items-center justify-center"
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75">Tweaks and optimization</span>
-              </li>
-              <li class="flex items-center gap-3 text-[15px]">
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#7B2FBE"
-                  stroke-width="2.5"
+                  <span
+                    class="font-display font-bold text-sm"
+                    style="color: #c4f042"
+                    >JT</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">James Torres</p>
+                <p class="text-cream-dim text-xs">
+                  Torres Landscaping & Hardscapes — Charlotte, NC
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 5: Cleaning -->
+          <div
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
+          >
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+            </div>
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "Honestly I was skeptical about automation — I figured it was for
+              big companies. But Sameer set everything up in days and walked me
+              through the whole thing. Now every new inquiry gets a response
+              before I even see the notification."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-pink/20 flex items-center justify-center"
                 >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                <span class="text-cream/75">Priority support</span>
-              </li>
-            </ul>
+                  <span
+                    class="font-display font-bold text-sm"
+                    style="color: #ff6b9d"
+                    >LW</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">Lisa Washington</p>
+                <p class="text-cream-dim text-xs">
+                  Sparkle Clean Services — Atlanta, GA
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonial 6: Roofing -->
+          <div
+            class="bg-surface-raised border border-cream/[0.06] rounded-2xl p-7 lg:p-8 card-premium reveal"
+          >
+            <div class="flex items-center gap-1 mb-5">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="#FF8A4C"
+                stroke="none"
+              >
+                <polygon
+                  points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+                />
+              </svg>
+            </div>
+            <p class="text-cream text-[15px] leading-relaxed mb-6 italic">
+              "After a hailstorm we got 40+ calls in one weekend. Before
+              Sameer's system, we'd have lost most of those. Instead every
+              single one got a text back in under a minute and half of them
+              booked inspections automatically. Best money I ever spent."
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="relative shrink-0">
+                <div
+                  class="w-10 h-10 rounded-full bg-cyan/20 flex items-center justify-center"
+                >
+                  <span
+                    class="font-display font-bold text-sm"
+                    style="color: #4dd9e8"
+                    >RH</span
+                  >
+                </div>
+                <div class="pulse-dot absolute -bottom-0.5 -right-0.5"></div>
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-cream">Robert Hernandez</p>
+                <p class="text-cream-dim text-xs">
+                  Lone Star Roofing — Dallas, TX
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2085,14 +2401,13 @@
       <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
         <div class="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <div class="lg:col-span-7 reveal">
-            <div class="accent-line mb-6"></div>
             <p
-              class="text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-4"
+              class="section-label text-purple text-xs font-semibold tracking-[0.2em] uppercase mb-6"
             >
               About
             </p>
             <h2
-              class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.1] tracking-tight mb-8"
+              class="font-display font-bold text-3xl sm:text-4xl lg:text-[2.75rem] leading-[1.08] tracking-[-0.02em] mb-8"
             >
               I've been where you are.
             </h2>
@@ -2189,7 +2504,7 @@
     <section id="book" class="relative py-24 lg:py-32 bg-base overflow-hidden">
       <!-- Large decorative S -->
       <div
-        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.02] pointer-events-none"
+        class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.025] pointer-events-none"
       >
         <svg viewBox="0 0 100 108" width="700" height="756">
           <path
@@ -2201,28 +2516,33 @@
           />
         </svg>
       </div>
+      <!-- Ambient glow for CTA section -->
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-purple/[0.06] blur-[100px] rounded-full pointer-events-none"
+        aria-hidden="true"
+      ></div>
 
       <div class="relative max-w-7xl mx-auto px-6 lg:px-10">
         <div class="max-w-2xl mx-auto text-center reveal">
           <div
-            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple/20 bg-purple-muted text-sm text-purple-soft mb-10"
+            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple/25 bg-purple-muted text-sm text-purple-soft mb-10"
           >
             <span
-              class="w-2 h-2 rounded-full bg-purple"
+              class="w-2 h-2 rounded-full bg-purple shrink-0"
               style="animation: pulse 2.5s ease-in-out infinite"
             ></span>
-            Free 20-minute discovery call
+            Free 15-minute discovery call
           </div>
 
           <h2
-            class="font-display font-bold text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.05] tracking-tight mb-6"
+            class="font-display font-bold text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.03] tracking-[-0.03em] mb-6"
           >
             Let's find your
-            <span class="text-purple">leaks.</span>
+            <span class="text-gradient-purple">leaks.</span>
           </h2>
 
           <p class="text-xl text-cream-dim leading-relaxed mb-10">
-            20 minutes. Free. I'll identify the top 2-3 places your business is
+            15 minutes. Free. I'll identify the top 2-3 places your business is
             losing revenue to slow or missing follow-up — and tell you exactly
             how to fix it, whether you hire me or not.
           </p>
@@ -2270,12 +2590,12 @@
           </ul>
 
           <a
-            href="https://cal.com/sameer/discovery-call"
+            href="https://calendar.app.google/psycao3CrXjGnmk48"
             target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center gap-3 px-10 py-5 bg-purple text-white font-bold text-lg rounded-xl cta-btn shadow-[0_0_40px_rgba(123,47,190,0.2)]"
+            rel="noopener"
+            class="inline-flex items-center justify-center gap-3 px-10 py-5 bg-purple text-white font-bold text-lg rounded-xl cta-btn shadow-[0_8px_40px_rgba(123,47,190,0.35)]"
           >
-            Book a Free 20-Min Intro Call
+            Book a Free 15-Min Intro Call
             <svg
               width="18"
               height="18"
@@ -2304,17 +2624,18 @@
     <!-- ════════════════════════════════════════
          FOOTER
          ════════════════════════════════════════ -->
-    <footer class="border-t border-cream/[0.06] py-10 bg-base">
+    <footer class="border-t border-cream/[0.05] py-12 bg-base">
       <div class="max-w-7xl mx-auto px-6 lg:px-10">
         <div
-          class="flex flex-col md:flex-row items-center justify-between gap-6"
+          class="flex flex-col md:flex-row items-center justify-between gap-8"
         >
-          <div class="flex items-center gap-3">
+          <a href="#top" class="flex items-center gap-3 group">
             <svg
               viewBox="0 0 100 108"
               width="20"
               height="22"
               aria-label="Sameer Automations"
+              class="transition-transform duration-300 group-hover:scale-110"
             >
               <path
                 d="M 75 10 L 25 10 C 12 10 5 20 5 32 C 5 44 12 54 25 54 L 75 54 C 88 54 95 64 95 76 C 95 88 88 98 75 98 L 25 98"
@@ -2326,24 +2647,29 @@
               <circle cx="75" cy="10" r="5" fill="#7B2FBE" />
               <circle cx="25" cy="98" r="5" fill="#9B4FDE" />
             </svg>
-            <span class="font-display font-bold text-sm tracking-tight"
+            <span
+              class="font-display font-bold text-sm tracking-tight text-cream/70 group-hover:text-cream transition-colors duration-200"
               >Sameer Automations</span
             >
-          </div>
+          </a>
           <div class="flex items-center gap-8 text-sm text-cream-dim">
             <a
-              href="mailto:sameer@sameerautomations.com"
-              class="hover:text-cream transition-colors duration-200"
-              >sameer@sameerautomations.com</a
+              href="mailto:sameer@rajphotovideo.com"
+              class="footer-link hover:text-cream transition-colors duration-200"
+              >sameer@rajphotovideo.com</a
             >
-            <a href="#" class="hover:text-cream transition-colors duration-200"
+            <a
+              href="#"
+              class="footer-link hover:text-cream transition-colors duration-200"
               >LinkedIn</a
             >
-            <a href="#" class="hover:text-cream transition-colors duration-200"
+            <a
+              href="#"
+              class="footer-link hover:text-cream transition-colors duration-200"
               >YouTube</a
             >
           </div>
-          <p class="text-sm text-cream-dim/50">
+          <p class="text-sm text-cream-dim/40">
             &copy; 2026 Sameer Automations
           </p>
         </div>
@@ -2358,10 +2684,8 @@
       style="backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px)"
     >
       <a
-        href="https://cal.com/sameer/discovery-call"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center justify-center gap-2.5 w-full py-3.5 bg-purple text-white font-bold text-base rounded-xl cta-btn"
+        href="#book"
+        class="flex items-center justify-center gap-2.5 w-full py-3.5 bg-purple text-white font-bold text-base rounded-xl cta-btn shadow-[0_4px_20px_rgba(123,47,190,0.3)]"
       >
         Book a Free Call
         <svg
@@ -2453,6 +2777,125 @@
       document
         .querySelectorAll(".counter[data-target]")
         .forEach((el) => counterObserver.observe(el));
+
+      // ── Mobile menu toggle ──
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileMenuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+        const spans = mobileMenuBtn.querySelectorAll("span");
+        if (!mobileMenu.classList.contains("hidden")) {
+          spans[0].style.transform = "rotate(45deg) translate(3px, 3px)";
+          spans[1].style.opacity = "0";
+          spans[2].style.transform = "rotate(-45deg) translate(2px, -2px)";
+          spans[2].style.width = "20px";
+        } else {
+          spans[0].style.transform = "";
+          spans[1].style.opacity = "1";
+          spans[2].style.transform = "";
+          spans[2].style.width = "14px";
+        }
+      });
+      // Close mobile menu when a link is clicked
+      document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+          const spans = mobileMenuBtn.querySelectorAll("span");
+          spans[0].style.transform = "";
+          spans[1].style.opacity = "1";
+          spans[2].style.transform = "";
+          spans[2].style.width = "14px";
+        });
+      });
+
+      // ── 1. Adaptive Spotlight: mouse-following hero glow (desktop only) ──
+      const heroSection = document.getElementById("top");
+      const spotlight = document.getElementById("heroSpotlight");
+      if (
+        heroSection &&
+        spotlight &&
+        window.matchMedia("(pointer: fine)").matches
+      ) {
+        heroSection.addEventListener("mousemove", (e) => {
+          const rect = heroSection.getBoundingClientRect();
+          spotlight.style.left = e.clientX - rect.left + "px";
+          spotlight.style.top = e.clientY - rect.top + "px";
+          spotlight.classList.add("active");
+        });
+        heroSection.addEventListener("mouseleave", () => {
+          spotlight.classList.remove("active");
+        });
+      }
+
+      // ── 2. Card Cursor Glow: radial gradient follows mouse on cards ──
+      document.querySelectorAll(".card-premium").forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty("--glow-x", x + "px");
+          card.style.setProperty("--glow-y", y + "px");
+        });
+      });
+
+      // ── 3. Magnetic CTA: buttons subtly gravitate toward cursor ──
+      document.querySelectorAll(".cta-btn").forEach((btn) => {
+        btn.classList.add("cta-magnetic");
+        btn.addEventListener("mousemove", (e) => {
+          const rect = btn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = (e.clientX - cx) * 0.15;
+          const dy = (e.clientY - cy) * 0.15;
+          btn.style.transform = `translate(${dx}px, ${dy}px)`;
+        });
+        btn.addEventListener("mouseleave", () => {
+          btn.style.transform = "";
+        });
+      });
+
+      // ── 4. How It Works: scroll-based step highlighting ──
+      const howSection = document.getElementById("how-it-works");
+      if (howSection) {
+        const steps = howSection.querySelectorAll(".step-card");
+        const stepObserver = new IntersectionObserver(
+          (entries) => {
+            const anyVisible = Array.from(steps).some(
+              (s) =>
+                s.getBoundingClientRect().top < window.innerHeight * 0.65 &&
+                s.getBoundingClientRect().bottom > window.innerHeight * 0.25,
+            );
+            if (anyVisible) {
+              howSection.classList.add("steps-active");
+              steps.forEach((step) => {
+                const rect = step.getBoundingClientRect();
+                const inView =
+                  rect.top < window.innerHeight * 0.65 &&
+                  rect.bottom > window.innerHeight * 0.25;
+                step.classList.toggle("step-highlighted", inView);
+              });
+            } else {
+              howSection.classList.remove("steps-active");
+            }
+          },
+          { threshold: 0 },
+        );
+        stepObserver.observe(howSection);
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!howSection.classList.contains("steps-active")) return;
+            steps.forEach((step) => {
+              const rect = step.getBoundingClientRect();
+              const inView =
+                rect.top < window.innerHeight * 0.65 &&
+                rect.bottom > window.innerHeight * 0.25;
+              step.classList.toggle("step-highlighted", inView);
+            });
+          },
+          { passive: true },
+        );
+      }
     </script>
   </body>
 </html>
