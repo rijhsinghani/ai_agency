@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="Sameer Automations favicon">
+  <title>Sameer Automations</title>
+  <!--
+    32x32 favicon version of the S icon.
+    The path is scaled to fit a 32x32 grid (original: 100x108).
+    Scale factor: 32/108 ≈ 0.296 for height, 32/100 = 0.32 for width.
+    Using a uniform scale of 0.296 and centering horizontally.
+    Stroke width increased to 3 (from 8 * 0.296 ≈ 2.4) for legibility at small size.
+    Entry dot at top-right, exit dot at bottom-left.
+  -->
+  <!-- Scaled path: original coords * 0.296, offset x by (32 - 100*0.296)/2 ≈ 1.2 -->
+  <g transform="translate(1.6, 0) scale(0.296)">
+    <path
+      d="M 75 10 L 25 10 C 12 10 5 20 5 32 C 5 44 12 54 25 54 L 75 54 C 88 54 95 64 95 76 C 95 88 88 98 75 98 L 25 98"
+      stroke="#7B2FBE"
+      stroke-width="10"
+      stroke-linecap="round"
+      fill="none"
+    />
+    <circle cx="75" cy="10" r="7" fill="#7B2FBE"/>
+    <circle cx="25" cy="98" r="7" fill="#9B4FDE"/>
+  </g>
+</svg>
