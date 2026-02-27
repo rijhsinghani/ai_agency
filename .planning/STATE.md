@@ -155,18 +155,39 @@ Phase 4: Scale & Reinvest        [          ]  0%  ← After real case study
 
 ## Session Continuity
 
-**Last session:** 2026-02-27 — Market-first pivot + micro-interactions
+**Last session:** 2026-02-27 (session 3) — Brand voice fixes + portfolio + Phase 2 rewrite
 
 **What was done this session:**
 
-1. Added 5 premium micro-interactions to landing page (spotlight, card glow, magnetic CTAs, step highlighting, pulse dots)
-2. Visual review of landing page
-3. Committed all work (3 commits: brand assets, planning docs, landing page)
-4. Restructured entire roadmap from build-first to market-first
-5. Rewrote REQUIREMENTS.md — deferred 6 pre-build requirements, added LIVE-\* go-live requirements
-6. Identified GitHub repos as portfolio/proof assets
+1. Reviewed all 5 case studies against brand voice guide (7 issues found, 6 fixed)
+2. Fixed: "microservices" → "connected services" (operations-automation.md)
+3. Fixed: "StudioOS" product name removed (operations-automation.md)
+4. Fixed: "code repositories" → "product updates" (content-automation.md)
+5. Fixed: hedge language removed — "targeting" → confident tone (content-automation.md)
+6. Fixed: "Target output" → leads with number (content-automation.md)
+7. Fixed: financial domain references genericized for confidentiality (financial-management.md)
+8. Background agent: adding portfolio section to landing page (may need verification)
+9. Background agent: rewriting phase-2/PLAN.md as Go to Market plan (may need verification)
 
-**Next action:** Close out Phase 1 (domain + deploy + YouTube uploads), then execute Phase 2 (go to market)
+**Still pending (carry to next session):**
+
+- [ ] Verify portfolio section was added correctly to landing page (background agent)
+- [ ] Verify phase-2/PLAN.md rewrite completed (background agent)
+- [ ] Add "Portfolio" link to nav menu (if agent missed it)
+- [ ] Commit all changes (case study fixes, portfolio section, Phase 2 plan)
+- [ ] Push to GitHub Pages
+- [ ] MANUAL: Upload YouTube banner to Studio
+- [ ] MANUAL: Upload YouTube profile pic to Studio
+- [ ] MANUAL: Change channel name to "Sameer Automations"
+- [ ] MANUAL: Paste about section text
+- [ ] MANUAL: Set handle to @SameerAutomates
+- [ ] MANUAL: Set old photography videos to Unlisted
+- [ ] MANUAL: Register domain (sameerautomations.com) + branded email
+- [ ] MANUAL: Record origin story video (Video 1 from content plan)
+- [ ] MANUAL: Build prospecting list (Google Maps / Yelp)
+- [ ] MANUAL: Start cold outreach using templates in ops/outreach/
+
+**Next action:** Verify background agent work, commit everything, push to GitHub Pages
 
 ---
 
