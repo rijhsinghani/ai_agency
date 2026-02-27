@@ -1,36 +1,38 @@
-# YouTube Channel Description — Sameer Automations
+# YouTube Channel Description — Sameer Rijhsinghani
 
 ## Final Copy (under 1000 characters)
 
 ---
 
-I run a small business. I got tired of chasing leads, managing schedules,
-and doing the same manual work every week — so I automated all of it.
+I ran a wedding photography business. I got tired of losing leads to voicemail,
+chasing deposits manually, and doing the same follow-up work every single week.
 
-Now I build those same systems for other small business owners.
+So I built systems that handled it for me. Automated follow-ups. Instant
+text-backs. Booking confirmations at 11 PM without me touching my phone.
+
+It worked. Now I build those same systems for other small business owners —
+service businesses, local shops, solo operators — anyone losing time and money
+to manual work they shouldn't be doing.
 
 On this channel:
 
 - Real automations running in real businesses
-- Case studies with actual time and money saved
+- Case studies with actual numbers — time saved, revenue recovered
 - Honest breakdowns of what's worth automating and what isn't
 
-No code tutorials. No jargon. Just systems that give you your time back.
+No code tutorials. No jargon. No hype. Just systems that work.
 
-If you want to talk about what's eating your time:
+Book a free 15-minute discovery call: https://calendar.google.com/calendar/appointments/schedules/[PLACEHOLDER]
+
+<!-- Replace [PLACEHOLDER] with your actual Google Calendar appointment schedule ID -->
+
 sameer@rajphotovideo.com
 
 ---
 
 ## Character Count Note
 
-The copy above is approximately 520 characters — within YouTube's 1000-character channel description limit.
-
-## Alternate Opening Lines (A/B test options)
-
-- "Most small businesses lose 30% of leads just because nobody followed up. I fix that."
-- "You're too busy running your business to chase leads. Let the system do it."
-- "I automate the parts of your business that are silently killing your growth."
+The copy above is approximately 820 characters — within YouTube's 1000-character limit.
 
 ## Handle
 
