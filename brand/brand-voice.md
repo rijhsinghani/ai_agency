@@ -156,3 +156,70 @@ Sameer has a day job at a large financial institution. This must not appear in a
 5. All case studies reference clients by industry and result only, never by name, unless the client provides written approval.
 
 This is a non-negotiable security constraint, not a stylistic preference. When in doubt, cut the reference.
+
+---
+
+## 9. Visual identity
+
+### Design language
+
+The brand uses a **System Architecture** visual language. Every asset — website, YouTube thumbnails, social graphics — shares these recurring elements:
+
+- **Dot grids:** Regular arrays of low-opacity dots that fill negative space and create depth
+- **Arch-nodes:** Small glowing circles placed at compositional anchor points, colored in brand purples and cyan
+- **Connectors:** Lines and curves that link elements, suggesting data flow and automated pipelines
+- **Mesh gradients:** Subtle, large-radius radial gradients layered behind content for atmospheric depth
+- **Grain texture:** A fine noise overlay at low opacity to add tactile quality to dark backgrounds
+
+These elements appear at low opacity and never compete with primary content. They exist to make every surface feel like part of a living system.
+
+### Typography
+
+| Role         | Primary        | Fallback                  | Weight        |
+| ------------ | -------------- | ------------------------- | ------------- |
+| Headings     | Roc Grotesk    | Outfit, sans-serif        | 700 (bold)    |
+| Body text    | Gilroy         | DM Sans, sans-serif       | 400 (regular) |
+| Code / data  | JetBrains Mono | monospace                 | 400           |
+| Web fallback | system-ui      | -apple-system, sans-serif | —             |
+
+Roc Grotesk carries authority without feeling corporate. Gilroy is clean and readable at body sizes. Both pair well with the geometric quality of the icon system.
+
+### Color system
+
+| Color          | Hex     | Role                                          |
+| -------------- | ------- | --------------------------------------------- |
+| Primary purple | #7B2FBE | Brand anchor, input nodes, primary actions    |
+| Light purple   | #9B4FDE | Gradient endpoints, secondary elements        |
+| Cyan           | #4DD9E8 | Output nodes, accent highlights, glow effects |
+| Dark base      | #1A1A1A | Backgrounds, dark mode surfaces               |
+| Warm orange    | #D97706 | Results, ROI metrics, success indicators      |
+| Soft white     | #F5F5F5 | Light mode backgrounds, text on dark          |
+| Mid gray       | #6B7280 | Secondary text, borders, muted elements       |
+| Deep navy      | #0F172A | Alternative dark background                   |
+| Success green  | #10B981 | Positive indicators, active status            |
+| Error red      | #EF4444 | Warnings, error states                        |
+
+The purple-to-cyan gradient is the signature visual motif. It appears on the logo icon, section dividers, and accent elements throughout the brand.
+
+### Logo specification
+
+The logo icon uses the **Input/Output Bridge** concept: an S-shaped data flow connecting two system nodes.
+
+- **S-wave path:** Fluid cubic bezier curve with a three-stop gradient (primary purple → light purple → cyan)
+- **Input node:** Top-right position, primary purple fill with cyan glow filter and white filament center
+- **Output node:** Bottom-left position, cyan fill with cyan glow filter and white filament center
+- **Atmospheric halos:** Radial gradients behind each node (purple for input, cyan for output), fading to transparent
+- **Tagline size:** 13px in all lockup variants
+- **ViewBox:** 100x100 (square)
+
+The icon reads as a data pipeline transforming input to output — directly reflecting the automation value proposition.
+
+### YouTube thumbnail guidelines
+
+- **Background:** Always dark (#1A1A1A or #0F172A), never white or light
+- **Heading font:** Roc Grotesk Bold, white or light text
+- **Body font:** Gilroy Regular for supporting text
+- **Architecture elements:** Include at least one dot-grid region and one or two arch-nodes
+- **Accent bar:** A thin gradient line (purple → cyan) as a section divider or frame element
+- **Icon placement:** Small logo icon in a consistent corner position
+- **Color usage:** Primary purple and cyan as accents only — do not fill large areas with saturated color

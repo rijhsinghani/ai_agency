@@ -4,16 +4,16 @@
   <defs>
     <style>
       .wordmark {
-        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        font-family: 'Roc Grotesk', 'Outfit', 'Helvetica Neue', Arial, sans-serif;
         font-weight: 900;
         font-size: 28px;
         letter-spacing: 1px;
         fill: #FFFFFF;
       }
       .tagline {
-        font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+        font-family: 'Gilroy', 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
         font-weight: 400;
-        font-size: 11px;
+        font-size: 13px;
         letter-spacing: 0.3px;
         fill: #888888;
       }

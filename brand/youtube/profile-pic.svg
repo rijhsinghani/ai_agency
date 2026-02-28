@@ -53,24 +53,54 @@
     <circle cx="600" cy="250" r="3.5" fill="#FF8A4C" opacity="0.7"/>
     <circle cx="550" cy="600" r="3.5" fill="#9B4FDE" opacity="0.7"/>
 
-    <!-- Logo S icon, scaled and centered -->
+    <!-- Flow gradient for S-wave icon -->
+    <defs>
+      <linearGradient id="pp-flowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#7B2FBE"/>
+        <stop offset="50%" stop-color="#9B4FDE"/>
+        <stop offset="100%" stop-color="#4DD9E8"/>
+      </linearGradient>
+      <radialGradient id="pp-inputHalo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="pp-outputHalo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="pp-nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- Logo S-wave icon, scaled and centered -->
     <g transform="translate(240, 220) scale(3.2)">
+      <!-- S-wave path with flow gradient -->
       <path
-        d="M 75 10 L 25 10 C 12 10 5 20 5 32 C 5 44 12 54 25 54 L 75 54 C 88 54 95 64 95 76 C 95 88 88 98 75 98 L 25 98"
-        stroke="#7B2FBE"
+        d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
+        stroke="url(#pp-flowGrad)"
         stroke-width="8"
         stroke-linecap="round"
         fill="none"
       />
-      <circle cx="75" cy="10" r="5" fill="#7B2FBE"/>
-      <circle cx="25" cy="98" r="5" fill="#9B4FDE"/>
+      <!-- Input node halo -->
+      <circle cx="80" cy="20" r="12" fill="url(#pp-inputHalo)"/>
+      <!-- Output node halo -->
+      <circle cx="20" cy="80" r="12" fill="url(#pp-outputHalo)"/>
+      <!-- Input node core -->
+      <circle cx="80" cy="20" r="5" fill="#7B2FBE" filter="url(#pp-nodeGlow)"/>
+      <circle cx="80" cy="20" r="2" fill="#FFFFFF"/>
+      <!-- Output node core -->
+      <circle cx="20" cy="80" r="5" fill="#4DD9E8" filter="url(#pp-nodeGlow)"/>
+      <circle cx="20" cy="80" r="2" fill="#FFFFFF"/>
     </g>
 
     <!-- SR watermark in Outfit font -->
     <text
       x="400"
       y="750"
-      font-family="'Outfit', system-ui, sans-serif"
+      font-family="'Roc Grotesk', 'Outfit', sans-serif"
       font-size="28"
       font-weight="700"
       letter-spacing="6"

@@ -73,7 +73,7 @@
   <text
     x="1010"
     y="560"
-    font-family="'DM Sans', system-ui, sans-serif"
+    font-family="'Gilroy', 'DM Sans', sans-serif"
     font-size="20"
     fill="#555555"
     text-anchor="middle"
@@ -87,24 +87,54 @@
   <!-- Purple accent bar: left edge -->
   <rect x="0" y="0" width="8" height="720" fill="#7B2FBE"/>
 
+  <!-- Flow gradient and node styles for S-wave icon -->
+  <defs>
+    <linearGradient id="th-flowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7B2FBE"/>
+      <stop offset="50%" stop-color="#9B4FDE"/>
+      <stop offset="100%" stop-color="#4DD9E8"/>
+    </linearGradient>
+    <radialGradient id="th-inputHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="th-outputHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="th-nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
   <!-- Logo icon: top-left corner, small -->
   <g transform="translate(28, 28) scale(0.54)">
+    <!-- S-wave path with flow gradient -->
     <path
-      d="M 75 10 L 25 10 C 12 10 5 20 5 32 C 5 44 12 54 25 54 L 75 54 C 88 54 95 64 95 76 C 95 88 88 98 75 98 L 25 98"
-      stroke="#7B2FBE"
+      d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
+      stroke="url(#th-flowGrad)"
       stroke-width="8"
       stroke-linecap="round"
       fill="none"
     />
-    <circle cx="75" cy="10" r="5" fill="#7B2FBE"/>
-    <circle cx="25" cy="98" r="5" fill="#9B4FDE"/>
+    <!-- Input node halo -->
+    <circle cx="80" cy="20" r="12" fill="url(#th-inputHalo)"/>
+    <!-- Output node halo -->
+    <circle cx="20" cy="80" r="12" fill="url(#th-outputHalo)"/>
+    <!-- Input node core -->
+    <circle cx="80" cy="20" r="5" fill="#7B2FBE" filter="url(#th-nodeGlow)"/>
+    <circle cx="80" cy="20" r="2" fill="#FFFFFF"/>
+    <!-- Output node core -->
+    <circle cx="20" cy="80" r="5" fill="#4DD9E8" filter="url(#th-nodeGlow)"/>
+    <circle cx="20" cy="80" r="2" fill="#FFFFFF"/>
   </g>
 
   <!-- Channel name -->
   <text
     x="90"
     y="62"
-    font-family="'Outfit', system-ui, sans-serif"
+    font-family="'Roc Grotesk', 'Outfit', sans-serif"
     font-size="20"
     font-weight="700"
     letter-spacing="3"
@@ -116,7 +146,7 @@
   <text
     x="28"
     y="200"
-    font-family="'DM Sans', system-ui, sans-serif"
+    font-family="'Gilroy', 'DM Sans', sans-serif"
     font-size="16"
     fill="#555555"
     letter-spacing="2"
@@ -126,7 +156,7 @@
   <text
     x="28"
     y="320"
-    font-family="'Outfit', system-ui, sans-serif"
+    font-family="'Roc Grotesk', 'Outfit', sans-serif"
     font-size="86"
     font-weight="900"
     fill="#FFFFFF"
@@ -137,7 +167,7 @@
   <text
     x="28"
     y="430"
-    font-family="'Outfit', system-ui, sans-serif"
+    font-family="'Roc Grotesk', 'Outfit', sans-serif"
     font-size="86"
     font-weight="900"
     fill="#FFFFFF"
@@ -156,7 +186,7 @@
   <text
     x="28"
     y="540"
-    font-family="'DM Sans', system-ui, sans-serif"
+    font-family="'Gilroy', 'DM Sans', sans-serif"
     font-size="30"
     font-weight="400"
     fill="#9B4FDE"
@@ -171,7 +201,7 @@
   <text
     x="118"
     y="664"
-    font-family="'Outfit', system-ui, sans-serif"
+    font-family="'Roc Grotesk', 'Outfit', sans-serif"
     font-size="16"
     font-weight="700"
     fill="#FFFFFF"
@@ -183,7 +213,7 @@
   <text
     x="1252"
     y="664"
-    font-family="'DM Sans', system-ui, sans-serif"
+    font-family="'Gilroy', 'DM Sans', sans-serif"
     font-size="16"
     fill="#555555"
     text-anchor="end"
