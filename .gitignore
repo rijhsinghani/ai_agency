@@ -1,0 +1,9 @@
+# Research
+research/data/
+research/.env
+research/.venv/
+*.pyc
+__pycache__/
+
+# System
+.DS_Store
