@@ -8,33 +8,52 @@ A solo AI automation agency offering custom workflow automation services to loca
 
 Local service businesses save real money and recover real revenue through AI-powered automations they couldn't build themselves — and the agency makes that accessible, measurable, and low-risk.
 
+## Current Milestone: v2.0 Content Marketing Engine
+
+**Goal:** Build a repeatable content marketing system that generates awareness across Twitter, YouTube, and Instagram, drives discovery call bookings, and positions Sameer as the go-to automation consultant for small business.
+
+**Target features:**
+
+- Content idea CLI tool (competitor research, trending topics, suggested speaking points)
+- Case study library (real automations + demo builds for common small business problems)
+- YouTube as content hub (long-form demos, walkthroughs, case studies)
+- Content repurposing pipeline (YouTube → Twitter threads, Instagram posts/reels, short clips)
+- Twitter + Instagram platform setup with @SameerAutomates branding
+- Giveaway strategy (free tips, checklists, templates to build buzz)
+- Content → booking funnel (every piece drives to discovery call)
+
 ## Requirements
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Landing page with value proposition, booking link, testimonials — v1.0 Phase 1
+- ✓ Brand identity (logo, colors, voice guide, tagline) — v1.0 Phase 1
+- ✓ YouTube channel branding (banner, profile pic, about section, keywords) — v1.0 Phase 1
+- ✓ Google Calendar booking link (15-min discovery call) — v1.0 Phase 1
+- ✓ Outreach templates (intro, follow-up, value-add, free audit framework) — v1.0 Phase 2
+- ✓ Content strategy (5 video topics planned) — v1.0 Phase 2
 
 ### Active
 
-- [ ] Landing page that communicates the value proposition to non-technical business owners
-- [ ] Business name and brand identity (approachable, professional, not intimidating)
-- [ ] Lead follow-up automation PoC (new lead → AI qualifies → books appointment → sends confirmation)
-- [ ] Case study documenting the PoC with before/after metrics
-- [ ] Video walkthrough of the PoC for YouTube and sales conversations
-- [ ] Client agreement template (scope, payment terms, liability, maintenance, exit clause)
-- [ ] Pricing framework: $1,500-3,000 build fee + $200-500/mo retainer
-- [ ] Value discovery script for sales conversations (quantify lead loss, time cost, revenue impact)
-- [ ] YouTube channel pivot strategy (photography → AI automation for business owners)
-- [ ] Content calendar (screen recordings, talking head, case studies, shorts)
-- [ ] Sales funnel: content → landing page → discovery call → proposal → close
+- [ ] Content idea generation tool (CLI command to research competitors and suggest topics)
+- [ ] Case study creation from existing automations (Raj Photo Video, financial services, Studio S)
+- [ ] Demo automation builds for common small business pain points
+- [ ] YouTube long-form content production (demos, walkthroughs, case studies)
+- [ ] Content repurposing pipeline (YouTube → Twitter, Instagram, short clips)
+- [ ] Twitter account setup and content strategy (@SameerAutomates)
+- [ ] Instagram account setup and content strategy (@SameerAutomates)
+- [ ] Giveaway/free value content (tips, checklists, automation templates)
+- [ ] Content-to-booking funnel optimization (CTAs, links, conversion tracking)
 
 ### Out of Scope
 
 - Full application development — too large, too complex, not the play
-- Content generation services — focus is business process automation, not writing
-- Hiring/team building — solo operator, at least for v1
+- Hiring/team building — solo operator, at least for v2
 - Serving enterprise clients — local service businesses only
 - Photography-niche-only positioning — too narrow, want broader local services market
+- LinkedIn — deferred, focusing on Twitter/YouTube/Instagram first
+- Paid advertising — organic content first, paid only after messaging validates
+- Podcast — too much production overhead for v2
 
 ## Context
 
@@ -71,10 +90,13 @@ Local service businesses save real money and recover real revenue through AI-pow
 
 **Go-to-market:**
 
-- Content funnel: YouTube (pivoted channel) + LinkedIn/social
+- Content funnel: YouTube (hub) + Twitter + Instagram → landing page → discovery call
+- LinkedIn deferred — focusing on three platforms first
 - Content for business owners (non-technical audience) — "what this does for you" not "how I built it"
-- Content types: screen recordings, talking head explainers, case studies, short-form clips
-- PoC as sales asset: build it, use it, document it, film it
+- Content types: screen recordings, talking head explainers, case studies, short-form clips, giveaways
+- Repurpose long-form YouTube → short-form Twitter threads + Instagram posts/reels
+- Case studies as core content: real automations + demo builds
+- Giveaways: free tips, checklists, templates to build buzz and trust
 
 **Contracts:**
 
@@ -93,17 +115,20 @@ Local service businesses save real money and recover real revenue through AI-pow
 
 ## Key Decisions
 
-| Decision                                      | Rationale                                                                                          | Outcome   |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------- |
-| Target local service businesses               | Repeatable pain points (scheduling, follow-ups, reviews), not tech-savvy enough to DIY             | — Pending |
-| Value-based pricing (not hourly)              | Aligns incentives, captures more value, differentiates from freelancers                            | — Pending |
-| Build + monthly retainer model                | Setup fee covers build, retainer creates recurring revenue and ongoing relationship                | — Pending |
-| Lead follow-up automation as first PoC        | High-impact, easy to demo, directly measurable (leads captured, appointments booked)               | — Pending |
-| Pivot existing YouTube channel                | Existing channel (photography) has infrastructure, pivot to automation content for business owners | — Pending |
-| Content targets business owners, not builders | Audience = potential clients. Show results, not process                                            | — Pending |
-| Claude Code + MCPs as tooling (not no-code)   | More powerful, more customizable, plays to founder's strengths                                     | — Pending |
-| No custom domain registration                 | GitHub Pages URL is sufficient for now. Custom domain can be added later if needed.                | Decided   |
+| Decision                                       | Rationale                                                                                          | Outcome   |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------- |
+| Target local service businesses                | Repeatable pain points (scheduling, follow-ups, reviews), not tech-savvy enough to DIY             | — Pending |
+| Value-based pricing (not hourly)               | Aligns incentives, captures more value, differentiates from freelancers                            | — Pending |
+| Build + monthly retainer model                 | Setup fee covers build, retainer creates recurring revenue and ongoing relationship                | — Pending |
+| Lead follow-up automation as first PoC         | High-impact, easy to demo, directly measurable (leads captured, appointments booked)               | — Pending |
+| Pivot existing YouTube channel                 | Existing channel (photography) has infrastructure, pivot to automation content for business owners | — Pending |
+| Content targets business owners, not builders  | Audience = potential clients. Show results, not process                                            | — Pending |
+| Claude Code + MCPs as tooling (not no-code)    | More powerful, more customizable, plays to founder's strengths                                     | — Pending |
+| No custom domain registration                  | GitHub Pages URL is sufficient for now. Custom domain can be added later if needed.                | Decided   |
+| Consulting positioning (not freelancing)       | Years of experience automating own business + professional financial services. Expert offering.    | Decided   |
+| Multi-platform: Twitter, YouTube, Instagram    | Three platforms with different content formats. LinkedIn deferred.                                 | Decided   |
+| Content repurposing over original per-platform | Create once on YouTube, repurpose everywhere. Solo operator can't create unique per platform.      | Decided   |
 
 ---
 
-_Last updated: 2026-02-27 — removed domain registration requirement_
+_Last updated: 2026-03-01 — milestone v2.0 Content Marketing Engine started_
