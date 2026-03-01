@@ -1,255 +1,202 @@
 # Feature Research
 
-**Domain:** AI Automation Agency — Services business selling workflow automations to local service businesses
-**Researched:** 2026-02-27
-**Confidence:** HIGH (client-facing offerings well-established in market; business infrastructure patterns verified across multiple agency operators)
+**Domain:** AI Automation Agency — Content Marketing Engine (v2.0 Milestone)
+**Researched:** 2026-03-01
+**Confidence:** HIGH (content marketing funnel patterns well-established; solo consultant B2B patterns verified across multiple sources)
+
+---
+
+## Scope Note
+
+This file covers the v2.0 Content Marketing Engine milestone — the repeatable content system that generates awareness, builds trust with small business owners, and drives discovery call bookings.
+
+For v1.0 client-facing automation offerings and business infrastructure features, see the original FEATURES.md research (2026-02-27). This file supersedes and replaces that file's scope for v2.0 planning.
+
+The content engine has two distinct jobs:
+
+1. **Audience building** — attract small business owners (plumbers, dentists, realtors, contractors) who don't know automation is accessible to them
+2. **Lead conversion** — turn content viewers into booked discovery calls
 
 ---
 
 ## Feature Landscape
 
-This file covers two distinct dimensions:
+### Table Stakes (Audience Expects These)
 
-1. **Client-Facing Offerings** — What you sell to plumbers, dentists, realtors, contractors
-2. **Business Infrastructure** — What you need to operate, sell, and deliver
+Features that every credible solo consultant running content must have. Missing any of these signals amateur hour to the target audience.
 
----
-
-## Part 1: Client-Facing Automation Offerings
-
-### Table Stakes (Clients Expect These)
-
-If you cannot demonstrate or offer these, local service business owners will not trust you as an automation agency. Missing any of these signals that you are not a serious operator.
-
-| Feature                            | Why Expected                                                                                                                                   | Complexity | Notes                                                                                                                                  |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Lead follow-up automation          | Every service business leaks leads. 60-second AI response vs. 2-hour human callback is the core pitch. This is THE category-defining offering. | MEDIUM     | SMS + email + form capture + AI qualifier + booking link. n8n or Make + Twilio or Resend + Claude/OpenAI. First PoC to build and demo. |
-| Appointment scheduling & reminders | Scheduling friction and no-shows are universal pain points. Clients expect you to solve this.                                                  | MEDIUM     | Google Calendar Appointment Scheduling integration + AI confirmation + reminder sequence. Reduces no-shows 30-50%.                     |
-| Review request automation          | Google reviews directly drive local SEO rankings and new leads. Every local business owner knows this pain.                                    | LOW        | Post-job trigger → SMS/email requesting review → direct link to Google profile. High impact, low complexity.                           |
-| AI chatbot for website             | Visible, tangible artifact on client's website. Non-technical owners can see and point to it. Creates trust.                                   | MEDIUM     | Trained on business FAQ, hours, services, pricing. Handles inbound inquiries 24/7. Webchat widget or embedded iframe.                  |
-| Missed call text-back              | Unanswered calls are lost revenue. Auto-SMS when someone calls and hangs up is a clear, demonstrable win.                                      | LOW        | Twilio or similar. Catches leads before they call the competitor. Often the first automation many clients have ever seen.              |
+| Feature                                    | Why Expected                                                                                                                                                                                          | Complexity | Notes                                                                                                                                                                                             |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| YouTube as content hub                     | Video is the only format that can demonstrate automation in action. Screen recordings of automations working beat any written description. Business owners expect to "see it before they believe it." | MEDIUM     | Pivot existing photography channel. Long-form (8-15 min) demos, walkthroughs, case studies. Non-technical language: "what this does for you" not "how I built it."                                |
+| Consistent brand across platforms          | @SameerAutomates handle exists on Twitter + Instagram. Non-matching handles destroy credibility for discovery call leads who verify you before booking.                                               | LOW        | Handle secured. Profile pics, bios, link-in-bio all need to match. One-time setup cost.                                                                                                           |
+| CTA on every piece of content              | Every video, tweet, and post must drive toward one action: book a discovery call. Without this, content builds audience but not revenue. Viewers who don't get a clear next step don't act.           | LOW        | "Book a free 15-min discovery call → [link]" in every video description, pinned tweet, Instagram bio. One CTA, everywhere, always.                                                                |
+| Content calendar (minimum 30 days ahead)   | Inconsistency kills channels faster than bad content. Business owners who find you once and then see no new content for 3 weeks don't come back.                                                      | MEDIUM     | Monthly planning session. 4-6 YouTube videos per month is sustainable for a solo operator. Batch film when possible.                                                                              |
+| Case study library (real results)          | "Show me someone you've helped" is the #1 objection from small business owners considering a new service. Without documented results, you're selling potential. Potential doesn't close deals.        | MEDIUM     | Three existing candidates: Raj Photo Video, financial services, Studio S. Each needs before/after metrics, not vague descriptions. "8 leads recovered in week 1" beats "improved their workflow." |
+| Content readable by non-technical audience | The entire target audience (plumbers, dentists, realtors) will tune out instantly if content feels like developer documentation. Business owners want outcomes, not architecture diagrams.            | LOW        | Writing rule: replace every technical term with a business outcome. "n8n webhook" → "the trigger that fires instantly when someone calls."                                                        |
 
 ### Differentiators (Competitive Advantage)
 
-These are not expected, but they make the engagement more valuable, justify premium pricing, and reduce churn on the retainer.
+These separate @SameerAutomates from the dozens of AI automation creators who make content for builders instead of buyers.
 
-| Feature                                   | Value Proposition                                                                                                                                                                                | Complexity | Notes                                                                                                                        |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| AI-powered quote/estimate follow-up       | Most contractors quote and never follow up. Automated 3-touch follow-up sequence after sending estimate recovers deals that would otherwise go cold.                                             | MEDIUM     | Trigger from CRM or email. Day 1, Day 3, Day 7 cadence. Personalized with job details. High ROI for contractors and roofers. |
-| Post-job upsell & nurture sequence        | One-time customers become repeat customers. AI-triggered email/SMS after job completion recommends seasonal follow-up services (HVAC tune-up, dental cleaning reminder, annual home inspection). | MEDIUM     | Requires job-completion trigger from scheduling system or CRM. Works best with plumbers, HVAC, dentists.                     |
-| Reputation monitoring & competitor alerts | Tracks new reviews on Google/Yelp, flags negative reviews for fast response, tracks competitor ratings. Shows clients you are watching their business.                                           | MEDIUM     | Google My Business API + review aggregators. Monthly report auto-generated and emailed. Valued by dentists and realtors.     |
-| Intake form → CRM pipeline automation     | New lead fills out form → AI extracts intent and urgency → creates CRM entry → routes to correct pipeline stage → triggers appropriate follow-up. Eliminates manual CRM hygiene.                 | MEDIUM     | Typeform/JotForm + n8n/Make + HubSpot/Pipedrive. Significant time savings for multi-location businesses.                     |
-| Weekly business health report             | Auto-generated weekly digest: leads received, appointments booked, reviews earned, follow-ups sent. Non-technical owner sees tangible proof of value every Monday.                               | MEDIUM     | Keeps retainer justified. Reduces churn. Makes renewal conversations easy because the value is documented.                   |
-| Voice AI for inbound calls                | AI answers phone, qualifies caller, books appointment or routes to human. 24/7 coverage. Highly visible and demo-able.                                                                           | HIGH       | Bland.ai, Retell, ElevenLabs + voice model. More technically complex, higher wow-factor. Save for Phase 2.                   |
-| Invoice / payment follow-up automation    | Unpaid invoices are a persistent pain for service businesses. AI sends payment reminders on a schedule, reducing days-to-collect.                                                                | LOW-MEDIUM | Stripe/QuickBooks/Square webhook + SMS/email sequence. Often a quick win that impresses at close.                            |
+| Feature                                              | Value Proposition                                                                                                                                                                                                                                                                                                      | Complexity | Notes                                                                                                                                                                                                                               |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Content idea CLI tool (custom)                       | Removes the weekly "what should I make?" friction entirely. A CLI command that researches competitors, surfaces trending topics in the SMB automation space, and suggests 5 concrete video angles. No other solo consultant in this niche has this.                                                                    | MEDIUM     | YouTube API + vidIQ/TubeBuddy patterns + Claude for synthesis. Internal tool only — produces a Markdown brief with suggested title, hook, 3 speaking points, and a relevant small business use case. Run weekly.                    |
+| Repurposing pipeline (YouTube → Twitter + Instagram) | 1 YouTube video becomes 1 Twitter thread + 3 Instagram posts + 1 Reel clip. Output 5x content without 5x time. Solo operator cannot sustainably create unique content per platform — this is the only way.                                                                                                             | MEDIUM     | Established pattern: transcript → thread extraction → carousel outline → short clip identification. Can be semi-automated with Claude + manual editing. Tools: Descript (transcript), Claude (thread writing), CapCut (clips).      |
+| Giveaway/free value strategy (non-generic)           | Generic lead magnets (eBooks, checklists) have a massive trust deficit in 2026 — people are selective about giving emails. What works: hyper-specific freebies that solve one real problem the target niche faces. "The 5-Minute Lead Recovery Audit for Plumbers" converts better than "AI Guide for Small Business." | LOW        | One free resource per vertical (plumber, dentist, realtor). Specific problem, specific format. Not email-gated at first — give it free on Twitter/Instagram to build trust, gate later.                                             |
+| Demo automation builds for common pain points        | Build automations the target audience recognizes immediately, not custom builds for fictional scenarios. "What happens when a plumber misses a call on a Friday night" is more compelling than a generic lead capture demo.                                                                                            | HIGH       | Each demo build becomes 2-3 pieces of content. Plan: missed call text-back (plumber), appointment reminder (dentist), review request (realtor), quote follow-up (contractor). One per month is sustainable.                         |
+| Content-to-booking funnel tracking                   | Know which content drives actual discovery call bookings, not just views. Without this, you're optimizing for engagement metrics that don't pay rent.                                                                                                                                                                  | LOW-MEDIUM | UTM parameters on every link. Google Analytics on landing page. Google Calendar booking source tracking. Monthly review: which video drove the most calls that month?                                                               |
+| Vertical-specific content tracks                     | Create content series for each vertical: "Automation for Plumbers," "Automation for Dentists." Search algorithms and small business owners both respond to specificity. A plumber searching YouTube is more likely to watch "How I got a plumbing company 12 more leads" than "AI automation for local businesses."    | MEDIUM     | Start with one vertical (home services — plumbers/HVAC/contractors because pain points overlap). Add dentists in Month 2. Realtors in Month 3. Each vertical reuses the same automation types, just with vertical-specific framing. |
 
-### Anti-Features (Deliberately NOT Offered)
+### Anti-Features (Deliberately NOT Built)
 
-These appear attractive but create problems — scope creep, delivery risk, commoditization, or misalignment with the solo operator model.
-
-| Anti-Feature                                      | Why Requested                                                             | Why Problematic                                                                                                                                                             | What to Do Instead                                                                                                                                     |
-| ------------------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Full website builds                               | Clients conflate "tech guy" with web developer. They will ask.            | Not automation. Wrong skill positioning. Breaks the "discrete workflow automation" model. Attracts wrong-fit clients who will under-pay and over-expect.                    | Refer to a web developer partner. Position yourself as the automation layer on top of any website.                                                     |
-| Social media content creation                     | Clients assume AI = content writing. Easy upsell pitch.                   | Not automation. Content is a different skill, different deliverable, different retainer cadence. Turns you into a content agency, not an automation agency.                 | Out of scope, per PROJECT.md. Refer out or offer only if workflow automation triggers it (e.g., auto-post when new job completes — that's automation). |
-| SEO services                                      | Local SEO is adjacent to "make my business findable." Clients will ask.   | Saturated market, requires ongoing labor, not automation. Doesn't play to technical strengths.                                                                              | Refer to SEO specialist. Automate review collection instead (which improves local SEO indirectly).                                                     |
-| Custom app development                            | Some clients will want a client portal, a mobile app, a custom dashboard. | Full application development is explicitly out of scope (PROJECT.md). Different complexity tier, different pricing, different skill requirements.                           | Define scope clearly in contract. Build automations that connect existing apps, not replace them.                                                      |
-| No-code/DIY setup for clients                     | Some clients want to learn to do it themselves. Seems collaborative.      | Trains clients out of needing you. Destroys the retainer model. Clients who self-serve don't pay $300/mo ongoing.                                                           | Offer documentation of what was built. Do not train clients to maintain it themselves beyond basic troubleshooting.                                    |
-| Enterprise clients                                | Large companies have budget. Seems attractive.                            | Long sales cycles, procurement processes, security reviews, legal review, IT gatekeepers. Solo operator cannot compete effectively. Explicitly out of scope per PROJECT.md. | Stay focused on local service businesses. Refer enterprise inquiries to agencies that serve them.                                                      |
-| Performance-based pricing                         | "Pay me only when leads convert." Clients love it.                        | Ties revenue to outcomes you do not fully control (client follow-through, market conditions, sales skills). Risk is asymmetric against the agency.                          | Value-based pricing based on expected lead value recovered. Fixed build fee + flat retainer.                                                           |
-| White-label reselling other agencies' automations | Outsource the builds, markup. Seems scalable.                             | Creates dependency, quality control issues, margin compression. Wrong model for solo technical operator who builds custom code.                                             | Build everything yourself using Claude Code + APIs. Methodology ownership is the competitive moat.                                                     |
-
----
-
-## Part 2: Business Infrastructure (What You Need to Operate)
-
-### Table Stakes (Must Have to Be Trusted)
-
-Without these, even a warm lead will not convert. These are trust signals and operational minimums.
-
-| Feature                                   | Why Expected                                                                                                                                                                   | Complexity | Notes                                                                                                                                                                                                                 |
-| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Landing page with clear value proposition | Every client will Google you or follow a link. No landing page = not serious. Must be in language non-technical owners understand ("Your business stops losing leads at 5pm"). | LOW        | Single-page site. Headline = outcome. Social proof. One CTA: book a discovery call. Framer, Webflow, or even a well-built Notion page works for v1.                                                                   |
-| Branded email address                     | Professional.email@youragency.com. Gmail or Apple Mail is unprofessional for B2B.                                                                                              | LOW        | Google Workspace ($6/mo) or Zoho Mail (free tier). Domain from Namecheap/Porkbun. Non-negotiable signal of legitimacy.                                                                                                |
-| Client agreement template                 | Protects both parties. Defines scope, payment, IP, liability, exit. Clients will ask "do you have a contract?"                                                                 | LOW        | Plain-English template with 7 key clauses: scope, deliverables, 50/50 payment, IP (client owns instance, agency owns methodology), liability cap, retainer scope, 30-day exit. Docusign or HelloSign for e-signature. |
-| Discovery call process (script + booking) | Clients need to talk before they buy. No booking system = friction = lost deals.                                                                                               | LOW        | Google Calendar Appointment Scheduling (included in Google Workspace). 30-minute call template. Value discovery script: quantify lead loss, time cost, revenue impact before proposing any solution.                  |
-| PoC / demo automation                     | The single most important sales asset. A working lead follow-up automation you can screen-record and walk through.                                                             | MEDIUM     | Build it for yourself first. Use it to capture YOUR own leads. Record the demo. Use it in every sales conversation. Described in PROJECT.md as first priority.                                                        |
-| Case study (before/after)                 | Social proof for a category that is new to most clients. "Show me someone else you've helped" is a top-3 objection.                                                            | LOW        | The PoC becomes the first case study. Before: manual follow-up, 2-hour response, X% lead loss. After: automated, 60-second response, Y leads recovered. Even a self-built demo counts as v1 case study.               |
-| Invoicing system                          | Clients expect professional invoices. Must be able to collect 50% upfront before build starts.                                                                                 | LOW        | Stripe for card payments, or Wave (free) for invoicing. Bonsai has proposals + contracts + invoicing bundled ($24/mo).                                                                                                |
-| Business name + minimal brand             | A name, a domain, a logo, a color palette. Without this, you cannot create a professional landing page, email, or contract.                                                    | LOW        | Name should be non-intimidating, approachable, outcome-focused (not "AI Solutions LLC"). Canva for logo. 2-3 colors.                                                                                                  |
-
-### Differentiators (Operational Competitive Advantage)
-
-These are not required to start, but they improve close rates, reduce churn, and make the business more professional over time.
-
-| Feature                             | Value Proposition                                                                                                                                                                                                                                                               | Complexity | Notes                                                                                                                                                            |
-| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Value discovery script              | Quantifies the client's problem in dollar terms before proposing anything. "You said you get 30 new leads per week. If even 10% fall through the cracks, and your average job is $800, that's $2,400/month in lost revenue. This automation pays for itself in the first week." | LOW        | One-time effort to write. Reusable across all sales conversations. Turns objections about price into ROI discussions.                                            |
-| Video PoC walkthrough               | Screen recording of the automation in action. Used in YouTube content AND as a sales asset sent after discovery calls. Replaces long written proposals for visual learners.                                                                                                     | LOW        | Record with Loom. 3-5 minutes. Show the problem → show the automation → show the outcome.                                                                        |
-| YouTube channel (content funnel)    | Inbound leads who have already seen your work. Warms cold outreach. Builds credibility without cold calling.                                                                                                                                                                    | MEDIUM     | Pivot existing photography channel. Content for business owners, not builders. "How a plumber recovered 8 missed leads in one week" not "How I built a webhook." |
-| Proposal template (3-tier pricing)  | Anchors client to middle tier. Starter/Professional/Enterprise structure. Prevents race to bottom on price.                                                                                                                                                                     | LOW        | Seven-section format (per research). Starter $1,500, Professional $2,500, Growth $4,000. Always present all three.                                               |
-| Client onboarding playbook          | First 30 days set the tone. Structured onboarding reduces churn 40%. Milestone emails, kickoff agenda, intake form, go-live review.                                                                                                                                             | LOW        | Once built, reusable per engagement. Shows operational maturity even as a solo operator.                                                                         |
-| Lightweight CRM for own pipeline    | Track your own leads, proposals sent, follow-up cadence. Solo operators who manage this from memory miss deals.                                                                                                                                                                 | LOW        | Notion CRM template or HubSpot free tier. Not a complex build — just a pipeline view with deal stages.                                                           |
-| Monthly retainer reporting template | Auto-generated or templated report: automations active, triggers fired, leads captured, value delivered this month. Justifies the retainer and surfaces upsell conversations.                                                                                                   | LOW-MEDIUM | Pairs with the "weekly business health report" product feature. Can be delivered as simple PDF or Google Slides.                                                 |
-| Referral/partnership pipeline       | Plumbers refer HVAC companies. Dentists refer other health practices. Web designers know every local business that needs a website. One active referral partner > 100 cold emails.                                                                                              | LOW        | Identify 3-5 referral partner categories. Simple revenue-share agreement ($200-500 per closed deal). Spreadsheet to track.                                       |
-
-### Anti-Features (Business Infrastructure to Deliberately Skip)
-
-| Anti-Feature                                     | Why Requested                      | Why Problematic                                                                                                                    | What to Do Instead                                                                                              |
-| ------------------------------------------------ | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Hiring / subcontracting immediately              | "Scale faster, take more clients." | Solo operator for v1 per PROJECT.md. Hiring before product-market fit creates overhead that forces you to take bad-fit clients.    | Stay solo. Use AI tools (Claude Code, automation) to extend personal capacity before hiring.                    |
-| Heavy CRM/PM software stack                      | "Manage clients professionally."   | Tool sprawl. Paying $200/mo in SaaS before having clients creates cost pressure.                                                   | Free tier of Notion or HubSpot. One tool for proposals/contracts (Bonsai). Expand only when constrained.        |
-| Full company formation / legal overhead at start | "Protect yourself."                | LLC formation, accountant, business bank — useful eventually, but not Day 1. Creates procrastination disguised as preparation.     | Use personal name or DBA. Get one client first. Form LLC when you have revenue to protect.                      |
-| Elaborate content calendar before PoC exists     | "Build audience first."            | No product = content about potential, not proof. Without a working demo, content has no credibility.                               | Build the PoC. Film it. That IS the first content. Content calendar comes after first working automation.       |
-| Paid ads before organic validation               | "Reach clients faster."            | Paid local B2B ads are expensive. Without validated messaging and case studies, conversion rates will be too low to be profitable. | Organic content + direct outreach + referrals first. Paid ads only after 2-3 case studies establish what works. |
+| Anti-Feature                               | Why Requested                                                    | Why Problematic                                                                                                                                                                                                                                                       | What to Do Instead                                                                                                                                                                       |
+| ------------------------------------------ | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fully automated posting (zero human touch) | "Set it and forget it" sounds efficient for a solo operator.     | Automated social posting without human review produces generic content that platforms penalize with reduced reach. Engagement drops when responses feel robotic. Algorithm flags scheduling tool posting patterns.                                                    | Semi-automated: use Buffer/Later for scheduling, but human writes the copy and approves before queue. Automation handles posting time, human handles message.                            |
+| TikTok as a primary platform               | TikTok has massive reach, seems like a no-brainer.               | Deferred per PROJECT.md constraints. Three platforms is already the maximum sustainable for one person. TikTok's algorithm requires higher posting frequency (2-3x/day vs 1x/day) to gain traction. Wrong audience age skew for small business owner decision-makers. | Revisit after Twitter + Instagram + YouTube have 90 days of traction. If Reels are performing, TikTok content is already made — just cross-post.                                         |
+| LinkedIn as a content platform             | LinkedIn reaches business owners and has strong B2B credentials. | Explicitly deferred in PROJECT.md. LinkedIn algorithm heavily penalizes outbound links (which is every "book a call" post). LinkedIn content requires professional written format that doesn't repurpose from YouTube as naturally as Twitter threads.                | When ready for LinkedIn, repurpose Twitter threads directly — they're the closest format match.                                                                                          |
+| Email newsletter (from day one)            | Email lists are "owned audience," independent of platforms.      | Email lists require consistent high-quality content to avoid unsubscribes. Building a list before you have a content flywheel creates pressure to write a newsletter before the core content engine is running. Email list building is v2.1, not v2.0.                | Collect emails via free resource downloads. No newsletter cadence until YouTube channel has 50+ subscribers and Twitter has 500+ followers — social proof that content is landing first. |
+| Paid promotion of content                  | "Boost this post" or YouTube ads to accelerate growth.           | Explicitly deferred per PROJECT.md. Paid distribution before validated messaging = paying to show non-resonant content to more people. Waste of bootstrapped budget.                                                                                                  | Organic first. Validate what resonates (which video drove calls, which tweet got saved). Paid amplification only after 2-3 proven pieces.                                                |
+| Podcast creation                           | Audio-only format for expertise demonstration.                   | Too much production overhead for one person already managing YouTube, Twitter, Instagram, and client delivery. Explicitly out of scope per PROJECT.md. Podcast audiences also skew toward other builders, not small business owner buyers.                            | YouTube already captures audio learners if you make content that works as audio-first (narrated walkthroughs).                                                                           |
+| Elaborate content analytics dashboard      | "Track everything" sounds data-driven and professional.          | More metrics = more weekly reporting time with no additional insight. Solo operators who over-measure optimize for metrics instead of outcomes.                                                                                                                       | Three metrics only: discovery calls booked (from content), YouTube subscribers added (monthly), Twitter follower count (monthly). Review monthly.                                        |
+| Original content per platform              | "Instagram content should be native Instagram."                  | Impossible for one person to create original content for YouTube + Twitter + Instagram separately. Creates content debt and burnout within 60 days.                                                                                                                   | Repurpose everything from YouTube. Adapt format (not re-write from scratch). Instagram gets clips and carousels from YouTube videos. Twitter gets threads from YouTube scripts.          |
 
 ---
 
 ## Feature Dependencies
 
 ```
-[PoC: Lead Follow-Up Automation]
-    └──enables──> [Case Study]
-                      └──enables──> [Landing Page credibility]
-                                        └──enables──> [Content Funnel]
+[Content Idea CLI Tool]
+    └──enables──> [YouTube Long-Form Video]
+                      └──enables──> [Repurposing Pipeline]
+                                        └──enables──> [Twitter Thread]
+                                        └──enables──> [Instagram Carousel]
+                                        └──enables──> [Instagram Reel Clip]
 
-[Discovery Call Script]
-    └──required by──> [Proposal Template]
-                           └──required by──> [Client Agreement]
-                                                └──required by──> [Invoicing]
+[Demo Automation Build]
+    └──required by──> [Case Study]
+                           └──required by──> [YouTube Case Study Video]
+                           └──required by──> [Giveaway/Free Resource]
 
-[Business Name + Brand]
-    └──required by──> [Landing Page]
-    └──required by──> [Branded Email]
-    └──required by──> [YouTube Channel]
+[Case Study]
+    └──enhances──> [Landing Page credibility]
+    └──required by──> [Content-to-Booking Funnel] (social proof needed for CTA to convert)
 
-[Lead Follow-Up Automation]
-    └──depends on──> [Missed Call Text-Back] (simpler version of same pattern)
-    └──enhances──> [Appointment Scheduling]
-    └──enhances──> [Review Request Automation]
+[Platform Setup (Twitter + Instagram)]
+    └──required by──> [Consistent CTA on every platform]
+    └──required by──> [Repurposing Pipeline] (nowhere to post without accounts)
 
-[Weekly Business Health Report]
-    └──requires──> [at least one active automation per client]
-    └──justifies──> [Monthly Retainer]
+[YouTube Content Hub]
+    └──required by──> [Repurposing Pipeline]
+    └──enhances──> [Discovery Call bookings] (warm leads who watched first)
 
-[Voice AI for Inbound Calls]
-    └──requires──> [Lead Follow-Up PoC complete] (builds on same pattern)
-    └──requires──> [Proven delivery track record] (higher client trust needed)
+[Content-to-Booking Funnel Tracking]
+    └──requires──> [CTA on every piece of content]
+    └──requires──> [Landing page with UTM support]
 ```
 
 ### Dependency Notes
 
-- **PoC must come before everything else**: Without a working demo, there is nothing to sell, nothing to film, no landing page credibility. Every other item depends on this.
-- **Business name/brand blocks landing page and email**: Cannot publish without identity. Resolve in first week.
-- **Discovery call script must precede proposals**: Proposals without discovery are guesses. Clients see through them.
-- **Voice AI conflicts with solo capacity**: High complexity + higher client expectations for reliability = not a Day 1 offering. Defer until delivery cadence is established.
-- **Content funnel enhances all client-facing offerings**: Every automation you build becomes a YouTube video. They reinforce each other. The channel is not separate from sales — it is part of the sales process.
+- **Content Idea CLI must come before filming**: Without a topic research system, content ideas come from gut instinct, which drifts toward technical topics builders want vs. outcomes business owners need.
+- **Platform setup blocks repurposing**: You need somewhere to post before you can build the repurposing habit. Twitter + Instagram setup is a prerequisite, not an afterthought.
+- **Case studies require at least one working demo**: You cannot write a case study without a before/after to document. Raj Photo Video, financial services, and Studio S are the three to develop first.
+- **Repurposing pipeline depends on YouTube output**: No YouTube videos = nothing to repurpose. YouTube must run for at least 2 videos before the pipeline has ROI.
+- **Free value giveaways enhance but don't block**: Giveaways can launch alongside any other feature. They do not require prior features but convert better with social proof (case studies) already visible.
 
 ---
 
 ## MVP Definition
 
-### Launch With (v1)
+### Launch With (v2.0 — Content Engine Go-Live)
 
-Minimum viable to earn the first paid client.
+The minimum viable content engine: enough infrastructure to consistently produce content that can plausibly drive a discovery call.
 
-- [ ] Business name, domain, branded email — so you are credible
-- [ ] Landing page (single page, clear outcome language, one CTA) — so leads have somewhere to land
-- [ ] Lead follow-up automation PoC (built, working, screen-recorded) — the core sales asset
-- [ ] Discovery call booking (Google Calendar Appointment Scheduling) + value discovery script — the sales conversation
-- [ ] Proposal template (3-tier pricing) — the close mechanism
-- [ ] Client agreement template (7-clause plain English) — the legal minimum
-- [ ] Invoicing (Stripe or Wave) — to collect payment
-- [ ] Missed call text-back automation (sellable Day 1, low complexity) — first deliverable to a paid client
+- [ ] Twitter account setup (@SameerAutomates) with complete bio, pinned tweet with CTA, link to booking — so outreach and content have a home
+- [ ] Instagram account setup (@SameerAutomates) with complete bio, link-in-bio to booking, initial 3-post grid — visual first impression for discovery
+- [ ] Content idea CLI tool (v1) — outputs 5 topic suggestions from competitor research + trending SMB pain points — removes weekly writer's block
+- [ ] First YouTube video (demo automation, outcome-focused) — the core sales asset; everything else depends on having something to repurpose and reference
+- [ ] Case study #1 (from existing work — Raj Photo Video or Studio S) — social proof that content needs to reference
+- [ ] Repurposing pipeline (documented process, not automated) — Twitter thread + Instagram carousel from each YouTube video
+- [ ] CTA standardized across all platforms — one link, one ask, everywhere
 
-### Add After First Client (v1.x)
+### Add After First Month of Posting (v2.1)
 
-- [ ] Review request automation — natural second deliverable, builds on first
-- [ ] Appointment scheduling automation — adds scheduling layer to lead follow-up
-- [ ] Case study from first engagement — social proof for all future sales
-- [ ] YouTube video from PoC — first content piece
-- [ ] Lightweight CRM (Notion/HubSpot free) — once you have 3+ prospects to track
-- [ ] Client onboarding playbook — reduces friction once you are repeating the same steps
+Once the flywheel has 4+ weeks of content and at least one booking from content:
 
-### Future Consideration (v2+)
+- [ ] Giveaway/free resource (one vertical-specific freebie — plumber or HVAC) — convert passive followers to warm leads
+- [ ] Vertical-specific content track (series for home services vertical — 4 videos planned) — search specificity drives qualified viewers
+- [ ] Content-to-booking funnel tracking (UTM links + monthly booking source review) — know what's working
+- [ ] Case study #2 and #3 (from remaining existing work) — enough social proof to build a case study library
 
-- [ ] Weekly business health report (automated) — once you have 3+ active retainer clients to justify build time
-- [ ] Voice AI for inbound calls — high complexity, high wow-factor, high delivery risk; defer until delivery track record exists
-- [ ] Post-job upsell/nurture sequences — once core lead capture is proven per vertical
-- [ ] Referral partner pipeline — once case studies make referral conversations easy
-- [ ] Paid ads — only after messaging is validated by organic traction
+### Future Consideration (v2.2+)
+
+Defer until flywheel is self-sustaining (consistent posting, at least 3 discovery calls/month from content):
+
+- [ ] Content idea CLI tool (v2 — automated weekly brief delivered to email) — automation of the research process itself
+- [ ] Email newsletter — once social following validates that content resonates
+- [ ] LinkedIn repurposing — once Twitter/Instagram have 90 days of traction
+- [ ] Paid amplification of proven content — after identifying top 2-3 performing videos by booking conversion
 
 ---
 
 ## Feature Prioritization Matrix
 
-### Client-Facing Automations
+| Feature                                       | Audience Value    | Implementation Cost | Priority |
+| --------------------------------------------- | ----------------- | ------------------- | -------- |
+| Twitter account setup + complete profile      | HIGH              | LOW                 | P1       |
+| Instagram account setup + complete profile    | HIGH              | LOW                 | P1       |
+| CTA standardized across all platforms         | HIGH              | LOW                 | P1       |
+| First YouTube video (demo)                    | HIGH              | MEDIUM              | P1       |
+| Case study #1 (from existing work)            | HIGH              | LOW                 | P1       |
+| Content idea CLI tool (v1)                    | HIGH (internal)   | MEDIUM              | P1       |
+| Repurposing pipeline (process documented)     | HIGH              | LOW-MEDIUM          | P1       |
+| Giveaway/free resource (one vertical)         | MEDIUM            | LOW                 | P2       |
+| Vertical content track (home services series) | HIGH              | MEDIUM              | P2       |
+| Content-to-booking funnel tracking            | HIGH (internal)   | LOW                 | P2       |
+| Case study #2 and #3                          | HIGH              | LOW                 | P2       |
+| Demo automation builds (4 verticals)          | HIGH              | HIGH                | P2       |
+| Content calendar (30-day planning system)     | MEDIUM (internal) | LOW                 | P2       |
+| Email newsletter                              | MEDIUM            | MEDIUM              | P3       |
+| LinkedIn repurposing                          | MEDIUM            | LOW                 | P3       |
+| Paid content amplification                    | HIGH              | MEDIUM              | P3       |
 
-| Feature                            | Client Value | Build Cost | Priority |
-| ---------------------------------- | ------------ | ---------- | -------- |
-| Lead follow-up automation          | HIGH         | MEDIUM     | P1       |
-| Missed call text-back              | HIGH         | LOW        | P1       |
-| Review request automation          | HIGH         | LOW        | P1       |
-| Appointment scheduling + reminders | HIGH         | MEDIUM     | P1       |
-| AI website chatbot                 | MEDIUM       | MEDIUM     | P2       |
-| Quote/estimate follow-up           | HIGH         | MEDIUM     | P2       |
-| Post-job upsell/nurture            | MEDIUM       | MEDIUM     | P2       |
-| Invoice/payment follow-up          | MEDIUM       | LOW        | P2       |
-| Weekly business health report      | HIGH         | MEDIUM     | P2       |
-| Reputation monitoring              | MEDIUM       | MEDIUM     | P3       |
-| Intake form → CRM pipeline         | MEDIUM       | MEDIUM     | P3       |
-| Voice AI for inbound calls         | HIGH         | HIGH       | P3       |
+**Priority key:**
 
-### Business Infrastructure
-
-| Feature                             | Business Value | Build Cost | Priority |
-| ----------------------------------- | -------------- | ---------- | -------- |
-| Business name + domain              | HIGH           | LOW        | P1       |
-| Landing page                        | HIGH           | LOW        | P1       |
-| Lead follow-up PoC (demo asset)     | HIGH           | MEDIUM     | P1       |
-| Discovery call script + booking     | HIGH           | LOW        | P1       |
-| Client agreement template           | HIGH           | LOW        | P1       |
-| Invoicing (Stripe/Wave)             | HIGH           | LOW        | P1       |
-| Branded email                       | MEDIUM         | LOW        | P1       |
-| Proposal template (3-tier)          | HIGH           | LOW        | P2       |
-| Case study (from PoC)               | HIGH           | LOW        | P2       |
-| Video PoC walkthrough (Loom)        | HIGH           | LOW        | P2       |
-| Lightweight CRM (own pipeline)      | MEDIUM         | LOW        | P2       |
-| Client onboarding playbook          | MEDIUM         | LOW        | P2       |
-| YouTube channel content             | HIGH           | MEDIUM     | P2       |
-| Monthly retainer report template    | MEDIUM         | LOW        | P3       |
-| Referral partner pipeline           | HIGH           | LOW        | P3       |
-| Value discovery script (formalized) | HIGH           | LOW        | P2       |
+- P1: Required for content engine to launch and produce first bookings
+- P2: Required for content engine to become self-sustaining and repeatable
+- P3: Future consideration after flywheel validates
 
 ---
 
 ## Competitor Feature Analysis
 
-These are the patterns observed across competing AI automation agencies targeting local service businesses.
+How other automation consultants and solo agencies handle content — and where the lane is open.
 
-| Feature                 | Typical Competitor Approach                                               | Differentiator Opportunity                                                                                                           |
-| ----------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Lead follow-up          | GoHighLevel white-label, n8n, or Zapier flows. Often templated.           | Custom-built with Claude Code + APIs. Methodology ownership means more flexibility, not locked to one platform.                      |
-| Pricing transparency    | Most agencies hide pricing. Discovery call required just to get a number. | Publishing a pricing framework (Starter/Professional/Growth) on landing page qualifies leads before the call.                        |
-| Deliverable tangibility | Many agencies sell vague "AI strategy."                                   | Focus on discrete automations with named deliverables and before/after metrics. "8 leads recovered in week 1" > "AI-powered growth." |
-| Content / education     | Most agency content targets other builders, not buyers.                   | Content written for business owners ("what this does for your business") is a wide open lane.                                        |
-| Niche depth             | Generalist agencies dominate the space ("we help all businesses").        | Vertical-specific positioning (starting with home services or dental) lets you speak the client's language in proposals and demos.   |
+| Feature              | Typical Competitor Approach                                                  | @SameerAutomates Approach                                                                                                                    |
+| -------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Audience targeting   | Content for builders/developers ("how I built X with n8n")                   | Content for buyers/business owners ("what this does for your business") — wide open lane                                                     |
+| Platform focus       | YouTube only, or LinkedIn only. Rarely all three.                            | YouTube hub + Twitter + Instagram repurposing. Three-platform presence for three discovery touchpoints.                                      |
+| Case studies         | Vague ("helped a local business grow"). No metrics.                          | Specific before/after metrics per engagement. "8 leads recovered in week 1." Makes ROI conversation easy.                                    |
+| Vertical specificity | Generalist positioning ("we help all businesses")                            | Vertical-specific content tracks. Plumber content for plumbers. Dentist content for dentists. Algorithms and buyers both reward specificity. |
+| Free value           | Generic eBooks or "AI trends" content                                        | Hyper-specific giveaways per vertical. "5-Minute Lead Recovery Audit for Plumbers" over generic AI guides.                                   |
+| CTA consistency      | Inconsistent. Some videos have no CTA. Social profiles with no booking link. | One CTA everywhere, always. Every piece drives to discovery call booking.                                                                    |
+| Repurposing          | Most do not repurpose. Create original per platform or only on one platform. | Systematic repurposing from every YouTube video. 1 video = 5 pieces. Solo operator math.                                                     |
 
 ---
 
 ## Sources
 
-- [How To Start An AI Automation Agency In 7 Days — Voiceflow](https://www.voiceflow.com/blog/ai-agency)
-- [AI Service Proposals: Close Deals With Templates — Digital Applied](https://www.digitalapplied.com/blog/ai-service-proposals-close-deals-templates-guide)
-- [AI Client Onboarding: First 30 Days Playbook — Digital Applied](https://www.digitalapplied.com/blog/ai-client-onboarding-first-30-days-playbook)
-- [How to Start an AI Automation Agency — Function Point](https://functionpoint.com/blog/how-to-start-an-ai-automation-agency-a-step-by-step-guide)
-- [Top 30 AI Automation Agencies Feb 2026 — DesignRush](https://www.designrush.com/agency/ai-companies/ai-automation-agency)
-- [Agentic AI for Small Business Integration Guide 2026 — Digital Applied](https://www.digitalapplied.com/blog/agentic-ai-small-business-integration-guide-2026)
-- [AI Lead Automation for Local Services — InsightCrafts Marketing](https://insightcraftsmarketing.com/ai-automation/)
-- [5 Mistakes That Kill Your AI Agent ROI — Symphonize](https://www.symphonize.com/tech-blogs/5-mistakes-that-kills-your-ai-agent-roi)
-- [5 Common Mistakes in AI Automation Implementation — ReachFirst](https://www.reachfirst.com/ai-automation-implementation-mistakes/)
-- [Home Service Pilots — AI-Powered Lead Systems](https://homeservicepilots.com/)
+- [Content Repurposing System: Turn One Idea Into 40+ Posts (Creators 2026 Guide)](https://www.newzenler.com/blog/content-repurposing-system-creators-2026) — MEDIUM confidence (multiple sources agree on 1:10 formula)
+- [The 1:10 Formula: Turning One Video into 10 High-Performing Assets](https://www.mixcord.co/blogs/content-creators/1-10-video-repurposing-formula-content-multiplier) — MEDIUM confidence
+- [Repurposing Content Across Multiple Platforms 2026](https://influenceflow.io/resources/repurposing-content-across-multiple-platforms-the-complete-2026-guide/) — MEDIUM confidence
+- [9 YouTube B2B Marketing Best Practices to Follow in 2026](https://www.leanlabs.com/blog/youtube-b2b-marketing-best-practices) — MEDIUM confidence
+- [6 B2B Marketing Insights for 2026: Why Creators Are Up](https://www.linkedin.com/business/marketing/blog/trends-tips/b2b-marketing-insights-creators-thought-leadership) — MEDIUM confidence (LinkedIn official)
+- [Lead Magnets for Consultants: Examples & What Works in 2026](https://sarahmoon.net/blog/lead-magnets-for-consultants) — LOW confidence (single source, consultant-specific)
+- [5 Easy Steps to YouTube Competitor Analysis in 2026](https://brand24.com/blog/youtube-competitor-analysis/) — MEDIUM confidence
+- [25 New Call to Action (CTA) Statistics in 2026](https://wisernotify.com/blog/call-to-action-stats/) — LOW confidence (statistics need primary source verification)
+- [B2B Content Marketing: Ultimate Strategy Guide for 2026](https://sproutsocial.com/insights/b2b-content-marketing/) — HIGH confidence (Sprout Social official research)
+- [Content Strategies for Different Social Platforms 2026](https://influenceflow.io/resources/content-strategies-for-different-social-platforms-a-2026-guide-to-platform-specific-success/) — MEDIUM confidence
 
 ---
 
-_Feature research for: AI Automation Agency — Local Service Business Vertical_
-_Researched: 2026-02-27_
+_Feature research for: AI Automation Agency — Content Marketing Engine v2.0_
+_Researched: 2026-03-01_

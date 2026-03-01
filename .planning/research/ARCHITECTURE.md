@@ -1,405 +1,334 @@
 # Architecture Research
 
-**Domain:** Solo AI automation agency serving local service businesses
-**Researched:** 2026-02-27
-**Confidence:** MEDIUM — business model patterns drawn from multiple current sources; specific time allocation ratios not available as published benchmarks; core structural patterns are consistent across sources.
+**Domain:** Solo AI Automation Consultant — Content Marketing Engine (v2.0 Milestone)
+**Researched:** 2026-03-01
+**Confidence:** MEDIUM — component patterns are well-established across multiple 2026 sources; specific automation trigger details (YouTube API polling, multi-platform publish nodes) confirmed via n8n workflow catalog; overall structure derived from verified sources with one low-confidence section flagged.
+
+---
+
+## Context: What Already Exists
+
+This milestone adds a content marketing engine to an existing minimal setup:
+
+```
+EXISTING (do not break):
+├── website/              # Static HTML + Tailwind CSS (GitHub Pages)
+├── brand/                # SVG logos, brand voice guide
+├── ops/
+│   ├── outreach/         # Email templates (day-1, day-3, day-7, audit)
+│   └── packages/         # Service package concepts
+└── .planning/            # Project planning, roadmap, research
+```
+
+The content marketing engine lives ALONGSIDE this. It does not require a backend, database, or server. It is a system of local scripts, file-based workflows, external platform APIs, and manual production steps — connected by a solo operator.
 
 ---
 
 ## Standard Architecture
 
-This is a business operations architecture, not a software architecture. The agency is a system of interconnected workflows: content creates leads, leads convert to clients, clients receive automations, automations generate retainer revenue, and the agency automates its own operations using the same techniques it sells.
+This is a content operations architecture, not a software architecture. The system has five distinct layers:
 
 ### System Overview
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                     ACQUISITION ENGINE                           │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────────────┐  │
-│  │   Content   │  │  Landing    │  │   Discovery Call /     │  │
-│  │   Funnel    │→ │   Page      │→ │   Lead Qualification   │  │
-│  │(YT/LinkedIn)│  │(lead cap)   │  │   (value discovery)    │  │
-│  └─────────────┘  └─────────────┘  └────────────────────────┘  │
-└──────────────────────────────────────┬───────────────────────────┘
-                                       │ qualified lead
-┌──────────────────────────────────────▼───────────────────────────┐
-│                     SALES PIPELINE                               │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────────────┐  │
-│  │  Proposal   │→ │  Contract   │→ │  50% Deposit / Kick-   │  │
-│  │  (scoped,   │  │  (signed,   │  │  off call scheduled    │  │
-│  │  ROI-based) │  │  templated) │  │                        │  │
-│  └─────────────┘  └─────────────┘  └────────────────────────┘  │
-└──────────────────────────────────────┬───────────────────────────┘
-                                       │ signed + deposited
-┌──────────────────────────────────────▼───────────────────────────┐
-│                     DELIVERY ENGINE                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌───────────┐  ┌─────────┐  │
-│  │  Discovery  │→ │    Build    │→ │   Test    │→ │ Deploy  │  │
-│  │  (workflow  │  │  (Claude    │  │  (with    │  │ + hand- │  │
-│  │   mapping)  │  │   Code +    │  │  client)  │  │   off)  │  │
-│  │             │  │   MCPs)     │  │           │  │         │  │
-│  └─────────────┘  └─────────────┘  └───────────┘  └────┬────┘  │
-└──────────────────────────────────────────────────────────┼───────┘
-                                                            │ go-live
-┌──────────────────────────────────────────────────────────▼───────┐
-│                     RETAINER ENGINE                              │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────────────┐  │
-│  │  Monitoring │  │   Tweaks /  │  │  Upsell / Case Study   │  │
-│  │  + Alerts   │  │  Iteration  │  │  / Referral Ask        │  │
-│  └─────────────┘  └─────────────┘  └────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
-
-┌──────────────────────────────────────────────────────────────────┐
-│              AGENCY OPERATIONS (runs in parallel)                │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────────────┐  │
-│  │  Invoicing  │  │  Templates  │  │  Knowledge Base        │  │
-│  │  + Payments │  │  Library    │  │  (patterns, scripts)   │  │
-│  └─────────────┘  └─────────────┘  └────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────┐
+│                     CONTENT IDEATION ENGINE                          │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────┐ │
+│  │  Competitor     │  │  Trending Topic  │  │  Case Study          │ │
+│  │  Research CLI   │→ │  Scanner (API)   │→ │  Idea Generator      │ │
+│  │  (local script) │  │  (YouTube/Search)│  │  (Claude Code)       │ │
+│  └─────────────────┘  └─────────────────┘  └──────────────────────┘ │
+│                              ↓ ideas + briefs                         │
+│                    content/ideas/ (markdown files)                    │
+└──────────────────────────────────────────────────────────────────────┘
+                               ↓ approved ideas
+┌──────────────────────────────────────────────────────────────────────┐
+│                     CONTENT PRODUCTION ENGINE                        │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────┐ │
+│  │  Case Study     │  │  Demo Build      │  │  YouTube Long-Form   │ │
+│  │  Template       │  │  (screen record  │  │  Production          │ │
+│  │  (markdown)     │  │   + walkthrough) │  │  (OBS + Descript)    │ │
+│  └─────────────────┘  └─────────────────┘  └──────────────────────┘ │
+│                              ↓ published YouTube video                │
+│                         YouTube (content hub)                         │
+└──────────────────────────────────────────────────────────────────────┘
+                               ↓ YouTube video URL
+┌──────────────────────────────────────────────────────────────────────┐
+│                     REPURPOSING PIPELINE                             │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────┐ │
+│  │  Transcript     │→ │  AI Content      │→ │  Multi-Platform      │ │
+│  │  Extraction     │  │  Transform       │  │  Draft Queue         │ │
+│  │  (YouTube API)  │  │  (Claude Code /  │  │  (local markdown)    │ │
+│  │                 │  │   n8n workflow)  │  │                      │ │
+│  └─────────────────┘  └─────────────────┘  └──────────────────────┘ │
+│                              ↓ platform-optimized drafts              │
+│        Twitter threads | Instagram captions | YouTube Shorts script   │
+└──────────────────────────────────────────────────────────────────────┘
+                               ↓ reviewed + approved drafts
+┌──────────────────────────────────────────────────────────────────────┐
+│                     DISTRIBUTION ENGINE                              │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────────────┐ │
+│  │  Twitter/X      │  │  Instagram       │  │  Giveaway Content    │ │
+│  │  (@SameerAutomates)│ │  (@SameerAutomates)│ │  (checklists,      │ │
+│  │  Manual post    │  │  Manual post     │  │   templates, tips)   │ │
+│  └─────────────────┘  └─────────────────┘  └──────────────────────┘ │
+│                              ↓ traffic                                │
+│                    landing page (GitHub Pages)                        │
+└──────────────────────────────────────────────────────────────────────┘
+                               ↓ book a call CTA
+┌──────────────────────────────────────────────────────────────────────┐
+│                     CONVERSION ENGINE                                │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │           Google Calendar Appointment Scheduling                 │ │
+│  │           (15-min discovery call — already exists)               │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────────────────┘
 ```
+
+---
 
 ### Component Responsibilities
 
-| Component            | Responsibility                                                                               | Typical Implementation                                                         |
-| -------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Content Funnel       | Attract inbound leads; educate non-technical owners on what automation does for them         | YouTube (pivoted channel), LinkedIn, short-form clips, case studies            |
-| Landing Page         | Convert content viewers to booked discovery calls; communicate value proposition             | Static site with Calendly embed; no-code preferred for speed                   |
-| Lead Qualification   | Determine fit (budget, pain point, decision-maker) before investing in proposal              | Value discovery call script; quantify lead loss × LTV, time cost × hourly rate |
-| Proposal             | Scope the automation, quantify ROI, set payment terms                                        | Templated doc customized per engagement; ROI calculation as centerpiece        |
-| Contract             | Protect both parties; establish scope, IP, exit terms                                        | Plain-English reusable template; no lawyer required for v1                     |
-| Discovery (delivery) | Map the client's existing workflow; identify integration points, data sources, failure modes | 1-2 sessions with client; produces a workflow diagram and build spec           |
-| Build                | Construct the automation                                                                     | Claude Code + MCPs + APIs + scripts; not no-code platforms                     |
-| Test + Deploy        | Validate behavior, hand off to client                                                        | Parallel run before cutover; written handoff doc                               |
-| Retainer             | Maintain, monitor, and iterate on live automations                                           | Monthly check-in; alert on failures; small tweaks in scope                     |
-| Templates Library    | Reusable automation patterns by vertical and use case                                        | Git repo of working scripts; reduces build time on repeat problems             |
-| Knowledge Base       | Discovery scripts, objection handling, pricing frameworks, lessons learned                   | Markdown files or Notion; founder-maintained                                   |
-| Invoicing + Payments | Collect 50% deposit, balance on completion, monthly retainer                                 | Stripe invoices or Wave (free); automated reminders                            |
+| Component                  | Responsibility                                                                                                  | Implementation                                                                                                    |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Competitor Research CLI    | Pull top YouTube channels in automation niche, extract video titles, views, engagement. Surface what's working. | Local Node.js or Python script using YouTube Data API v3. Run on demand via Claude Code.                          |
+| Trending Topic Scanner     | Identify rising questions from target audience (plumbers, dentists, realtors). Surface gaps.                    | YouTube Data API + Google Trends API or SerpAPI. Piped into Claude for synthesis.                                 |
+| Case Study Idea Generator  | Take a client automation or demo build + produce a structured content brief                                     | Claude Code prompt template. Input: automation type, business vertical. Output: brief markdown in content/ideas/. |
+| Case Study Template        | Standardized before/after format for documenting automations as publishable case studies                        | Markdown file. Fields: business type, pain point, solution, before metric, after metric, demo video link.         |
+| Demo Build                 | Working automation built for a specific small business type to demonstrate results                              | Claude Code + N8N. The demo is real, not hypothetical. Screen-recorded for video.                                 |
+| YouTube Production         | Long-form videos (10-15 min): case study walkthroughs, demo recordings, business owner explainers               | OBS for recording, Descript for editing and captions, CapCut for short clips.                                     |
+| Transcript Extraction      | Pull transcript from published YouTube video                                                                    | YouTube Data API v3 (captions endpoint) or yt-dlp. Returns plain text.                                            |
+| AI Content Transform       | Convert transcript into platform-specific drafts: Twitter thread, Instagram caption, YouTube Shorts script      | Claude Code with platform-specific prompt templates per output type. Optionally n8n workflow for automation.      |
+| Multi-Platform Draft Queue | Staging area for AI-generated drafts awaiting human review and approval                                         | Local markdown files in content/queue/. One file per platform per piece.                                          |
+| Distribution (Twitter)     | Post approved threads, tips, short clips as @SameerAutomates                                                    | Manual at v2.0 launch. Optionally n8n → Twitter API after content rhythm established.                             |
+| Distribution (Instagram)   | Post approved reels, carousels, captions as @SameerAutomates                                                    | Manual at v2.0 launch. Later: n8n → Meta Graph API.                                                               |
+| Giveaway Content           | Free checklists, templates, and tip sheets distributed via social to build trust and grow audience              | Markdown-generated PDFs or simple HTML pages hosted on GitHub Pages. No external tools needed.                    |
+| Landing Page               | Convert inbound social traffic to discovery calls                                                               | Static HTML + Tailwind (GitHub Pages). Already exists. Needs CTA audit + UTM link tracking.                       |
+| Booking                    | Convert landing page visitors to 15-min discovery calls                                                         | Google Calendar Appointment Scheduling. Already exists. No changes needed.                                        |
 
 ---
 
 ## Recommended Project Structure
 
-The agency's "code" is the collection of automation artifacts, templates, and operational documents. A sensible folder layout for the repo:
+This adds to the existing repo without touching what already exists:
 
 ```
-agency/
-├── clients/                  # Per-client work (gitignored or private repo)
-│   └── [client-slug]/
-│       ├── discovery.md      # Workflow map, pain points, integrations
-│       ├── proposal.md       # Scoped proposal (versioned)
-│       ├── contract.md       # Signed contract copy
-│       ├── build/            # Automation scripts and configs
-│       └── runbook.md        # Handoff doc + monitoring notes
+automation_consulting/
+├── website/               # EXISTING — do not modify
+├── brand/                 # EXISTING — do not modify
+├── ops/                   # EXISTING — do not modify
 │
-├── templates/                # Reusable automation patterns
-│   ├── lead-follow-up/       # Lead → qualify → book → confirm
-│   ├── review-request/       # Post-job → review ask → follow-up
-│   ├── appointment-reminder/ # Booking → reminder sequence
-│   └── intake-form/          # New client intake → CRM entry
+├── content/               # NEW — content marketing engine root
+│   ├── ideas/             # Generated content briefs (markdown)
+│   │   └── YYYY-MM-DD-slug.md
+│   ├── case-studies/      # Published case study documents
+│   │   └── [vertical]-[automation-type].md
+│   ├── scripts/           # Video scripts (markdown)
+│   │   └── YYYY-MM-DD-title.md
+│   ├── queue/             # Repurposed drafts awaiting review
+│   │   ├── twitter/       # Thread drafts (one .md per video)
+│   │   ├── instagram/     # Caption + reel script drafts
+│   │   └── shorts/        # YouTube Shorts scripts
+│   ├── giveaways/         # Free templates, checklists, tip sheets
+│   │   └── [topic]-checklist.md
+│   └── calendar.md        # Content calendar (what's planned/published)
 │
-├── ops/                      # Agency's own internal operations
-│   ├── contract-template.md  # Master contract (customize per client)
-│   ├── proposal-template.md  # Master proposal structure
-│   ├── discovery-script.md   # Value discovery call script
-│   ├── onboarding-checklist.md
-│   └── invoicing.md          # Payment process, tools, cadence
-│
-├── content/                  # Content production assets
-│   ├── calendar.md           # Content calendar
-│   ├── scripts/              # Video scripts
-│   └── case-studies/         # Before/after documentation
-│
-└── knowledge/                # What has been learned
-    ├── pricing-framework.md
-    ├── objections.md
-    ├── verticals/            # Notes per industry (plumbers, dentists, etc.)
-    └── lessons-learned.md
+└── tools/                 # NEW — CLI tools (local scripts)
+    ├── idea-generator.js  # Content idea CLI (competitor research + topic suggestions)
+    ├── repurpose.js        # YouTube URL → multi-platform drafts (Claude API)
+    └── case-study-gen.js  # Automation description → case study markdown
 ```
 
 ### Structure Rationale
 
-- **clients/**: Isolated per client to allow safe sharing and avoid cross-contamination. Each folder is a complete record of the engagement.
-- **templates/**: The agency's primary intellectual property. Each template reduces future build time. Built from real client work, not theoretical examples.
-- **ops/**: The agency runs itself like a client would run a business. All repeatable internal tasks are documented and eventually automated.
-- **content/**: Content is part of the acquisition engine and must be treated as a production pipeline, not an afterthought.
-- **knowledge/**: The founder's accumulated expertise. What worked, what did not, how to price, how to handle objections. This is what scales.
+- **content/ideas/**: Captures output from the idea generation CLI. Dated, slug-named, reviewed by founder before production begins. Prevents building content without a plan.
+- **content/case-studies/**: The agency's primary content asset. Every automation built becomes a case study. Named by vertical + type so they compound as a library.
+- **content/queue/**: Staging area between AI generation and human publishing. Nothing in queue/ goes live until reviewed. This is the quality gate.
+- **content/giveaways/**: Lead magnets and trust-builders. Markdown-first, can be rendered to PDF or hosted as simple HTML pages.
+- **tools/**: Local scripts runnable via Claude Code. Not deployed, not hosted. Just local automation for the founder.
 
 ---
 
 ## Architectural Patterns
 
-### Pattern 1: Content → Demonstration → Sale
+### Pattern 1: YouTube as the Content Hub, Platforms as Distribution Channels
 
-**What:** Every piece of content is a demonstration of a specific automation working in the real world. The content does not explain how to build it — it shows what the client's life looks like after it exists.
+**What:** Every piece of content starts as a YouTube video. Twitter threads, Instagram posts, Shorts, and giveaway content are all derived from the YouTube video. Nothing is created natively per platform except the repurposed format.
 
-**When to use:** Always. This is the core acquisition engine for a solo operator with no outbound sales team.
+**When to use:** Always. Solo operators cannot create unique content per platform — the math doesn't work. One long-form video yields: 1 Twitter thread (8-12 tweets), 1 Instagram caption + reel clip, 1-2 YouTube Shorts scripts, and optionally 1 checklist/giveaway piece. That is 5-6 pieces of content from one production session.
 
-**Trade-offs:** Slow to compound (3-6 months before meaningful inbound). Cannot be shortcut. Once it works, it requires far less founder time per lead than cold outreach.
+**Trade-offs:** Slower to build initial presence on Twitter/Instagram (waiting for YouTube videos to exist). Platform-native content (memes, trending audio) is not this system. Acceptable trade-off for a solo operator.
 
-**Example:**
-
-```
-Video: "How this plumber stopped losing 40% of his leads"
-  → Screen recording of lead follow-up automation
-  → Shows lead coming in, AI qualifying, appointment booked
-  → Call to action: "Want this for your business?"
-  → Link to landing page → Calendly
-```
-
----
-
-### Pattern 2: Value Discovery Before Proposal
-
-**What:** No proposal is written until the founder has quantified the client's pain in dollars. Discovery call script drives to: (a) how many leads are lost per month, (b) what each lead is worth, (c) how many hours are wasted on manual tasks, (d) what the hourly cost of that time is.
-
-**When to use:** Every engagement, without exception. The numbers from this conversation become the ROI case in the proposal.
-
-**Trade-offs:** Requires 45-60 minutes per prospect. Disqualifies clients who cannot articulate their numbers — which is a feature, not a bug (those clients cannot be satisfied with measurable results).
-
-**Example:**
+**Data flow:**
 
 ```
-Discovery output:
-  - 12 missed leads/month × $800 LTV = $9,600/month in lost revenue
-  - Owner spends 8 hrs/week on follow-up calls × $75/hr = $600/month labor cost
-  - Total visible cost: ~$10,200/month
-
-Proposal framing:
-  - Automation recovers 70% of missed leads = $6,720/month
-  - One-time build: $2,000
-  - Monthly retainer: $350
-  - Payback period: < 10 days
+YouTube video published
+    ↓
+tools/repurpose.js [YouTube URL]
+    ↓ (fetches transcript via YouTube Data API)
+Claude Code generates platform drafts
+    ↓
+content/queue/twitter/YYYY-MM-DD-slug.md
+content/queue/instagram/YYYY-MM-DD-slug.md
+content/queue/shorts/YYYY-MM-DD-slug.md
+    ↓ (founder reviews, edits, approves)
+Manual post to Twitter + Instagram
 ```
 
 ---
 
-### Pattern 3: Build Once, Templatize, Reuse
+### Pattern 2: Case Study as Cornerstone Asset
 
-**What:** Every automation built for a client is immediately generalized into a template. The second dentist automation takes 30% of the time of the first because the core pattern already exists. By the third or fourth, delivery time is minimal.
+**What:** Every automation (demo build or real client work) is documented as a case study with quantified before/after metrics. The case study becomes: (1) a YouTube video script, (2) a landing page social proof section, (3) Twitter thread content, (4) Instagram carousel content, and (5) outreach email proof point.
 
-**When to use:** After every completed build. This is how a solo operator scales beyond ~3 clients without burning out.
+**When to use:** For every automation demo and every client delivery. The case study is written before the video is recorded — it serves as the video script and the social proof artifact simultaneously.
 
-**Trade-offs:** Requires discipline to generalize rather than leave client-specific code as-is. Initial builds take longer because the founder is also building the template.
+**Trade-offs:** Requires discipline to document automations immediately rather than moving on. Worth it: one documented case study produces content for 2-3 weeks across platforms.
 
-**Example:**
+**Example structure (content/case-studies/plumber-lead-followup.md):**
 
-```
-Client build: Lead follow-up for Smith Plumbing
-  → Strip client-specific: phone numbers, prompts, CRM fields
-  → Parameterize: business name, follow-up timing, booking link
-  → Document: inputs required, integrations needed, edge cases
-  → Add to templates/lead-follow-up/
+```markdown
+# Case Study: Lead Follow-Up Automation for a Plumbing Business
 
-Next client: Configure parameters, test, deploy in 4 hours not 20
+**Business type:** Local plumbing service, 2 trucks, owner-operated
+**Problem:** Missing ~15 leads/month when calls go unanswered
+**Before:** Leads called, hit voicemail, called a competitor
+**After:** Every missed call gets an SMS within 60 seconds, 70% book online
+**Dollar impact:** 10 recovered leads × $400 avg job = $4,000/month recovered
+**Build time:** 4 hours with N8N + Claude + Twilio
+**Demo video:** [YouTube link]
 ```
 
 ---
 
-### Pattern 4: The Agency Eats Its Own Dog Food
+### Pattern 3: Idea Generation as a CLI Tool, Not a Product
 
-**What:** Every automation the agency sells to clients is also used internally. Lead follow-up, appointment booking, intake forms, review requests — if you build it for a plumber, you run it yourself too. This produces real case studies, surfaces bugs before client deployment, and demonstrates authentic credibility.
+**What:** The content idea generator is a local script — not a web app, not a SaaS tool. Run it on demand when planning the content calendar. It calls YouTube Data API to pull top-performing videos in the automation niche and related small business verticals, then pipes the titles and topics to Claude for synthesis and gap analysis.
 
-**When to use:** From day one. The PoC (lead follow-up automation) is built for the agency itself first, then sold to clients.
+**When to use:** Once per week or once per content planning cycle. Output goes into content/ideas/ as markdown briefs.
 
-**Trade-offs:** Requires committing to running the automation live, not just demonstrating it. Edge cases will appear and must be fixed.
+**Trade-offs:** Requires YouTube Data API key (free quota: 10,000 units/day, more than sufficient). No persistent state — it runs, generates, and saves to disk. Simple is right here; do not over-engineer.
 
-**Example:**
+**Example CLI invocation:**
 
+```bash
+node tools/idea-generator.js \
+  --vertical plumber \
+  --channels "UCxxx,UCyyy" \
+  --trending-days 30 \
+  > content/ideas/2026-03-05-plumber-ideas.md
 ```
-Agency internal stack (automations the agency runs):
-  - New inquiry → AI qualification → Calendly booking → confirmation email
-  - Post-call → proposal draft trigger → follow-up reminder
-  - Client go-live → invoice generation → retainer reminder
-  - Monthly → client check-in email → usage report
-```
+
+---
+
+### Pattern 4: Human-in-the-Loop at Every Publication Step
+
+**What:** AI generates drafts; the founder publishes. There is no automated posting at v2.0 launch. The repurposing pipeline produces drafts in content/queue/, and the founder reviews, edits for voice and accuracy, and manually posts.
+
+**When to use:** Always at launch. Upgrade to n8n → Twitter/Instagram API posting only after: (1) content voice is established, (2) quality bar is consistent, and (3) 10+ posts have been reviewed without significant AI errors.
+
+**Why:** Automated posting of incorrect or off-voice content about automation to potential clients is a reputational risk. The extra 5 minutes of manual posting is worth it at v2.0 scale. Automation of posting is Phase 3 of this milestone, not Phase 1.
+
+**Trade-offs:** Slightly more friction per piece. Prevents brand-damaging errors. The bottleneck at v2.0 is content creation, not distribution — so automating posting does not unblock anything meaningful yet.
+
+---
+
+### Pattern 5: Giveaway Content as Static Files, Not a Platform
+
+**What:** Free checklists, automation templates, and tip sheets are written as markdown, optionally exported as PDFs, and distributed via social (link in bio, pinned tweet, story link). They are hosted on GitHub Pages as static files — no external tool, no form, no email capture required at v2.0.
+
+**When to use:** When social content is ready but audience growth needs a pull. Giveaways are trust accelerators — they show value before anyone books a call.
+
+**Trade-offs:** No email capture means no email list built. This is acceptable for v2.0. Email list building is a v3.0 concern. The goal now is audience growth and discovery call bookings, not nurture sequences.
 
 ---
 
 ## Data Flow
 
-### Acquisition Flow
+### Primary Flow: Idea → Creation → Publishing → Booking
 
 ```
-Content viewer
-    ↓ (watches video / reads post)
-Landing page
-    ↓ (books call via Calendly)
-Discovery call
-    ↓ (value quantification → lead qualifies or disqualifies)
-Proposal sent
-    ↓ (client reviews, negotiates scope)
-Contract signed + deposit paid
+Content Planning Session (weekly)
     ↓
-Delivery phase begins
-```
-
-### Delivery Flow
-
-```
-Kickoff call
+tools/idea-generator.js
+    ↓ (YouTube API + Claude synthesis)
+content/ideas/YYYY-MM-DD-topic.md
+    ↓ (founder selects idea, writes case study)
+content/case-studies/[case-study].md
+    ↓ (script written from case study)
+content/scripts/YYYY-MM-DD-title.md
+    ↓ (video recorded with OBS, edited in Descript)
+YouTube (published, unlisted for review, then public)
     ↓
-Workflow discovery (1-2 sessions)
-    ↓ (produces: workflow map + build spec + integration inventory)
-Build (Claude Code + MCPs + APIs)
-    ↓ (iterate locally, client reviews staging environment)
-Client acceptance testing
-    ↓ (parallel run, edge case validation)
-Deploy to production
+tools/repurpose.js [YouTube URL]
+    ↓ (YouTube API transcript → Claude → platform drafts)
+content/queue/twitter/*.md
+content/queue/instagram/*.md
+content/queue/shorts/*.md
+    ↓ (founder reviews + edits)
+Manual post: Twitter thread + Instagram post
+    ↓ (links in posts point to landing page)
+website/ (GitHub Pages landing page)
+    ↓ (single CTA: Book a Discovery Call)
+Google Calendar Appointment Scheduling
     ↓
-Balance invoice sent → paid
-    ↓
-Retainer begins (monthly)
-```
-
-### Knowledge Accumulation Flow
-
-```
-Client engagement
-    ↓
-Completed build → generalize → templates/
-    ↓
-Lessons (what broke, what worked) → knowledge/lessons-learned.md
-    ↓
-Vertical notes (industry-specific patterns) → knowledge/verticals/
-    ↓
-Next client in same vertical: faster discovery, faster build, higher margin
-```
-
-### Retainer Flow
-
-```
-Monthly: automated health check (ping automation endpoints, verify output)
-    ↓
-If healthy: monthly check-in email to client → "all good, here's usage report"
-    ↓
-If degraded: founder notified → diagnose → fix → notify client
-    ↓
-Quarterly: upsell review → "here are 2 more automations worth $X/month to you"
+Discovery call → proposal → client
 ```
 
 ---
 
-## Component Boundaries
-
-These are the dependency rules — what must exist before what can be built.
-
-| Boundary                                          | What Depends On What                                     | Why                                                              |
-| ------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------- |
-| Landing page depends on brand + value prop        | Cannot drive traffic to a blank page                     | Content drives to landing page; landing page must be ready first |
-| Proposal depends on discovery script              | Cannot price without quantified value                    | Numbers from discovery call become the ROI case                  |
-| Build depends on delivery playbook                | Need a repeatable delivery process before taking clients | Ad hoc delivery does not scale and risks client satisfaction     |
-| Retainer depends on successful deployment         | Retainer value is maintaining a working automation       | Nothing to maintain until something is deployed                  |
-| Templates depend on completed client builds       | Templates come from real work, not theory                | First build is always custom; template is extracted after        |
-| Content depends on real case studies              | "Show results" only works if results exist               | PoC + first client engagement produces the first case study      |
-| Scaling (5+ clients) depends on agency automation | Founder time is fixed; must automate own operations      | Without internal automation, growth = burnout                    |
-
----
-
-## Build Order (What to Build First)
-
-The critical path is: PoC → sales assets → sales pipeline → delivery infrastructure → first client → template extraction → retainer operations → internal automation.
+### Secondary Flow: Case Study → Giveaway → Distribution
 
 ```
-Phase 1: Foundation
-  1. Value discovery script (enables qualification)
-  2. Lead follow-up automation PoC (built for agency first)
-  3. Case study from the PoC (first sales asset)
-  4. Landing page (converts content viewers to calls)
-
-Phase 2: Sales Pipeline
-  5. Proposal template (reusable, ROI-centered)
-  6. Contract template (plain-English, reusable)
-  7. Pricing framework (formalized, not ad hoc)
-  8. Content calendar + first 4-6 videos (YouTube pivot)
-
-Phase 3: Delivery Infrastructure
-  9. Client discovery process (workflow mapping methodology)
-  10. Delivery playbook (repeatable build + test + deploy steps)
-  11. Handoff doc template (what client receives at go-live)
-  12. Retainer scope definition (what $200-500/mo covers)
-
-Phase 4: First Client
-  13. Execute full pipeline with real client
-  14. Extract first vertical template from the build
-  15. Document lessons learned
-
-Phase 5: Operations Automation
-  16. Automate internal invoicing reminders
-  17. Automate client health checks (monthly retainer)
-  18. Automate content repurposing (YT → LinkedIn clips)
-  19. Build intake form → CRM entry automation
+content/case-studies/[case-study].md
+    ↓ (extract checklist or template from the automation)
+content/giveaways/[topic]-checklist.md
+    ↓ (rendered to PDF or simple hosted HTML page)
+Distributed: pinned tweet, Instagram story, link in YouTube description
+    ↓ (drives profile traffic and trust)
+Landing page → Book a call
 ```
 
 ---
 
-## Scaling Considerations
+### Idea Generation Flow
 
-| Stage        | Clients                | Architecture Adjustments                                                                                               |
-| ------------ | ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| 0-1 clients  | Proving the model      | Everything manual is acceptable; document everything                                                                   |
-| 2-4 clients  | Repeating the model    | Template library in use; delivery time dropping; proposal + contract templated                                         |
-| 5-8 clients  | Systematizing          | Agency's own operations automated; monthly retainer monitoring automated; content pipeline producing consistently      |
-| 9-12 clients | Near capacity for solo | Most builds are template-driven; majority of time is retainer + sales; content generates inbound without active effort |
-| 12+ clients  | Capacity constraint    | Must either raise prices, narrow niche further, or hire one part-time contractor for build execution                   |
-
-### Scaling Priorities
-
-1. **First constraint:** Founder time on build work — resolved by template library + reuse patterns
-2. **Second constraint:** Founder time on business operations (invoicing, contracts, onboarding) — resolved by agency eating its own dog food (internal automations)
-3. **Third constraint:** Inbound lead volume — resolved by content compounding + referral asks at retainer check-ins
-4. **Fourth constraint:** Delivery quality consistency — resolved by documented playbook + handoff templates
-
----
-
-## Anti-Patterns
-
-### Anti-Pattern 1: Custom Build Without Templatizing
-
-**What people do:** Build a one-off automation for each client, tailored specifically to their tools, never generalizing the pattern.
-
-**Why it's wrong:** The 10th client is just as hard as the first. Build time stays high, margin stays low, founder burnout scales with client count.
-
-**Do this instead:** After every build, extract the generalized template. Client-specific configuration lives in parameters, not in the core logic.
+```
+tools/idea-generator.js
+    ↓ (YouTube Data API: search competitor channels)
+Top videos by view count in niche (last 30 days)
+    ↓
+Claude: "Given these titles and view counts, what topics are working?
+         What questions are local service business owners asking?
+         What gaps exist?"
+    ↓
+Structured brief (markdown): topic, hook, business vertical,
+                              suggested case study to anchor it,
+                              estimated effort (Low/Med/High)
+Saved to: content/ideas/YYYY-MM-DD-[slug].md
+```
 
 ---
 
-### Anti-Pattern 2: Selling Before Quantifying
+## Manual vs Automated: What Gets Built vs What Stays Human
 
-**What people do:** Jump to a proposal or a pitch before understanding the client's specific dollar cost of the problem.
+This is a solo operation. Not everything should be automated at v2.0. Clear separation prevents over-engineering.
 
-**Why it's wrong:** Proposals without ROI framing are just quotes. They compete on price, not value. Clients without quantified pain cannot evaluate the ROI and will price-shop.
-
-**Do this instead:** Run the value discovery script on every call. Do not send a proposal until you can write "this automation is worth $X/month to you and pays for itself in Y days."
-
----
-
-### Anti-Pattern 3: Content That Teaches Instead of Demonstrates
-
-**What people do:** Create educational content about AI automation (how to use Claude, how to build workflows) aimed at technical viewers who will never become clients.
-
-**Why it's wrong:** The target audience — plumbers, dentists, realtors — does not want to understand how it is built. They want to see what their business looks like after it is running.
-
-**Do this instead:** Every video shows a before-and-after for a specific business type. "Before: missed 12 leads a month. After: every lead gets a follow-up within 5 minutes." Show the automation running, not the code.
-
----
-
-### Anti-Pattern 4: No Internal Operations Automation
-
-**What people do:** Build client automations while handling all their own operations manually — chasing invoices, writing proposals from scratch, manually onboarding clients.
-
-**Why it's wrong:** Hypocritical and time-consuming. A founder selling automation who does not automate their own business is the cobbler's children with no shoes. At 5+ clients, manual operations become a significant drag.
-
-**Do this instead:** Automate the agency's own operations using the same tools sold to clients. This also produces authentic case studies ("here is how I run my own business").
-
----
-
-### Anti-Pattern 5: Retainer Without Scope Definition
-
-**What people do:** Sell a vague "maintenance and support" retainer with no defined scope of what is and is not included.
-
-**Why it's wrong:** Clients escalate scope continuously ("can you just also add..."), retainer becomes unprofitable, relationship degrades.
-
-**Do this instead:** Define retainer scope in the contract: monitoring, alerts, up to X hours of tweaks per month, excludes new automation builds (quoted separately). New automations are upsells, not retainer scope.
+| Step                              | Manual or Automated                      | Rationale                                           |
+| --------------------------------- | ---------------------------------------- | --------------------------------------------------- |
+| Content calendar planning         | Manual                                   | Judgment call — what to make next. Not automatable. |
+| Idea generation (running the CLI) | Automated (on demand)                    | CLI generates structured ideas in seconds           |
+| Case study writing                | Manual                                   | Requires accurate metrics and founder knowledge     |
+| Video scripting                   | Manual                                   | Voice and framing are founder's judgment            |
+| Video recording + editing         | Manual                                   | OBS + Descript; no good automation exists for this  |
+| Transcript extraction             | Automated (via tools/repurpose.js)       | YouTube API; zero human effort                      |
+| Platform draft generation         | Automated (Claude API)                   | 90% quality, needs founder review                   |
+| Platform draft review + edit      | Manual                                   | Quality gate; 5-10 min per piece                    |
+| Twitter posting                   | Manual (Phase 1-2), Automated (Phase 3+) | Build voice first; then n8n → Twitter API           |
+| Instagram posting                 | Manual (Phase 1-2), Automated (Phase 3+) | Build voice first; then n8n → Meta Graph API        |
+| Giveaway content creation         | Manual                                   | Write once; distribute many times                   |
+| YouTube video publishing          | Manual                                   | Requires title, thumbnail, description judgment     |
+| CTA links + UTM tracking          | Manual (one-time setup)                  | Set it once per campaign, not per post              |
 
 ---
 
@@ -407,43 +336,164 @@ Phase 5: Operations Automation
 
 ### External Services
 
-| Service                                | Integration Pattern                                                      | Notes                                              |
-| -------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |
-| Google Calendar Appointment Scheduling | Embed on landing page; trigger qualification email on booking            | Included in Google Workspace — no additional cost  |
-| Stripe / Wave                          | Invoice generation, deposit collection, retainer billing                 | Wave is free; Stripe for cards                     |
-| n8n / Make                             | Workflow orchestration for client automations                            | Self-hosted n8n for cost control at scale          |
-| Claude API                             | AI intelligence layer inside automations                                 | Core capability; budget for token costs in pricing |
-| YouTube                                | Content distribution; long-form case studies                             | Pivoted channel; first content platform            |
-| LinkedIn                               | Content distribution; professional credibility                           | Repurposed clips from YouTube                      |
-| Notion / Obsidian                      | Knowledge base; templates; client notes                                  | Markdown-first for portability                     |
-| GitHub                                 | Version control for automation code; templates library                   | Private repo per client; shared templates repo     |
-| Zapier (lightweight)                   | Simple trigger connections when n8n is overkill                          | Use sparingly; $0 for low-volume tasks             |
-| GoHighLevel (optional)                 | All-in-one CRM + landing pages + booking — used by many agency operators | Higher cost; evaluate at 3+ clients                |
+| Service                                | Integration Pattern                                                                  | Notes                                                                                                                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| YouTube Data API v3                    | REST API; local script; needs API key (free quota: 10K units/day)                    | Used for: competitor channel research, transcript extraction, video metadata. Quota is generous for solo use.                                                                   |
+| Claude API (Anthropic)                 | claude-3-5-sonnet-20241022 or claude-opus-4-5 via API key; called from local scripts | Used for: idea synthesis, platform draft generation, case study outline. Token cost is minimal at this content volume.                                                          |
+| Twitter/X API v2                       | OAuth 2.0; free tier allows 1,500 tweet writes/month                                 | Manual posting at launch; v2 API sufficient for Phase 3 automation. Note: Twitter API pricing changed in 2023 — verify free tier still includes write access before automating. |
+| Meta Graph API (Instagram)             | Requires Facebook Developer App; Business account required                           | Manual posting at launch; Graph API for automation in Phase 3. Content API allows scheduled posts for approved accounts.                                                        |
+| YouTube (publishing)                   | Manual upload via YouTube Studio; no API posting                                     | YouTube API supports video uploads but the metadata and thumbnail work is manual. Use Studio UI.                                                                                |
+| Google Calendar Appointment Scheduling | Already integrated in website/                                                       | No changes needed. Ensure booking link is in YouTube video descriptions, Twitter bio, Instagram bio.                                                                            |
+| GitHub Pages                           | Already hosts website/; static files served from main branch                         | Add content/giveaways/ as static pages if desired; otherwise distribute as linked PDFs.                                                                                         |
+| yt-dlp (optional fallback)             | CLI tool; local install                                                              | Backup for transcript extraction if YouTube API quota is hit. No API key required.                                                                                              |
 
 ### Internal Boundaries
 
-| Boundary                  | Communication                                                         | Notes                                                    |
-| ------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------- |
-| Content → Landing Page    | Referral traffic via links in video descriptions / posts              | Landing page must load fast and have one CTA             |
-| Landing Page → CRM        | Form submission → record creation                                     | Can be as simple as a Notion database at first           |
-| Discovery Call → Proposal | Manual: founder writes proposal from template post-call               | Automate the first draft at 3+ clients/month             |
-| Contract → Invoicing      | Manual trigger: contract signed → Stripe invoice generated            | Automate with webhook at scale                           |
-| Build → Retainer          | Deploy event → retainer start date recorded → first invoice scheduled | Critical: retainer billing must be automatic, not manual |
-| Retainer → Upsell         | Monthly check-in → quarterly review → new proposal if fit             | Document upsell opportunities in client folder           |
+| Boundary                             | Communication                                                                    | Notes                                                                                         |
+| ------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Idea generator → Content calendar    | File-based: tools/idea-generator.js writes to content/ideas/                     | Founder reads files and populates content/calendar.md manually                                |
+| YouTube video → Repurposing pipeline | tools/repurpose.js [URL] reads from YouTube API; writes drafts to content/queue/ | One script invocation per video                                                               |
+| content/queue/ → Social platforms    | Manual review + post by founder                                                  | Quality gate; not automated at launch                                                         |
+| Case studies → Landing page          | Manual: copy metrics and quotes into website/ testimonial section                | Update landing page monthly with new case study data                                          |
+| Social posts → Landing page          | URL links in posts; UTM parameters for tracking                                  | Use consistent UTM structure: ?utm_source=twitter&utm_medium=social&utm_campaign=[video-slug] |
+| Giveaway content → GitHub Pages      | Static files committed to repo; served automatically                             | No extra infrastructure needed                                                                |
+
+---
+
+## Build Order (Critical Path for v2.0)
+
+Dependencies determine what must be built before what. Do not start Phase N+1 until Phase N is complete.
+
+```
+Phase 1: Foundation (platform + production setup)
+  1. Twitter @SameerAutomates — account setup, bio, profile image, pinned tweet
+  2. Instagram @SameerAutomates — account setup, bio, profile image
+  3. YouTube Data API key — set up Google Cloud project, enable API, store key
+  4. content/ directory structure — create folders, content/calendar.md stub
+
+Phase 2: Content ideation tooling (the CLI)
+  5. tools/idea-generator.js — YouTube API competitor research + Claude synthesis
+  6. content/ideas/ — first 5-10 ideas generated and reviewed
+  7. content/calendar.md — first 4 weeks planned
+
+Phase 3: First case study + demo build
+  8. Pick one automation type (lead follow-up recommended as first)
+  9. Demo automation build — working N8N flow for a local service vertical
+  10. content/case-studies/[slug].md — documented with real numbers
+  11. content/scripts/[slug].md — video script written from case study
+
+Phase 4: YouTube video production
+  12. Record video (OBS screen capture + talking head)
+  13. Edit + caption (Descript)
+  14. Publish to YouTube with optimized title, description, tags
+  15. Verify YouTube video is indexed and transcript available
+
+Phase 5: Repurposing pipeline
+  16. tools/repurpose.js — YouTube URL → transcript → Claude → platform drafts
+  17. Test with first video; review output quality
+  18. content/queue/twitter/*.md — review + edit first thread
+  19. content/queue/instagram/*.md — review + edit first caption
+  20. Post manually to Twitter and Instagram
+
+Phase 6: Giveaway content
+  21. content/giveaways/[topic]-checklist.md — first free asset
+  22. Host on GitHub Pages or distribute as inline tweet/Instagram carousel
+  23. Pin to Twitter profile; add to Instagram bio link
+
+Phase 7: Funnel optimization (landing page updates)
+  24. Audit landing page CTAs — every section must point to booking link
+  25. Add UTM parameters to all social bio links
+  26. Add YouTube video embed to landing page (first published case study video)
+  27. Add case study metrics to landing page as social proof
+```
+
+---
+
+## Anti-Patterns
+
+### Anti-Pattern 1: Building per-platform Content Natively
+
+**What people do:** Create unique content for Twitter that doesn't exist on YouTube, unique content for Instagram that doesn't exist elsewhere.
+
+**Why it's wrong:** A solo operator with 2-3 client engagements cannot sustain three unique content streams. Native content per platform = burnout within 4-6 weeks. Content volume drops, consistency breaks, algorithm penalizes, audience stalls.
+
+**Do this instead:** Everything starts on YouTube. Platforms receive repurposed, platform-adapted versions. The voice may differ slightly (more conversational on Twitter, more visual-hook on Instagram) but the source material is always the YouTube video.
+
+---
+
+### Anti-Pattern 2: Automating Posting Before Establishing Voice
+
+**What people do:** Wire up n8n → Twitter API on day one, set up auto-posting, walk away.
+
+**Why it's wrong:** AI-generated drafts need calibration. The first 10-15 posts will have voice errors, framing that doesn't fit the audience, or technical inaccuracies. Auto-posting these damages credibility with the exact potential clients you're trying to attract.
+
+**Do this instead:** Post manually for the first 8-10 pieces. Review every AI draft before posting. Only automate posting after the pipeline is producing consistently good output that requires minimal editing.
+
+---
+
+### Anti-Pattern 3: Building the Repurposing Tool Before Having Content to Repurpose
+
+**What people do:** Spend a week perfecting the repurpose.js script before any YouTube videos exist to run through it.
+
+**Why it's wrong:** You don't know what the tool needs to produce until you've produced content and seen what platform-specific formats actually work. Building the tool first = building to spec that may be wrong.
+
+**Do this instead:** Manually repurpose the first 2 YouTube videos by hand (write the thread yourself). Then build the automation to match what you did manually. The manual process defines the spec.
+
+---
+
+### Anti-Pattern 4: Case Studies Without Numbers
+
+**What people do:** Write case studies with qualitative descriptions: "The client was very happy and their business improved."
+
+**Why it's wrong:** Non-technical business owners need to understand the dollar impact to recognize the value. "15 more leads booked per month" is credible. "Business improved" is meaningless.
+
+**Do this instead:** Every case study must have at minimum: leads recovered OR hours saved per month, and implied dollar value. For demo builds (not real clients yet): use conservative estimates and label them as such ("estimated based on typical plumbing lead value of $300-600/job").
+
+---
+
+### Anti-Pattern 5: Treating the Landing Page as Separate From the Content System
+
+**What people do:** Build content on social, never update the landing page, never connect the dots.
+
+**Why it's wrong:** Content drives traffic to the landing page. If the landing page is static while content evolves, conversion rates decline. The landing page must reflect the latest case studies, current social proof, and current CTA language.
+
+**Do this instead:** Every published case study gets added to the landing page within one week. Every new giveaway gets a link added. Landing page is reviewed and updated monthly, not quarterly.
+
+---
+
+## Scaling Considerations
+
+This is a solo operation. Scale here means: "what breaks when this works?"
+
+| Stage                       | Scenario                  | Architecture Adjustment                                                                                                        |
+| --------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 0-4 videos                  | Building the habit        | Manual posting; no automation needed; focus on quality                                                                         |
+| 4-12 videos                 | Pattern is working        | Automate repurposing pipeline; still manual posting; refine case study template                                                |
+| 12+ videos                  | Content is compounding    | Automate Twitter/Instagram posting via n8n; content queue self-fills weekly; founder role becomes editing, not creating drafts |
+| Inbound bookings > capacity | Content engine is working | Raise prices; narrow content focus; giveaways become email capture (add form to GitHub Pages)                                  |
+
+### Scaling Priorities
+
+1. **First constraint:** Founder time to produce videos — resolved by batching (film 2-3 videos per session, not one per week)
+2. **Second constraint:** Founder time on repurposing — resolved by the tools/ scripts after voice is established
+3. **Third constraint:** Landing page conversion — resolved by continuous case study additions and CTA optimization
+4. **Fourth constraint:** Booking capacity — a good problem; raise prices
 
 ---
 
 ## Sources
 
-- [AI Workflow Automation Agency: The Definitive 2026 Guide](https://www.heyreach.io/blog/ai-workflow-automation-agency) — MEDIUM confidence; covers delivery pipeline and tech stack patterns
-- [Starting an AI Automation Agency: The Workflow Partner Model](https://www.moxo.com/blog/starting-ai-automation-agency) — MEDIUM confidence; reusable template IP and retainer structure
-- [Start an AI Automation Agency: Business Model, Tools & Pricing](https://digitalagencynetwork.com/start-an-ai-automation-agency/) — MEDIUM confidence; MVS approach and niche specialization
-- [AI Automation Agency Pricing 2026: CFO's Guide](https://optimizewithsanwal.com/ai-automation-agency-pricing-2026-a-cfos-guide/) — MEDIUM confidence; pricing tiers and hybrid model
-- [AI Agents for Freelancers & Solopreneurs 2026](https://www.botborne.com/blog/ai-agents-freelancers-solopreneurs-2026.html) — LOW confidence (WebSearch only); scale benchmarks
-- [Scaling Your Consulting Business 2026](https://www.consultingsuccess.com/scaling-your-consulting-business) — MEDIUM confidence; operational systematization at 0-10 client stage
-- [The 2026 Agency Masterclass: Scaling an AI Automation Agency to $10K/Month](https://medium.com/@nbjoshua8/the-2026-agency-masterclass-scaling-an-ai-automation-agency-aaa-to-10-000-month-f71a641d4ec3) — LOW confidence (single source); scale trajectory guidance
+- [n8n: Multi-platform content generator from YouTube using AI & RSS](https://n8n.io/workflows/6843-multi-platform-content-generator-from-youtube-using-ai-and-rss/) — HIGH confidence; verified n8n workflow template exists; confirms YouTube → multi-platform n8n architecture is production-ready
+- [n8n: Auto-publish YouTube videos to Facebook & Instagram with AI-generated captions](https://n8n.io/workflows/4478-auto-publish-youtube-videos-to-facebook-and-instagram-with-ai-generated-captions/) — HIGH confidence; confirms YouTube → Instagram via Meta Graph API is an established n8n pattern
+- [n8n: Automate Instagram content discovery and repurposing with Apify, GPT-4o & Perplexity](https://n8n.io/workflows/4658-automate-instagram-content-discovery-and-repurposing-w-apify-gpt-4o-and-perplexity/) — HIGH confidence; confirmed n8n workflow; validates AI-driven repurposing pattern
+- [n8n: Summarize YouTube videos from transcript for social media](https://n8n.io/workflows/5292-summarize-youtube-videos-from-transcript-for-social-media/) — HIGH confidence; confirms YouTube transcript → social media via n8n is a working pattern
+- [Kaizen AI Consulting: Building a Social Media Content Pipeline with N8N and AI](https://kaizenaiconsulting.com/building-social-media-content-pipeline-n8n-ai/) — MEDIUM confidence; single practitioner source; detailed N8N component breakdown validated against n8n docs
+- [NewZenler: Content Repurposing System for Creators 2026](https://www.newzenler.com/blog/content-repurposing-system-creators-2026) — MEDIUM confidence; established platform source; "one video → 40+ pieces" framework consistent across multiple creator marketing sources
+- [YouTube Sales Funnel 7-Step Architecture](https://shortvids.co/build-youtube-sales-funnel/) — MEDIUM confidence; single source; funnel architecture consistent with landing page best practices research
+- [InfluenceFlow: Content Distribution Automation Tool 2026](https://influenceflow.io/resources/content-distribution-automation-tool-the-complete-2026-guide/) — MEDIUM confidence; pattern consistent with multiple sources; human-in-loop approval workflow recommendation validated here and in Kaizen source
+- YouTube Data API v3 Quota documentation — HIGH confidence; 10,000 units/day free confirmed via Google documentation
 
 ---
 
-_Architecture research for: Solo AI Automation Agency (local service businesses)_
-_Researched: 2026-02-27_
+_Architecture research for: Solo AI Automation Consultant — Content Marketing Engine (v2.0 Milestone)_
+_Researched: 2026-03-01_

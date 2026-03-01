@@ -1,341 +1,298 @@
-# Research Summary
+# Project Research Summary
 
 **Project:** AI Automation Agency — Solo Operator Serving Local Service Businesses
-**Synthesized:** 2026-02-27
-**Research files:** STACK.md, FEATURES.md, ARCHITECTURE.md, PITFALLS.md
+**Domain:** Content Marketing Engine (v2.0 Milestone)
+**Researched:** 2026-03-01
+**Confidence:** HIGH (stack HIGH, features HIGH, architecture MEDIUM, pitfalls HIGH)
 
 ---
 
 ## Executive Summary
 
-This is a services business, not a software product. The right mental model is a four-engine system: Acquisition Engine (content funnel → landing page → discovery call), Sales Pipeline (proposal → contract → deposit), Delivery Engine (discovery → build → deploy), and Retainer Engine (monitor → iterate → upsell). All four engines must exist before the business works — but they are built sequentially, not simultaneously. The critical insight from research is that the PoC (lead follow-up automation) is not just the first deliverable; it is simultaneously the first sales asset, the first case study, the first content piece, and the proof-of-model. Everything downstream depends on it existing.
+This is a content operations build, not a software product. The v2.0 milestone adds a repeatable content marketing engine on top of the v1.0 agency infrastructure (static website, Google Calendar booking, N8N, Claude Code). The engine has a clear dependency chain: YouTube video → transcript extraction → AI repurposing → platform-adapted drafts → human review → manual post. Every piece of content derives from YouTube. Twitter threads, Instagram clips, and giveaway assets are downstream expressions of a single YouTube video. A solo operator cannot sustain three separate content streams — the math collapses within 60 days. The repurposing architecture is the only viable approach.
 
-The recommended technical approach is Claude Code + N8N self-hosted as the build layer, with a bootstrapped business ops layer (Framer $10/mo, Notion free, PandaDoc free, Stripe pay-as-you-go). Total monthly cost in Phase 1 is under $20. The pricing model is strictly value-based — never hourly — with a fixed build fee ($1,500-3,000) plus a non-negotiable monthly retainer ($200-500/mo). Retainer is not an upsell; it is a required line item in every proposal from day one. Missing this creates feast-or-famine revenue cycles that kill solo agencies in months 4-6.
+The recommended stack is deliberately minimal: Buffer Essentials (~$18/mo for 3 channels) for scheduling, Supadata.ai for transcript extraction (100 free req/mo), fluent-ffmpeg + ffmpeg-static for video clipping, Claude Haiku for draft generation, and Commander.js for the content idea CLI. Total new monthly cost is $18-25, mostly Buffer. The decision to use Buffer rather than direct API integration is firm: Twitter OAuth + Instagram Graph API + retry logic + rate limiting takes 2-3 days to build and maintain. Buffer handles all of that. Build direct API integration only if Buffer proves inadequate.
 
-The two highest-risk failure modes are both behavioral, not technical: (1) building before quantifying client value, which leads to undercharging and scope disputes with no ROI anchor, and (2) running too many tracks in parallel, which creates burnout and ships nothing. The roadmap must have strict phase sequencing with one primary focus per phase and explicit exit criteria before proceeding. The business is viable — research confirms the market is early, the tooling is mature, the patterns are repeatable — but execution discipline is the differentiator, not the technology.
+The highest-risk failure modes are behavioral, not technical. Launching all three platforms simultaneously (before any has traction) divides attention and produces no learning signal. Publishing content without a tested funnel path from video to booked discovery call means views accumulate and bookings do not. Automating posting before establishing voice produces off-brand content that algorithms penalize. The roadmap must enforce platform sequencing (YouTube first, then Twitter, then Instagram) and require a 4-video content buffer before any publishing begins.
 
 ---
 
 ## Key Findings
 
-### From STACK.md
+### Recommended Stack
 
-**Build Layer (delivering client automations):**
+The v2.0 stack adds five new capability areas on top of the unchanged v1.0 foundation. All new tools are free or near-free. The one deliberate paid exception is Buffer at ~$18/month for three-platform scheduling — this is the right tradeoff because it eliminates platform OAuth, rate limiting, and retry logic from the build.
 
-- **Claude Code + N8N self-hosted** — Core build stack. Claude Code for reasoning/orchestration, N8N for visual trigger-action pipelines. N8N self-hosted costs $5-20/mo VPS vs. Zapier's punishing per-step billing. Founder uses both daily.
-- **Twilio / Bland AI** — Telephony layer. Twilio for SMS/webhooks (pay-as-you-go, ~$0.008/SMS), Bland AI for voice qualification (~$0.09/min). No monthly minimums.
-- **Resend** — Transactional email from automations. Free tier: 3,000/mo. Simpler DX than SendGrid for this use case.
-- **Supabase** — State storage when N8N's built-in storage isn't enough. Free tier (500MB, 50K monthly actives) covers Phase 1.
-- **Google Calendar Appointment Scheduling** — Scheduling. Included in Google Workspace. No reason to pay for Calendly or Cal.com.
+**Core technologies:**
 
-**Business Ops Layer (running the agency):**
+- **Buffer Essentials** (~$18/mo, 3 channels): Multi-platform scheduling for Twitter, Instagram, YouTube Shorts — handles platform OAuth and scheduling queue so no custom API integration is needed at launch
+- **Supadata.ai (`@supadata/js`)** (100 free req/mo): Transcript extraction from YouTube videos — official SDK, timestamped output, works on videos without captions via AI transcription; do NOT use `youtube-transcript` npm (last published 2 years ago, unofficial API)
+- **fluent-ffmpeg + ffmpeg-static** (free): Video clip cutting for short-form content — industry standard Node.js FFmpeg wrapper with bundled binary; eliminates "FFmpeg not installed" setup friction; pairs with Claude Haiku to identify clip timestamps from transcripts
+- **Claude Haiku via `@anthropic-ai/sdk`** (~$0.01/generation): Content generation for Twitter threads, Instagram captions, YouTube Shorts scripts, and content idea synthesis — Haiku is sufficient for social captions; Sonnet is reserved for case study drafts (high-stakes sales assets)
+- **Commander.js v14.0.3** (free): Content idea CLI framework — industry standard, Node 20+ required, v15 arrives May 2026 so v14 is the stable choice now
+- **VidIQ browser extension** (free): Manual competitor research sessions for YouTube keyword data — used alongside YouTube Data API v3 (free, 10K units/day) for programmatic channel research
 
-| Tool                    | Cost         | Purpose                                                             |
-| ----------------------- | ------------ | ------------------------------------------------------------------- |
-| Framer                  | $10/mo       | Landing page — fastest time-to-live, polished defaults              |
-| Notion                  | Free         | CRM + client notes — unlimited pages, sufficient through 10 clients |
-| PandaDoc                | Free         | Contracts + e-signature — 5 docs/mo covers 2-3 closes/month         |
-| Stripe                  | 2.9% + $0.30 | Invoicing + recurring retainer billing — no monthly fee             |
-| Loom                    | Free         | Client delivery walkthroughs — unlimited 5-min videos               |
-| OBS + Descript + CapCut | Free         | Content production pipeline                                         |
+**Version requirements:**
 
-**Phase 1 total cost: ~$10-20/mo** (Framer Basic + VPS for N8N)
+- chalk v5+ and ora v8+ are ESM-only — require `"type": "module"` in package.json or pin to chalk v4 / ora v6 (last CJS-compatible versions)
+- Commander.js requires Node 20+
+- `@anthropic-ai/sdk` ^0.39.x requires Node 18+
 
-**Critical version notes:**
+**Critical flag:** Instagram Reels API support has conflicting documentation. Buffer handles this complexity at v2.0 — if building direct Instagram integration later, test Meta Graph API Reels support against a live Business account before committing to that path.
 
-- N8N Community (self-hosted) is free forever; cloud starts at €24/mo
-- Do NOT use Zapier for client automations — per-step billing makes it uneconomic at any meaningful scale
-- Do NOT use LM Studio for Claude Code agent workflows — no tool-calling support
+### Expected Features
 
-### From FEATURES.md
+Content marketing for a solo AI automation consultant targeting local service business owners (plumbers, dentists, realtors, contractors). The content engine has two jobs: audience building and lead conversion to discovery calls.
 
-**Client-facing automations — Must have (P1):**
+**Must have (table stakes for v2.0 launch):**
 
-1. **Lead follow-up automation** — The category-defining offering. New lead → AI qualify → book appointment → confirmation. 60-second response vs. 2-hour human callback is the core pitch.
-2. **Missed call text-back** — Low complexity, immediate visible win. Auto-SMS when a call goes unanswered. Often the first automation a client has ever seen.
-3. **Review request automation** — Post-job SMS/email requesting Google review. High impact on local SEO, low build complexity.
-4. **Appointment scheduling + reminders** — Reduces no-shows 30-50%. Pairs naturally with lead follow-up.
+- YouTube channel as content hub — video is the only format that demonstrates automation in action; business owners need to "see it before they believe it"
+- Twitter (@SameerAutomates) account setup — complete bio, pinned CTA tweet, booking link
+- Instagram (@SameerAutomates) account setup — complete bio, link-in-bio to booking, initial 3-post grid
+- CTA standardized across all platforms — one link, one ask, everywhere, always ("Book a free 15-min discovery call")
+- Case study #1 from existing work (Raj Photo Video or Studio S) — social proof that content must reference; "show me someone you've helped" is the #1 objection
+- Content idea CLI tool v1 — outputs 5 topic suggestions from competitor research; removes weekly writer's block
+- Repurposing pipeline (documented process, not automated at launch) — Twitter thread + Instagram carousel from each YouTube video
 
-**Client-facing automations — Should have (P2, after first client):**
+**Should have (v2.1 — after first month of posting):**
 
-- AI website chatbot — visible, tangible artifact on client's site
-- Quote/estimate follow-up — 3-touch sequence after estimate sent; high ROI for contractors
-- Post-job upsell/nurture — repeat business trigger
-- Weekly business health report — retainer justification artifact; reduces churn
+- Giveaway/free resource (one vertical-specific freebie — plumber or HVAC) — hyper-specific problem framing, not a generic eBook
+- Vertical-specific content track (home services series — 4 videos planned for plumbers/HVAC/contractors) — algorithms and buyers both reward specificity
+- Content-to-booking funnel tracking (UTM links, monthly booking source review) — know which video drove calls, not just views
+- Case studies #2 and #3 from existing work
 
-**Defer to v2+:**
+**Defer to v2.2+:**
 
-- Voice AI for inbound calls — HIGH complexity, HIGH wow-factor, HIGH delivery risk; requires established delivery track record first
-- Reputation monitoring — Medium complexity, medium priority
-- Paid advertising — only after messaging validated by organic traction
+- Email newsletter — only after 50+ YouTube subscribers and 500+ Twitter followers confirm content is landing
+- LinkedIn repurposing — only after Twitter/Instagram have 90 days of traction
+- Paid content amplification — only after identifying top 2-3 videos by booking conversion rate
+- TikTok — banned/restricted in US market; revisit if Reels are performing (content is already made)
 
-**Business infrastructure — Must have (P1):**
+**Anti-features (do not build):**
 
-Business name + domain → branded email → landing page → lead follow-up PoC → discovery call booking + script → proposal template → client agreement → invoicing. This is the exact sequence: nothing works without the items before it.
+- Fully automated posting with zero human review — platforms penalize scheduling tool patterns; engagement drops
+- Original content per platform — impossible for one person; creates burnout within 60 days
+- Elaborate analytics dashboard — track only three metrics: discovery calls booked, YouTube subscribers added monthly, Twitter follower count monthly
 
-**Anti-features (explicitly decline):**
+### Architecture Approach
 
-- Full website builds — wrong positioning, wrong skill set
-- Social media content creation — different business model
-- SEO services — not automation
-- Custom app development — explicitly out of scope
-- Performance-based pricing — asymmetric risk against the agency
-- Enterprise clients — long sales cycles, procurement, IT gatekeepers
+This is a content operations architecture, not a software architecture. The system has five layers: Content Ideation Engine → Content Production Engine → Repurposing Pipeline → Distribution Engine → Conversion Engine. All five feed into the existing Google Calendar booking system. The architecture lives in the existing `automation_consulting` repo as two new top-level directories: `content/` (all content assets) and `tools/` (local CLI scripts).
 
-### From ARCHITECTURE.md
+**Major components:**
 
-**The business is four linked engines:**
+1. **Content Ideation CLI** (`tools/idea-generator.js`) — YouTube Data API v3 + Claude Haiku synthesis; produces markdown briefs in `content/ideas/`; run on demand weekly; not a product, a local script
+2. **Repurposing Pipeline** (`tools/repurpose.js`) — YouTube URL → Supadata.ai transcript → Claude Haiku platform drafts → `content/queue/` for human review; this is the engine that multiplies one YouTube video into 5+ pieces
+3. **Multi-Platform Draft Queue** (`content/queue/`) — staging area between AI generation and human publishing; quality gate; nothing posts without founder review
+4. **Case Study Library** (`content/case-studies/`) — before/after documented automations; every demo build and client engagement produces a case study that feeds YouTube scripts, landing page social proof, Twitter threads, and outreach email proof points
+5. **Distribution (Buffer + manual)** — Buffer handles scheduling; founder writes and approves copy; posting is manual at launch; n8n → Twitter/Instagram API automation is Phase 3 of content, not Phase 1
 
-```
-Acquisition Engine (Content → Landing Page → Discovery Call)
-    ↓
-Sales Pipeline (Proposal → Contract → Deposit)
-    ↓
-Delivery Engine (Discovery → Build → Test → Deploy)
-    ↓
-Retainer Engine (Monitor → Iterate → Upsell)
-```
+**Key patterns:**
 
-Agency Operations runs in parallel, servicing all four.
+- YouTube as content hub, platforms as distribution channels — everything starts as a YouTube video; Twitter and Instagram receive platform-adapted repurposing, never original content
+- Human-in-the-loop at every publication step — AI generates drafts; founder publishes; automate posting only after 10+ posts reviewed without significant errors
+- Case study as cornerstone asset — every automation becomes a case study before the video is recorded; case study serves simultaneously as video script and social proof artifact
 
-**Five architectural patterns that must be followed:**
+### Critical Pitfalls
 
-1. **Content → Demonstration → Sale:** Every piece of content shows a specific automation working for a specific business type. Outcome-first, never process-first. If a developer watches it and thinks "I could build that," it is the wrong content.
+**Top 5 pitfalls for the v2.0 content engine (ranked by business-killing potential):**
 
-2. **Value Discovery Before Proposal:** No proposal is written until the client's pain is quantified in dollars. Formula: missed leads/month × LTV + manual hours/week × hourly cost. These numbers become the ROI case. Proposals without this are just quotes that compete on price.
+1. **Launching all three platforms simultaneously** — avoid by sequencing: YouTube first (sustainable workflow established), then Twitter (200+ engaged followers), then Instagram; each platform requires full attention to reach traction before adding the next
+2. **Publishing content without a tested funnel path** — map the full path (YouTube video → description link → landing page → booking page → calendar) and test it manually before the first video goes live; if a viewer cannot get from video to booked call in 2 steps, conversion dies
+3. **Content that attracts builders, not buyers** — "I built a Claude webhook handler" is builder content; "This plumbing company stopped losing 40% of weekend leads" is buyer content; the audience test before every piece: "Could a plumber understand this without technical context?"
+4. **Pivoting the YouTube channel without managing the algorithm reset** — existing photography subscribers will suppress automation content's CTR; test one automation video on the existing channel; if CTR is under 20% of photography average, start a fresh channel rather than fighting the algorithm
+5. **No content buffer — living episode to episode** — never publish until 4 videos are produced and scheduled; maintain a 2-week minimum buffer at all times; batching (film 4 videos in one session) is the mechanism; missing 2 consecutive weeks destroys algorithmic momentum
 
-3. **Build Once, Templatize, Reuse:** After every client build, extract the parameterized template. Client 2 should take 40% less time than Client 1. Client 5 should take 20% of Client 1's time. If this is not happening, the scaffold is broken.
+**Additional high-priority pitfalls:**
 
-4. **Agency Eats Its Own Dog Food:** Every automation sold to clients runs internally first. Lead follow-up PoC is built for the agency before any client. Produces authentic case studies, surfaces bugs before client deployment.
-
-5. **Retainer Scope Must Be Defined:** What is included (monitoring, alerts, X hours of tweaks/month) and what is not (new automation builds = new project). Vague retainer scope is the #1 cause of retainer unprofitability.
-
-**Build order (critical path):**
-
-```
-Phase 1: PoC + case study + landing page
-Phase 2: Sales pipeline (proposal + contract + pricing + content)
-Phase 3: Delivery infrastructure (discovery process + playbook + retainer scope)
-Phase 4: First client (execute full pipeline, extract first template)
-Phase 5: Agency operations automation (invoice reminders, client health checks)
-```
-
-**Scaling model:** Solo operator has capacity for ~9-12 clients before requiring a part-time contractor. Primary constraint at each stage:
-
-- 0-4 clients: Build time → resolved by template library
-- 5-8 clients: Operations overhead → resolved by internal automation
-- 9-12 clients: Inbound volume → resolved by content compounding
-- 12+ clients: Capacity → raise prices, narrow niche, or hire
-
-### From PITFALLS.md
-
-**Top 5 pitfalls (ranked by business-killing potential):**
-
-**1. Undercharging via hourly thinking (Phase 0 — must prevent before first sales call)**
-Never calculate what to charge by multiplying hours by a rate. Value formula: what is this automation worth per year × 10-20%. A lead follow-up recovering 5 leads/month at $3K LTV = $180K/year recovered. $2,500 is undercharging, not overcharging. Guilt about hourly math is the warning sign.
-
-**2. No recurring revenue — retainer as optional (Phase 0)**
-Retainer is not an upsell. It is a required line item in every proposal. "Build is $2,500. Monitoring + updates is $300/month starting at go-live." Never present it as optional. Dropping the retainer to close a deal creates feast-or-famine revenue that ends the business by month 6.
-
-**3. Overpromising AI capabilities (Phase 1 — PoC Build)**
-AI fails inconsistently, not predictably. Show the demo including failure modes. Build human fallback into every automation — when the AI is uncertain, route to human. Document expected success rates (e.g., "handles 85% of cases without human intervention"). Frame the retainer as the cost of monitoring and tuning.
-
-**4. No social proof before launch (Phase 1 — PoC Build)**
-The cold-start problem: no clients → no case study → no landing page credibility → no clients. Break the loop by building the PoC for the agency first and documenting it as the first case study. "I built this for my own agency" is valid social proof. Do not wait for a paid client.
-
-**5. Solo operator burnout from parallel tracks (All phases)**
-Sequence the phases; do not run them in parallel. One primary focus per phase. Clear exit criterion before proceeding. Batching similar work (all filming in one session, all coding in another) reduces cognitive switching cost.
-
-**Critical technical pitfalls:**
-
-- Use personal API keys for client automations — creates billing entanglement and security risk (never acceptable)
-- Skip error handling on AI responses — random production failures look like bugs to clients (never acceptable in live deployment)
-- Skip webhook signature validation — injection vector (never acceptable)
-- Build PoC as throwaway rather than scaffold — client 2 requires same effort as client 1 (acceptable only if rebuilt as scaffold before client work)
-- No client-readable logging — client calls you every time they want to know if it worked (never acceptable in production)
+- Case studies that show technology, not business outcomes — every case study must follow: Problem → Stakes (real numbers) → Solution (outcome terms, not tech terms) → Results (specific before/after metric); technology is a footnote
+- Giveaway content that attracts freebie-seekers, not clients — "Lead Follow-Up Audit: Is Your Business Losing Revenue?" qualifies buyers; "Top 10 Automation Tools" attracts DIYers; if a downloader thinks "I'll do this myself," wrong magnet
+- Optimizing for views instead of discovery calls — primary KPI is discovery calls booked; views are a lagging indicator, not a success metric; bias content calendar toward problem-specific content even if it gets fewer views
 
 ---
 
 ## Implications for Roadmap
 
-The research across all four files converges on a strict 5-phase sequence. Parallelizing phases is explicitly the burnout pitfall. Each phase has a clear exit criterion before proceeding.
+Based on combined research, the build order is determined by dependencies. YouTube must exist before the repurposing pipeline has anything to process. The funnel must be tested before content is published. Platform setup must happen before distribution exists. CLI tooling enables better content but is not a prerequisite for the first video.
 
-### Suggested Phase Structure
+### Phase 1: Platform Foundation + Funnel Setup
 
-**Phase 1: Foundation (Days 1-7)**
-_Rationale: Identity and pricing must exist before any selling or building. The contract template prevents scope creep and undercharging from day one. These are not exciting but they are blocking dependencies._
+**Rationale:** Distribution channels must exist before content is created, and the funnel must be tested before the first video goes live. These are infrastructure prerequisites that block everything downstream.
 
-Delivers:
+**Delivers:**
 
-- Business name, domain, branded email
-- Pricing framework (value-based, documented before first conversation)
-- Client agreement template (numbered deliverables, explicit exclusions, retainer as required line item)
-- Discovery call script (quantification framework)
-- Booking system (Google Calendar Appointment Scheduling, embedded + tested)
+- Twitter @SameerAutomates — complete profile, pinned CTA tweet, booking link in bio
+- Instagram @SameerAutomates — complete profile, link-in-bio to booking, initial 3-post grid
+- YouTube channel decision — migrate existing channel or start fresh (test with first automation video; if CTR is poor, fresh start)
+- YouTube Data API key + Google Cloud project setup
+- Full funnel path tested manually: YouTube video → description link → landing page → booking page → calendar (all steps working end-to-end, mobile-tested)
+- UTM link structure defined for all social bios and content links
+- `content/` directory structure created in repo
 
-Features from FEATURES.md: Business name + domain, branded email, invoicing (Stripe setup), discovery call script
-Pitfalls prevented: Undercharging, scope creep, no retainer revenue, skipping discovery
+**Features addressed:** Twitter setup (P1), Instagram setup (P1), CTA standardized (P1), funnel tracking setup
+**Pitfalls avoided:** Broken funnel at launch, missing UTM tracking from day one, channel algorithm reset surprise
 
-Exit criterion: Pricing document exists with value-based formula. Contract template enumerates deliverables AND explicit exclusions. Discovery script written and rehearsed.
-
-Research flag: Standard patterns — no phase research needed.
-
----
-
-**Phase 2: PoC + Case Study (Days 8-21)**
-_Rationale: The PoC is simultaneously the sales asset, the first case study, the content piece, and the proof-of-model. Nothing downstream works without it. Build it for the agency first, then extract the reusable scaffold._
-
-Delivers:
-
-- Lead follow-up automation PoC (new lead → AI qualify → book → confirm)
-- Missed call text-back (lower complexity, same pattern family)
-- Reusable scaffold architecture (parameterized, not client-specific)
-- Case study with before/after metrics (documented, publishable)
-- Loom video walkthrough of the PoC
-
-Features from FEATURES.md: Lead follow-up automation (P1), missed call text-back (P1), lead follow-up PoC demo asset
-Pitfalls prevented: No social proof at launch, non-reusable automation architecture, overpromising AI capabilities, building for maintainability of self not client
-
-Exit criterion: PoC is live and running for the agency's own inquiries. Case study has specific before/after numbers. Scaffold is documented and parameterized. Adversarial test cases pass. Client-readable log exists.
-
-Research flag: Phase-level research likely needed for N8N workflow patterns, Twilio/Google Calendar integration specifics.
+**Research flag:** Standard patterns — no phase research needed.
 
 ---
 
-**Phase 3: Sales Pipeline (Days 22-35)**
-_Rationale: The agency needs a professional, repeatable sales process before doing outreach or relying on content. Proposal template, 3-tier pricing, and landing page are the close mechanism. These come after PoC because landing page credibility requires a working demo._
+### Phase 2: Content Tooling + Ideation
 
-Delivers:
+**Rationale:** The content idea CLI must exist before filming, because without a topic research system, content drifts toward technical topics builders want instead of outcomes business owners need. Build tooling before producing content.
 
-- Landing page (Framer Basic — outcome language, PoC video, one CTA: book a call)
-- Proposal template (3-tier pricing: Starter $1,500 / Professional $2,500 / Growth $4,000)
-- Value discovery script (formalized from Phase 1 draft, ROI calculation built in)
-- Stripe invoicing (50% upfront, 50% delivery, retainer at go-live)
+**Delivers:**
 
-Features from FEATURES.md: Landing page, proposal template (3-tier), value discovery script, invoicing
-Pitfalls prevented: Selling before quantifying, no social proof at launch (landing page now has the case study)
+- `tools/idea-generator.js` — YouTube Data API competitor research + Claude Haiku synthesis → markdown briefs in `content/ideas/`
+- First 5-10 content ideas generated and reviewed by founder
+- `content/calendar.md` — first 4 weeks of content planned (not filmed, planned)
+- Case study #1 documented (Raj Photo Video or Studio S — existing work, before/after metrics)
+- `content/case-studies/` template defined and first entry written
 
-Exit criterion: Landing page is live with PoC video embedded. Proposal template produces an ROI calculation from discovery call numbers. Stripe is configured for deposit + balance + recurring retainer.
+**Features addressed:** Content idea CLI tool v1 (P1), case study #1 (P1), content calendar
+**Pitfalls avoided:** Content without a topic system drifting to builder content, case studies without before/after numbers, no social proof at launch
 
-Research flag: Standard patterns — no phase research needed.
-
----
-
-**Phase 4: Content Machine + First Client (Days 36-60)**
-_Rationale: Content and first client can overlap because content is filming and editing (async), while first client is active. Content targeted at buyers (business owners) not builders (developers). YouTube pivot is the long-term acquisition engine._
-
-Delivers:
-
-- YouTube channel pivot (photography → AI automation for business owners)
-- First 4 videos (PoC walkthrough case study, missed call text-back demo, one vertical-specific video, one "before/after" outcome video)
-- First paying client (full pipeline: discovery → proposal → contract → deposit → build → deploy → retainer)
-- First vertical template extracted from first client build
-- Client onboarding playbook (reusable from engagement 2 forward)
-
-Features from FEATURES.md: YouTube channel, case study, client onboarding playbook, review request automation (natural second deliverable), appointment scheduling automation
-Pitfalls prevented: Content targeting builders not buyers, skipping discovery, building custom non-reusable automation
-
-Exit criterion: 4 videos published. First client is live with active retainer. One vertical template in the templates/ repo. Lessons documented.
-
-Research flag: Content strategy research likely needed — buyer-focused framing for local service businesses is nuanced.
+**Research flag:** Standard patterns for CLI tooling. Content strategy framing (buyer-focused vs. builder-focused for local service businesses) may need a targeted research session before the idea generator prompts are written.
 
 ---
 
-**Phase 5: Agency Operations Automation (Days 61-90+)**
-_Rationale: At 2-3 clients, manual operations become the bottleneck. The agency automates its own operations using the same tools it sells. This produces authentic case studies and extends solo capacity to 8-12 clients without hiring._
+### Phase 3: Content Production + Buffer Setup
 
-Delivers:
+**Rationale:** With platform setup done and tooling built, produce the first video and establish the production workflow. Do not publish until a 4-video buffer exists. Buffer scheduling must be configured before distribution begins.
 
-- Automated internal invoice reminders (Stripe + N8N)
-- Client health check automation (monthly ping of automation endpoints → usage report → client email)
-- Content repurposing pipeline (YouTube → LinkedIn short clips)
-- Intake form → Notion CRM entry automation
-- Weekly business health report template (basis for retainer reporting to clients)
+**Delivers:**
 
-Features from FEATURES.md: Weekly business health report, monthly retainer reporting template, referral partner pipeline
-Pitfalls prevented: Solo operator burnout, no internal operations automation, retainer without scope definition
+- First YouTube video produced (demo automation, outcome-focused, non-technical framing)
+- Production SOP documented — outline template, recording checklist, editing checklist, publish checklist (tested with first 2 videos)
+- 4-video content buffer produced and scheduled before first publish
+- Buffer Essentials account configured (Twitter + Instagram + YouTube Shorts channels connected)
+- `tools/repurpose.js` — YouTube URL → Supadata.ai transcript → Claude Haiku platform drafts → `content/queue/`
+- Manual repurposing of first 2 videos before automation is trusted — defines the spec for the tool
 
-Exit criterion: Agency invoicing is fully automated. Monthly client check-in email is automated. Content repurposing requires zero manual effort per video.
+**Features addressed:** First YouTube video (P1), repurposing pipeline (P1), 4-video buffer before publishing
+**Pitfalls avoided:** No content buffer (episode-to-episode risk), building repurpose tool before content exists to define the spec, publishing before funnel is tested (done in Phase 1)
 
-Research flag: Standard patterns — agency eats its own dog food; builds already proven with clients.
+**Research flag:** FFmpeg video clipping and 9:16 crop for Instagram Reels needs implementation research. Supadata.ai API integration is straightforward (official SDK, 100 free req). Buffer API vs. UI workflow needs investigation — determine whether Buffer's API is needed or if the UI queue is sufficient at this volume.
 
 ---
 
-### Phase Summary
+### Phase 4: Distribution + Giveaway + Vertical Content Track
 
-| Phase | Name                   | Duration | Exit Criterion                                                  | Research Flag             |
-| ----- | ---------------------- | -------- | --------------------------------------------------------------- | ------------------------- |
-| 1     | Foundation             | ~7 days  | Pricing + contract + discovery script exist                     | No research needed        |
-| 2     | PoC + Case Study       | ~14 days | PoC live, case study published, scaffold documented             | Research Phase 2          |
-| 3     | Sales Pipeline         | ~14 days | Landing page live, Stripe configured, proposal template working | No research needed        |
-| 4     | Content + First Client | ~25 days | 4 videos + first retainer client + first vertical template      | Research content strategy |
-| 5     | Agency Ops Automation  | Ongoing  | Internal ops fully automated                                    | No research needed        |
+**Rationale:** With 4 videos buffered and the repurposing pipeline working, begin distribution. Add the giveaway as a trust accelerator. Start the home services vertical content track for algorithmic specificity.
+
+**Delivers:**
+
+- First 4 YouTube videos published (consistent schedule, repurposed to Twitter + Instagram each)
+- Giveaway/free resource (one vertical-specific freebie — plumbers/HVAC) hosted on GitHub Pages or as inline tweet carousel
+- Vertical content track (home services series — 4 videos planned: missed call text-back, appointment reminder, quote follow-up, review request — all framed for plumbers/HVAC/contractors)
+- Case studies #2 and #3 documented from existing work
+- Landing page updated with case study metrics and social proof from first video performance
+
+**Features addressed:** Giveaway (P2), vertical content track (P2), case studies #2 and #3 (P2), consistent brand + funnel
+**Pitfalls avoided:** Giveaway that attracts freebie-seekers (design for buyer qualification), content without vertical specificity (algorithms and buyers reward specificity), case studies showing technology not outcomes
+
+**Research flag:** Giveaway format research — what specific format converts for plumber/HVAC buyer audience vs. DIY researcher. Vertical-specific content framing (plumber pain points, language, and outcome metrics) may need a targeted research session.
+
+---
+
+### Phase 5: Funnel Optimization + Automation of Distribution
+
+**Rationale:** After 8+ weeks of consistent posting with human review, voice is established. Automate distribution. Optimize the funnel based on booking conversion data. Add n8n triggers for the pipeline.
+
+**Delivers:**
+
+- Content-to-booking funnel analysis (UTM data: which video drove calls, which platform converts)
+- n8n → Twitter API automation (after 10+ posts reviewed without significant errors)
+- n8n → Instagram API automation (after voice established)
+- YouTube channel YouTube trigger → pipeline kick-off (new upload → transcript → drafts auto-queued)
+- Funnel A/B optimization (CTA placement, description link copy, landing page headline) based on real booking data
+- Email list initiation (once YouTube has 50+ subscribers and Twitter has 500+ followers)
+
+**Features addressed:** Content-to-booking funnel tracking (P2), pipeline automation, email list (v2.2)
+**Pitfalls avoided:** Automating posting before establishing voice (critical — this comes last, not first), optimizing for views instead of discovery calls, no UTM tracking
+
+**Research flag:** Instagram Graph API direct integration (bypass Buffer) requires testing against live Meta Business account given conflicting Reels documentation. Twitter API v2 direct integration for n8n is well-documented — standard patterns apply.
+
+---
+
+### Phase Ordering Rationale
+
+- **Platform setup before content** — nowhere to post without accounts; funnel must work before views are generated
+- **Tooling before filming** — topic research system prevents builder-focused content drift; case study template defines the video script format
+- **Buffer before publish** — 4-video buffer eliminates episode-to-episode pressure; production SOP must be proven before the schedule is public commitment
+- **Manual before automated** — voice is established by reviewing 10+ posts; AI draft quality is calibrated before automation removes the quality gate
+- **YouTube before Twitter/Instagram** — YouTube is the hardest and the hub; get sustainable workflow on YouTube before adding platform complexity
+
+### Research Flags
+
+Needs deeper research before or during planning:
+
+- **Phase 2:** Buyer-focused content framing for local service business owners — what hooks, thumbnails, and language converts plumbers/dentists/realtors vs. repels them
+- **Phase 3:** FFmpeg 9:16 crop implementation for Instagram Reels; Buffer API vs. UI workflow decision
+- **Phase 4:** Giveaway format that qualifies buyers vs. attracts DIYers for home services verticals
+- **Phase 5:** Instagram Graph API Reels support — must test against live Meta Business account before building direct integration
+
+Standard patterns (skip research-phase):
+
+- **Phase 1:** Platform account setup, YouTube Data API configuration, UTM link structure — all well-documented
+- **Phase 2:** Commander.js CLI, Supadata.ai SDK, Claude Haiku API — official documentation sufficient
+- **Phase 5:** Twitter API v2 + n8n integration — established pattern with existing n8n workflow templates
 
 ---
 
 ## Confidence Assessment
 
-| Area         | Confidence | Notes                                                                                                                                                                                            |
-| ------------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Stack        | HIGH       | All tools verified against 2026 pricing sources. N8N, Framer, Stripe, Google Calendar Appointment Scheduling all confirmed. Alternatives table well-reasoned.                                    |
-| Features     | HIGH       | Market patterns well-established across multiple agency operator sources. Client-facing automation priorities consistent across research.                                                        |
-| Architecture | MEDIUM     | Business model patterns consistent across sources; specific time allocation ratios (hours per phase, client capacity numbers) are estimated, not benchmarked. Core structural patterns reliable. |
-| Pitfalls     | HIGH       | Multiple independent sources converging on same failure modes. Scope creep, undercharging, and burnout are universal across agency models.                                                       |
-| Overall      | HIGH       | Research is internally consistent. All four files point to the same phase structure and the same critical dependencies. No contradictions found.                                                 |
+| Area         | Confidence | Notes                                                                                                                                                                                                                                                                              |
+| ------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Stack        | HIGH       | All tools verified against 2026 pricing and documentation. Supadata.ai SDK confirmed. Buffer pricing confirmed. Commander.js v14.0.3 verified. One known uncertainty: Instagram Reels API support — conflicting docs; Buffer mitigates this at launch.                             |
+| Features     | HIGH       | Content marketing funnel patterns well-established across multiple 2026 sources. Solo consultant B2B content patterns consistent across research. Anti-feature decisions (TikTok, LinkedIn, email newsletter timing) are well-reasoned and consistent with PROJECT.md constraints. |
+| Architecture | MEDIUM     | Component patterns verified via n8n workflow catalog and multiple practitioner sources. Manual vs. automated breakdown is well-reasoned. Specific time estimates (how long to establish voice before automating) are judgment calls, not benchmarked data.                         |
+| Pitfalls     | HIGH       | Pitfalls verified across multiple independent creator and agency operator sources. Platform launch sequencing, content buffer requirements, and builder vs. buyer content distinction are consistent across sources with high convergence.                                         |
+
+**Overall confidence:** HIGH
+
+### Gaps to Address
+
+1. **Instagram Reels API — verify before Phase 5 direct integration**: Some 2026 sources confirm Reels publishing via Meta Graph API; others indicate it is not supported. Buffer handles this at launch. Before building direct integration in Phase 5, test against a live Meta Business account.
+
+2. **YouTube channel migration decision is time-sensitive**: The existing photography channel may be a liability for automation content due to algorithm suppression from unengaged subscribers. This decision (migrate vs. fresh start) must be made before any automation videos are produced. Test one video; measure CTR vs. photography average.
+
+3. **Giveaway format qualification not empirically validated**: Research recommends buyer-qualifying giveaways over broad-appeal freebies. The specific format (audit vs. checklist vs. template) that converts plumber/HVAC owners to discovery call bookings vs. DIY researchers has not been tested. Treat Phase 4 giveaway as an experiment with defined success criteria (downloads → booking rate).
+
+4. **Buffer Essentials API access vs. UI queue**: At this volume (3-5 posts/week), the Buffer UI queue may be sufficient without API integration. Before Phase 3, confirm whether n8n → Buffer API integration is needed or whether manual Buffer queue management is the right workflow for a solo operator.
+
+5. **Content calendar commitment level before habit is proven**: PITFALLS.md warns against committing to a public publishing schedule before the production SOP is proven at that cadence. Phase 3 must include at least 2 test production cycles before any public posting cadence is announced.
 
 ---
 
-## Gaps to Address
+## Sources
 
-**1. Vertical-specific discovery scripts not yet defined**
-Research establishes the pattern (value discovery script, quantify lead loss × LTV) but does not include vertical-specific scripts for plumbers vs. dentists vs. realtors. These vary enough (scheduling vs. recall campaigns vs. showing follow-ups) that a generic script will miss the mark in early calls. Address in Phase 1 by choosing one vertical first.
+### Primary (HIGH confidence — official docs and verified 2026 sources)
 
-**2. Legal/data handling requirements not researched**
-PITFALLS.md flags data processing agreements (DPA) for client data under CCPA and similar, but no dedicated legal research was done. For Phase 1-2, this is acceptable (start with implied consent, minimal data retention). Before Phase 4 (first real client), confirm minimum legal requirements for the founder's state.
+- Buffer Pricing 2026 (support.buffer.com) — Essentials plan pricing, platform support confirmed
+- Commander.js v14.0.3 (npmjs.com + GitHub releases) — version confirmed, Node 20+ requirement
+- Supadata.ai YouTube Transcript API (supadata.ai + npmjs.com) — 100 free requests, official SDK confirmed
+- YouTube Data API v3 Quota documentation (Google) — 10,000 units/day free confirmed
+- n8n workflow catalog (n8n.io) — YouTube → multi-platform content generator patterns confirmed production-ready
+- fluent-ffmpeg (npmjs.com) — active maintenance confirmed
+- X/Twitter API free tier (getlate.dev) — 1,500 writes/month, write-only, $0 confirmed
 
-**3. Content strategy framing not validated**
-Research recommends buyer-focused content ("what it does for your business") over builder-focused content. The specific framing, hooks, and thumbnail strategies for local service business owners have not been validated. Recommend a Phase 4 research cycle on content strategy for non-technical B2B audiences.
+### Secondary (MEDIUM confidence — community consensus, multiple sources)
 
-**4. N8N self-hosting infrastructure details underspecified**
-STACK.md recommends a $5-20/mo VPS but does not specify Railway vs. DigitalOcean vs. Render vs. other. Railway free tier spins down (Render-like behavior) — STACK.md actually flags this. Before Phase 2 build, confirm N8N hosting setup and persistence configuration.
+- Instagram Graph API Reels publishing (business-automated.medium.com + elfsight.com) — conflicting; needs live testing
+- VidIQ vs TubeBuddy 2026 (linodash.com) — VidIQ wins for AI features on free plan
+- Content repurposing 1:10 formula (newzenler.com + mixcord.co + influenceflow.io) — consistent across creator marketing sources
+- B2B Content Marketing 2026 (sproutsocial.com) — Sprout Social official research
+- YouTube B2B Marketing Best Practices 2026 (leanlabs.com) — MEDIUM confidence; consistent with other B2B content sources
+- Kaizen AI Consulting: Social Media Content Pipeline with N8N (kaizenaiconsulting.com) — MEDIUM; single practitioner source
 
-**5. Pricing ceiling not validated**
-Research supports $1,500-3,000 build fee + $200-500/mo retainer as the initial pricing range. There is no market research validating what local service businesses in the founder's market actually accept vs. resist. Phase 1 pricing framework should be treated as a starting hypothesis, not a locked answer.
+### Tertiary (LOW confidence — single source or inference)
 
----
-
-## Aggregated Sources
-
-**High confidence (direct, verified 2026 sources):**
-
-- n8n vs Make vs Zapier 2026 — Digidop
-- Framer Pricing 2026 — letaiworkforme.com
-- Stripe Invoicing pricing — Stripe Support
-- Google Calendar Appointment Scheduling (included in Google Workspace — replaced Cal.com)
-- Loom Pricing 2026 — supademo.com
-- Resend vs SendGrid 2026 — sequenzy.com
-- Bland AI Review 2026 — lindy.ai
-- Boterra: 8 Mistakes Starting an AI Agency
-- AgentiveAI: Solo Founder Blueprint
-- DEV Community: Scope Creep Statistics
-- Digital Agency Network: AI Agency Pricing Guide
-
-**Medium confidence (current but single-source or synthesized patterns):**
-
-- AI Workflow Automation Agency: The Definitive 2026 Guide — heyreach.io
-- Starting an AI Automation Agency: Workflow Partner Model — moxo.com
-- AI Automation Agency Pricing 2026: CFO's Guide — optimizewithsanwal.com
-- Voiceflow: How To Start An AI Automation Agency in 7 Days
-- Digital Applied: AI Service Proposals, Client Onboarding Playbook
-- Function Point: How to Start an AI Automation Agency
-
-**Lower confidence (pattern-level, not benchmarked):**
-
-- AI Agents for Freelancers & Solopreneurs 2026 — botborne.com (scale benchmarks, WebSearch only)
-- Medium: Scaling an AI Automation Agency to $10K/Month (single source, anecdotal trajectory)
+- google-trends-api npm for trending query research — LOW; Google blocks unofficial scrapers intermittently; not recommended
+- Lead Magnets for Consultants (sarahmoon.net) — single source; treat as directional only
+- CTA statistics 2026 (wisernotify.com) — LOW; needs primary source verification
 
 ---
 
-_Synthesized from: STACK.md, FEATURES.md, ARCHITECTURE.md, PITFALLS.md_
-_Synthesized by: gsd-synthesizer_
-_Date: 2026-02-27_
+_Research completed: 2026-03-01_
+_Supersedes: SUMMARY.md dated 2026-02-27 (v1.0 business infrastructure research)_
+_This SUMMARY.md covers v2.0 Content Marketing Engine milestone_
+_Ready for roadmap: yes_

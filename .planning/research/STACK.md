@@ -1,289 +1,399 @@
 # Stack Research
 
-**Domain:** Solo AI Automation Agency — Services Business (not a software product)
-**Researched:** 2026-02-27
-**Confidence:** HIGH (all tools verified via web search against 2026 sources)
+**Domain:** Content Marketing Engine — Solo AI Automation Agency (v2.0 milestone)
+**Researched:** 2026-03-01
+**Confidence:** MEDIUM-HIGH (most tools verified via official docs and 2026 sources; Instagram API Reels support has conflicting documentation requiring direct Meta verification)
 
 ---
 
-## Overview
+## Context: What This Milestone Adds
 
-This is a services business, not a software product. The stack is organized into two layers:
+The existing v1.0 stack (static HTML, GitHub Pages, Google Calendar, N8N, Claude Code) handles the agency's operational core. This milestone adds five new capability areas:
 
-1. **Build layer** — Tools used to construct automations FOR clients (Claude Code, N8N, MCPs, APIs)
-2. **Business ops layer** — Tools to run the agency itself (landing page, CRM, contracts, payments, comms)
+1. **Content idea research CLI** — Competitor research + keyword research + topic suggestions
+2. **Transcript extraction** — Pull text from existing YouTube videos for repurposing
+3. **Video clipping** — Cut long-form YouTube demos into short-form clips
+4. **Text content generation** — Twitter threads, Instagram captions, case study drafts from transcripts
+5. **Multi-platform posting/scheduling** — Distribute content to Twitter, Instagram, YouTube
 
-The founding constraint is bootstrapped/solo. Every recommendation below prioritizes free tiers with clear upgrade paths.
-
----
-
-## 1. Automation Build Layer
-
-These are the tools used to build the actual automation products delivered to clients.
-
-### Core Technologies
-
-| Technology        | Version / Tier                | Purpose                                                                                | Why This Over Alternatives                                                                                                                                                  |
-| ----------------- | ----------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Claude Code       | Latest (Anthropic API)        | Primary orchestration brain — writes scripts, coordinates MCP tools, reasons over data | Founder uses daily; best-in-class reasoning for multi-step workflow logic; native MCP support                                                                               |
-| N8N               | Community (self-hosted, free) | Visual workflow engine for trigger-action pipelines                                    | Per-execution billing (not per-step like Zapier); 400+ native integrations; self-hosted = $0 + ~$5-20/mo VPS; AI-native nodes (LangChain built-in); founder already uses it |
-| MCP Servers       | Current ecosystem             | Extend Claude Code with tool-use (browser, databases, APIs, file system)               | Native to Claude; eliminates boilerplate glue code; playwright, filesystem, GitHub, Slack MCPs all production-ready                                                         |
-| Twilio / Bland AI | Pay-as-you-go                 | SMS, voice calls, and AI-powered phone qualification for lead follow-up                | Twilio = raw telephony infrastructure with webhooks; Bland AI = AI voice agents for outbound qualification at ~$0.09/min                                                    |
-| Resend            | Free (3K emails/mo, 100/day)  | Transactional email delivery from automations                                          | Modern developer-first API; generous free tier; built by React Email creators; simpler DX than SendGrid                                                                     |
-
-### Supporting Libraries / Services
-
-| Tool                                   | Tier                                 | Purpose                                                                                   | When to Use                                                                                        |
-| -------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| Playwright MCP                         | Free (open source)                   | Browser automation — scraping, form fills, web-based workflows                            | When a client's system has no API and requires UI interaction                                      |
-| Supabase                               | Free (500MB DB, 50K monthly actives) | Lightweight database for storing automation state, leads, logs                            | When N8N's built-in data storage isn't enough; avoid full RDS overhead                             |
-| OpenAI / Claude API                    | Pay-as-you-go                        | LLM calls inside automations (classification, summarization, drafting)                    | For automations requiring reasoning; Claude Haiku for cost-sensitive high-volume tasks             |
-| Google Calendar Appointment Scheduling | Included in Google Workspace         | Scheduling / appointment booking embedded in automations                                  | Lead follow-up PoC needs a booking link; already included in Google Workspace — no additional cost |
-| Webhooks (native)                      | Free                                 | Trigger N8N workflows from external events (form submissions, CRM changes, Stripe events) | Standard glue between systems; no cost                                                             |
-
-### Development Tools
-
-| Tool                      | Purpose                                                                | Notes                                                                                                                                     |
-| ------------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Claude Code (CLI)         | Write automation scripts, debug N8N expressions, scaffold integrations | Already in daily use; use Haiku for routine tasks, Sonnet/Opus for complex orchestration                                                  |
-| Docker / Railway / Render | Host self-hosted N8N                                                   | Railway free tier ($5/mo hobby plan works for low volume); Render free tier spins down — use Railway or a $5 DigitalOcean droplet instead |
-| GitHub                    | Version control for automation scripts and N8N workflow exports        | Free; export N8N workflows as JSON and commit them                                                                                        |
-| Ngrok                     | Local tunnel for webhook testing                                       | Free tier sufficient for development; 1 static domain on paid ($8/mo)                                                                     |
+The constraint: **solo operator, bootstrapped**. Every tool must have a free or near-free tier. Custom code over SaaS subscriptions where Claude Code + Node.js can do the job.
 
 ---
 
-## 2. Landing Page / Website
+## Stack by Capability Area
 
-### Recommended: Framer
+### 1. Content Idea Research CLI
 
-| Attribute  | Detail                                                                                                                                                                 |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tool       | Framer                                                                                                                                                                 |
-| Pricing    | Free (watermark), Basic $10/mo, Pro $30/mo                                                                                                                             |
-| Free tier  | Full feature access with Framer branding watermark — fine for early validation                                                                                         |
-| Start tier | Basic ($10/mo) for a live site without watermark                                                                                                                       |
-| Why        | Fastest time-to-live for polished landing pages; AI-assisted layout generation; built-in hosting; no code required beyond copy; large library of SaaS/agency templates |
-| Confidence | HIGH                                                                                                                                                                   |
+**Verdict: Build a custom Node.js CLI with Commander.js. Drive research via VidIQ (free browser extension) + Claude API for synthesis.**
 
-**Why NOT Webflow:** Overkill for a single landing page. Webflow's power is its CMS and multi-page scalability — neither is needed here. Webflow starts at $18/mo vs Framer Basic at $10/mo, and Webflow's editor is slower to iterate in.
+Do not buy a SaaS research tool. The CLI is a thin orchestration layer that calls APIs and formats output for fast decision-making. Build this, don't buy it.
 
-**Why NOT WordPress / Squarespace:** Too much maintenance overhead for a solo operator. Framer ships faster with better default design quality.
+#### Core Technologies
 
-**Upgrade path:** Stay on Framer Basic ($10/mo) until the business is generating revenue. Pro ($30/mo) adds advanced analytics and staging environments — not needed in phase 1.
+| Technology           | Version          | Purpose                                                 | Why Recommended                                                                                                                                                      |
+| -------------------- | ---------------- | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Commander.js         | 14.0.3           | CLI framework for the content idea tool                 | Industry standard, actively maintained, v15 not until May 2026, requires Node 20+. Full-featured option parsing, help text, subcommands. No learning curve overhead. |
+| Claude API (Haiku)   | claude-haiku-3-5 | Synthesize research findings into topic recommendations | Cheapest capable model for this use case. Input: competitor topics, trending queries, niche context. Output: ranked topic ideas with hooks.                          |
+| Anthropic SDK (Node) | ^0.39.x          | Claude API calls from Node.js CLI                       | Official SDK. Handles auth, retries, streaming.                                                                                                                      |
 
----
+#### Supporting Libraries for CLI Research
 
-## 3. CRM / Client Management
+| Library | Version | Purpose                                             | When to Use                                                      |
+| ------- | ------- | --------------------------------------------------- | ---------------------------------------------------------------- |
+| axios   | ^1.9.x  | HTTP client for keyword/trend API calls             | Standard, well-maintained. For any REST API calls the CLI makes. |
+| chalk   | ^5.x    | Terminal output formatting (colored output, tables) | ESM-only in v5. Makes CLI output scannable at a glance.          |
+| ora     | ^8.x    | Terminal spinner for async operations               | Shows progress during API calls. ESM-only in v8+.                |
+| dotenv  | ^16.x   | Load API keys from .env file                        | Standard for CLI tools with secrets.                             |
 
-### Recommended: Notion (free tier)
+#### External Research Sources (Free)
 
-| Attribute  | Detail                                                                                                                                                                                                                         |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Tool       | Notion                                                                                                                                                                                                                         |
-| Pricing    | Free (unlimited pages, 10 guests); Plus $10/seat/mo                                                                                                                                                                            |
-| Free tier  | Generous — unlimited pages, 7-day history, 10 guests                                                                                                                                                                           |
-| Why        | Solo operator with 2-5 clients doesn't need a dedicated CRM; Notion's free CRM templates cover pipeline tracking, contact notes, project status, and contract links in one workspace; you're already likely using it for notes |
-| Confidence | HIGH for phase 1                                                                                                                                                                                                               |
+| Source                                                          | Purpose                                                                                  | Cost                          | Confidence                                                                                                  |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| VidIQ (browser extension, free plan)                            | YouTube keyword scores, video scores, competitor channel tracking, "Daily Ideas" feature | Free                          | MEDIUM — free plan gives basic keyword research and idea generation; competitor tracking is limited on free |
+| YouTube Data API v3                                             | Channel search, trending videos in a category, video metadata                            | Free (10,000 quota units/day) | HIGH — official Google API                                                                                  |
+| Google Trends (unofficial scraping via `google-trends-api` npm) | Trending queries in "business automation" topics                                         | Free                          | LOW — unofficial; Google blocks scrapers intermittently                                                     |
 
-**What to track in Notion:** Prospect pipeline (lead → discovery → proposal → close → active → churned), per-client pages with scope, retainer status, next action, contact info, and contract link.
-
-**When to upgrade:** When you hit 10+ active clients or need automated pipeline updates (e.g., N8N writing deal status back to Notion via API). Airtable is a natural upgrade for data-heavy CRM needs — its relational database model handles complex linked records better than Notion.
-
-**Why NOT HubSpot Free:** HubSpot's free CRM is a lead magnet for a $20K+/year marketing suite. It works, but the UI pushes you toward upsells constantly, and it's more CRM than needed for 5 clients.
-
-**Why NOT Airtable Free:** 1,000 record limit per base and only 100 automation runs/month on free tier makes it less practical than Notion for early stage.
+**Recommended approach:** VidIQ browser extension for manual competitor research sessions + YouTube Data API v3 for programmatic channel/video data + Claude Haiku to synthesize into topic briefs. The CLI runs the YouTube API + Claude synthesis; VidIQ is used manually when doing competitor research sessions.
 
 ---
 
-## 4. Contract / Proposal Tools
+### 2. YouTube Transcript Extraction
 
-### Recommended: PandaDoc (free plan) + Plain Google Docs backup
+**Verdict: Use Supadata.ai API (100 free requests, then pay-as-you-go). Do NOT use the `youtube-transcript` npm package — last published 2 years ago and uses unofficial API that breaks without notice.**
 
-| Attribute  | Detail                                                                                                                                                                                                          |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tool       | PandaDoc                                                                                                                                                                                                        |
-| Pricing    | Free (5 documents/mo, e-signature, payment collection); Essentials $19/mo                                                                                                                                       |
-| Free tier  | 5 documents/month with e-signature and payment collection                                                                                                                                                       |
-| Why        | 5 docs/mo is enough for a solo agency doing 1-2 closes per month; built-in e-signature is legally binding (ESIGN Act compliant); 1000+ templates including freelance contracts; payment collection at signature |
-| Confidence | HIGH for phase 1                                                                                                                                                                                                |
+#### Recommended
 
-**Usage pattern:** Build a reusable automation services agreement template (scope, deliverables, payment terms, IP, liability, exit clause, retainer) in PandaDoc. Duplicate and customize per engagement. Send, get signed, collect 50% upfront at signature.
+| Technology         | Version | Purpose                                                             | Why                                                                                                                                                                                                                                      |
+| ------------------ | ------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@supadata/js` SDK | latest  | Extract transcripts from YouTube, TikTok, Instagram, Twitter videos | 100 free requests/month, no credit card required. Returns timestamped transcripts. Supports videos without captions via AI transcription. Official TypeScript/JavaScript SDK. Works as a managed API so no brittle scraping to maintain. |
 
-**When to upgrade:** PandaDoc Essentials at $19/mo unlocks unlimited documents, CRM integrations, and analytics. Upgrade when you're closing more than 5 deals/month.
+#### Alternative (self-hosted, no API cost)
 
-**Why NOT DocuSign:** More expensive ($25-40/mo), capped envelope counts, designed for enterprise compliance. Overkill for a solo agency.
+| Technology          | Version | Purpose                                                            | Why                                                                                                                                                                                                     |
+| ------------------- | ------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nodejs-whisper`    | ^0.1.x  | Local Whisper transcription via Node.js bindings (C++ CPU version) | $0 per request, fully offline. Tradeoff: slower (CPU-only), requires FFmpeg, requires model download (~1.5GB for medium model). Use this if video volume grows enough to make Supadata cost meaningful. |
+| `yt-dlp` (CLI tool) | latest  | Download YouTube audio for local Whisper transcription             | More reliable than youtube-dl. Used to extract audio before passing to Whisper.                                                                                                                         |
 
-**Why NOT HelloSign (Dropbox Sign):** $15-25/mo with no free tier for production use. PandaDoc free tier is strictly better for low volume.
+#### What NOT to Use
 
----
-
-## 5. Payment Processing
-
-### Recommended: Stripe
-
-| Attribute  | Detail                                                                                                                                                                                                                                                    |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tool       | Stripe                                                                                                                                                                                                                                                    |
-| Pricing    | No monthly fee; 2.9% + $0.30 per transaction (US cards); 0.4% per paid invoice on Invoicing Starter                                                                                                                                                       |
-| Free tier  | No monthly cost — pay only on transactions                                                                                                                                                                                                                |
-| Why        | Best-in-class API; handles one-time invoices (setup fee) AND recurring subscriptions (retainer) in one platform; Stripe Invoicing sends professional invoices with direct payment links; supports ACH bank transfers at 0.8% (cheaper for large invoices) |
-| Confidence | HIGH                                                                                                                                                                                                                                                      |
-
-**Billing pattern for this business:**
-
-- Project kick-off: Stripe Invoice for 50% of build fee (one-time, e.g. $750 on a $1,500 build)
-- Delivery: Stripe Invoice for remaining 50%
-- Go-live: Stripe Subscription for monthly retainer ($200-500/mo, auto-recurring)
-
-**ACH bank transfer:** Enable this for build fees over $500 — drops fee from 2.9% to 0.8%, saving $21 on a $1,500 invoice. Clients need a US bank account.
-
-**Why NOT PayPal:** PayPal works but its brand signals "individual freelancer" rather than "professional agency." Stripe invoices look more professional, support subscriptions natively, and have no added monthly fees for features Stripe includes by default.
+| Avoid                               | Why                                                                                                                                                            | Use Instead                        |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `youtube-transcript` npm package    | Last published 2 years ago; uses unofficial YouTube API that breaks without notice                                                                             | `@supadata/js`                     |
+| `youtube-caption-extractor`         | Unofficial API; no active maintenance guarantee                                                                                                                | `@supadata/js`                     |
+| YouTube Data API v3 for transcripts | YouTube's official API does not return transcript text — only caption track metadata and timed text files in raw XML format, which requires additional parsing | `@supadata/js`                     |
+| OpenAI Whisper API                  | $0.006/minute of audio — fine for occasional use, but adds up for a pipeline processing multiple videos per week                                               | Local `nodejs-whisper` or Supadata |
 
 ---
 
-## 6. Content Creation (YouTube + Social)
+### 3. Video Clipping (Long-form → Short-form)
 
-The channel pivot is from photography to AI automation for business owners. Target audience is non-technical — content must show outcomes, not code.
+**Verdict: FFmpeg via `fluent-ffmpeg` + `ffmpeg-static` for clip cutting. Use Claude Haiku to identify clip timestamps from the transcript. Do NOT use Opus Clip or similar SaaS — they charge $30-100+/month for what a 50-line script does.**
 
-### Core Stack
+#### Core Technologies
 
-| Tool                          | Tier                                           | Purpose                                                          | Why                                                                                                                             |
-| ----------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Descript                      | Free (60 min/mo, watermarked) → Creator $15/mo | Screen recording + talking head editing via transcript           | Edit video by deleting text, not scrubbing timelines; ideal for screen-recording-heavy automation demos; AI filler-word removal |
-| CapCut                        | Free (mobile + desktop)                        | Short-form clips (YouTube Shorts, LinkedIn, Instagram Reels)     | Best-in-class for vertical short-form; auto-captions with 98%+ accuracy; free; US-available as of 2026                          |
-| OBS Studio                    | Free                                           | Clean screen recordings with system audio                        | Industry standard for free screen capture; N8N workflow demos, Claude Code sessions                                             |
-| Canva                         | Free → Pro $15/mo                              | Thumbnails, social graphics, client presentation decks           | Fast thumbnail creation; free tier is sufficient for phase 1                                                                    |
-| Claude (via API or claude.ai) | Pay-as-you-go / $20 Pro subscription           | Script drafting, title/description optimization, caption writing | Fastest workflow for content ideation and scripting                                                                             |
+| Technology         | Version          | Purpose                                                      | Why                                                                                                                          |
+| ------------------ | ---------------- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `fluent-ffmpeg`    | ^2.1.x           | Node.js wrapper for FFmpeg video/audio processing            | Industry standard. Fluent API for constructing FFmpeg commands. Active maintenance.                                          |
+| `ffmpeg-static`    | ^5.x             | Provides static FFmpeg binaries — no system install required | Eliminates "FFmpeg not installed" setup friction. Works on macOS, Linux, Windows. Required for cross-machine portability.    |
+| Claude API (Haiku) | claude-haiku-3-5 | Identify clip-worthy timestamps from transcript text         | Given a transcript, ask Claude to identify the 3-5 best 60-90 second clip segments with timestamps. Returns structured JSON. |
 
-### Recommended Content Workflow
+#### Supporting Libraries
 
-1. Record automation demo with OBS (screen capture)
-2. Record talking head commentary (iPhone or webcam)
-3. Edit full video in Descript (transcript-based)
-4. Export Shorts clips in CapCut with auto-captions
-5. Design thumbnail in Canva
-6. Publish to YouTube with Claude-drafted title/description/tags
+| Library                        | Version | Purpose                          | When to Use                                                                                       |
+| ------------------------------ | ------- | -------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `@ffmpeg/ffmpeg` (WebAssembly) | —       | Alternative browser-based FFmpeg | NOT recommended for this use case — WASM is slower than native binary. Use fluent-ffmpeg instead. |
 
-**When to upgrade Descript:** Creator plan ($15/mo) removes watermark and adds 4K export. Upgrade when publishing consistently (2+ videos/month).
+#### What NOT to Use
+
+| Avoid                                                | Why                                                                                                                   | Use Instead                                |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| OpusClip / Vizard.ai / quso.ai                       | SaaS tools charging $30-100+/month. Solve a problem that 50 lines of Node + FFmpeg + Claude solves at near-zero cost. | fluent-ffmpeg + ffmpeg-static + Claude API |
+| DaVinci Resolve / Premiere for programmatic clipping | GUI tools, not scriptable in a pipeline                                                                               | FFmpeg                                     |
+| `@ffmpeg/ffmpeg` WASM                                | 3-5x slower than native binary for long video processing                                                              | fluent-ffmpeg + ffmpeg-static              |
+
+#### Video Format Notes
+
+- Instagram requires 9:16 vertical aspect ratio for Reels. Use FFmpeg crop filter: `scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920`.
+- Twitter/X accepts landscape and square. No crop needed from standard YouTube 16:9.
+- YouTube Shorts requires 9:16 vertical, under 60 seconds.
+- Caption overlay for short clips: use FFmpeg `drawtext` filter or CapCut (manual, free) for final caption polish.
 
 ---
 
-## 7. Communication (Client Delivery)
+### 4. Text Content Generation (Twitter Threads, Instagram Captions, Case Studies)
 
-### Recommended: Loom (free) + Email (Gmail)
+**Verdict: Claude Haiku via Anthropic SDK with a prompt template library. No separate content generation SaaS needed. Cost is negligible at this volume.**
 
-| Tool                  | Tier                                                                                    | Purpose                                                  | Why                                                                                                                                                                    |
-| --------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Loom                  | Free (25 videos, 5 min each) → Starter free (unlimited shorter clips) → Business $15/mo | Async video updates for clients                          | Send video walkthroughs of automation builds; clients can watch on their own time; no scheduling required; better than written documentation for non-technical clients |
-| Gmail                 | Free                                                                                    | Primary client communication                             | Universal, no client friction                                                                                                                                          |
-| Notion (shared pages) | Free                                                                                    | Client-facing project pages with status, links, and docs | Share a read-only page with the client showing deliverables, timeline, and retainer scope                                                                              |
+#### Core Technologies
 
-**Loom free tier note:** Free plan allows unlimited videos up to 5 minutes each as of 2026. Sufficient for "here's what I built and how it works" walkthroughs.
+| Technology          | Version          | Purpose                                                                               | Why                                                                                                                                                          |
+| ------------------- | ---------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Claude API (Haiku)  | claude-haiku-3-5 | Generate Twitter threads, Instagram captions, case study first drafts from transcript | Haiku input/output costs are $0.80/$4.00 per million tokens. A 10,000-token transcript → 500-token Twitter thread costs ~$0.01. Volume is not a cost driver. |
+| `@anthropic-ai/sdk` | ^0.39.x          | Official SDK for Claude API calls                                                     | Handles retries, streaming, auth.                                                                                                                            |
 
-**Why NOT Slack:** Adds friction for non-technical local business owners who don't use Slack. Email + Loom is zero-friction.
+#### Prompt Template Structure
 
-**Why NOT a client portal app:** Overkill for phase 1. A shared Notion page achieves 90% of what a client portal does at $0.
+Keep prompt templates as plain `.txt` or `.md` files in a `prompts/` directory. Version-control them. This is the asset that drives quality — better prompts beat bigger models.
+
+Example template structure:
+
+```
+prompts/
+  twitter-thread.md      # System prompt for Twitter thread generation
+  instagram-caption.md   # System prompt for Instagram captions
+  case-study-draft.md    # System prompt for case study narrative
+  youtube-description.md # System prompt for video descriptions + tags
+```
+
+#### What NOT to Use
+
+| Avoid                                    | Why                                                                                                        | Use Instead           |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------- |
+| Jasper / Copy.ai / Writesonic            | $49-99/mo subscription for what Claude Haiku does at $0.01/generation                                      | Anthropic SDK + Haiku |
+| GPT-4o for content generation            | Higher cost than Haiku for this use case; Haiku quality is sufficient for social captions and first drafts | Claude Haiku          |
+| Claude Opus / Sonnet for bulk generation | Overkill for Twitter threads and captions; reserve Sonnet for complex reasoning tasks                      | Claude Haiku          |
+
+---
+
+### 5. Multi-Platform Posting and Scheduling
+
+**Verdict: Use Buffer Essentials (~$6/channel/month) for scheduling Twitter, Instagram, and YouTube Shorts. This is the correct tradeoff: direct API integration for Twitter and Instagram costs development time and ongoing maintenance that Buffer eliminates.**
+
+This is the most architecturally complex area. Here is the honest analysis:
+
+#### Platform API Reality Check (2026)
+
+| Platform  | API Posting Status                                                                                       | Cost                            | Key Constraint                                                                                                                                    |
+| --------- | -------------------------------------------------------------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Twitter/X | Free tier: 1,500 posts/month, write-only (no reads)                                                      | $0/month                        | No read access on free tier (can't monitor mentions, track engagement). For posting-only: free works.                                             |
+| Instagram | Business/Creator account required. Personal accounts dropped in Dec 2024. Must connect to Facebook Page. | Requires Facebook Developer App | Reels publishing via API has conflicting official documentation — some sources say supported since mid-2022, others say not supported. Must test. |
+| YouTube   | YouTube Data API v3 for metadata management. Video uploads require OAuth.                                | Free (quota-limited)            | Video upload requires OAuth; metadata (title, description, tags) is straightforward.                                                              |
+
+#### Recommended Approach: Buffer as Scheduling Layer
+
+| Technology        | Cost                                | Purpose                                                                            | Why                                                                                                                                                                                                                                                           |
+| ----------------- | ----------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Buffer Essentials | $5-6/channel/month (billed monthly) | Schedule Twitter threads, Instagram posts/Reels, YouTube Shorts from one dashboard | Handles platform OAuth, rate limits, retry logic, scheduling queue. Supports: Twitter threads (compose multi-post), Instagram Reels, YouTube Shorts. Free plan: 3 channels, 10 queued posts max — sufficient for testing but too limiting for production use. |
+
+**Buffer free plan is only enough for validation, not production.** At $5-6/channel/month for 3 platforms (Twitter + Instagram + YouTube Shorts), cost is $15-18/month. This is the right tradeoff for a solo operator: eliminate platform API maintenance, get scheduling queue, get basic analytics.
+
+#### Alternative: Direct API Integration (Only If Buffer Proves Limiting)
+
+If Buffer adds friction (e.g., doesn't support a specific format, changes pricing, or lacks automation triggers), build direct API integration:
+
+| Library                                           | Version | Purpose                                                       | When to Use                                                                                                                                          |
+| ------------------------------------------------- | ------- | ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `twitter-api-v2`                                  | ^1.18.x | Post tweets and threads directly to X API                     | If Buffer is eliminated. Free tier of X API: 1,500 writes/month, no reads.                                                                           |
+| Instagram Graph API (via `node-fetch` or `axios`) | —       | Publish feed posts and Reels to Instagram Business account    | Only if Buffer proves insufficient. Requires Facebook App + Business/Creator account. Reels support needs direct testing against Meta's current API. |
+| YouTube Data API v3 (via `googleapis` npm)        | ^144.x  | Update video metadata (title, description, tags) after upload | Useful even with Buffer — Buffer handles scheduling but YouTube's metadata optimization (tags, chapters) still benefits from direct API access.      |
+
+#### What NOT to Use
+
+| Avoid                                                      | Why                                                                                                                                                                               | Use Instead             |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| Hootsuite                                                  | $199/month starting in 2026 — no free plan. Egregiously overpriced for a solo operator.                                                                                           | Buffer                  |
+| Typefully                                                  | Twitter/LinkedIn only. Does not support Instagram.                                                                                                                                | Buffer (multi-platform) |
+| HubSpot Social                                             | Part of a $800-1,500/month marketing suite. Not remotely appropriate here.                                                                                                        | Buffer                  |
+| Sprout Social                                              | $249+/month. Enterprise tool.                                                                                                                                                     | Buffer                  |
+| Custom direct Twitter/Instagram API integration from Day 1 | Adds 2-3 days of OAuth implementation, error handling, retry logic, rate limit management. Buffer handles all of this. Build direct integration only if Buffer proves inadequate. | Buffer Essentials       |
+| TikTok                                                     | Out of scope per PROJECT.md (banned/restricted in US market, uncertain future).                                                                                                   | —                       |
+
+---
+
+### 6. Case Study Creation Workflow
+
+**Verdict: No new tools needed. Claude API + a Markdown template + Notion (already in stack). The workflow is: interview notes → Claude draft → human edit → publish to Notion (shareable page) or as PDF from Notion.**
+
+| Technology          | Version           | Purpose                                                     | Why                                                                                                                                          |
+| ------------------- | ----------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude API (Sonnet) | claude-sonnet-4-5 | Draft case study narrative from interview notes and metrics | Sonnet-level quality warranted here — case studies are high-stakes sales assets, not just social captions. Use Sonnet, not Haiku.            |
+| Notion              | Free tier         | Store and share case studies                                | Already in stack. A shared Notion page with a case study is linkable, shareable, and looks professional. Export to PDF for email attachment. |
+| Canva               | Free tier         | Case study visual header / branded layout if needed         | Already in stack for thumbnails.                                                                                                             |
+
+**No separate case study software needed.** Tools like Testimonial.to or Trustmary are SaaS subscription services for what Notion + Claude does at $0.
+
+---
+
+### 7. Giveaway/Free Value Distribution
+
+**Verdict: No new tools. GitHub (already in stack for version control) hosts downloadable templates/checklists. Buffer distributes announcement posts. Google Drive or Notion for the actual giveaway assets. Zero additional cost.**
+
+| Technology   | Purpose                                                                          | Why                                                                            |
+| ------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| GitHub Pages | Host downloadable giveaway assets (PDF checklists, automation templates as JSON) | Already in stack. A direct download link from GitHub is reliable and free.     |
+| Canva        | Design giveaway content (checklist PDFs, tip cards)                              | Already in stack. Sufficient on free plan for this volume.                     |
+| Buffer       | Schedule and post giveaway announcement across Twitter + Instagram               | Same scheduling tool as content distribution. No additional tool.              |
+| Google Drive | Share larger giveaway files (video walkthroughs, N8N workflow exports)           | Free. Already in Google Workspace. Better than GitHub for binary files >100MB. |
+
+---
+
+## Complete Stack Summary (Additions to v1.0)
+
+### New Tools — Confirmed Required
+
+| Tool                          | Cost                           | Purpose                                                        | Confidence                                                          |
+| ----------------------------- | ------------------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Buffer Essentials             | ~$18/month (3 channels)        | Multi-platform scheduling: Twitter, Instagram, YouTube Shorts  | HIGH — verified 2026 pricing; supports all three platforms          |
+| Supadata.ai                   | Free (100 req) → pay-as-you-go | YouTube transcript extraction                                  | HIGH — official SDK, 100 free requests/month                        |
+| Commander.js                  | Free (npm)                     | Content idea CLI framework                                     | HIGH — v14.0.3 verified; stable until May 2026                      |
+| fluent-ffmpeg + ffmpeg-static | Free (npm)                     | Video clip cutting                                             | HIGH — industry standard; widely used                               |
+| @anthropic-ai/sdk             | Pay-as-you-go                  | Claude API for generation, synthesis, timestamp identification | HIGH — official SDK                                                 |
+| VidIQ (browser extension)     | Free                           | YouTube keyword research, competitor tracking                  | MEDIUM — free plan limited; sufficient for manual research sessions |
+
+### New Tools — Optional / Phase 2
+
+| Tool                               | Cost                 | Purpose                              | Condition                                                         |
+| ---------------------------------- | -------------------- | ------------------------------------ | ----------------------------------------------------------------- |
+| `twitter-api-v2` npm               | Free                 | Direct X API posting (bypass Buffer) | Only if Buffer proves limiting or eliminated                      |
+| `nodejs-whisper`                   | Free (local compute) | Local Whisper transcription          | If Supadata costs exceed $20/month                                |
+| YouTube Data API v3 (`googleapis`) | Free                 | YouTube metadata management          | If publishing pipeline requires metadata automation beyond Buffer |
+| `google-trends-api` npm            | Free                 | Trending query research in CLI       | LOW confidence — Google blocks unofficial scrapers intermittently |
+
+### Existing Stack (v1.0) — No Changes
+
+| Tool                       | Role                                                                  |
+| -------------------------- | --------------------------------------------------------------------- |
+| Static HTML + Tailwind CSS | Landing page — no changes needed                                      |
+| GitHub Pages               | Hosting — no changes needed                                           |
+| Claude Code (daily use)    | Orchestration tool for building all of this                           |
+| N8N (self-hosted)          | Can be used to trigger repurposing pipeline from YouTube upload event |
+| Notion                     | Case studies, CRM — no changes needed                                 |
+| Canva                      | Thumbnails, graphics — no changes needed                              |
+| Descript + CapCut          | Video editing — no changes needed                                     |
+| OBS Studio                 | Screen recording — no changes needed                                  |
+| Google Calendar            | Booking — no changes needed                                           |
+
+---
+
+## Installation
+
+```bash
+# CLI tool for content idea research
+npm install commander chalk ora dotenv axios @anthropic-ai/sdk
+
+# Transcript extraction
+npm install @supadata/js
+
+# Video clipping pipeline
+npm install fluent-ffmpeg ffmpeg-static
+
+# YouTube metadata management (optional, Phase 2)
+npm install googleapis
+
+# Twitter direct API (optional, Phase 2 — only if bypassing Buffer)
+npm install twitter-api-v2
+```
+
+---
+
+## Architecture: How These Tools Connect
+
+```
+[YouTube Video Published]
+        |
+        v
+[Supadata.ai API] → transcript text (timestamped)
+        |
+        +──────────────────────────────────+
+        |                                  |
+        v                                  v
+[Claude Haiku]                    [Claude Haiku]
+"Identify 5 best clip segments"   "Generate Twitter thread"
+"with start/end timestamps"       "Generate Instagram caption"
+        |                         "Generate YouTube description"
+        v                                  |
+[fluent-ffmpeg + ffmpeg-static]            v
+Generate 5 short clips (9:16)     [Buffer API / Buffer UI]
+        |                         Schedule posts to Twitter,
+        v                         Instagram, YouTube Shorts
+[Manual review in CapCut]
+Add captions, final polish
+        |
+        v
+[Buffer / direct platform upload]
+```
+
+**N8N integration point:** N8N can monitor a YouTube channel for new uploads (YouTube trigger node), fire a webhook to a Node.js script that kicks off the above pipeline. This closes the loop from "video published" to "social posts queued" with minimal manual steps.
 
 ---
 
 ## Alternatives Considered
 
-| Recommended                            | Alternative                         | When to Use Alternative                                                                                                                                                            |
-| -------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| N8N (self-hosted)                      | Make.com ($9/mo)                    | If you don't want to manage a VPS; Make is simpler to maintain than self-hosted N8N and cheaper than N8N cloud                                                                     |
-| N8N (self-hosted)                      | Zapier                              | Only if a client integration exists only in Zapier's 8,000-app catalog; never use Zapier for your own production automations — per-task billing is economically punishing at scale |
-| Framer                                 | Carrd ($9/yr)                       | If you want the absolute cheapest possible landing page with zero design effort; Carrd is functional but looks dated                                                               |
-| Framer                                 | Webflow ($18/mo)                    | If you need a multi-page site with a real CMS and blog; not needed in phase 1                                                                                                      |
-| Notion (CRM)                           | Airtable ($20/mo)                   | When you need relational data across multiple clients, linked automations status, and formula fields; upgrade when Notion feels limiting                                           |
-| PandaDoc (free)                        | Google Docs + Docusign              | If PandaDoc's 5 doc/mo limit is hit before upgrading; functional fallback but loses integrated payment                                                                             |
-| Stripe                                 | PayPal                              | Only if a specific client cannot pay by card and insists on PayPal; accept it, but default to Stripe                                                                               |
-| Descript                               | DaVinci Resolve (free)              | If producing cinematic, high-production-value content; DaVinci is overkill for screen recording-heavy automation demos                                                             |
-| Google Calendar Appointment Scheduling | Calendly ($10/mo) or Cal.com (free) | Already included in Google Workspace — no reason to pay for or set up a separate scheduling tool                                                                                   |
+| Recommended                 | Alternative                  | When to Use Alternative                                                                                                                                                                                                                                 |
+| --------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Buffer Essentials ($18/mo)  | Direct Twitter/Instagram API | Only if Buffer becomes unavailable, raises prices significantly, or lacks a feature needed. Direct API requires OAuth implementation + retry handling — not worth it for initial build.                                                                 |
+| Supadata.ai                 | `nodejs-whisper` (local)     | If processing >200 videos/month, local Whisper becomes cheaper. Supadata is the right default for low volume.                                                                                                                                           |
+| Claude Haiku for generation | GPT-4o Mini                  | Similar capability and cost. Claude Haiku chosen because the existing stack is Claude-native — one API key, one SDK, one billing account.                                                                                                               |
+| Commander.js CLI            | N8N workflow UI              | N8N provides a visual interface but lacks the interactive REPL-like experience useful for research sessions. CLI is faster for ad-hoc research; N8N better for scheduled automation. Both are valid — use CLI for research, N8N for automated pipeline. |
+| VidIQ free (browser ext)    | TubeBuddy free               | VidIQ wins for AI features and Daily Ideas on free plan. TubeBuddy wins for A/B testing (irrelevant at this stage). VidIQ for research.                                                                                                                 |
+| Canva free                  | Figma                        | Canva is faster for non-designer workflows. Figma adds complexity for what is essentially template-filling.                                                                                                                                             |
 
 ---
 
 ## What NOT to Use
 
-| Avoid                                             | Why                                                                                                                                                                  | Use Instead                                          |
-| ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| Zapier (for building client automations)          | Per-task billing: each step in a workflow = 1 task; a branching 10-step workflow = 10 tasks per run; costs spiral at scale; not appropriate for reselling to clients | N8N (per-execution billing, not per-step)            |
-| WordPress                                         | Maintenance overhead (plugins, updates, security); too slow to iterate a landing page; hosting costs money                                                           | Framer                                               |
-| HubSpot (full suite)                              | Free CRM is a funnel into $800-1,500/mo marketing products; upsell friction is constant; unnecessary at 5 clients                                                    | Notion free for phase 1                              |
-| Airtable free tier                                | 1,000 record limit and 100 automation runs/month makes it unusable as client automation infrastructure                                                               | Supabase free tier for data storage needs            |
-| DocuSign                                          | $25-40/mo with per-envelope overages; designed for enterprise compliance; expensive for low volume                                                                   | PandaDoc free tier (5 docs/mo, e-signature included) |
-| Webflow                                           | $18/mo starting point; CMS and multi-page power is overkill for a single agency landing page; slower iteration                                                       | Framer Basic ($10/mo)                                |
-| LM Studio for tool-calling                        | No tool-calling support through Anthropic endpoint — Claude Code cannot use it for agent workflows                                                                   | Ollama with Qwen3-Coder or Anthropic API             |
-| No-code automation builders (Automate.io, Pabbly) | Smaller app catalogs, weaker AI integration, less community support; N8N and Make dominate this space                                                                | N8N                                                  |
+| Avoid                                        | Why                                                                                                                         | Use Instead                                  |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| OpusClip / Vizard.ai / quso.ai               | $30-100+/month SaaS for video repurposing. Solves the same problem as 50 lines of Node + FFmpeg + Claude at ~$0/month.      | fluent-ffmpeg + ffmpeg-static + Claude Haiku |
+| Hootsuite                                    | Eliminated free plan in 2025. Now $199/month minimum. Egregiously overpriced for solo operator.                             | Buffer Essentials                            |
+| Typefully                                    | Twitter/LinkedIn only — no Instagram support. Not suitable as the sole scheduling tool when Instagram is a target platform. | Buffer (covers all three platforms)          |
+| `youtube-transcript` npm                     | Last published 2 years ago. Uses unofficial API. Will break without warning.                                                | `@supadata/js`                               |
+| Jasper / Copy.ai / Writesonic                | $49-99/month subscription for content generation. Claude Haiku does the same at $0.01/generation.                           | Claude Haiku via Anthropic SDK               |
+| Zapier for pipeline automation               | Per-step billing. A repurposing pipeline with 10 steps = 10 task credits per video. Costs spiral.                           | N8N (per-execution) or custom Node.js script |
+| TikTok                                       | US market regulatory uncertainty (ban/restrictions in 2025-2026). Not worth platform investment until stability confirmed.  | Focus on Twitter, Instagram, YouTube         |
+| Notion AI or similar for case study drafting | $10-20/month add-on for a feature Claude API already provides at lower cost with better control over prompts.               | Claude Sonnet via API                        |
 
 ---
 
-## Stack Patterns by Phase
+## Version Compatibility Notes
 
-**Phase 1 (Bootstrapped, 0-3 clients):**
+| Package           | Version | Node.js Requirement | Notes                                                                                         |
+| ----------------- | ------- | ------------------- | --------------------------------------------------------------------------------------------- |
+| Commander.js      | 14.0.3  | Node 20+            | v15 arriving May 2026; v14 in maintenance with security updates to May 2027. Safe to use now. |
+| chalk             | ^5.x    | Node 12.17+ (ESM)   | ESM-only; configure package.json with `"type": "module"` or use dynamic import.               |
+| ora               | ^8.x    | Node 18+ (ESM)      | Same ESM-only consideration as chalk.                                                         |
+| fluent-ffmpeg     | ^2.1.x  | Any current Node    | Requires FFmpeg binary; `ffmpeg-static` provides this — pair them always.                     |
+| @anthropic-ai/sdk | ^0.39.x | Node 18+            | Check Anthropic changelog for model deprecations. Haiku 3.5 is current as of March 2026.      |
+| twitter-api-v2    | ^1.18.x | Node 14+            | If used: X API free tier is write-only (1,500 posts/month). No read access on free plan.      |
 
-- Build: Claude Code + N8N self-hosted + Twilio/Bland AI (pay-as-you-go) + Resend free
-- Website: Framer Basic ($10/mo)
-- CRM: Notion free
-- Contracts: PandaDoc free
-- Payments: Stripe (no monthly fee)
-- Content: OBS + Descript free + CapCut free + Canva free
-- Comms: Loom free + Gmail
-- Total monthly cost: ~$10-20/mo (Framer + VPS for N8N)
-
-**Phase 2 (3-8 clients, revenue generating):**
-
-- Upgrade Descript to Creator ($15/mo) for watermark-free exports
-- Upgrade PandaDoc to Essentials ($19/mo) for unlimited docs + CRM integration
-- Consider N8N cloud Starter (€24/mo) to eliminate VPS maintenance
-- Consider Notion Plus ($10/mo) for version history
-- Total monthly cost: ~$75-100/mo
-
-**Phase 3 (8+ clients, repeatable delivery):**
-
-- Migrate from Notion CRM to Airtable (better relational data for client/automation tracking)
-- Consider HubSpot CRM free layer + pipeline for systematic sales
-- Possibly white-label client delivery with a proper client portal (ClientVenue, ManyRequests)
+**ESM Note:** Using chalk v5+ and ora v8+ in a CLI requires the project be an ESM module (`"type": "module"` in package.json). If this conflicts with other CommonJS dependencies, use the `esm` interop package or pin chalk to v4.x and ora to v6.x (last CJS-compatible versions).
 
 ---
 
-## Version / Pricing Compatibility Notes
+## Critical Flags for Implementation
 
-| Tool                                   | Free Tier                                 | Entry Paid                                | Notes                                                                          |
-| -------------------------------------- | ----------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------ |
-| N8N                                    | Community (self-hosted, unlimited)        | Starter €24/mo cloud                      | Self-hosted Community is free forever; infrastructure cost is $5-20/mo VPS     |
-| Framer                                 | Free with watermark                       | Basic $10/mo                              | Basic ($10) is the minimum for a live professional site; no watermark          |
-| Notion                                 | Unlimited pages, 10 guests, 7-day history | Plus $10/seat/mo                          | Free tier is genuinely sufficient for solo CRM through phase 1                 |
-| PandaDoc                               | 5 docs/mo, e-sign, payment collection     | Essentials $19/mo                         | 5 doc/month covers 2-3 closes/month; upgrade triggers when pipeline scales     |
-| Stripe                                 | No monthly fee                            | Invoicing Starter: 0.4% per paid invoice  | ACH (0.8%) is cheaper than card (2.9%) for large invoices — enable it          |
-| Google Calendar Appointment Scheduling | Included in Google Workspace              | N/A (already paying for Google Workspace) | Included with Google Workspace — no additional cost for appointment scheduling |
-| Descript                               | 60 min/mo, 720p, watermarked              | Creator $15/mo                            | Free tier fine for testing; Creator tier needed for production publishing      |
-| Loom                                   | Unlimited videos up to 5 min each (free)  | Business $15/user/mo                      | Free tier sufficient for client delivery walkthroughs                          |
-| Resend                                 | 3,000 emails/mo, 100/day (free)           | Pro $20/mo (50K emails)                   | Free tier covers all automation emails at early stage                          |
-| Bland AI                               | Pay-as-you-go (~$0.09/min)                | Enterprise custom                         | No minimum monthly; only pay for actual calls made                             |
-| Twilio                                 | $0 (pay-as-you-go)                        | No tiers; usage-based                     | $15 credit on signup; SMS ~$0.0079/msg; good for lead follow-up SMS            |
+**Instagram Reels API — Verify Before Building**
+There is conflicting documentation on whether Instagram Graph API supports Reels publishing. Some sources (mid-2022+) say Reels are supported; others say the API only handles feed images and videos. Before building a direct Reels posting script, test the current Meta Graph API documentation and verify with a test Business account. Buffer handles this complexity — if using Buffer, this flag is irrelevant.
+
+**X API Free Tier Is Write-Only**
+The free tier allows posting (1,500 posts/month) but provides no read access. This means the content idea research CLI cannot use the X API to track competitor posts, search hashtags, or analyze engagement. VidIQ (for YouTube research) + manual Twitter browsing is the research layer. Direct X API is only needed for posting automation, not research.
+
+**`ffmpeg-static` Binary Size**
+The `ffmpeg-static` package downloads a ~100MB binary at install time. Factor this into repository decisions. Do not commit the binary. Add `node_modules/` to `.gitignore` (standard practice). CI/CD environments need `npm install` before the pipeline runs.
 
 ---
 
 ## Sources
 
-- [n8n vs Make vs Zapier 2026 Comparison — Digidop](https://www.digidop.com/blog/n8n-vs-make-vs-zapier) — N8N pricing, execution model, self-hosting
-- [n8n Cloud Pricing 2026 — ConnectSafely.ai](https://connectsafely.ai/articles/n8n-cloud-pricing-guide) — Cloud tier pricing verified
-- [How to self-host n8n 2026 — Northflank](https://northflank.com/blog/how-to-self-host-n8n-setup-architecture-and-pricing-guide) — Infrastructure cost confirmed $5-20/mo
-- [Framer Pricing 2026 — letaiworkforme.com](https://letaiworkforme.com/blog/framer-pricing-2026) — Tier breakdown and agency considerations
-- [Webflow vs Framer 2026 — gemeosagency.com](https://www.gemeosagency.com/en/blog/webflow-vs-framer-which-no-code-tool-to-choose) — Comparison rationale
-- [Best CRMs for agencies 2026 — Softr](https://www.softr.io/blog/best-crm-for-agencies) — CRM landscape for solo/small agencies
-- [Notion vs Airtable 2026 — thetoolchief.com](https://thetoolchief.com/comparisons/airtable-vs-notion/) — Free tier comparison verified
-- [PandaDoc Review 2026 — Docupilot](https://www.docupilot.com/blog/pandadoc-pricing) — Free plan limitations confirmed
-- [Stripe vs PayPal 2026 — hellobonsai.com](https://www.hellobonsai.com/blog/stripe-vs-paypal) — Fee structures verified
-- [Stripe Invoicing pricing — Stripe Support](https://support.stripe.com/questions/stripe-invoicing-pricing) — 0.4% invoicing fee confirmed
-- [CapCut vs Descript 2026 — fahimai.com](https://www.fahimai.com/capcut-vs-descript) — Tool capabilities and free tier comparison
-- [Loom Pricing 2026 — supademo.com](https://supademo.com/blog/loom-pricing) — Free tier (5 min videos, unlimited) confirmed
-- Google Calendar Appointment Scheduling — included in Google Workspace; confirmed available at calendar.google.com under Calendar Settings → Appointment schedules
-- [Resend vs SendGrid 2026 — sequenzy.com](https://www.sequenzy.com/versus/resend-vs-sendgrid) — Free tier (3K/mo, 100/day) verified
-- [Bland AI Review 2026 — lindy.ai](https://www.lindy.ai/blog/bland-ai-review) — Pricing (~$0.09/min) and integration verified
-- [Claude Code MCP Docs — Anthropic](https://code.claude.com/docs/en/mcp) — MCP ecosystem current state
+- [X/Twitter API Pricing 2026: GetLate.dev](https://getlate.dev/blog/twitter-api-pricing) — Free tier confirmed: 1,500 writes/month, write-only, $0
+- [Instagram Graph API Developer Guide 2026 — Elfsight](https://elfsight.com/blog/instagram-graph-api-complete-developer-guide-for-2026/) — Account type requirements, rate limits (200 req/hr), publishing workflow
+- [Instagram Reels via API — business-automated.medium.com](https://business-automated.medium.com/posting-instagram-reels-via-instagram-facebook-graph-api-9ea192d54dfa) — Reels publishing via Graph API documented (conflicting with some other sources — verify with current Meta docs)
+- [Buffer Pricing 2026 — support.buffer.com](https://support.buffer.com/article/595-features-available-on-each-buffer-plan) — Essentials plan pricing, platform support confirmed
+- [Buffer Free Plan Limits 2026 — buffer.com](https://buffer.com/pricing) — 3 channels, 10 posts per channel queue limit
+- [Commander.js v14.0.3 — npmjs.com](https://www.npmjs.com/package/commander) — Version confirmed, Node 20+ requirement
+- [Commander.js Releases — GitHub](https://github.com/tj/commander.js/releases) — v15 planned May 2026; v14 in maintenance after
+- [fluent-ffmpeg — npmjs.com](https://www.npmjs.com/package/fluent-ffmpeg) — Active maintenance confirmed
+- [youtube-transcript npm — intel.aikido.dev](https://intel.aikido.dev/packages/npm/youtube-transcript) — Last published 2 years ago; do not use
+- [Supadata.ai YouTube Transcript API 2026 — supadata.ai](https://supadata.ai/youtube-transcript-api) — 100 free requests, official SDK available
+- [Supadata JS SDK — npmjs.com](https://www.npmjs.com/package/@supadata/js) — Official TypeScript/JavaScript SDK confirmed
+- [VidIQ vs TubeBuddy 2026 — linodash.com](https://linodash.com/vidiq-vs-tubebuddy/) — VidIQ wins for AI features, free plan includes Daily Ideas
+- [OpenAI Whisper for Developers 2026 — assemblyai.com](https://www.assemblyai.com/blog/openai-whisper-developers-choosing-api-local-server-side-transcription) — Local vs API tradeoffs documented
+- [n8n YouTube + Social Repurposing Templates — n8n.io](https://n8n.io/workflows/5292-summarize-youtube-videos-from-transcript-for-social-media/) — N8N workflow templates for transcript → social posts confirmed
+- [Typefully Pricing 2026 — socialrails.com](https://socialrails.com/blog/typefully-pricing) — Confirmed no Instagram support; Twitter/LinkedIn/Bluesky only
+- [Buffer vs Typefully 2026 — socialrails.com](https://socialrails.com/blog/buffer-vs-typefully) — Buffer wins for multi-platform; Typefully for Twitter-only experience
+- [twitter-api-v2 npm — npmjs.com](https://www.npmjs.com/package/twitter-api-v2) — Strongly typed, full-featured X API client for Node.js
 
 ---
 
-_Stack research for: Solo AI Automation Agency — services business targeting local service businesses_
-_Researched: 2026-02-27_
+_Stack research for: Content Marketing Engine — v2.0 milestone additions for Solo AI Automation Agency_
+_Researched: 2026-03-01_
