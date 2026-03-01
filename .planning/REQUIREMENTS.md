@@ -11,6 +11,12 @@
 
 Requirements for the content marketing system. Each maps to roadmap phases.
 
+### Market Research
+
+- [ ] **RSCH-01**: Reddit API and social listening research identifies real small business pain points that require custom automation solutions (not off-the-shelf software)
+- [ ] **RSCH-02**: Research output produces a ranked list of 10-15 content topics grounded in actual business owner complaints, with proof each problem requires custom automation
+- [ ] **RSCH-03**: Competitor content audit identifies what automation consultants are posting, what's getting engagement, and where gaps exist for buyer-focused content
+
 ### Platform Setup
 
 - [ ] **PLAT-01**: Twitter account @SameerAutomates has complete profile, pinned CTA tweet, and booking link in bio
@@ -136,29 +142,29 @@ Deferred to v2.1+ or later milestones.
 
 ## Traceability
 
-| Requirement | Phase | Status  |
-| ----------- | ----- | ------- |
-| PLAT-01     | TBD   | Pending |
-| PLAT-02     | TBD   | Pending |
-| PLAT-03     | TBD   | Pending |
-| PLAT-04     | TBD   | Pending |
-| TOOL-01     | TBD   | Pending |
-| TOOL-02     | TBD   | Pending |
-| TOOL-03     | TBD   | Pending |
-| TOOL-04     | TBD   | Pending |
-| CASE-01     | TBD   | Pending |
-| CASE-02     | TBD   | Pending |
-| CASE-03     | TBD   | Pending |
-| PROD-01     | TBD   | Pending |
-| PROD-02     | TBD   | Pending |
-| GIVE-01     | TBD   | Pending |
-| GIVE-02     | TBD   | Pending |
+| Requirement | Phase   | Status  |
+| ----------- | ------- | ------- |
+| PLAT-01     | Phase 5 | Pending |
+| PLAT-02     | Phase 5 | Pending |
+| PLAT-03     | Phase 5 | Pending |
+| PLAT-04     | Phase 5 | Pending |
+| TOOL-01     | Phase 6 | Pending |
+| TOOL-02     | Phase 6 | Pending |
+| CASE-01     | Phase 6 | Pending |
+| CASE-02     | Phase 6 | Pending |
+| CASE-03     | Phase 6 | Pending |
+| PROD-01     | Phase 7 | Pending |
+| PROD-02     | Phase 7 | Pending |
+| TOOL-03     | Phase 7 | Pending |
+| TOOL-04     | Phase 7 | Pending |
+| GIVE-01     | Phase 8 | Pending |
+| GIVE-02     | Phase 8 | Pending |
 
 **Coverage:**
 
 - v2.0 requirements: 15 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 15
+- Mapped to phases: 15/15
+- Unmapped: 0
 
 ---
 
@@ -175,4 +181,4 @@ Deferred to v2.1+ or later milestones.
 ---
 
 _Requirements defined: 2026-02-27_
-_Last updated: 2026-03-01 — Milestone v2.0 Content Marketing Engine requirements_
+_Last updated: 2026-03-01 — Milestone v2.0 traceability updated (all 15 requirements mapped to Phases 5-8)_

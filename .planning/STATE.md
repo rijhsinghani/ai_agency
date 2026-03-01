@@ -2,8 +2,8 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
-status: defining_requirements
-last_updated: "2026-03-01T18:18:00.000Z"
+status: roadmap_created
+last_updated: "2026-03-01T00:00:00.000Z"
 ---
 
 # Project State: AI Automation Agency
@@ -16,26 +16,28 @@ last_updated: "2026-03-01T18:18:00.000Z"
 
 ## Project Reference
 
-**Core Value:** Small business owners save real money and recover real revenue through AI-powered automations they couldn't build themselves — and Sameer makes that accessible, measurable, and low-risk.
+See: .planning/PROJECT.md (updated 2026-03-01)
 
-**Brand Voice:** See `brand/brand-voice.md` for full guide. Personal brand under Sameer's name, peer-to-peer tone, NOT niche-locked.
+**Core value:** Small business owners save real money and recover real revenue through AI-powered automations they couldn't build themselves — and Sameer makes that accessible, measurable, and low-risk.
 
-**Current Focus:** Milestone v2.0 — Content Marketing Engine (defining requirements)
+**Current focus:** Milestone v2.0 — Content Marketing Engine — Phase 5: Platform Foundation
 
 ---
 
 ## Current Position
 
-| Field         | Value                               |
-| ------------- | ----------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine     |
-| Status        | Defining requirements               |
-| Last activity | 2026-03-01 — Milestone v2.0 started |
+| Field         | Value                                         |
+| ------------- | --------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine               |
+| Phase         | 5 of 8 (Phase 5: Platform Foundation)         |
+| Plan          | Not yet planned                               |
+| Status        | Ready to plan                                 |
+| Last activity | 2026-03-01 — Roadmap created, v2.0 Phases 5-8 |
 
 **Progress:**
 
 ```
-Milestone v2.0: Content Marketing Engine    [          ]  0%  ← Defining requirements
+Milestone v2.0: Content Marketing Engine    [          ]  0%  <- Ready to plan Phase 5
 ```
 
 ---
@@ -45,7 +47,7 @@ Milestone v2.0: Content Marketing Engine    [          ]  0%  ← Defining requi
 | Metric                | Value |
 | --------------------- | ----- |
 | Phases complete       | 0     |
-| Requirements active   | TBD   |
+| Requirements active   | 15    |
 | Requirements complete | 0     |
 
 ---
@@ -56,41 +58,38 @@ Milestone v2.0: Content Marketing Engine    [          ]  0%  ← Defining requi
 
 - **Personal brand** under Sameer's full name — @SameerAutomates, face forward
 - **NOT niche-locked** — serves all small business owners, not just plumbers/contractors
-- Origin story: automated his own wedding photography business (Raj Photo Video)
-- Enterprise background exists but **NEVER mentioned by name** (confidentiality constraint)
 - **Market-first strategy** — sell before building. No infrastructure spend until first client pays.
-- **Stack is flexible** — N8N, Make, Zapier, or custom — chosen per client needs, not pre-committed
-- Value-based pricing: $1,500-3,000 build + $200-500/mo retainer (non-optional)
-- Landing page: static HTML with Tailwind CSS, premium micro-interactions
-- Retainer is a required line item, not an upsell — present in every proposal
-- **All pricing removed from landing page** — discovery call first, no prices visible
-- **Cal.com removed** — replaced with Google Calendar (Google Workspace) everywhere
-- **Mock testimonials OK for now** — will replace with real ones after Phase 3
-- **GitHub repos as portfolio** — existing automations (Studio S, bookkeeping, etc.) serve as proof of capability
-- **No custom domain** — not registering sameerautomations.com. Landing page on GitHub Pages.
-- **Consulting positioning** — not freelancing. Years of real experience. Expert offering.
-- **Multi-platform** — Twitter, YouTube, Instagram. LinkedIn deferred.
-- **Content repurposing** — Create once on YouTube, repurpose everywhere.
+- **YouTube is the hub** — everything starts as YouTube. Twitter and Instagram are repurposing channels.
+- **Human-in-the-loop publishing** — AI drafts, founder publishes. No automated posting in v2.0.
+- **Buffer Essentials (~$18/mo)** — chosen over direct API integration; eliminates Twitter OAuth + Instagram Graph API complexity
+- **Supadata.ai** — chosen for transcript extraction (100 free req/mo, official SDK)
+- **Commander.js v14.0.3** — CLI framework (Node 20+, stable before v15 ships May 2026)
+- **No custom domain** — GitHub Pages URL sufficient for now
+- **Consulting positioning** — not freelancing. Expert offering. Value-based pricing.
 
-### Brand Voice (documented in `brand/brand-voice.md`)
+### v2.0 Roadmap Structure
 
-- Tone: direct, peer-to-peer, confident
-- No emojis. No jargon. No buzzwords.
-- Content pillars: real automations, case studies with numbers, behind-the-scenes builds, what's worth automating, origin story
-- Tagline: "Smart systems. Built for your business. By Sameer."
-- Three doors open: agency services now, broader services later, products/courses eventually
+- Phase 5: Platform Foundation (PLAT-01 to PLAT-04) — accounts + funnel verification
+- Phase 6: Case Studies + Content Tooling (TOOL-01, TOOL-02, CASE-01 to CASE-03) — ideation + social proof
+- Phase 7: Content Production + Repurposing (PROD-01, PROD-02, TOOL-03, TOOL-04) — first video + pipeline
+- Phase 8: Giveaway + Social Proof (GIVE-01, GIVE-02) — trust accelerators
+
+### Blockers / Concerns
+
+- YouTube channel migration decision is time-sensitive — test one automation video on existing channel; if CTR < 20% of photography average, start a fresh channel (do not fight the algorithm)
+- Instagram Reels API has conflicting documentation — Buffer handles this at v2.0 launch; test direct Meta Graph API before any v2.1 direct integration
+- Content calendar commitment should come AFTER production SOP is proven at cadence — do not announce public posting schedule before two test production cycles complete
 
 ### Completed Assets (v1.0)
 
 - Logo SVG package: 8 variants in `brand/`
-- Email signature: `brand/email-signature.html`
 - Brand voice guide: `brand/brand-voice.md`
 - YouTube branding: banner, profile pic, about section, keywords, thumbnail template
-- Landing page: `website/index.html` (hero, services, how-it-works, ROI, testimonials, booking)
+- Landing page: `website/index.html`
 - Outreach templates: `ops/outreach/` (5 files)
 - Package concepts: `ops/packages/` (6 files)
 
-### v1.0 Pending Items (carry forward)
+### v1.0 Pending (carry forward)
 
 - [ ] Deploy landing page to GitHub Pages
 - [ ] MANUAL: Upload YouTube branding to Studio
@@ -99,5 +98,8 @@ Milestone v2.0: Content Marketing Engine    [          ]  0%  ← Defining requi
 
 ---
 
-_Initialized: 2026-02-27_
-_Last updated: 2026-03-01 — Milestone v2.0 started_
+## Session Continuity
+
+Last session: 2026-03-01
+Stopped at: Roadmap created for v2.0 (Phases 5-8). Ready to plan Phase 5.
+Resume file: None — start with `/gsd:plan-phase 5`
