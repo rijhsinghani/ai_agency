@@ -658,10 +658,13 @@ def write_competitor_audit(
         for v in ch.get("videos", []):
             for cat in categorize_video(v):
                 topic_counts[cat] = topic_counts.get(cat, 0) + 1
-        primary_topics = sorted(topic_counts, key=topic_counts.get, reverse=True)[:2]
+        primary_topics = sorted(
+            topic_counts, key=lambda k: topic_counts[k], reverse=True
+        )[:2]
         topics_str = (
-            ", ".join(TOPIC_DISPLAY_NAMES.get(t, t) for t in primary_topics)
-            or "General"
+            ", ".join(TOPIC_DISPLAY_NAMES.get(t, t) or t for t in primary_topics)
+            if primary_topics
+            else "General"
         )
 
         industries = detect_industries(ch)
