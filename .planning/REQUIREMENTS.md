@@ -15,7 +15,7 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 
 - [ ] **RSCH-01**: Reddit API and social listening research identifies real small business pain points that require custom automation solutions (not off-the-shelf software)
 - [ ] **RSCH-02**: Research output produces a ranked list of 10-15 content topics grounded in actual business owner complaints, with proof each problem requires custom automation
-- [ ] **RSCH-03**: Competitor content audit identifies what automation consultants are posting, what's getting engagement, and where gaps exist for buyer-focused content
+- [x] **RSCH-03**: Competitor content audit identifies what automation consultants are posting, what's getting engagement, and where gaps exist for buyer-focused content
 
 ### Platform Setup
 
