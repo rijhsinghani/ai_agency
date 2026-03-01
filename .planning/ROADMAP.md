@@ -112,12 +112,18 @@
 **Goal**: Research real small business pain points using Reddit API and social listening — produce a ranked topic bank of automation problems that require custom solutions, not off-the-shelf software
 **Depends on**: Phase 4 (v1.0 foundation)
 **Requirements**: RSCH-01, RSCH-02, RSCH-03
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 05-01-PLAN.md — Scaffold research infrastructure + YouTube competitor audit CLI (RSCH-03)
+- [ ] 05-02-PLAN.md — Reddit pain point scraper + ranked topic bank (RSCH-01, RSCH-02)
+
 **Success Criteria** (what must be TRUE):
 
 1. Reddit API research has scraped relevant subreddits (r/smallbusiness, r/entrepreneur, r/HVAC, r/plumbing, r/RealEstate, etc.) for automation pain points and manual workflow complaints
 2. A ranked list of 10-15 content topics exists — each grounded in real business owner complaints with evidence the problem requires custom automation (not solvable by off-the-shelf tools)
 3. A competitor content audit documents what automation consultants are posting, what gets engagement, and where gaps exist for buyer-focused content
-   **Plans**: TBD
 
 ---
 
@@ -188,7 +194,7 @@
 | 2. Go to Market                     | v1.0      | -              | Plans exist | -         |
 | 3. First Client Delivery            | v1.0      | -              | Not started | -         |
 | 4. Scale & Reinvest                 | v1.0      | -              | Not started | -         |
-| 5. Market Research + Pain Points    | v2.0      | 0/TBD          | Not started | -         |
+| 5. Market Research + Pain Points    | v2.0      | 0/2            | Planned     | -         |
 | 6. Platform Foundation              | v2.0      | 0/TBD          | Not started | -         |
 | 7. Case Studies + Content Tooling   | v2.0      | 0/TBD          | Not started | -         |
 | 8. Content Production + Repurposing | v2.0      | 0/TBD          | Not started | -         |
@@ -208,4 +214,4 @@
 ---
 
 _Created: 2026-02-27_
-_Last updated: 2026-03-01 — Milestone v2.0 Content Marketing Engine roadmap added (Phases 5-8)_
+_Last updated: 2026-03-01 — Phase 5 planned (2 plans, 2 waves)_
