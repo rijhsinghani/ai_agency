@@ -34,7 +34,7 @@ Research real small business automation pain points using Reddit API and social 
 
 ### Competitor Audit Method
 
-- Audit both YouTube and Twitter/X for automation content
+- Audit YouTube only — richest automation content with visible engagement data. Twitter skipped (limited free access, surface-level content)
 - Cover three competitor types: direct small biz automation agencies, automation educators/influencers, and no-code/low-code builders
 - 5-8 competitors total — mix of direct and educators
 - Output includes both gap analysis (what's NOT covered) and engagement data (what performs)
