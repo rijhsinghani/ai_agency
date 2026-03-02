@@ -1,0 +1,17 @@
+{
+  "name": "content-idea-cli",
+  "version": "1.0.0",
+  "description": "Generate content topic suggestions from local research data",
+  "bin": {
+    "sameer-ideas": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.3"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
