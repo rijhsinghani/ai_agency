@@ -161,7 +161,13 @@ Plans:
 3. Raj Photo Video automation is documented in a case study with real before/after metrics in the problem → stakes → solution → results format — ready to use as a video script and social proof asset
 4. A reusable case study template exists that any future automation engagement can follow (buyer language, quantified outcomes, no technical jargon)
 5. Research identifies the top 3-5 automation use cases that sell to small business owners, and demo builds or documented examples exist showing capability for each
-   **Plans**: TBD
+
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 07-01-PLAN.md — Case study template update, Raj PV case study finalization, and 5 capability briefs (CASE-01, CASE-02, CASE-03)
+- [ ] 07-02-PLAN.md — Content calendar ramp model update + content idea CLI build (TOOL-01, TOOL-02)
 
 ---
 
@@ -377,8 +383,8 @@ Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
 | 3. First Client Delivery               | v1.0      | -              | Not started | -          |
 | 4. Scale & Reinvest                    | v1.0      | -              | Not started | -          |
 | 5. Market Research + Pain Points       | v2.0      | 2/2            | Complete    | 2026-03-01 |
-| 6. Platform Foundation                 | 2/2 | Complete   | 2026-03-02 | -          |
-| 7. Case Studies + Content Tooling      | v2.0      | 0/TBD          | Not started | -          |
+| 6. Platform Foundation                 | 2/2       | Complete       | 2026-03-02  | -          |
+| 7. Case Studies + Content Tooling      | v2.0      | 0/2            | Planned     | -          |
 | 8. Content Production + Repurposing    | v2.0      | 0/TBD          | Not started | -          |
 | 9. Giveaway + Social Proof             | v2.0      | 0/TBD          | Not started | -          |
 | 10. Content Preparation & Distribution | v3.0      | 0/TBD          | Not started | -          |
