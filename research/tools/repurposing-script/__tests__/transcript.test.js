@@ -66,9 +66,11 @@ describe("getTranscript", () => {
     });
     Supadata.mockImplementation(() => mockInstance);
 
-    const promise = getTranscript("https://youtube.com/watch?v=fail");
+    const rejectPromise = expect(
+      getTranscript("https://youtube.com/watch?v=fail"),
+    ).rejects.toThrow("Transcript job failed");
     await jest.runAllTimersAsync();
-    await expect(promise).rejects.toThrow("Transcript job failed");
+    await rejectPromise;
   });
 });
 

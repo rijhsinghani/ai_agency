@@ -7,3 +7,8 @@ __pycache__/
 
 # System
 .DS_Store
+
+# Repurposing script review queue (draft content, not project artifacts)
+review/*.md
+review/*-transcript.txt
+review/*-transcript-chunks.json
