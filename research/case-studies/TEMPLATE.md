@@ -11,6 +11,16 @@
 
 ---
 
+<!-- TL;DR BLOCK: Pick the 3 most compelling numbers from the Results section.
+     These are for scanners who will not read the full document.
+     Use exact numbers where available; use ranges only if exact data is unavailable. -->
+
+> **Revenue recovered:** [amount]/month
+> **Time saved:** [hours]/week
+> **System cost:** [amount]/month
+
+---
+
 ## Client profile
 
 <!-- 2–3 sentences. Paint the picture of who this person is WITHOUT naming them.
@@ -116,6 +126,20 @@ The system built here has [X] components that work together:
 | [Manual task]                 | Manual, [frequency]             | Automated           |
 | Monthly revenue lost to [gap] | $[X]                            | ~$0                 |
 | Monthly system cost           | $0 (but paying in lost revenue) | $[X]                |
+
+---
+
+<!-- TIMELINE SECTION: Optional — include when build and go-live timing data is available.
+     Omit entirely if the data is not available. Do not guess or estimate. -->
+
+## Timeline (Optional)
+
+| Milestone                | Duration                     |
+| ------------------------ | ---------------------------- |
+| Discovery + scoping      | [X days/weeks]               |
+| Build + testing          | [X days/weeks]               |
+| Go-live                  | [date or timeframe]          |
+| First measurable results | [X days/weeks after go-live] |
 
 ---
 

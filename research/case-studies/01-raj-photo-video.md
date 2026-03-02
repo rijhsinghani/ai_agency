@@ -6,6 +6,12 @@
 
 ---
 
+> **Revenue recovered:** $4,200/month
+> **Time saved:** 5–7 hours/week
+> **System cost:** $200/month
+
+---
+
 ## Client profile
 
 Solo wedding and event photographer running a 1–2 person operation. Peak season runs May through October. The owner is the shooter, the salesperson, and the admin — all at once.
