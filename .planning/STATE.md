@@ -63,6 +63,10 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 
 ## Accumulated Context
 
+### Roadmap Evolution
+
+- **2026-03-02**: Added Phase 10 (v3.0 Content Automation Pipeline) — Automated Content Preparation & Distribution Pipeline. Seven sub-parts: content bank (Supabase + Google Sheets), video post-production (Cloud Run ffmpeg pipeline), AI content generation (Gemini 3.1 Pro + Claude), Slack approval workflow, multi-platform publishing (Twitter/X, Instagram, YouTube, Substack, Threads via direct APIs), multi-brand support (Sameer Automations + Raj Photo Video), analytics feedback loop. Zero subscriptions, $5-15/mo estimated. Depends on Phase 8 + Phase 9.
+
 ### Key Decisions
 
 - **Personal brand** under Sameer's full name — @SameerAutomates, face forward
@@ -115,7 +119,7 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 
 ## Session Continuity
 
-Last session: 2026-03-01
-Stopped at: Completed 05-02-PLAN.md — Reddit scraper CLI built (838 lines, 4-stage pipeline), 25-post sample data created, preliminary topic-bank.md generated with 12 ranked topics (6 ready-to-sell). Phase 5 complete.
-Resume: Run `/gsd:execute-phase` for Phase 6 — Case Studies + Content Tooling. First: set Reddit API credentials in research/.env to get real topic-bank data.
+Last session: 2026-03-02
+Stopped at: Added Phase 10 (v3.0) — Automated Content Preparation & Distribution Pipeline to ROADMAP.md with full 7-part specification and 11 success criteria.
+Resume: Run `/gsd:execute-phase` for Phase 6 — Platform Foundation. Phase 10 is planned but depends on Phases 8+9.
 ```
