@@ -35,15 +35,15 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 | Field         | Value                                                                                                                                                   |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Milestone     | v2.0 — Content Marketing Engine                                                                                                                         |
-| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                                                                        |
-| Plan          | 2 of 3 complete — 08-01 production SOP checklists + 08-02 repurposing script CLI done                                                                   |
-| Status        | Phase 8 Plan 02 complete — repurposing script CLI built (26 tests), 4 lib modules, review/.gitkeep, .gitignore updated; Plan 03 pending                 |
-| Last activity | 2026-03-02 — 08-02 SUMMARY.md finalized; sameer-repurpose CLI built with Supadata + Claude API, BANNED_PHRASES enforced, transcript caching implemented |
+| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                                  |
+| Plan          | 3 of 3 complete — 08-01 SOP checklists + 08-02 repurposing script + 08-03 video clipper CLI done                  |
+| Status        | Phase 8 Plan 03 complete — sameer-clip CLI built (27 tests), ffmpeg-static, 9:16 crop/scale, SRT burn-in          |
+| Last activity | 2026-03-02 — 08-03 SUMMARY.md finalized; video-clipper CLI built with 3 lib modules and 27 passing Jest tests     |
 
 **Progress:**
 
 [█████░░░░░] 47%
-Phase 8: [██████░░░░] Plans 01+02 of 3 complete (SOP checklists, repurposing CLI)
+Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 
 ```
 
@@ -111,6 +111,9 @@ Phase 8: [██████░░░░] Plans 01+02 of 3 complete (SOP checkli
 - **[08-01] Tool-agnostic editing checklist** — outcome-based items only, no software-specific menu references; durable across Final Cut, Premiere, DaVinci, or any future tool
 - **[08-01] Two-CTA rule documented in editing checklist** — mid-video at 60% mark + end screen at 15 seconds; surfaced in both outline-template and editing checklist
 - **[08-01] Description template hardcoded in publish checklist** — booking URL, hashtags, and chapter structure locked; reduces switching cost
+- **[08-03] Use literal /tmp/ path in writeSrtToTemp** — os.tmpdir() returns /private/var/folders/... on macOS, not /tmp/; literal /tmp/ ensures ffmpeg subtitles filter works without path issues
+- **[08-03] spawn(ffmpegPath, argsArray) with no shell:true** — prevents shell injection with user-supplied file paths in video-clipper
+- **[08-03] ffmpeg-static bundled binary** — no system ffmpeg dependency required; tool works on any machine without global ffmpeg install
 - **[08-02] Booking URL hardcoded in every Twitter and Instagram prompt in formatter.js** — permanent brand asset, no variation permitted
 - **[08-02] BANNED_PHRASES injected into Claude system prompt on every generation call** — brand voice enforced at API level, not post-processing
 - **[08-02] review/*.md gitignored, review/.gitkeep tracked** — draft files are working artifacts, directory preserved in fresh clones
@@ -150,6 +153,6 @@ Phase 8: [██████░░░░] Plans 01+02 of 3 complete (SOP checkli
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 08-02 SUMMARY.md — Tasks 1+2 done. Repurposing script CLI built with 26 passing Jest tests, 4 lib modules (transcript, formatter, generator, queue), Commander.js entry point with --url/--from-cache/--title flags, review/.gitkeep, .gitignore updated.
-Resume: Phase 8 Plans 01+02 are done. Next automated work is Phase 8 Plan 03 (if exists). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
+Stopped at: Completed 08-03 SUMMARY.md — Tasks 1+2 done. sameer-clip video clipper CLI built with ffmpeg-static, 3 lib modules (extractor, captioner, formatter), 27 passing Jest tests. /tmp/ path enforced for SRT files.
+Resume: Phase 8 all 3 plans complete (SOP checklists, repurposing CLI, video clipper). Next: Phase 9 or whatever follows Phase 8 in ROADMAP. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
 ```
