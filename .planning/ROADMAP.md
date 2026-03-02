@@ -4,14 +4,15 @@
 **Strategy:** Content-first. Build audience and trust through value content. Funnel to discovery calls.
 **Depth:** Quick (4 phases per milestone)
 **Created:** 2026-02-27
-**Revised:** 2026-03-01 — Milestone v2.0 Content Marketing Engine added
+**Revised:** 2026-03-02 — Phase 6 plans created; Phase 10 Automated Content Preparation & Distribution Pipeline added (v3.0)
 
 ---
 
 ## Milestones
 
 - [x] **v1.0 Foundation** - Phases 1-4 (brand, go-live, first client delivery, scale)
-- [ ] **v2.0 Content Marketing Engine** - Phases 5-8 (platform setup, tooling, production, giveaways)
+- [ ] **v2.0 Content Marketing Engine** - Phases 5-9 (platform setup, tooling, production, giveaways)
+- [ ] **v3.0 Content Automation Pipeline** - Phase 10 (automated content preparation, post-production, AI generation, multi-platform distribution)
 
 ---
 
@@ -27,7 +28,7 @@
 
 </details>
 
-### v2.0 Content Marketing Engine
+### v2.0 Content Marketing Engine (Phases 5-9)
 
 - [x] **Phase 5: Market Research + Pain Point Discovery** - Reddit API and social listening research identifies real small business automation pain points and produces a ranked content topic bank (completed 2026-03-01)
 - [ ] **Phase 6: Platform Foundation** - Twitter, Instagram, and YouTube are fully set up with consistent CTAs and the full content-to-booking funnel is verified end-to-end
@@ -132,13 +133,19 @@ Plans:
 **Goal**: All three distribution channels are live with consistent CTAs and the full funnel from content to booked discovery call is verified on mobile
 **Depends on**: Phase 5 (research informs platform bio copy and initial content direction)
 **Requirements**: PLAT-01, PLAT-02, PLAT-03, PLAT-04
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 06-01-PLAN.md — Twitter + Instagram profile copy, carousel content, and design assets (PLAT-01, PLAT-02)
+- [ ] 06-02-PLAN.md — CTA unification audit + mobile funnel end-to-end test (PLAT-03, PLAT-04)
+
 **Success Criteria** (what must be TRUE):
 
 1. A visitor to @SameerAutomates on Twitter sees a complete profile, pinned CTA tweet, and can click to book a discovery call in the bio
 2. A visitor to @SameerAutomates on Instagram sees a complete profile with a link-in-bio to the booking page and an initial 3-post grid that establishes the brand
 3. Every platform (YouTube, Twitter, Instagram) uses the identical CTA: "Book a free 15-min discovery call" with the same direct booking link — no variation
 4. The full funnel works on mobile: YouTube video → description link → landing page → booking page → calendar confirmation — all steps reachable without a desktop
-   **Plans**: TBD
 
 ---
 
@@ -186,19 +193,195 @@ Plans:
 
 ---
 
+### v3.0 Content Automation Pipeline (Phase 10)
+
+### Phase 10: Automated Content Preparation & Distribution Pipeline
+
+**Goal**: The founder has a turnkey content system — a Supabase-powered content bank (viewable in Google Sheets) with brand-aligned visuals and talking points, plus an n8n pipeline that takes a raw recorded video and produces a polished, platform-ready final cut (silence removed, audio normalized, captions burned in) then distributes optimized content across Twitter/X, Instagram, YouTube (long-form + Shorts), Substack, and Threads after 1-click Slack approval. Zero paid subscriptions — built on open source and free-tier APIs.
+**Depends on**: Phase 8 (production SOP proven) and Phase 9 (social proof assets available)
+**Platforms**: Twitter/X, Instagram (Reels + carousels), YouTube (long-form + Shorts), Substack, Threads — NOT LinkedIn
+
+#### Part A — Content Preparation System
+
+A Supabase-backed content bank with Google Sheets as the view/edit layer, synced bidirectionally via n8n.
+
+Each row is a vetted content idea with:
+
+- Topic title and hook (drawn from the Reddit topic bank and competitor gap analysis)
+- 3-5 talking point bullets
+- Brand-aligned visual assets: thumbnail mockup, supporting diagram, social graphic — following the System Architecture Design Language (dot grids, arch-nodes, connectors, purple/cyan palette, Roc Grotesk typography)
+- Platform-specific angles for each format: YouTube long-form, YouTube Short, Twitter thread, Instagram carousel/reel, Substack deep-dive, Threads conversational post
+- Links to relevant service packages and booking page
+- Status tracking: idea, draft, ready, recorded, processing, pending_review, approved, published, archived
+- Brand tag: Sameer Automations or Raj Photo Video
+
+Minimum 20 pre-prepared topics at launch, seeded from the existing 12-topic Reddit bank, 5 case studies, and YouTube content plan.
+
+#### Part B — Automated Video Post-Production Pipeline
+
+Runs on Cloud Run in the GCP videoprocessing project. When a raw video is uploaded to a GCS trigger bucket, the pipeline produces a polished final cut automatically:
+
+- **Step 1 — Noise Reduction**: ffmpeg arnndn filter (RNNoise-based) removes background hum and room noise
+- **Step 2 — Silence Removal**: auto-editor (open source Python CLI) with audio threshold at 4% amplitude and 0.4s margin padding — removes dead air and ums while preserving intentional pauses for pacing
+- **Step 3 — Audio Normalization**: ffmpeg-normalize to -14 LUFS (YouTube standard) with -1 dBTP true peak. Audio encoded as AAC-LC at 48kHz, 128kbps minimum
+- **Step 4 — Background Music**: ffmpeg amix layer at -24dB to -28dB under speech, with ducking. Royalty-free music library included
+- **Step 5 — Caption Generation**: Whisper (medium model) generates SRT with word-level timestamps
+- **Step 6 — Caption Burn-In**: ffmpeg subtitles filter with brand-consistent styling (Roc Grotesk font, white text, dark outline, bottom-third positioning)
+- **Step 7 — Color Correction**: ffmpeg LUT3D application with a pre-defined brand LUT for consistent look across all videos
+- **Step 8 — Intro/Outro Splice**: ffmpeg concat with branded 5-second intro template and end screen
+- **Step 9 — Final Encode**: H.264 MP4, 1080p, 8-12 Mbps, progressive scan, BT.709 color space
+
+Recording best practice: Record in 4K to give room for automated zoom/crop effects on 1080p delivery. Target 6-12 cuts per minute for consulting content.
+
+#### Part C — AI-Powered Content Generation & Clip Extraction
+
+**Gemini 3.1 Pro Preview for video analysis** (gemini-3.1-pro-preview, runs on Cloud Run):
+
+- Better reasoning and multi-step execution than 2.5 Pro — ideal for identifying nuanced content moments
+- Processes the full 20-30 minute video (1M token context window; ~15,480 tokens per minute)
+- Identifies the top 5-8 quotable/engaging moments with timestamps for Shorts/Reels extraction
+- Uses custom criteria: "find moments with contrarian claims, surprising data, emotional reactions, or actionable tips" — NOT generic "find the best moments"
+- Accepts text, image, video, and audio input — can analyze both visual and spoken content simultaneously
+- Supports thinking mode for deeper analysis of which clips will perform best
+- Free tier available; production pricing on Gemini API pricing page
+- Note: 3.1 Pro handles video ANALYSIS; thumbnail IMAGE GENERATION uses Gemini 3 Pro Image Preview (separate model)
+
+**Claude API for text generation** (anti-slop architecture):
+
+- Generates platform-specific content using a modular prompt system:
+  - **Voice module**: Brand voice samples from brand-voice.md + learned patterns from content-engine's voice learning system
+  - **Format module**: Platform-specific constraints (YouTube 60-char titles, Twitter 280-char limits, Instagram keyword-rich captions)
+  - **Context module**: Specific facts, data, and real examples from THIS video's transcript — never generic filler
+  - **Constraint module**: Explicit banlist of AI slop phrases ("In today's fast-paced world", "game-changer", "seamlessly integrates", "let's dive in", "groundbreaking", "leverage", "robust", "cutting-edge"). Instruction: "Never use a word you wouldn't say out loud to a friend"
+- Every generated piece includes the real data/story from the video — AI accelerates expression, never invents the insight
+- Output stored in Supabase with status pending_review
+
+**Automated Thumbnail Generation** (claude-thumbnails skill + Gemini 3 Pro Image Preview):
+
+- Installed from ~/Downloads/claude-thumbnails-main 2 as a Claude Code skill
+- For each video, generates 4 fundamentally different thumbnail concepts in parallel using Gemini 3 Pro image generation
+- Workflow: searches YouTube for top-performing competitor thumbnails as style inspiration, then generates variations
+- Each concept varies visual elements, text treatment, color direction, and composition
+- Outputs a 2x2 comparison grid (A/B/C/D) for quick selection in Slack approval
+- brand-style.md customized for Sameer Automations: dark moody backgrounds, purple/cyan accent palette (#7B2FBE, #4DD9E8), system architecture visual language, bold sans-serif headlines
+- Thumbnail text complements the title (never repeats it)
+- Cost: $0 (Gemini free tier, 100 requests/day — 4 thumbnails per video = 4 requests)
+
+**Short/Reel extraction** (ffmpeg on Cloud Run):
+
+- Gemini identifies timestamp ranges for 15-30 second clips
+- ffmpeg extracts clips at 9:16 vertical (1080x1920), H.264, 30fps
+- Same MP4 file works for both YouTube Shorts and Instagram Reels (identical format requirements)
+- Burned-in captions added (85% of social video watched without sound)
+- Hook must land in first 2 seconds; loopable endings boost replay rate
+
+#### Part D — Slack Approval Workflow
+
+Content drafts stored in Supabase trigger a rich Slack message to #content-pipeline using Block Kit:
+
+**Message structure** (within Slack's 50-block limit):
+
+- Header: "New Content Ready: [Topic Title]"
+- 2x2 thumbnail comparison grid (A/B/C/D) embedded as image block
+- Video thumbnail preview of the processed video
+- Expandable sections for each platform draft (YouTube, Twitter, Instagram, Substack, Threads, Short/Reel)
+- Link to the processed video in GCS and Short clip previews
+- Interactive buttons:
+  - **"Approve All"** — publishes to all 6 formats across all platforms within 5 minutes
+  - **"Approve Selected"** — opens multi-select menu to pick which platforms
+  - **"Edit"** — links to the Google Sheet row; after editing, re-triggers Slack approval
+  - **"Reject"** — archives with optional reason; moves status to rejected in Supabase
+
+On approval: n8n webhook fires, updates Supabase status to approved, triggers the publishing workflow. The founder never opens a platform dashboard.
+
+Cross-platform Shorts/Reels: When a Short is approved, the same video file posts to YouTube Shorts AND Instagram Reels simultaneously — different captions/metadata per platform, same source video. No watermarks.
+
+#### Part E — Multi-Platform Publishing
+
+Direct API integration for each platform (no paid aggregators):
+
+- **Twitter/X** — Free API tier (500 posts/month, 16/day). Thread creation via chained POST /2/tweets with reply.in_reply_to_tweet_id. No analytics on free tier.
+- **Instagram** — Meta Graph API (free). Two-step: create media container (Reels with media_type=REELS), poll until FINISHED, then publish. 25 posts/day limit. Requires Business account + Facebook Page.
+- **YouTube** (long-form + Shorts) — YouTube Data API v3 (free, 10K quota/day). videos.insert for upload (1,600 units each, ~6 uploads/day). Shorts auto-detected by 9:16 aspect + under 60 seconds. Add #Shorts in description.
+- **Substack** — n8n community node (n8n-nodes-substack) for Notes. Unofficial TypeScript API (jakub-k-slys/substack-api) for long-form newsletter posts. Manual publish fallback for quality-critical pieces.
+- **Threads** — Meta Graph API (free, same app as Instagram). Supports text, image, video, polls, scheduling.
+
+Every post includes: Booking CTA ("Book a free 15-min discovery call"), link to landing page, cross-links to other platforms. YouTube descriptions include standard links section.
+
+#### Part F — Multi-Brand Support
+
+Build shared capabilities in content-engine repo, consultancy-specific config in this repo:
+
+- Add a `brands` table to content-engine's Supabase schema: name, handle, platform credentials (encrypted), voice profile reference, visual style guide reference
+- Content pieces tagged with brand — pipeline selects correct voice profile, credentials, and visual style at generation/publishing time
+- Google Sheets content calendar has a Brand column filter
+- Cross-pollination: some content tagged for both brands (e.g., "How I automated my photography business" serves both Sameer Automations and Raj Photo Video with different framing)
+
+#### Part G — Analytics & Feedback Loop
+
+- n8n pulls engagement metrics nightly from each platform API into Supabase
+- Google Sheets analytics tab shows per-post performance across platforms
+- Metrics tracked: views, likes, comments, shares, saves, CTR, retention rate
+- Over time, the system learns which topics/formats perform best — content bank suggestions improve
+- Cost tracking: AI API usage, compute costs logged to Supabase (reuse content-engine's ai_usage table)
+
+#### Technology Stack (Zero Subscriptions)
+
+| Layer                | Tool                                   | Cost                            |
+| -------------------- | -------------------------------------- | ------------------------------- |
+| Content bank / store | Supabase (existing)                    | $0 (free tier)                  |
+| View/edit layer      | Google Sheets synced via n8n           | $0                              |
+| Orchestration        | n8n VM (existing)                      | Already running                 |
+| Video processing     | Cloud Run, GCP videoprocessing project | Pay-per-use (~$0.05-0.10/video) |
+| Silence removal      | auto-editor (open source)              | $0                              |
+| Audio normalization  | ffmpeg-normalize                       | $0                              |
+| Transcription        | Whisper medium model                   | $0 (open source)                |
+| Caption burn-in      | ffmpeg subtitles filter                | $0                              |
+| Video analysis       | Gemini 3.1 Pro Preview API             | Free tier available             |
+| Text generation      | Claude API (pay-per-use)               | ~$2-5/month                     |
+| Twitter/X posting    | Free API tier (500 posts/mo)           | $0                              |
+| Instagram + Threads  | Meta Graph API                         | $0                              |
+| YouTube + Shorts     | YouTube Data API v3                    | $0                              |
+| Substack             | n8n community node + unofficial API    | $0                              |
+| Slack approval       | Slack API + Block Kit                  | $0                              |
+| Analytics            | Native platform APIs into Supabase     | $0                              |
+| Thumbnail generation | claude-thumbnails skill + Gemini 3 Pro | $0 (free tier)                  |
+| Design/visuals       | SVG generation + brand assets          | $0                              |
+
+Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
+
+**Plans**: TBD
+
+**Success Criteria** (what must be TRUE):
+
+1. A Supabase-backed content bank exists with 20+ pre-prepared topics — each with talking points, brand-aligned visuals, and platform-specific angles — viewable and editable in Google Sheets
+2. Uploading a raw video to the GCS trigger bucket automatically produces a polished final cut (silence removed, audio normalized to -14 LUFS, captions burned in, color corrected, intro/outro added) on Cloud Run
+3. Gemini 3.1 Pro Preview identifies 5-8 Short/Reel clips from each long-form video with timestamps; ffmpeg extracts them at 9:16 with burned-in captions
+4. Claude generates platform-specific content for all 6 formats in brand voice (using voice module + banlist) and stores drafts in Supabase
+5. Slack #content-pipeline receives a rich Block Kit message with previews of all drafts plus Approve All / Approve Selected / Edit / Reject buttons
+6. Approving in Slack publishes to selected platforms within 5 minutes via direct API calls — no platform dashboards opened
+7. Same Short video file posts to both YouTube Shorts and Instagram Reels with platform-specific captions
+8. Multi-brand switching works: pipeline publishes as Sameer Automations or Raj Photo Video based on content bank brand tag
+9. Engagement metrics from all platforms flow into Supabase nightly
+10. claude-thumbnails skill generates 4 custom thumbnail variations per video using Gemini image generation, presented in Slack as a 2x2 grid for selection
+11. Total monthly cost stays under $15 — zero paid subscriptions
+
+---
+
 ## Progress
 
-| Phase                               | Milestone | Plans Complete | Status      | Completed |
-| ----------------------------------- | --------- | -------------- | ----------- | --------- |
-| 1. Brand & Go-Live                  | v1.0      | -              | ~90% done   | -         |
-| 2. Go to Market                     | v1.0      | -              | Plans exist | -         |
-| 3. First Client Delivery            | v1.0      | -              | Not started | -         |
-| 4. Scale & Reinvest                 | v1.0      | -              | Not started | -         |
-| 5. Market Research + Pain Points    | 2/2 | Complete   | 2026-03-01 | -         |
-| 6. Platform Foundation              | v2.0      | 0/TBD          | Not started | -         |
-| 7. Case Studies + Content Tooling   | v2.0      | 0/TBD          | Not started | -         |
-| 8. Content Production + Repurposing | v2.0      | 0/TBD          | Not started | -         |
-| 9. Giveaway + Social Proof          | v2.0      | 0/TBD          | Not started | -         |
+| Phase                                  | Milestone | Plans Complete | Status      | Completed  |
+| -------------------------------------- | --------- | -------------- | ----------- | ---------- |
+| 1. Brand & Go-Live                     | v1.0      | -              | ~90% done   | -          |
+| 2. Go to Market                        | v1.0      | -              | Plans exist | -          |
+| 3. First Client Delivery               | v1.0      | -              | Not started | -          |
+| 4. Scale & Reinvest                    | v1.0      | -              | Not started | -          |
+| 5. Market Research + Pain Points       | v2.0      | 2/2            | Complete    | 2026-03-01 |
+| 6. Platform Foundation                 | v2.0      | 0/2            | Planned     | -          |
+| 7. Case Studies + Content Tooling      | v2.0      | 0/TBD          | Not started | -          |
+| 8. Content Production + Repurposing    | v2.0      | 0/TBD          | Not started | -          |
+| 9. Giveaway + Social Proof             | v2.0      | 0/TBD          | Not started | -          |
+| 10. Content Preparation & Distribution | v3.0      | 0/TBD          | Not started | -          |
 
 ---
 
@@ -214,4 +397,4 @@ Plans:
 ---
 
 _Created: 2026-02-27_
-_Last updated: 2026-03-01 — Phase 5 planned (2 plans, 2 waves)_
+_Last updated: 2026-03-02 — Phase 6 plans created (2 plans, 2 waves)_
