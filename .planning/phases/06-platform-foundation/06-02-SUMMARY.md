@@ -33,6 +33,7 @@ key-decisions:
   - "Placeholder URL replaced with real booking link calendar.app.google/psycao3CrXjGnmk48"
   - "CTA audit notes Twitter/Instagram as pending manual setup — rows ready to fill when profiles go live"
   - "Funnel test template accounts for Twitter/Instagram pending state with explicit notes per path"
+  - "Task 3 (manual CTA audit + mobile funnel test) deferred by user — will batch all platform profile updates in a single session at end of milestone"
 
 patterns-established:
   - "Audit checklist pattern: Expected | Actual | Pass/Fail columns with setup instructions per section"
@@ -54,7 +55,7 @@ completed: 2026-03-02
 - **Duration:** ~15 min
 - **Started:** 2026-03-02T18:05:29Z
 - **Completed:** 2026-03-02T18:20:00Z
-- **Tasks:** 2 of 3 complete (Task 3 is checkpoint awaiting human verification)
+- **Tasks:** 2 of 3 executed (Task 3 deferred by user — will batch all manual platform work at end of milestone)
 - **Files modified:** 3
 
 ## Accomplishments
@@ -70,9 +71,9 @@ Each task was committed atomically:
 
 1. **Task 1: Update YouTube about section and create CTA audit checklist** - `57efbec` (feat)
 2. **Task 2: Create mobile funnel test template** - `d17896b` (feat)
-3. **Task 3: Human runs CTA audit and mobile funnel test** - awaiting human verification
+3. **Task 3: Human runs CTA audit and mobile funnel test** - DEFERRED (user will batch all platform profile updates at end of milestone)
 
-**Plan metadata:** pending (created at checkpoint)
+**Plan metadata:** see final docs commit
 
 ## Files Created/Modified
 
@@ -110,14 +111,15 @@ None during automation tasks. Twitter and Instagram sections required documentin
 
 ## User Setup Required
 
-**Task 3 requires human action before this plan can be marked complete.**
+**Task 3 deferred — user will complete all manual platform work in a single batch session at the end of the milestone.**
+
+Steps to complete when ready:
 
 1. Open YouTube Studio -> Customization -> Basic info -> paste updated about section from `brand/youtube/about-section.md` -> Save
 2. Complete 06-CTA-AUDIT.md by opening each platform and filling Actual + Pass/Fail columns
 3. Complete 06-FUNNEL-TEST.md by walking all 4 funnel paths on a real mobile device (and Chrome DevTools emulation)
-4. Reply "funnel verified" when all 4 paths pass, or describe failures found
 
-Note: Twitter and Instagram paths (2, 3, 4) require manual profile setup first. These can be tested after profiles go live per the pending manual todo in STATE.md.
+Note: Twitter and Instagram paths (Paths 2, 3, 4) require manual profile setup first. These can be tested after profiles go live per the pending manual todo in STATE.md.
 
 ## Next Phase Readiness
 
