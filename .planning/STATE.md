@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-last_updated: "2026-03-02T18:37:37.593Z"
+last_updated: "2026-03-02T19:56:04.153Z"
 progress:
-  total_phases: 3
+  total_phases: 4
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
-  percent: 100
+  total_plans: 6
+  completed_plans: 5
+  percent: 83
 ---
 
 # Project State: AI Automation Agency
@@ -32,18 +32,18 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                             |
-| ------------- | ------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                   |
-| Phase         | 6 of 8 (Phase 6: Platform Foundation) — IN PROGRESS                                               |
-| Plan          | 2 of 2 complete — Phase 6 execution done; Task 3 (manual verification) deferred by user           |
-| Status        | Phase 6 Plan 02 complete — execution done; manual platform verification deferred to batch session |
-| Last activity | 2026-03-02 — 06-02 SUMMARY.md finalized; Task 3 deferred by user (batch platform updates later)   |
+| Field         | Value                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                       |
+| Phase         | 7 of 8 (Phase 7: Case Studies + Content Tooling) — IN PROGRESS                                        |
+| Plan          | 1 of 3 complete — 07-01 case studies + capability briefs done                                         |
+| Status        | Phase 7 Plan 01 complete — 7-file sales proof library created; Plans 02 and 03 pending                |
+| Last activity | 2026-03-02 — 07-01 SUMMARY.md finalized; template updated, Raj case study finalized, 5 briefs written |
 
 **Progress:**
 
-[██████████] 100%
-Phase 6: [██████████] Plans 01+02 execution complete (manual verification deferred to batch session)
+[████████░░] 83%
+Phase 7: [███░░░░░░░] Plan 01 of 3 complete (case studies + capability briefs)
 
 ```
 
@@ -60,6 +60,7 @@ Phase 6: [██████████] Plans 01+02 execution complete (manual
 ---
 | Phase 05-market-research-pain-point-discovery P01 | 7 | 2 tasks | 7 files |
 | Phase 05-market-research-pain-point-discovery P02 | 6 | 1 tasks | 3 files |
+| Phase 07-case-studies-content-tooling P01 | 4 | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -96,6 +97,9 @@ Phase 6: [██████████] Plans 01+02 execution complete (manual
 - **[06-02] YouTube about section real booking URL** — calendar.app.google/psycao3CrXjGnmk48 replaces placeholder; HTML comment removed
 - **[06-02] CTA audit includes landing page section** — added as critical link in every funnel path beyond the 3 platform sections specified
 - **[06-02] Task 3 deferred by user** — manual CTA audit + mobile funnel test batched with other platform profile updates at end of milestone
+- **[07-01] TL;DR block format locked** — 3-line blockquote with Revenue recovered, Time saved, System cost labels — consistent across all case studies and capability briefs
+- **[07-01] Full-depth briefs: 02 and 03 selected** — based on highest topic-bank scores (2218.5 and 2076.5) and strongest Reddit evidence; all others condensed
+- **[07-01] Capability brief structure established** — full-depth: client profile + 6 sections + CTA; condensed: 5 sections + CTA; no technical jargon, clients by industry only
 
 ### v2.0 Roadmap Structure
 
@@ -131,6 +135,6 @@ Phase 6: [██████████] Plans 01+02 execution complete (manual
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 06-02 SUMMARY.md — Tasks 1+2 done, Task 3 deferred by user (batch platform updates later). Phase 6 execution complete.
-Resume: Phase 6 Plans 01+02 execution is done. Pending manual tasks: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit (06-CTA-AUDIT.md) on each live platform, (3) run mobile funnel test (06-FUNNEL-TEST.md) on real device. User will do these as a batch session. Next automated work is Phase 7.
+Stopped at: Completed 07-01 SUMMARY.md — Tasks 1+2 done. Template updated, Raj Photo Video case study finalized, 5 capability briefs written covering all service packages.
+Resume: Phase 7 Plan 01 is done. Next automated work is Phase 7 Plan 02 (content calendar finalization) and Plan 03 (content idea CLI). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
 ```

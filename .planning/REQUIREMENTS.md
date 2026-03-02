@@ -33,9 +33,9 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 
 ### Case Studies
 
-- [ ] **CASE-01**: Case study #1 documents Raj Photo Video automation experience with before/after metrics in problem → stakes → solution → results format
-- [ ] **CASE-02**: Reusable case study template exists that any future automation can follow (buyer-focused, non-technical language, quantified outcomes)
-- [ ] **CASE-03**: Research identifies top 3-5 automation use cases proven to sell to small business owners and demo builds are created showing capability
+- [x] **CASE-01**: Case study #1 documents Raj Photo Video automation experience with before/after metrics in problem → stakes → solution → results format
+- [x] **CASE-02**: Reusable case study template exists that any future automation can follow (buyer-focused, non-technical language, quantified outcomes)
+- [x] **CASE-03**: Research identifies top 3-5 automation use cases proven to sell to small business owners and demo builds are created showing capability
 
 ### Content Production
 
@@ -150,9 +150,9 @@ Deferred to v2.1+ or later milestones.
 | PLAT-04     | Phase 5 | Complete |
 | TOOL-01     | Phase 6 | Pending |
 | TOOL-02     | Phase 6 | Pending |
-| CASE-01     | Phase 6 | Pending |
-| CASE-02     | Phase 6 | Pending |
-| CASE-03     | Phase 6 | Pending |
+| CASE-01     | Phase 6 | Complete |
+| CASE-02     | Phase 6 | Complete |
+| CASE-03     | Phase 6 | Complete |
 | PROD-01     | Phase 7 | Pending |
 | PROD-02     | Phase 7 | Pending |
 | TOOL-03     | Phase 7 | Pending |
