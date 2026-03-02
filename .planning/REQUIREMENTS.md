@@ -21,8 +21,8 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 
 - [x] **PLAT-01**: Twitter account @SameerAutomates has complete profile, pinned CTA tweet, and booking link in bio
 - [x] **PLAT-02**: Instagram account @SameerAutomates has complete profile, link-in-bio to booking page, and initial 3-post grid
-- [ ] **PLAT-03**: Every platform (YouTube, Twitter, Instagram) has consistent CTA — "Book a free 15-min discovery call" with direct booking link
-- [ ] **PLAT-04**: Full funnel path tested end-to-end on mobile: content → description/bio link → landing page → booking page → calendar confirmation
+- [x] **PLAT-03**: Every platform (YouTube, Twitter, Instagram) has consistent CTA — "Book a free 15-min discovery call" with direct booking link
+- [x] **PLAT-04**: Full funnel path tested end-to-end on mobile: content → description/bio link → landing page → booking page → calendar confirmation
 
 ### Content Tooling
 
@@ -146,8 +146,8 @@ Deferred to v2.1+ or later milestones.
 | ----------- | ------- | ------- |
 | PLAT-01     | Phase 5 | Complete |
 | PLAT-02     | Phase 5 | Complete |
-| PLAT-03     | Phase 5 | Pending |
-| PLAT-04     | Phase 5 | Pending |
+| PLAT-03     | Phase 5 | Complete |
+| PLAT-04     | Phase 5 | Complete |
 | TOOL-01     | Phase 6 | Pending |
 | TOOL-02     | Phase 6 | Pending |
 | CASE-01     | Phase 6 | Pending |

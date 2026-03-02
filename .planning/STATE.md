@@ -32,18 +32,18 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                 |
-| ------------- | ------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                       |
-| Phase         | 6 of 8 (Phase 6: Platform Foundation) — IN PROGRESS                                   |
-| Plan          | 1 of 2 complete (06-01: Twitter + Instagram copy assets)                              |
-| Status        | Phase 6 Plan 01 complete — ready for Plan 02 (website/funnel verification)            |
-| Last activity | 2026-03-02 — Executed 06-01: All social copy assets produced; Task 3 deferred by user |
+| Field         | Value                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                       |
+| Phase         | 6 of 8 (Phase 6: Platform Foundation) — IN PROGRESS                                                   |
+| Plan          | 2 of 2 tasks 1+2 complete — paused at checkpoint:human-verify (Task 3)                                |
+| Status        | Phase 6 Plan 02 paused — YouTube about section updated, audit + funnel templates ready                |
+| Last activity | 2026-03-02 — Executed 06-02 Tasks 1+2; paused at checkpoint for manual CTA audit + mobile funnel test |
 
 **Progress:**
 
 [██████████] Phase 5 complete
-Phase 6: [█████-----] 50% (1 of 2 plans complete)
+Phase 6: [█████████-] 90% (Tasks 1+2 of Plan 02 complete — awaiting human verification)
 
 ```
 
@@ -93,6 +93,8 @@ Phase 6: [█████-----] 50% (1 of 2 plans complete)
 - **[06-01] CTA wording locked** — "Book a free 15-min discovery call" — no variation permitted on any platform
 - **[06-01] Instagram carousel sequence locked: Pain -> Proof -> Offer** — narrative arc intentional; post order must be preserved
 - **[06-01] No emojis, no hashtags in v1 posts** — brand voice rules enforced across all social copy
+- **[06-02] YouTube about section real booking URL** — calendar.app.google/psycao3CrXjGnmk48 replaces placeholder; HTML comment removed
+- **[06-02] CTA audit includes landing page section** — added as critical link in every funnel path beyond the 3 platform sections specified
 
 ### v2.0 Roadmap Structure
 
@@ -128,6 +130,6 @@ Phase 6: [█████-----] 50% (1 of 2 plans complete)
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 06-01-PLAN.md — Twitter and Instagram copy assets (Tasks 1+2 executed, Task 3 deferred by user). All 8 copy files ready for manual upload.
-Resume: Run `/gsd:execute-phase` for Phase 6 Plan 02 — website/funnel verification. Profile setup deferred; can be batched with other manual tasks at end.
+Stopped at: Completed 06-02 Tasks 1+2 — YouTube about section updated with real booking URL, 06-CTA-AUDIT.md and 06-FUNNEL-TEST.md created. Paused at checkpoint:human-verify (Task 3).
+Resume: Complete Task 3 manually — (1) paste updated about section into YouTube Studio, (2) fill CTA audit checklist on each live platform, (3) run mobile funnel test on real device. Reply "funnel verified" when all 4 paths pass.
 ```
