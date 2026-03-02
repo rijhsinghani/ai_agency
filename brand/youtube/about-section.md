@@ -22,9 +22,7 @@ On this channel:
 
 No code tutorials. No jargon. No hype. Just systems that work.
 
-Book a free 15-minute discovery call: https://calendar.google.com/calendar/appointments/schedules/[PLACEHOLDER]
-
-<!-- Replace [PLACEHOLDER] with your actual Google Calendar appointment schedule ID -->
+Book a free 15-minute discovery call: https://calendar.app.google/psycao3CrXjGnmk48
 
 sameer@rajphotovideo.com
 
