@@ -63,6 +63,9 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 
 ## Accumulated Context
 
+### Pending Todos
+- 1 pending: **Add YouTube thumbnail generation to content pipeline with Slack approval** (tooling)
+
 ### Roadmap Evolution
 
 - **2026-03-02**: Added Phase 10 (v3.0 Content Automation Pipeline) — Automated Content Preparation & Distribution Pipeline. Seven sub-parts: content bank (Supabase + Google Sheets), video post-production (Cloud Run ffmpeg pipeline), AI content generation (Gemini 3.1 Pro + Claude), Slack approval workflow, multi-platform publishing (Twitter/X, Instagram, YouTube, Substack, Threads via direct APIs), multi-brand support (Sameer Automations + Raj Photo Video), analytics feedback loop. Zero subscriptions, $5-15/mo estimated. Depends on Phase 8 + Phase 9.
