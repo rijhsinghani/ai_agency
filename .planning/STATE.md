@@ -32,18 +32,18 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                                     |
-| ------------- | --------------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                           |
-| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                          |
-| Plan          | 1 of 3 complete — 08-01 production SOP checklists done                                                    |
-| Status        | Phase 8 Plan 01 complete — four SOP checklists created in ops/sop/; Plan 02 pending                       |
-| Last activity | 2026-03-02 — 08-01 SUMMARY.md finalized; outline-template, recording, editing, publish checklists created |
+| Field         | Value                                                                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                                                                         |
+| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                                                                        |
+| Plan          | 2 of 3 complete — 08-01 production SOP checklists + 08-02 repurposing script CLI done                                                                   |
+| Status        | Phase 8 Plan 02 complete — repurposing script CLI built (26 tests), 4 lib modules, review/.gitkeep, .gitignore updated; Plan 03 pending                 |
+| Last activity | 2026-03-02 — 08-02 SUMMARY.md finalized; sameer-repurpose CLI built with Supadata + Claude API, BANNED_PHRASES enforced, transcript caching implemented |
 
 **Progress:**
 
 [█████░░░░░] 47%
-Phase 8: [███░░░░░░░] Plan 01 of 3 complete (production SOP checklists)
+Phase 8: [██████░░░░] Plans 01+02 of 3 complete (SOP checklists, repurposing CLI)
 
 ```
 
@@ -111,6 +111,10 @@ Phase 8: [███░░░░░░░] Plan 01 of 3 complete (production SOP 
 - **[08-01] Tool-agnostic editing checklist** — outcome-based items only, no software-specific menu references; durable across Final Cut, Premiere, DaVinci, or any future tool
 - **[08-01] Two-CTA rule documented in editing checklist** — mid-video at 60% mark + end screen at 15 seconds; surfaced in both outline-template and editing checklist
 - **[08-01] Description template hardcoded in publish checklist** — booking URL, hashtags, and chapter structure locked; reduces switching cost
+- **[08-02] Booking URL hardcoded in every Twitter and Instagram prompt in formatter.js** — permanent brand asset, no variation permitted
+- **[08-02] BANNED_PHRASES injected into Claude system prompt on every generation call** — brand voice enforced at API level, not post-processing
+- **[08-02] review/*.md gitignored, review/.gitkeep tracked** — draft files are working artifacts, directory preserved in fresh clones
+- **[08-02] Transcript caching to review/[slug]-transcript.txt** — --from-cache flag skips Supadata credit on reruns
 
 ### v2.0 Roadmap Structure
 
@@ -146,6 +150,6 @@ Phase 8: [███░░░░░░░] Plan 01 of 3 complete (production SOP 
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 08-01 SUMMARY.md — Tasks 1+2 done. Four production SOP checklists created in ops/sop/: outline-template.md (6-section fill-in), recording-checklist.md (pre/during/wrap), editing-checklist.md (tool-agnostic, two CTAs), publish-checklist.md (description template, scheduling, post-publish).
-Resume: Phase 8 Plan 01 is done. Next automated work is Phase 8 Plan 02. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
+Stopped at: Completed 08-02 SUMMARY.md — Tasks 1+2 done. Repurposing script CLI built with 26 passing Jest tests, 4 lib modules (transcript, formatter, generator, queue), Commander.js entry point with --url/--from-cache/--title flags, review/.gitkeep, .gitignore updated.
+Resume: Phase 8 Plans 01+02 are done. Next automated work is Phase 8 Plan 03 (if exists). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
 ```
