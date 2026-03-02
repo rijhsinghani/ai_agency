@@ -38,16 +38,16 @@
 
 ## Tweet 3 — What he builds
 
-> Here's what I actually build:
+> What I build:
 >
 > - Missed call text-back (60 seconds, automatic)
-> - Lead follow-up sequences (5 touchpoints, zero manual work)
-> - Review automation (31 reviews to 180, no chasing)
-> - Quote follow-up (no quote sits unanswered past 24 hours)
-> - Appointment reminders (cut no-shows by 60%)
-> - Client intake (11 PM onboarding, no phone)
+> - Lead follow-up (5 touchpoints, zero manual work)
+> - Review automation (31 to 180, no chasing)
+> - Quote follow-up (no quote past 24 hours)
+> - Appointment reminders (cut no-shows 60%)
+> - Client intake (11 PM, no phone)
 
-**Character count:** 279 / 280
+**Character count:** 277 / 280
 
 **Notes:** Plain English service names from ops/packages/. One-line result per service. "I actually build" is direct and authentic — avoids sounding like a pitch deck.
 
