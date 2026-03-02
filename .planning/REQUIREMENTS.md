@@ -26,8 +26,8 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 
 ### Content Tooling
 
-- [ ] **TOOL-01**: Content idea CLI tool generates 5-10 topic suggestions from competitor research and trending automation topics for small business
-- [ ] **TOOL-02**: Content calendar exists with first 4 weeks of topics, formats, and target platforms planned
+- [x] **TOOL-01**: Content idea CLI tool generates 5-10 topic suggestions from competitor research and trending automation topics for small business
+- [x] **TOOL-02**: Content calendar exists with first 4 weeks of topics, formats, and target platforms planned
 - [ ] **TOOL-03**: Repurposing script takes YouTube video URL → extracts transcript → generates platform-adapted drafts (Twitter thread, Instagram caption, short clip script) for human review
 - [ ] **TOOL-04**: Video clipping tool extracts short-form clips (30-60s) from long-form YouTube videos with burned-in captions for Instagram Reels and Twitter
 
@@ -148,8 +148,8 @@ Deferred to v2.1+ or later milestones.
 | PLAT-02     | Phase 5 | Complete |
 | PLAT-03     | Phase 5 | Complete |
 | PLAT-04     | Phase 5 | Complete |
-| TOOL-01     | Phase 6 | Pending |
-| TOOL-02     | Phase 6 | Pending |
+| TOOL-01     | Phase 6 | Complete |
+| TOOL-02     | Phase 6 | Complete |
 | CASE-01     | Phase 6 | Complete |
 | CASE-02     | Phase 6 | Complete |
 | CASE-03     | Phase 6 | Complete |
