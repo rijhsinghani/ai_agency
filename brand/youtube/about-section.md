@@ -22,7 +22,7 @@ On this channel:
 
 No code tutorials. No jargon. No hype. Just systems that work.
 
-Book a free 15-minute discovery call: https://calendar.app.google/psycao3CrXjGnmk48
+Book a free 15-min discovery call: https://calendar.app.google/psycao3CrXjGnmk48
 
 sameer@rajphotovideo.com
 
