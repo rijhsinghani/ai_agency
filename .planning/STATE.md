@@ -32,18 +32,18 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                         |
-| ------------- | ----------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                               |
-| Phase         | 5 of 8 (Phase 5: Market Research + Pain Point Discovery) — COMPLETE           |
-| Plan          | 2 of 2 complete (05-01: competitor audit, 05-02: Reddit scraper + topic bank) |
-| Status        | Phase 5 complete — ready for Phase 6 planning                                 |
-| Last activity | 2026-03-01 — Executed 05-02: Reddit scraper CLI + 12-topic preliminary bank   |
+| Field         | Value                                                                                 |
+| ------------- | ------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                       |
+| Phase         | 6 of 8 (Phase 6: Platform Foundation) — IN PROGRESS                                   |
+| Plan          | 1 of 2 complete (06-01: Twitter + Instagram copy assets)                              |
+| Status        | Phase 6 Plan 01 complete — ready for Plan 02 (website/funnel verification)            |
+| Last activity | 2026-03-02 — Executed 06-01: All social copy assets produced; Task 3 deferred by user |
 
 **Progress:**
 
-[██████████] 100%
-Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
+[██████████] Phase 5 complete
+Phase 6: [█████-----] 50% (1 of 2 plans complete)
 
 ```
 
@@ -65,6 +65,7 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 
 ### Pending Todos
 - 1 pending: **Add YouTube thumbnail generation to content pipeline with Slack approval** (tooling)
+- 1 pending: **MANUAL: Set up Twitter + Instagram profiles** — all copy assets in `.planning/phases/06-platform-foundation/copy/`. Upload profile pics, paste bios, publish pinned thread, create Canva carousels, post Pain/Proof/Offer sequence. Can be batched with other v1.0 manual tasks.
 
 ### Roadmap Evolution
 
@@ -88,6 +89,10 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 - **[05-02] All 6 ops/packages/ products validated** — every existing package has matching Reddit demand signal; missed-call-text-back is highest-scoring topic (HVAC/plumbing dominant)
 - **[05-02] HVAC + plumbing are highest-density pain point subreddits** — target these verticals first for YouTube content
 - **[05-02] is_sample_data flag** — reddit-raw.json carries is_sample_data:true for sample data; PRELIMINARY label auto-removes when real Reddit credentials are used
+- **[06-01] Pain-first bio structure** — leads with the specific pain signal the audience lives every day; locked across both Twitter and Instagram
+- **[06-01] CTA wording locked** — "Book a free 15-min discovery call" — no variation permitted on any platform
+- **[06-01] Instagram carousel sequence locked: Pain -> Proof -> Offer** — narrative arc intentional; post order must be preserved
+- **[06-01] No emojis, no hashtags in v1 posts** — brand voice rules enforced across all social copy
 
 ### v2.0 Roadmap Structure
 
@@ -123,6 +128,6 @@ Milestone v2.0: Content Marketing Engine [ ] 0% <- Ready to plan Phase 5
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Added Phase 10 (v3.0) — Automated Content Preparation & Distribution Pipeline to ROADMAP.md with full 7-part specification and 11 success criteria.
-Resume: Run `/gsd:execute-phase` for Phase 6 — Platform Foundation. Phase 10 is planned but depends on Phases 8+9.
+Stopped at: Completed 06-01-PLAN.md — Twitter and Instagram copy assets (Tasks 1+2 executed, Task 3 deferred by user). All 8 copy files ready for manual upload.
+Resume: Run `/gsd:execute-phase` for Phase 6 Plan 02 — website/funnel verification. Profile setup deferred; can be batched with other manual tasks at end.
 ```
