@@ -40,7 +40,7 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 ### Content Production
 
 - [ ] **PROD-01**: First YouTube video published — demo automation walkthrough framed for business owners (not builders), non-technical language, CTA to discovery call
-- [ ] **PROD-02**: Production SOP documented — outline template → recording checklist → editing checklist → publish checklist — tested with first video
+- [x] **PROD-02**: Production SOP documented — outline template → recording checklist → editing checklist → publish checklist — tested with first video
 
 ### Giveaways & Social Proof
 
@@ -154,7 +154,7 @@ Deferred to v2.1+ or later milestones.
 | CASE-02     | Phase 6 | Complete |
 | CASE-03     | Phase 6 | Complete |
 | PROD-01     | Phase 7 | Pending |
-| PROD-02     | Phase 7 | Pending |
+| PROD-02     | Phase 7 | Complete |
 | TOOL-03     | Phase 7 | Pending |
 | TOOL-04     | Phase 7 | Pending |
 | GIVE-01     | Phase 8 | Pending |

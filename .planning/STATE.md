@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-last_updated: "2026-03-02T20:07:19.093Z"
+last_updated: "2026-03-02T22:48:36.940Z"
 progress:
-  total_phases: 4
+  total_phases: 6
   completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_plans: 19
+  completed_plans: 9
+  percent: 47
 ---
 
 # Project State: AI Automation Agency
@@ -32,18 +32,18 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                                                   |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                                         |
-| Phase         | 7 of 8 (Phase 7: Case Studies + Content Tooling) — IN PROGRESS                                                          |
-| Plan          | 2 of 3 complete — 07-01 case studies + 07-02 CLI + calendar done                                                        |
-| Status        | Phase 7 Plan 02 complete — content idea CLI built (32 tests), calendar updated with ramp model; Plan 03 pending         |
-| Last activity | 2026-03-02 — 07-02 SUMMARY.md finalized; CLI tool built and verified, calendar updated with ramp cadence and CSV export |
+| Field         | Value                                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                           |
+| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                          |
+| Plan          | 1 of 3 complete — 08-01 production SOP checklists done                                                    |
+| Status        | Phase 8 Plan 01 complete — four SOP checklists created in ops/sop/; Plan 02 pending                       |
+| Last activity | 2026-03-02 — 08-01 SUMMARY.md finalized; outline-template, recording, editing, publish checklists created |
 
 **Progress:**
 
-[██████████] 100%
-Phase 7: [██████░░░░] Plans 01+02 of 3 complete (case studies, CLI tool, calendar)
+[█████░░░░░] 47%
+Phase 8: [███░░░░░░░] Plan 01 of 3 complete (production SOP checklists)
 
 ```
 
@@ -62,6 +62,9 @@ Phase 7: [██████░░░░] Plans 01+02 of 3 complete (case studie
 | Phase 05-market-research-pain-point-discovery P02 | 6 | 1 tasks | 3 files |
 | Phase 07-case-studies-content-tooling P01 | 4 | 2 tasks | 7 files |
 | Phase 07 P02 | 8m | 2 tasks | 13 files |
+| Phase 08-content-production-repurposing P01 | 2 | 2 tasks | 4 files |
+| Phase 08-content-production-repurposing P03 | 3 | 2 tasks | 8 files |
+| Phase 08-content-production-repurposing P02 | 3m | 2 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -104,6 +107,10 @@ Phase 7: [██████░░░░] Plans 01+02 of 3 complete (case studie
 - **[07-02] Ramp cadence locked** — Weeks 1-2 lighter (1 YouTube + 1 Twitter + 1 Instagram), Weeks 3-4 full cadence; deferred posts kept (not deleted)
 - **[07-02] De-duplication is soft penalty** — -30% score reduction, not exclusion; all 12 topics accessible via --count 12
 - **[07-02] COVERED_THEMES keyword matching** — 5 theme buckets detect overlap with existing YouTube content plan
+- **[08-01] Pre-film verification checklist embedded in outline template** — ensures filming does not start before outline is complete; outline and pre-flight in same file
+- **[08-01] Tool-agnostic editing checklist** — outcome-based items only, no software-specific menu references; durable across Final Cut, Premiere, DaVinci, or any future tool
+- **[08-01] Two-CTA rule documented in editing checklist** — mid-video at 60% mark + end screen at 15 seconds; surfaced in both outline-template and editing checklist
+- **[08-01] Description template hardcoded in publish checklist** — booking URL, hashtags, and chapter structure locked; reduces switching cost
 
 ### v2.0 Roadmap Structure
 
@@ -139,6 +146,6 @@ Phase 7: [██████░░░░] Plans 01+02 of 3 complete (case studie
 ## Session Continuity
 
 Last session: 2026-03-02
-Stopped at: Completed 07-02 SUMMARY.md — Tasks 1+2 done. Content calendar updated with ramp model + CSV export. CLI tool built with 32 passing unit tests and all 5 flags verified.
-Resume: Phase 7 Plans 01+02 are done. Next automated work is Phase 7 Plan 03 (if exists — need to check ROADMAP). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
+Stopped at: Completed 08-01 SUMMARY.md — Tasks 1+2 done. Four production SOP checklists created in ops/sop/: outline-template.md (6-section fill-in), recording-checklist.md (pre/during/wrap), editing-checklist.md (tool-agnostic, two CTAs), publish-checklist.md (description template, scheduling, post-publish).
+Resume: Phase 8 Plan 01 is done. Next automated work is Phase 8 Plan 02. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
 ```
