@@ -244,10 +244,218 @@
         </ul>
       </div>
 
-      <!-- How it works — automation flow diagram -->
+      <!-- What's happening now — problem flow diagram -->
+      <div class="mb-8">
+        <p
+          class="text-xs font-body tracking-widest uppercase mb-5"
+          style="color: #f5a623"
+        >
+          What's happening now
+        </p>
+        <div class="overflow-x-auto">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 688 100"
+            width="688"
+            height="100"
+            role="img"
+            aria-label="Current broken lead pipeline process"
+            style="min-width: 688px"
+          >
+            <defs>
+              <marker
+                id="mp-prob-arrow"
+                markerWidth="8"
+                markerHeight="8"
+                refX="6"
+                refY="3"
+                orient="auto"
+              >
+                <path d="M0,0 L0,6 L8,3 z" fill="#E84D4D" />
+              </marker>
+            </defs>
+            <!-- Broken dashed arrows -->
+            <line
+              x1="148"
+              y1="50"
+              x2="164"
+              y2="50"
+              stroke="#E84D4D"
+              stroke-width="1.5"
+              stroke-dasharray="6 4"
+              marker-end="url(#mp-prob-arrow)"
+              opacity="0.7"
+            />
+            <line
+              x1="316"
+              y1="50"
+              x2="332"
+              y2="50"
+              stroke="#E84D4D"
+              stroke-width="1.5"
+              stroke-dasharray="6 4"
+              marker-end="url(#mp-prob-arrow)"
+              opacity="0.7"
+            />
+            <line
+              x1="484"
+              y1="50"
+              x2="500"
+              y2="50"
+              stroke="#E84D4D"
+              stroke-width="1.5"
+              stroke-dasharray="6 4"
+              marker-end="url(#mp-prob-arrow)"
+              opacity="0.7"
+            />
+            <!-- Node 1 -->
+            <rect
+              x="0"
+              y="22"
+              width="148"
+              height="56"
+              rx="8"
+              fill="#1E1E1E"
+              stroke="#F5A623"
+              stroke-width="1.5"
+            />
+            <text
+              x="74"
+              y="48"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="11"
+              font-weight="600"
+              fill="#EDE9E3"
+            >
+              Leads come in
+            </text>
+            <text
+              x="74"
+              y="63"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="10"
+              fill="rgba(237,233,227,0.55)"
+            >
+              all week
+            </text>
+            <!-- Node 2 -->
+            <rect
+              x="168"
+              y="22"
+              width="148"
+              height="56"
+              rx="8"
+              fill="#1E1E1E"
+              stroke="rgba(232,77,77,0.15)"
+              stroke-width="1.5"
+            />
+            <text
+              x="242"
+              y="48"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="11"
+              font-weight="600"
+              fill="#EDE9E3"
+            >
+              Scattered across
+            </text>
+            <text
+              x="242"
+              y="63"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="10"
+              fill="rgba(237,233,227,0.55)"
+            >
+              email/phone/DMs
+            </text>
+            <!-- Node 3 -->
+            <rect
+              x="336"
+              y="22"
+              width="148"
+              height="56"
+              rx="8"
+              fill="#1E1E1E"
+              stroke="rgba(232,77,77,0.15)"
+              stroke-width="1.5"
+            />
+            <text
+              x="410"
+              y="48"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="11"
+              font-weight="600"
+              fill="#EDE9E3"
+            >
+              Mon morning
+            </text>
+            <text
+              x="410"
+              y="63"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="10"
+              fill="rgba(237,233,227,0.55)"
+            >
+              scramble
+            </text>
+            <!-- Node 4 — red outcome -->
+            <rect
+              x="504"
+              y="22"
+              width="148"
+              height="56"
+              rx="8"
+              fill="rgba(232,77,77,0.08)"
+              stroke="#E84D4D"
+              stroke-width="1.5"
+            />
+            <text
+              x="578"
+              y="48"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="11"
+              font-weight="600"
+              fill="#E84D4D"
+            >
+              Hot leads
+            </text>
+            <text
+              x="578"
+              y="63"
+              text-anchor="middle"
+              font-family="'DM Sans', system-ui, sans-serif"
+              font-size="10"
+              fill="rgba(237,233,227,0.55)"
+            >
+              gone cold ✕
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Visual separator -->
+      <div
+        class="h-px mb-8 rounded-full"
+        style="
+          background: linear-gradient(
+            90deg,
+            rgba(232, 77, 77, 0.3),
+            rgba(77, 217, 232, 0.3)
+          );
+        "
+      ></div>
+
+      <!-- How the automation fixes it — solution flow diagram -->
       <div class="mb-16">
         <p class="text-cyan text-xs font-body tracking-widest uppercase mb-5">
-          How it works
+          How the automation fixes it
         </p>
         <div class="overflow-x-auto">
           <svg

@@ -124,8 +124,129 @@ ${lines}`;
     .join("\n");
 
   return `<div class="flow-diagram">
-  <p class="flow-label">How it works</p>
+  <p class="flow-label">How the automation fixes it</p>
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" role="img" aria-label="Automation flow diagram">
+    ${defs}
+    ${nodeCount === 4 ? arrowSVGs : ""}
+    ${nodeSVGs}
+  </svg>
+</div>`;
+}
+
+/**
+ * Return an inline SVG problem flow diagram for a given guide slug.
+ * Shows the broken manual process — distinct from the solution diagram:
+ *   - Warm warning tones: #E84D4D (red) and #F5A623 (amber)
+ *   - Node backgrounds: #1E1E1E with rgba(232,77,77,0.15) border
+ *   - Final node RED-tinted showing the bad outcome
+ *   - Dashed/broken arrow lines (stroke-dasharray) to show fragile process
+ *   - Same 688px width, 4 nodes horizontal
+ *
+ * @param {string} slug
+ * @returns {string} SVG markup string
+ */
+function getProblemDiagram(slug) {
+  const defs = `
+    <defs>
+      <marker id="pd-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#E84D4D"/>
+      </marker>
+    </defs>`;
+
+  function problemNode(x, y, label, sublabel, isFirst, isLast) {
+    const borderColor = isFirst
+      ? "#F5A623"
+      : isLast
+        ? "#E84D4D"
+        : "rgba(232,77,77,0.15)";
+    const nodeFill = isLast ? "rgba(232,77,77,0.08)" : "#1E1E1E";
+    const textColor = isLast ? "#E84D4D" : "#EDE9E3";
+    const lines = sublabel
+      ? `<text x="${x + 74}" y="${y + 26}" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" font-weight="600" fill="${textColor}">${label}</text>
+         <text x="${x + 74}" y="${y + 41}" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="10" fill="rgba(237,233,227,0.55)">${sublabel}</text>`
+      : `<text x="${x + 74}" y="${y + 32}" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" font-weight="600" fill="${textColor}">${label}</text>`;
+    return `<rect x="${x}" y="${y}" width="148" height="56" rx="8" fill="${nodeFill}" stroke="${borderColor}" stroke-width="1.5"/>
+${lines}`;
+  }
+
+  function brokenArrow(x1, x2, y) {
+    return `<line x1="${x1}" y1="${y}" x2="${x2 - 4}" y2="${y}" stroke="#E84D4D" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#pd-arrow)" opacity="0.7"/>`;
+  }
+
+  const nodeY = 22;
+  const arrowY = nodeY + 28;
+  const xs = [0, 168, 336, 504];
+  const svgW = 688;
+  const svgH = 100;
+
+  const problemFlows = {
+    "missed-call-textback": {
+      nodes: [
+        { label: "Phone rings", sublabel: null },
+        { label: "You're busy", sublabel: "with client" },
+        { label: "Voicemail", sublabel: "(maybe)" },
+        { label: "Client calls", sublabel: "competitor ✕" },
+      ],
+    },
+    "review-automation": {
+      nodes: [
+        { label: "Great service", sublabel: "delivered" },
+        { label: "Hope client", sublabel: "remembers" },
+        { label: "1 review in", sublabel: "3 months" },
+        { label: "Competitor", sublabel: "outranks you ✕" },
+      ],
+    },
+    "monday-pipeline": {
+      nodes: [
+        { label: "Leads come in", sublabel: "all week" },
+        { label: "Scattered across", sublabel: "email/phone/DMs" },
+        { label: "Mon morning", sublabel: "scramble" },
+        { label: "Hot leads", sublabel: "gone cold ✕" },
+      ],
+    },
+    "quote-writer": {
+      nodes: [
+        { label: "Client requests", sublabel: "quote" },
+        { label: "Manual research", sublabel: "+ writing" },
+        { label: "2 hours per", sublabel: "proposal" },
+        { label: "Client ghosts", sublabel: "while waiting ✕" },
+      ],
+    },
+    "no-show-killer": {
+      nodes: [
+        { label: "Appointment", sublabel: "booked" },
+        { label: "Client forgets,", sublabel: "no reminder" },
+        { label: "No-show,", sublabel: "empty slot" },
+        { label: "$80 revenue", sublabel: "lost ✕" },
+      ],
+    },
+  };
+
+  const flow = problemFlows[slug];
+  if (!flow) return "";
+
+  const nodeCount = flow.nodes.length;
+  const nodeSVGs = flow.nodes
+    .map((n, i) =>
+      problemNode(
+        xs[i],
+        nodeY,
+        n.label,
+        n.sublabel,
+        i === 0,
+        i === nodeCount - 1,
+      ),
+    )
+    .join("\n");
+
+  const arrowSVGs = flow.nodes
+    .slice(0, -1)
+    .map((_, i) => brokenArrow(xs[i] + 148, xs[i + 1], arrowY))
+    .join("\n");
+
+  return `<div class="flow-diagram">
+  <p class="flow-label flow-label--problem">What's happening now</p>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="${svgW}" height="${svgH}" role="img" aria-label="Current broken process diagram">
     ${defs}
     ${nodeCount === 4 ? arrowSVGs : ""}
     ${nodeSVGs}
@@ -148,13 +269,15 @@ ${lines}`;
  * @returns {string} Complete HTML document
  */
 function buildHTML(markdownContent, guideMeta) {
-  // Inject the flow diagram after the first page-break div (top of page 2).
+  // Inject the problem diagram before the first page-break (bottom of page 1),
+  // and the solution diagram after the first page-break (top of page 2).
+  const problemDiagram = getProblemDiagram(guideMeta.slug);
   const flowDiagram = getFlowDiagram(guideMeta.slug);
   const bodyHTML = marked
     .parse(markdownContent)
     .replace(
       /<div class="page-break"><\/div>/,
-      `<div class="page-break"></div>${flowDiagram}`,
+      `${problemDiagram}<div class="page-break"></div>${flowDiagram}`,
     );
 
   return `<!DOCTYPE html>
@@ -396,6 +519,10 @@ function buildHTML(markdownContent, guideMeta) {
       color: #4DD9E8;
       margin: 0 0 12px 0;
     }
+
+    .flow-label--problem {
+      color: #F5A623;
+    }
   </style>
 </head>
 <body>
@@ -467,4 +594,4 @@ function buildHTML(markdownContent, guideMeta) {
 </html>`;
 }
 
-module.exports = { buildHTML };
+module.exports = { buildHTML, getFlowDiagram, getProblemDiagram };
