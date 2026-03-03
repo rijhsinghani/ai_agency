@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 11-03-PLAN.md
-last_updated: "2026-03-03T19:14:29.202Z"
+stopped_at: Completed 11-02-PLAN.md
+last_updated: "2026-03-03T19:23:05.149Z"
 progress:
   total_phases: 11
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 22
-  completed_plans: 13
-  percent: 59
+  completed_plans: 14
+  percent: 64
 ---
 
 # Project State: AI Automation Agency
@@ -33,20 +33,20 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                               |
-| ------------- | --------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                     |
-| Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                          |
-| Plan          | 2 of 3 complete — 11-01 guide-generator CLI, 11-03 social post drafts (11-02 PDF rendering pending) |
-| Status        | Phase 11 Plans 01+03 complete — guide CLI, 5 guides, --from-file flag, 10 social drafts             |
-| Last activity | 2026-03-03 — 11-03 complete; --from-file flag added to repurposing script; 10 social drafts         |
+| Field         | Value                                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                            |
+| Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                                 |
+| Plan          | 3 of 3 complete — 11-01 guide-generator CLI, 11-02 PDF rendering + landing pages, 11-03 social post drafts |
+| Status        | Phase 11 ALL PLANS COMPLETE — guide CLI, 5 PDFs with logo, 6 HTML pages with logo, 10 social drafts        |
+| Last activity | 2026-03-03 — 11-02 complete; brand logo added to PDF template + all landing pages; all 5 PDFs re-rendered  |
 
 **Progress:**
 
-[██████░░░░] 59%
+[██████░░░░] 64%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
-Phase 11: [██████░░░░] Plans 01+03 of 3 complete (guide-generator CLI + 5 guides + 10 social drafts; 11-02 PDF pending)
+Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
 
 ```
 
@@ -72,6 +72,7 @@ Phase 11: [██████░░░░] Plans 01+03 of 3 complete (guide-gene
 | Phase 09-giveaway-social-proof P02 | 6 | 3 tasks | 1 files |
 | Phase 11-automation-guide-series P01 | 8 | 2 tasks | 10 files |
 | Phase 11-automation-guide-series P03 | 5 | 2 tasks | 11 files |
+| Phase 11-automation-guide-series P02 | 15 | 2 tasks | 17 files |
 
 ## Accumulated Context
 
@@ -139,6 +140,8 @@ Phase 11: [██████░░░░] Plans 01+03 of 3 complete (guide-gene
 - **[11-03] clip_script excluded when --from-file used** — clip_script prompts reference timestamps that don't exist in markdown files; platforms limited to twitter + instagram
 - **[11-03] --url changed to optional** — allows --from-file as mutually exclusive alternative; mutual exclusivity validated with clear error messages
 - **[11-03] Social post drafts written directly** — ANTHROPIC_API_KEY not in project .env; Claude Code wrote drafts applying brand voice rules; all 10 drafts meet quality criteria (280-char tweets, no banned phrases, no emojis, soft CTA, guide URLs)
+- **[11-02] Brand logo SVG inlined in template.js** — no external file reference in PDF renderer; brand/logo-icon-light.svg content embedded directly ensures logo renders correctly regardless of puppeteer working directory
+- **[11-02] Logo in HTML nav as 24px inline SVG beside wordmark** — flex items-center gap-2 pattern; consistent across all 6 guide HTML pages without external image dependency
 
 ### v2.0 Roadmap Structure
 
@@ -173,7 +176,7 @@ Phase 11: [██████░░░░] Plans 01+03 of 3 complete (guide-gene
 
 ## Session Continuity
 
-Last session: 2026-03-03T19:14:29.199Z
-Stopped at: Completed 11-03-PLAN.md
+Last session: 2026-03-03T19:23:05.146Z
+Stopped at: Completed 11-02-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
