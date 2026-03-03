@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-last_updated: "2026-03-03T00:45:35.664Z"
+last_updated: "2026-03-03T00:51:08.174Z"
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 19
-  completed_plans: 9
-  percent: 47
+  completed_plans: 10
+  percent: 53
 ---
 
 # Project State: AI Automation Agency
@@ -32,18 +32,19 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                                                                         |
-| Phase         | 8 of 8 (Phase 8: Content Production + Repurposing) — IN PROGRESS                                                  |
-| Plan          | 3 of 3 complete — 08-01 SOP checklists + 08-02 repurposing script + 08-03 video clipper CLI done                  |
-| Status        | Phase 8 Plan 03 complete — sameer-clip CLI built (27 tests), ffmpeg-static, 9:16 crop/scale, SRT burn-in          |
-| Last activity | 2026-03-02 — 08-03 SUMMARY.md finalized; video-clipper CLI built with 3 lib modules and 27 passing Jest tests     |
+| Field         | Value                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                                  |
+| Phase         | 9 of 8 (Phase 9: Giveaway + Social Proof) — IN PROGRESS                                                          |
+| Plan          | 1 of 2 complete — 09-01 HVAC/plumbing missed call giveaway document done                                         |
+| Status        | Phase 9 Plan 01 complete — buyer-qualifying giveaway doc written (85 lines), real numbers, booking URL confirmed |
+| Last activity | 2026-03-03 — 09-01 SUMMARY.md finalized; giveaway document created for HVAC/plumbing missed call pain point      |
 
 **Progress:**
 
-[█████░░░░░] 47%
+[█████░░░░░] 53%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
+Phase 9: [█████░░░░░] Plan 01 of 2 complete (HVAC/plumbing missed call giveaway doc)
 
 ```
 
@@ -65,6 +66,7 @@ Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP chec
 | Phase 08-content-production-repurposing P01 | 2 | 2 tasks | 4 files |
 | Phase 08-content-production-repurposing P03 | 3 | 2 tasks | 8 files |
 | Phase 08-content-production-repurposing P02 | 3m | 2 tasks | 12 files |
+| Phase 09-giveaway-social-proof P01 | 2 | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -118,6 +120,10 @@ Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP chec
 - **[08-02] BANNED_PHRASES injected into Claude system prompt on every generation call** — brand voice enforced at API level, not post-processing
 - **[08-02] review/*.md gitignored, review/.gitkeep tracked** — draft files are working artifacts, directory preserved in fresh clones
 - **[08-02] Transcript caching to review/[slug]-transcript.txt** — --from-cache flag skips Supadata credit on reruns
+- **[09-01] Giveaway section headings name reader's reality** — "The math you are not tracking" not "Section 1: Introduction"; pattern for all future giveaway docs
+- **[09-01] Reddit quote attributed as community quote, not client** — "from r/HVAC, 445 upvotes" framing avoids implying client relationship
+- **[09-01] Section 3 friction paragraph qualifies against DIYers** — explains carrier/VoIP/CRM integration complexity without providing build steps
+- **[09-01] Checklist scoring threshold is 3 of 5** — calibrated to match pain point research for measurable missed-call revenue loss
 
 ### v2.0 Roadmap Structure
 
@@ -152,7 +158,7 @@ Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP chec
 
 ## Session Continuity
 
-Last session: 2026-03-02
-Stopped at: Completed 08-03 SUMMARY.md — Tasks 1+2 done. sameer-clip video clipper CLI built with ffmpeg-static, 3 lib modules (extractor, captioner, formatter), 27 passing Jest tests. /tmp/ path enforced for SRT files.
-Resume: Phase 8 all 3 plans complete (SOP checklists, repurposing CLI, video clipper). Next: Phase 9 or whatever follows Phase 8 in ROADMAP. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device.
+Last session: 2026-03-03
+Stopped at: Completed 09-01 SUMMARY.md — Task 1 done. Buyer-qualifying HVAC/plumbing missed call giveaway document (85 lines) created at content/giveaways/01-missed-call-audit-hvac-plumbing.md. Real numbers from capability brief, booking URL confirmed, no emojis/buzzwords.
+Resume: Phase 9 Plan 01 complete. Next: Phase 9 Plan 02 (social proof assets). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device. Giveaway doc ready to copy into Google Doc — set "Anyone with link can view" and use that URL in social bios and YouTube descriptions.
 ```
