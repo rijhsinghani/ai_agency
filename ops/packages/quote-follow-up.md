@@ -33,7 +33,7 @@ The moment a prospect replies or books, the automation stops — no awkward mess
 
 ## Who This Is For
 
-Any trade business that sends quotes or estimates and struggles with the follow-through. Roofers, HVAC companies, remodelers, landscapers, painters, fencing contractors — anyone whose average job is over $1,000.
+Any small business that sends quotes or proposals and struggles with the follow-through. Trades, law firms, photography studios, cleaning companies, remodelers, landscapers — anyone whose average engagement is over $1,000.
 
 This package is especially powerful for businesses that know they have a follow-up problem but don't have a salesperson to own it. The automation is the salesperson.
 

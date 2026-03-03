@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A solo AI automation agency offering custom workflow automation services to local service businesses (plumbers, dentists, realtors, contractors). Built with Claude Code, MCPs, APIs, and custom scripts — not full application development, but discrete, tangible workflow automations that drive measurable efficiency and ROI. The founder brings deep product development experience and technical fluency with AI tooling.
+A solo AI automation agency offering custom workflow automation services to small businesses across industries — any owner too busy serving customers to chase new leads. Dental offices, salons, trades, law firms, cleaning companies, photography studios, and more. Built with n8n, Twilio, and the Claude API — not full application development, but discrete, tangible workflow automations that drive measurable efficiency and ROI. The founder brings deep product development experience and technical fluency with AI tooling.
 
 ## Core Value
 
@@ -75,7 +75,7 @@ Local service businesses save real money and recover real revenue through AI-pow
 
 **Target customer profile:**
 
-- Local service businesses (plumbers, dentists, realtors, contractors, etc.)
+- Small business owners across industries — any owner physically occupied while serving customers (dental, salons, trades, law, cleaning, photography, gyms, tutoring, and more)
 - Non-technical owners doing manual work (phone calls, emails, scheduling)
 - Revenue per client worth $1K-5K+ → even small improvements in lead capture are valuable
 - Not tech-savvy enough to build automations themselves
@@ -109,25 +109,25 @@ Local service businesses save real money and recover real revenue through AI-pow
 - **Operator**: Solo — all work is done by one person leveraging AI tools
 - **Pace**: Side project — no hard timeline, building alongside other work
 - **Complexity cap**: Discrete workflow automations only, no full app development
-- **Tools**: Claude Code + MCPs/APIs/scripts — custom code, not no-code platforms
+- **Tools**: n8n (workflow orchestration) + Twilio (SMS/voice) + Claude API (text generation) for client delivery. Claude Code + MCPs for build tooling. Cloud Run only for content pipeline.
 - **Budget**: Bootstrapped — minimize costs (free/low-cost tools where possible)
 - **Content**: Must be accessible to non-technical business owners
 
 ## Key Decisions
 
-| Decision                                       | Rationale                                                                                          | Outcome   |
-| ---------------------------------------------- | -------------------------------------------------------------------------------------------------- | --------- |
-| Target local service businesses                | Repeatable pain points (scheduling, follow-ups, reviews), not tech-savvy enough to DIY             | — Pending |
-| Value-based pricing (not hourly)               | Aligns incentives, captures more value, differentiates from freelancers                            | — Pending |
-| Build + monthly retainer model                 | Setup fee covers build, retainer creates recurring revenue and ongoing relationship                | — Pending |
-| Lead follow-up automation as first PoC         | High-impact, easy to demo, directly measurable (leads captured, appointments booked)               | — Pending |
-| Pivot existing YouTube channel                 | Existing channel (photography) has infrastructure, pivot to automation content for business owners | — Pending |
-| Content targets business owners, not builders  | Audience = potential clients. Show results, not process                                            | — Pending |
-| Claude Code + MCPs as tooling (not no-code)    | More powerful, more customizable, plays to founder's strengths                                     | — Pending |
-| No custom domain registration                  | GitHub Pages URL is sufficient for now. Custom domain can be added later if needed.                | Decided   |
-| Consulting positioning (not freelancing)       | Years of experience automating own business + professional financial services. Expert offering.    | Decided   |
-| Multi-platform: Twitter, YouTube, Instagram    | Three platforms with different content formats. LinkedIn deferred.                                 | Decided   |
-| Content repurposing over original per-platform | Create once on YouTube, repurpose everywhere. Solo operator can't create unique per platform.      | Decided   |
+| Decision                                       | Rationale                                                                                                                                                                                                                       | Outcome   |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| Target local service businesses                | Repeatable pain points (scheduling, follow-ups, reviews), not tech-savvy enough to DIY                                                                                                                                          | — Pending |
+| Value-based pricing (not hourly)               | Aligns incentives, captures more value, differentiates from freelancers                                                                                                                                                         | — Pending |
+| Build + monthly retainer model                 | Setup fee covers build, retainer creates recurring revenue and ongoing relationship                                                                                                                                             | — Pending |
+| Lead follow-up automation as first PoC         | High-impact, easy to demo, directly measurable (leads captured, appointments booked)                                                                                                                                            | — Pending |
+| Pivot existing YouTube channel                 | Existing channel (photography) has infrastructure, pivot to automation content for business owners                                                                                                                              | — Pending |
+| Content targets business owners, not builders  | Audience = potential clients. Show results, not process                                                                                                                                                                         | — Pending |
+| n8n + Twilio + Claude API as delivery stack    | n8n is powerful, self-hostable, and lets you templatize automations across clients. Twilio handles SMS/voice. Claude API handles text generation. Claude Code builds and configures — it is not part of client-facing delivery. | Decided   |
+| No custom domain registration                  | GitHub Pages URL is sufficient for now. Custom domain can be added later if needed.                                                                                                                                             | Decided   |
+| Consulting positioning (not freelancing)       | Years of experience automating own business + professional financial services. Expert offering.                                                                                                                                 | Decided   |
+| Multi-platform: Twitter, YouTube, Instagram    | Three platforms with different content formats. LinkedIn deferred.                                                                                                                                                              | Decided   |
+| Content repurposing over original per-platform | Create once on YouTube, repurpose everywhere. Solo operator can't create unique per platform.                                                                                                                                   | Decided   |
 
 ---
 

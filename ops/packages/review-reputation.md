@@ -28,7 +28,7 @@ Your star rating climbs. New customers trust you more. Google ranks you higher i
 
 ## Who This Is For
 
-Any local service business that needs more Google reviews. Especially strong for: HVAC companies, plumbers, landscapers, dentists, chiropractors, auto repair shops, cleaning services — businesses where Google reviews directly drive new customer decisions.
+Any small business that needs more Google reviews. Especially strong for: dental practices, salons, cleaning services, trades, law firms, gyms, photography studios, auto repair shops — businesses where Google reviews directly drive new customer decisions.
 
 If your Google Business Profile has fewer than 50 reviews, or if your rating is below 4.5 stars, this package has an outsized impact. Reviews compound: each new review makes the next customer more likely to choose you, and Google's algorithm rewards profiles with steady review activity.
 

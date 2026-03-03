@@ -7,7 +7,7 @@
 
 ## What This Does (Plain English)
 
-You're under a sink, on a roof, or driving between jobs. Your phone rings — you can't answer. Right now, that lead probably calls your competitor next. With this automation, the moment a call goes unanswered, they get a text: "Hey, caught your call — tied up on a job. Can I reach you in the next hour?" Most people reply. The lead stays warm until you're free.
+You're with a client, mid-appointment, or in the middle of a job. Your phone rings — you can't answer. Right now, that lead probably calls your competitor next. With this automation, the moment a call goes unanswered, they get a text: "Hey, caught your call — tied up right now. Can I reach you in the next hour?" Most people reply. The lead stays warm until you're free.
 
 No app. No extra step from you. It happens automatically, every time.
 
@@ -29,21 +29,21 @@ No app. No extra step from you. It happens automatically, every time.
 
 ## Who This Is For
 
-Any solo operator or small team where the owner answers their own phone. Plumbers, electricians, HVAC technicians, painters, handymen — anyone who works with their hands and physically cannot pick up every call during the workday.
+Any solo operator or small team where the owner is physically occupied when leads call — dental practices, salons, law firms, trades, cleaning companies, photography studios, gyms. If you can't answer the phone while you're serving the customer in front of you, this is for you.
 
-This is the lowest-friction package to start with because the pain is universal: every trade business owner has watched a lead call go to voicemail and wondered if they just lost the job. Now they don't have to wonder.
+This is the lowest-friction package to start with because the pain is universal: every small business owner has watched a lead call go to voicemail and wondered if they just lost the job. Now they don't have to wonder.
 
 ---
 
 ## ROI Example
 
-A solo electrician misses an average of 6 calls per workday (industry average for single-operator trades). Even if only 4 of those are genuine new leads, and only half of those leads are recovered by the text-back:
+A solo operator misses an average of 6 calls per workday. Even if only 4 of those are genuine new leads, and only half of those leads are recovered by the text-back:
 
 - 2 recovered leads/month × $600 average job = **$1,200/month in recovered revenue**
 - Build fee of $1,500 pays back in **under 2 jobs**
 - $200/mo retainer = the cost of roughly one-third of one average job
 
-For a contractor whose average job is $1,200 or higher, a single recovered lead pays for the entire build fee.
+For any business where the average job is $1,200 or higher, a single recovered lead pays for the entire build fee.
 
 ---
 

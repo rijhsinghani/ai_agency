@@ -28,7 +28,7 @@ You stop wasting drive time on empty jobs. If they need to reschedule, they can 
 
 ## Who This Is For
 
-Any appointment-based local service business. Strongest fit for: HVAC maintenance and tune-ups, dentists, chiropractors, house cleaning services, pest control, and any trade doing scheduled (not emergency) work.
+Any appointment-based small business. Strongest fit for: dental practices, salons, cleaning services, tutoring centers, gyms, law firms, HVAC maintenance, and any business doing scheduled (not emergency) work.
 
 The trigger to buy is a no-show rate above 10%. If more than 1 in 10 appointments results in a wasted trip, this package pays for itself quickly. For businesses running 30-50 appointments per month, even cutting no-shows in half has a significant financial impact.
 

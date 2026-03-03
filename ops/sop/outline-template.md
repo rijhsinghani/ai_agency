@@ -57,7 +57,7 @@
 [Any credentials, personal data, client names, or internal tools that should be hidden or blurred]
 
 **CTA placement (mid-video, ~60% mark):**
-"If what I'm showing you would save you time, I have a link below to book a free 15-min call. No pitch, just a conversation."
+"If this is something you're dealing with in your business, stick around — I'll show you exactly how it works."
 
 [Exact timestamp target: ]
 

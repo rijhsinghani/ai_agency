@@ -2,7 +2,7 @@
 const Anthropic = require("@anthropic-ai/sdk");
 const { BANNED_PHRASES, buildPrompt } = require("./formatter");
 
-async function generateDraft(transcript, platform) {
+async function generateDraft(transcript, platform, ctaMode = "value") {
   const client = new Anthropic();
   const systemPrompt = `You are writing ${platform} content for Sameer Automations.
 Voice rules: Direct, peer-level, confident, practical, transparent.
@@ -14,7 +14,9 @@ Reference specific numbers and scenarios from the transcript. Do not write gener
   const message = await client.messages.create({
     model: "claude-opus-4-6",
     max_tokens: 1024,
-    messages: [{ role: "user", content: buildPrompt(platform, transcript) }],
+    messages: [
+      { role: "user", content: buildPrompt(platform, transcript, ctaMode) },
+    ],
     system: systemPrompt,
   });
   return message.content[0].text;

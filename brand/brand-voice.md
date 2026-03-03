@@ -74,6 +74,8 @@ The brand feels like getting advice from a smart friend who happens to know this
 
 **How they want to be addressed:** As capable adults who are busy, not confused. They are not failing — they are stretched thin. The framing is always "here is a better system," never "here is what you have been doing wrong."
 
+**Industry representation:** Content and examples should represent varied industries — not just trades. The automations we build apply to any small business where the owner is physically busy serving customers when leads come in: dental offices, salons, photography studios, cleaning companies, law firms, gyms, tutoring centers, and trades alike. Rotate industries in examples, social proof, and case studies to reinforce the "any industry" positioning.
+
 ---
 
 ## 4. Core messaging pillars

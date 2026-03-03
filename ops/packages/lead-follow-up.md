@@ -27,9 +27,9 @@ Every new lead — whether they fill out your contact form, click your Facebook 
 
 ## Who This Is For
 
-Contractors, plumbers, HVAC technicians, electricians, roofers, landscapers — anyone who gets web or phone leads and loses them to slow response times. Best fit: businesses missing 5 or more leads per month simply because they couldn't reply fast enough.
+Any small business that gets web or phone leads and loses them to slow response times — trades, dental practices, salons, law firms, cleaning companies, gyms, photography studios, and more. Best fit: businesses missing 5 or more leads per month simply because they couldn't reply fast enough.
 
-The hardest part of running a trade business isn't doing the work — it's being available to answer the phone at 9am on a Tuesday when you're already mid-job. This package solves that.
+The hardest part of running a small business isn't doing the work — it's being available to answer the phone at 9am on a Tuesday when you're already with a client. This package solves that.
 
 ---
 

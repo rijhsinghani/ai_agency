@@ -24,6 +24,11 @@ program
     "--title <title>",
     "Override video title for file naming (auto-detected from URL if omitted)",
   )
+  .option(
+    "--cta <mode>",
+    "CTA mode for generated posts: value (no CTA), soft (engagement prompt), booking (discovery call link)",
+    "value",
+  )
   .parse(process.argv);
 
 const opts = program.opts();
@@ -49,10 +54,19 @@ const opts = program.opts();
     console.log("Transcript extracted and cached.");
   }
 
+  const ctaMode = opts.cta;
+  const validCtaModes = ["value", "soft", "booking"];
+  if (!validCtaModes.includes(ctaMode)) {
+    console.error(
+      `Invalid --cta value "${ctaMode}". Must be one of: ${validCtaModes.join(", ")}.`,
+    );
+    process.exit(1);
+  }
+
   const platforms = ["twitter", "instagram", "clip_script"];
   for (const platform of platforms) {
     console.log(`Generating ${platform} draft...`);
-    const draft = await generateDraft(transcript, platform);
+    const draft = await generateDraft(transcript, platform, ctaMode);
     const filepath = writeToReviewQueue(videoTitle, platform, draft);
     console.log(`  -> ${filepath}`);
   }
