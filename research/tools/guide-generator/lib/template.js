@@ -255,27 +255,53 @@ function buildHTML(markdownContent, guideMeta) {
 </head>
 <body>
   <div class="page">
-    <!-- Logo icon in top-right -->
-    <svg class="logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Logo icon in top-right (brand/logo-icon-light.svg) -->
+    <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Sameer Automations icon">
+      <title>Sameer Automations</title>
       <defs>
-        <linearGradient id="logoGrad" x1="80" y1="20" x2="20" y2="80" gradientUnits="userSpaceOnUse">
+        <linearGradient id="flowGrad" x1="1" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#7B2FBE"/>
           <stop offset="50%" stop-color="#9B4FDE"/>
           <stop offset="100%" stop-color="#4DD9E8"/>
         </linearGradient>
-        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        <radialGradient id="haloInput" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="haloOutput" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="coreGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>
+          <feColorMatrix in="blur" type="matrix"
+            values="0 0 0 0 0.302  0 0 0 0 0.851  0 0 0 0 0.910  0 0 0 0.8 0" result="cyan"/>
+          <feMerge>
+            <feMergeNode in="cyan"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
         </filter>
       </defs>
-      <!-- S-wave path -->
-      <path d="M75 25 C75 40 50 45 50 50 C50 55 25 60 25 75" stroke="url(#logoGrad)" stroke-width="6" stroke-linecap="round" fill="none"/>
-      <!-- Input node (top-right) -->
-      <circle cx="75" cy="25" r="8" fill="#7B2FBE" filter="url(#glow)"/>
-      <circle cx="75" cy="25" r="3" fill="white"/>
-      <!-- Output node (bottom-left) -->
-      <circle cx="25" cy="75" r="8" fill="#4DD9E8" filter="url(#glow)"/>
-      <circle cx="25" cy="75" r="3" fill="white"/>
+      <!-- Atmospheric halos -->
+      <circle cx="80" cy="20" r="20" fill="url(#haloInput)"/>
+      <circle cx="20" cy="80" r="20" fill="url(#haloOutput)"/>
+      <!-- S-wave bridge -->
+      <path
+        d="M 80 20
+           C 40 20, 20 20, 20 40
+           C 20 60, 80 40, 80 60
+           C 80 80, 60 80, 20 80"
+        stroke="url(#flowGrad)"
+        stroke-width="8"
+        stroke-linecap="round"
+        fill="none"
+      />
+      <!-- Input node -->
+      <circle cx="80" cy="20" r="6" fill="#7B2FBE" filter="url(#coreGlow)"/>
+      <circle cx="80" cy="20" r="2" fill="#FFFFFF" opacity="0.85"/>
+      <!-- Output node -->
+      <circle cx="20" cy="80" r="6" fill="#4DD9E8" filter="url(#coreGlow)"/>
+      <circle cx="20" cy="80" r="2" fill="#FFFFFF" opacity="0.85"/>
     </svg>
 
     <!-- Gradient accent line at top -->

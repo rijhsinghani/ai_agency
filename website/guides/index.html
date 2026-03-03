@@ -95,8 +95,44 @@
       <div class="max-w-5xl mx-auto flex items-center justify-between">
         <a
           href="/"
-          class="font-display font-bold text-cream hover:text-cyan transition-colors text-sm tracking-wide"
+          class="flex items-center gap-2 font-display font-bold text-cream hover:text-cyan transition-colors text-sm tracking-wide"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            width="24"
+            height="24"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="navFlowGrad" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7B2FBE" />
+                <stop offset="50%" stop-color="#9B4FDE" />
+                <stop offset="100%" stop-color="#4DD9E8" />
+              </linearGradient>
+              <radialGradient id="navHaloIn" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.5" />
+                <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="navHaloOut" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.5" />
+                <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <circle cx="80" cy="20" r="20" fill="url(#navHaloIn)" />
+            <circle cx="20" cy="80" r="20" fill="url(#navHaloOut)" />
+            <path
+              d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
+              stroke="url(#navFlowGrad)"
+              stroke-width="8"
+              stroke-linecap="round"
+              fill="none"
+            />
+            <circle cx="80" cy="20" r="6" fill="#7B2FBE" />
+            <circle cx="80" cy="20" r="2" fill="#FFFFFF" opacity="0.85" />
+            <circle cx="20" cy="80" r="6" fill="#4DD9E8" />
+            <circle cx="20" cy="80" r="2" fill="#FFFFFF" opacity="0.85" />
+          </svg>
           Sameer Automations
         </a>
         <a
