@@ -45,7 +45,7 @@ Requirements for the content marketing system. Each maps to roadmap phases.
 ### Giveaways & Social Proof
 
 - [x] **GIVE-01**: One vertical-specific giveaway created that qualifies buyers (e.g. "Lead Recovery Audit for Plumbers") — not a generic guide that attracts DIYers
-- [ ] **GIVE-02**: Landing page updated to include real case study metrics and demo automation results, replacing or supplementing mock testimonials
+- [x] **GIVE-02**: Landing page updated to include real case study metrics and demo automation results, replacing or supplementing mock testimonials
 
 ---
 
@@ -158,7 +158,7 @@ Deferred to v2.1+ or later milestones.
 | TOOL-03     | Phase 7 | Complete |
 | TOOL-04     | Phase 7 | Complete |
 | GIVE-01     | Phase 8 | Complete |
-| GIVE-02     | Phase 8 | Pending |
+| GIVE-02     | Phase 8 | Complete |
 
 **Coverage:**
 

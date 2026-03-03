@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-last_updated: "2026-03-03T00:51:08.174Z"
+last_updated: "2026-03-03T00:56:13.249Z"
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 19
-  completed_plans: 10
+  completed_plans: 11
   percent: 53
 ---
 
@@ -32,19 +32,19 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                                            |
-| ------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                                  |
-| Phase         | 9 of 8 (Phase 9: Giveaway + Social Proof) — IN PROGRESS                                                          |
-| Plan          | 1 of 2 complete — 09-01 HVAC/plumbing missed call giveaway document done                                         |
-| Status        | Phase 9 Plan 01 complete — buyer-qualifying giveaway doc written (85 lines), real numbers, booking URL confirmed |
-| Last activity | 2026-03-03 — 09-01 SUMMARY.md finalized; giveaway document created for HVAC/plumbing missed call pain point      |
+| Field         | Value                                                                                                     |
+| ------------- | --------------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                           |
+| Phase         | 9 of 9 (Phase 9: Giveaway + Social Proof) — COMPLETE                                                      |
+| Plan          | 2 of 2 complete — 09-01 HVAC/plumbing missed call giveaway doc + 09-02 social proof replacement done      |
+| Status        | Phase 9 Plan 02 complete — 6 fictional testimonials removed, real Raj PV proof block + Reddit cards added |
+| Last activity | 2026-03-03 — 09-02 SUMMARY.md finalized; website social proof sections replaced with real data            |
 
 **Progress:**
 
-[█████░░░░░] 53%
+[██████░░░░] 58%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
-Phase 9: [█████░░░░░] Plan 01 of 2 complete (HVAC/plumbing missed call giveaway doc)
+Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 
 ```
 
@@ -67,6 +67,7 @@ Phase 9: [█████░░░░░] Plan 01 of 2 complete (HVAC/plumbing m
 | Phase 08-content-production-repurposing P03 | 3 | 2 tasks | 8 files |
 | Phase 08-content-production-repurposing P02 | 3m | 2 tasks | 12 files |
 | Phase 09-giveaway-social-proof P01 | 2 | 1 tasks | 1 files |
+| Phase 09-giveaway-social-proof P02 | 6 | 3 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -120,6 +121,9 @@ Phase 9: [█████░░░░░] Plan 01 of 2 complete (HVAC/plumbing m
 - **[08-02] BANNED_PHRASES injected into Claude system prompt on every generation call** — brand voice enforced at API level, not post-processing
 - **[08-02] review/*.md gitignored, review/.gitkeep tracked** — draft files are working artifacts, directory preserved in fresh clones
 - **[08-02] Transcript caching to review/[slug]-transcript.txt** — --from-cache flag skips Supadata credit on reruns
+- **[09-02] Pull quote attribution uses business type only** — "wedding + event photography studio" preserves client privacy while remaining credible; no client name on public page
+- **[09-02] Reddit community voice cards use r/ avatar badge** — clearly distinguishes community quotes from client testimonials; avoids misleading trust signals
+- **[09-02] Hybrid social proof layout: proof block (md:col-span-2) + 3 Reddit cards** — real case study dominates visually, community voices supplement without fabrication
 - **[09-01] Giveaway section headings name reader's reality** — "The math you are not tracking" not "Section 1: Introduction"; pattern for all future giveaway docs
 - **[09-01] Reddit quote attributed as community quote, not client** — "from r/HVAC, 445 upvotes" framing avoids implying client relationship
 - **[09-01] Section 3 friction paragraph qualifies against DIYers** — explains carrier/VoIP/CRM integration complexity without providing build steps
@@ -159,6 +163,6 @@ Phase 9: [█████░░░░░] Plan 01 of 2 complete (HVAC/plumbing m
 ## Session Continuity
 
 Last session: 2026-03-03
-Stopped at: Completed 09-01 SUMMARY.md — Task 1 done. Buyer-qualifying HVAC/plumbing missed call giveaway document (85 lines) created at content/giveaways/01-missed-call-audit-hvac-plumbing.md. Real numbers from capability brief, booking URL confirmed, no emojis/buzzwords.
-Resume: Phase 9 Plan 01 complete. Next: Phase 9 Plan 02 (social proof assets). Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device. Giveaway doc ready to copy into Google Doc — set "Anyone with link can view" and use that URL in social bios and YouTube descriptions.
+Stopped at: Completed 09-02 SUMMARY.md — Tasks 1+2+3 done. 6 fictional testimonials (Mike Ramirez et al.) removed from website/index.html. Real Raj Photo Video proof block + 3 Reddit community voice cards added to testimonials section. Case study metrics card updated with real numbers (4+ hrs to 60 sec, $4,200/mo recovered). Phase 9 all 2 plans complete.
+Resume: Phase 9 complete (giveaway doc + social proof replacement). Next: Phase 10 (v3.0 Content Automation Pipeline) per ROADMAP. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device. Giveaway doc ready to copy into Google Doc — set "Anyone with link can view" and use URL in social bios.
 ```
