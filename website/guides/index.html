@@ -93,37 +93,46 @@
     <!-- Navigation -->
     <nav class="border-b border-cream/10 px-6 py-4">
       <div class="max-w-5xl mx-auto flex items-center justify-between">
-        <a
-          href="/"
-          class="flex items-center gap-2 font-display font-bold text-cream hover:text-cyan transition-colors text-sm tracking-wide"
-        >
+        <a href="/" class="hover:opacity-80 transition-opacity">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 100 100"
-            width="24"
-            height="24"
-            aria-hidden="true"
+            viewBox="0 0 520 100"
+            width="120"
+            height="23"
+            role="img"
+            aria-label="Sameer Automations"
           >
+            <title>Sameer Automations</title>
             <defs>
-              <linearGradient id="navFlowGrad" x1="1" y1="0" x2="0" y2="1">
+              <style>
+                .nav-wordmark {
+                  font-family:
+                    "Roc Grotesk", "Outfit", "Helvetica Neue", Arial, sans-serif;
+                  font-weight: 900;
+                  font-size: 28px;
+                  letter-spacing: 1px;
+                  fill: #ede9e3;
+                }
+              </style>
+              <linearGradient id="nav-idxFlowGrad" x1="1" y1="0" x2="0" y2="1">
                 <stop offset="0%" stop-color="#7B2FBE" />
                 <stop offset="50%" stop-color="#9B4FDE" />
                 <stop offset="100%" stop-color="#4DD9E8" />
               </linearGradient>
-              <radialGradient id="navHaloIn" cx="50%" cy="50%" r="50%">
+              <radialGradient id="nav-idxHaloIn" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.5" />
                 <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0" />
               </radialGradient>
-              <radialGradient id="navHaloOut" cx="50%" cy="50%" r="50%">
+              <radialGradient id="nav-idxHaloOut" cx="50%" cy="50%" r="50%">
                 <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.5" />
                 <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0" />
               </radialGradient>
             </defs>
-            <circle cx="80" cy="20" r="20" fill="url(#navHaloIn)" />
-            <circle cx="20" cy="80" r="20" fill="url(#navHaloOut)" />
+            <circle cx="80" cy="20" r="20" fill="url(#nav-idxHaloIn)" />
+            <circle cx="20" cy="80" r="20" fill="url(#nav-idxHaloOut)" />
             <path
               d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
-              stroke="url(#navFlowGrad)"
+              stroke="url(#nav-idxFlowGrad)"
               stroke-width="8"
               stroke-linecap="round"
               fill="none"
@@ -132,8 +141,8 @@
             <circle cx="80" cy="20" r="2" fill="#FFFFFF" opacity="0.85" />
             <circle cx="20" cy="80" r="6" fill="#4DD9E8" />
             <circle cx="20" cy="80" r="2" fill="#FFFFFF" opacity="0.85" />
+            <text x="124" y="57" class="nav-wordmark">SAMEER AUTOMATIONS</text>
           </svg>
-          Sameer Automations
         </a>
         <a
           href="/"
