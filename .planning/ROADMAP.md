@@ -4,7 +4,7 @@
 **Strategy:** Content-first. Build audience and trust through value content. Funnel to discovery calls.
 **Depth:** Quick (4 phases per milestone)
 **Created:** 2026-02-27
-**Revised:** 2026-03-02 — Phase 6 plans created; Phase 10 Automated Content Preparation & Distribution Pipeline added (v3.0)
+**Revised:** 2026-03-03 — Phase 11 plans created (3 plans, 2 waves)
 
 ---
 
@@ -387,11 +387,17 @@ The 5 guides:
 4. "The quote that writes itself" — Voice memo to formatted proposal via Claude API
 5. "The no-show killer" — Appointment reminder sequence with reschedule link
 
-Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works), Page 3 (DIY walkthrough linked separately). Branded dark-theme PDFs matching visual identity (Roc Grotesk, #1A1A1A, purple-to-cyan accents). Generated via Markdown → styled HTML → PDF (puppeteer). Hosted at sameerautomations.com/guides/. One guide per week for 5 weeks. Each feeds the repurposing script for social distribution.
+Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works), Page 3 (DIY walkthrough inline). Branded dark-theme PDFs matching visual identity (Roc Grotesk, #1A1A1A, purple-to-cyan accents). Generated via Markdown to styled HTML to PDF (puppeteer). Hosted at sameerautomations.com/guides/. One guide per week for 5 weeks. Each feeds the repurposing script for social distribution.
 
 **Design doc**: `.planning/phases/11-automation-guide-series/11-DESIGN.md`
 
-**Plans**: TBD (run `/gsd:plan-phase 11`)
+**Plans:** 3 plans
+
+Plans:
+
+- [ ] 11-01-PLAN.md — Guide-generator CLI tool + 5 guide markdown files (GUIDE-CONTENT, GUIDE-MATH, GUIDE-VOICE, GUIDE-FORMAT)
+- [ ] 11-02-PLAN.md — PDF rendering, landing pages, and hub index (GUIDE-PDF, GUIDE-VISUAL, GUIDE-HOSTING, GUIDE-CTA)
+- [ ] 11-03-PLAN.md — Repurposing script --from-file flag + 10 social post drafts (GUIDE-SOCIAL, GUIDE-CTA)
 
 **Success Criteria** (what must be TRUE):
 
@@ -419,7 +425,7 @@ Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works),
 | 8. Content Production + Repurposing    | 3/4       | In Progress    |             | -          |
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
 | 10. Content Preparation & Distribution | 0/7       | Planned        |             | -          |
-| 11. Automation Guide Series            | v3.0      | 0/0            | Designed    | -          |
+| 11. Automation Guide Series            | v3.0      | 0/3            | Planned     | -          |
 
 ---
 
@@ -435,4 +441,4 @@ Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works),
 ---
 
 _Created: 2026-02-27_
-_Last updated: 2026-03-02 — Phase 6 plans created (2 plans, 2 waves)_
+_Last updated: 2026-03-03 — Phase 11 plans created (3 plans, 2 waves)_
