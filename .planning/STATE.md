@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Phase 11 context gathered
-last_updated: "2026-03-03T17:46:37.315Z"
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-03-03T19:04:14Z"
 progress:
   total_phases: 11
   completed_phases: 4
-  total_plans: 19
-  completed_plans: 11
-  percent: 58
+  total_plans: 22
+  completed_plans: 12
+  percent: 55
 ---
 
 # Project State: AI Automation Agency
@@ -33,19 +33,20 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                                     |
-| ------------- | --------------------------------------------------------------------------------------------------------- |
-| Milestone     | v2.0 — Content Marketing Engine                                                                           |
-| Phase         | 9 of 9 (Phase 9: Giveaway + Social Proof) — COMPLETE                                                      |
-| Plan          | 2 of 2 complete — 09-01 HVAC/plumbing missed call giveaway doc + 09-02 social proof replacement done      |
-| Status        | Phase 9 Plan 02 complete — 6 fictional testimonials removed, real Raj PV proof block + Reddit cards added |
-| Last activity | 2026-03-03 — 09-02 SUMMARY.md finalized; website social proof sections replaced with real data            |
+| Field         | Value                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------ |
+| Milestone     | v2.0 — Content Marketing Engine                                                            |
+| Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                 |
+| Plan          | 1 of 3 complete — 11-01 guide-generator CLI + 5 automation guide markdown files            |
+| Status        | Phase 11 Plan 01 complete — guide-generator CLI scaffolded, all 5 guides written           |
+| Last activity | 2026-03-03 — 11-01 complete; guide-generator CLI + 5 automation guide markdown files built |
 
 **Progress:**
 
-[██████░░░░] 58%
+[██████░░░░] 55%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
+Phase 11: [███░░░░░░░] Plan 01 of 3 complete (guide-generator CLI + 5 guide markdown files)
 
 ```
 
@@ -69,6 +70,7 @@ Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway do
 | Phase 08-content-production-repurposing P02 | 3m | 2 tasks | 12 files |
 | Phase 09-giveaway-social-proof P01 | 2 | 1 tasks | 1 files |
 | Phase 09-giveaway-social-proof P02 | 6 | 3 tasks | 1 files |
+| Phase 11-automation-guide-series P01 | 8 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -129,6 +131,10 @@ Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway do
 - **[09-01] Reddit quote attributed as community quote, not client** — "from r/HVAC, 445 upvotes" framing avoids implying client relationship
 - **[09-01] Section 3 friction paragraph qualifies against DIYers** — explains carrier/VoIP/CRM integration complexity without providing build steps
 - **[09-01] Checklist scoring threshold is 3 of 5** — calibrated to match pain point research for measurable missed-call revenue loss
+- **[11-01] Guide industries locked** — salon (missed-call), dental (review), cleaning service (monday-pipeline), law firm (quote-writer), gym (no-show) — all non-trades per Phase 9 UAT fix
+- **[11-01] marked custom renderer converts --- to page-break div** — cleaner than post-processing regex; handles all markdown edge cases correctly for PDF pagination
+- **[11-01] Reddit quotes in 2 of 5 guides** — included in missed-call-textback (r/femalehairadvice) and no-show-killer (r/personaltraining) where community voice strengthens hook; omitted where dollar math alone is compelling
+- **[11-01] renderPDF and renderPreview use try/finally** — guarantees browser.close() even on render failure; prevents hanging puppeteer processes
 
 ### v2.0 Roadmap Structure
 
@@ -163,7 +169,7 @@ Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway do
 
 ## Session Continuity
 
-Last session: 2026-03-03T17:46:37.310Z
-Stopped at: Phase 11 context gathered
-Resume: Phase 9 complete (giveaway doc + social proof replacement). Next: Phase 10 (v3.0 Content Automation Pipeline) per ROADMAP. Phase 6 manual tasks still pending: (1) paste updated YouTube about section into YouTube Studio, (2) complete CTA audit on each live platform, (3) run mobile funnel test on real device. Giveaway doc ready to copy into Google Doc — set "Anyone with link can view" and use URL in social bios.
+Last session: 2026-03-03T19:04:14Z
+Stopped at: Completed 11-01-PLAN.md
+Resume: Phase 11 Plan 01 complete. Next: 11-02 (PDF rendering + landing pages). guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/.
 ```
