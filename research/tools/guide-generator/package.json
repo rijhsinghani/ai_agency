@@ -1,0 +1,13 @@
+{
+  "name": "guide-generator",
+  "version": "1.0.0",
+  "description": "Generate branded PDF automation guides from markdown source files",
+  "bin": {
+    "sameer-guides": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "marked": "^15.0.0",
+    "puppeteer": "^24.0.0"
+  }
+}
