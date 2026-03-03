@@ -12,7 +12,7 @@
 
 - [x] **v1.0 Foundation** - Phases 1-4 (brand, go-live, first client delivery, scale)
 - [ ] **v2.0 Content Marketing Engine** - Phases 5-9 (platform setup, tooling, production, giveaways)
-- [ ] **v3.0 Content Automation Pipeline** - Phase 10 (automated content preparation, post-production, AI generation, multi-platform distribution)
+- [ ] **v3.0 Content Automation Pipeline** - Phases 10-11 (automated content preparation, post-production, AI generation, multi-platform distribution, audience-building guide series)
 
 ---
 
@@ -374,6 +374,37 @@ Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
 
 ---
 
+### Phase 11: "5 Automations You Can Steal" Guide Series
+
+**Goal**: Build social following and engagement through 5 branded PDF guides — each a standalone, value-first automation walkthrough that small business owners can use immediately. No email gate, no newsletter, just free public content that makes people follow and engage.
+**Depends on**: Phase 9 (brand voice, visual identity, and giveaway pattern established)
+
+The 5 guides:
+
+1. "The 30-second save" — Missed call text-back
+2. "The review machine" — Auto-request Google reviews after appointments
+3. "The Monday morning pipeline" — Weekly lead summary automation
+4. "The quote that writes itself" — Voice memo to formatted proposal via Claude API
+5. "The no-show killer" — Appointment reminder sequence with reschedule link
+
+Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works), Page 3 (DIY walkthrough linked separately). Branded dark-theme PDFs matching visual identity (Roc Grotesk, #1A1A1A, purple-to-cyan accents). Generated via Markdown → styled HTML → PDF (puppeteer). Hosted at sameerautomations.com/guides/. One guide per week for 5 weeks. Each feeds the repurposing script for social distribution.
+
+**Design doc**: `.planning/phases/11-automation-guide-series/11-DESIGN.md`
+
+**Plans**: TBD (run `/gsd:plan-phase 11`)
+
+**Success Criteria** (what must be TRUE):
+
+1. 5 branded PDF guides exist, each following the 3-section hybrid format (hook, explanation, DIY walkthrough)
+2. Each guide uses real math and industry-neutral examples (not trades-only)
+3. Visual design matches brand identity (dark theme, Roc Grotesk, gradient accents, arch-nodes)
+4. Each guide has a corresponding social post ready for distribution (using repurposing script with --cta soft)
+5. All 5 guides are hosted at sameerautomations.com/guides/ with clean landing pages
+6. No email gate — guides are free and public
+7. Footer CTA is soft ("if you'd rather skip the setup") — not a sales pitch
+
+---
+
 ## Progress
 
 | Phase                                  | Milestone | Plans Complete | Status      | Completed  |
@@ -384,10 +415,11 @@ Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
 | 4. Scale & Reinvest                    | v1.0      | -              | Not started | -          |
 | 5. Market Research + Pain Points       | v2.0      | 2/2            | Complete    | 2026-03-01 |
 | 6. Platform Foundation                 | 2/2       | Complete       | 2026-03-02  | -          |
-| 7. Case Studies + Content Tooling      | 2/2 | Complete   | 2026-03-02 | -          |
-| 8. Content Production + Repurposing    | 3/4 | In Progress|  | -          |
-| 9. Giveaway + Social Proof             | 2/2 | Complete   | 2026-03-03 | -          |
-| 10. Content Preparation & Distribution | 0/7 | Planned    |  | -          |
+| 7. Case Studies + Content Tooling      | 2/2       | Complete       | 2026-03-02  | -          |
+| 8. Content Production + Repurposing    | 3/4       | In Progress    |             | -          |
+| 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
+| 10. Content Preparation & Distribution | 0/7       | Planned        |             | -          |
+| 11. Automation Guide Series            | v3.0      | 0/0            | Designed    | -          |
 
 ---
 
