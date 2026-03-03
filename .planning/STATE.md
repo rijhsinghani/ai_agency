@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 11-01-PLAN.md
-last_updated: "2026-03-03T19:04:14Z"
+stopped_at: Completed 11-03-PLAN.md
+last_updated: "2026-03-03T19:14:29.202Z"
 progress:
   total_phases: 11
   completed_phases: 4
   total_plans: 22
-  completed_plans: 12
-  percent: 55
+  completed_plans: 13
+  percent: 59
 ---
 
 # Project State: AI Automation Agency
@@ -33,20 +33,20 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 ## Current Position
 
-| Field         | Value                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------ |
-| Milestone     | v2.0 — Content Marketing Engine                                                            |
-| Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                 |
-| Plan          | 1 of 3 complete — 11-01 guide-generator CLI + 5 automation guide markdown files            |
-| Status        | Phase 11 Plan 01 complete — guide-generator CLI scaffolded, all 5 guides written           |
-| Last activity | 2026-03-03 — 11-01 complete; guide-generator CLI + 5 automation guide markdown files built |
+| Field         | Value                                                                                               |
+| ------------- | --------------------------------------------------------------------------------------------------- |
+| Milestone     | v2.0 — Content Marketing Engine                                                                     |
+| Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                          |
+| Plan          | 2 of 3 complete — 11-01 guide-generator CLI, 11-03 social post drafts (11-02 PDF rendering pending) |
+| Status        | Phase 11 Plans 01+03 complete — guide CLI, 5 guides, --from-file flag, 10 social drafts             |
+| Last activity | 2026-03-03 — 11-03 complete; --from-file flag added to repurposing script; 10 social drafts         |
 
 **Progress:**
 
-[██████░░░░] 55%
+[██████░░░░] 59%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
-Phase 11: [███░░░░░░░] Plan 01 of 3 complete (guide-generator CLI + 5 guide markdown files)
+Phase 11: [██████░░░░] Plans 01+03 of 3 complete (guide-generator CLI + 5 guides + 10 social drafts; 11-02 PDF pending)
 
 ```
 
@@ -71,6 +71,7 @@ Phase 11: [███░░░░░░░] Plan 01 of 3 complete (guide-generato
 | Phase 09-giveaway-social-proof P01 | 2 | 1 tasks | 1 files |
 | Phase 09-giveaway-social-proof P02 | 6 | 3 tasks | 1 files |
 | Phase 11-automation-guide-series P01 | 8 | 2 tasks | 10 files |
+| Phase 11-automation-guide-series P03 | 5 | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -135,6 +136,9 @@ Phase 11: [███░░░░░░░] Plan 01 of 3 complete (guide-generato
 - **[11-01] marked custom renderer converts --- to page-break div** — cleaner than post-processing regex; handles all markdown edge cases correctly for PDF pagination
 - **[11-01] Reddit quotes in 2 of 5 guides** — included in missed-call-textback (r/femalehairadvice) and no-show-killer (r/personaltraining) where community voice strengthens hook; omitted where dollar math alone is compelling
 - **[11-01] renderPDF and renderPreview use try/finally** — guarantees browser.close() even on render failure; prevents hanging puppeteer processes
+- **[11-03] clip_script excluded when --from-file used** — clip_script prompts reference timestamps that don't exist in markdown files; platforms limited to twitter + instagram
+- **[11-03] --url changed to optional** — allows --from-file as mutually exclusive alternative; mutual exclusivity validated with clear error messages
+- **[11-03] Social post drafts written directly** — ANTHROPIC_API_KEY not in project .env; Claude Code wrote drafts applying brand voice rules; all 10 drafts meet quality criteria (280-char tweets, no banned phrases, no emojis, soft CTA, guide URLs)
 
 ### v2.0 Roadmap Structure
 
@@ -169,7 +173,7 @@ Phase 11: [███░░░░░░░] Plan 01 of 3 complete (guide-generato
 
 ## Session Continuity
 
-Last session: 2026-03-03T19:04:14Z
-Stopped at: Completed 11-01-PLAN.md
-Resume: Phase 11 Plan 01 complete. Next: 11-02 (PDF rendering + landing pages). guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/.
+Last session: 2026-03-03T19:14:29.199Z
+Stopped at: Completed 11-03-PLAN.md
+Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
