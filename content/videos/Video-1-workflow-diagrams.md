@@ -205,4 +205,4 @@ WHAT A COMPLETE SMALL BUSINESS AUTOMATION LOOKS LIKE
 - When speaking, walk through each diagram left-to-right, top-to-bottom
 - Pause on the "Before vs After" diagram — let the numbers sink in
 - The automation stack diagram works as a "menu" to reference what else you offer
-- Branded Excalidraw version available: content/videos/diagrams/video-1-automation-flow.excalidraw — use this for screen-share during recording, keep ASCII versions here as text reference
+- Branded SVG diagram available: content/videos/diagrams/video-1-automation-flow.svg — open in browser for screen-share during recording, keep ASCII versions here as text reference

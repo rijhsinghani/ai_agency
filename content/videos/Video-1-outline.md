@@ -145,7 +145,7 @@ Mark each item as you complete it:
 
 - [ ] ops/sop/outline-template.md — used and complete (this file)
 - [ ] content/videos/Video-1-talking-points.md — reviewed before filming (key phrases, transitions, metrics)
-- [ ] content/videos/diagrams/video-1-automation-flow.excalidraw — loaded in Excalidraw for screen-share
+- [ ] content/videos/diagrams/video-1-automation-flow.svg — loaded in browser for screen-share
 - [ ] content/videos/Video-1-workflow-diagrams.md — ASCII reference diagrams reviewed
 - [ ] ops/sop/editing-checklist.md — completed during editing
 - [ ] ops/sop/publish-checklist.md — completed before publishing
