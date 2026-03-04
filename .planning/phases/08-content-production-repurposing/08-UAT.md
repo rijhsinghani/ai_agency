@@ -6,7 +6,7 @@ source:
   - .planning/phases/08-content-production-repurposing/08-02-SUMMARY.md
   - .planning/phases/08-content-production-repurposing/08-03-SUMMARY.md
 started: 2026-03-03T15:50:00.000Z
-updated: 2026-03-03T15:55:00.000Z
+updated: 2026-03-04T18:50:00.000Z
 ---
 
 ## Current Test
@@ -28,7 +28,9 @@ result: pass
 ### 3. Production SOPs enforce quality gates
 
 expected: Outline template, recording checklist, editing checklist, and publish checklist all exist with actionable items
-result: pass
+result: issue
+reported: "I don't need a recording checklist. I need key talking points in my brand voice that I can reference while filming, and branded diagrams using Excalidraw as visual aids for the video. The recording checklist is the wrong deliverable."
+severity: major
 
 ### 4. Video clipper produces vertical content
 
@@ -45,8 +47,8 @@ severity: major
 ## Summary
 
 total: 5
-passed: 4
-issues: 1
+passed: 3
+issues: 2
 pending: 0
 skipped: 0
 
@@ -66,3 +68,15 @@ skipped: 0
   - Prompt variants that generate pure-value posts without any CTA
   - Soft CTA options ("DM me", "reply if this is happening in your business")
     root_cause: "formatter.js buildPrompt() hardcodes 'End with exactly: Book a free 15-min discovery call: [link]' for both twitter and instagram platforms. No mechanism to vary CTA type. Video outline template also places booking CTA twice (Section 3 mid-video and Section 6 end)."
+
+- truth: "Production prep includes brand-voice talking points and branded Excalidraw diagrams as visual aids for filming, not a generic recording checklist"
+  status: failed
+  reason: "User reported: I don't need a recording checklist. I need key talking points in my brand voice that I can reference while filming, and branded diagrams using Excalidraw as visual aids for the video."
+  severity: major
+  test: 3
+  artifacts:
+  - ops/sop/recording-checklist.md (wrong deliverable — generic checklist instead of brand-voice talking points)
+    missing:
+  - Brand-voice talking points document derived from Video-1-outline.md (key phrases, transitions, branded language to reference while filming)
+  - Excalidraw diagrams (.excalidraw files) showing the automation workflow visually — branded with #1A1A1A background, white text, Sameer Automations style
+    root_cause: "Plan 08-01 created a generic recording checklist (pre-shoot/during/wrap items) when the founder actually needs two different deliverables: (1) condensed talking points in brand voice extracted from the video outline, and (2) branded Excalidraw diagrams of the automation workflow to use as B-roll or screen share during filming."
