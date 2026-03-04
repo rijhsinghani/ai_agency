@@ -391,7 +391,7 @@ Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works),
 
 **Design doc**: `.planning/phases/11-automation-guide-series/11-DESIGN.md`
 
-**Plans:** 3/3 plans complete
+**Plans:** 4/5 plans executed
 
 Plans:
 
@@ -422,7 +422,7 @@ Plans:
 | 5. Market Research + Pain Points       | v2.0      | 2/2            | Complete    | 2026-03-01 |
 | 6. Platform Foundation                 | 2/2       | Complete       | 2026-03-02  | -          |
 | 7. Case Studies + Content Tooling      | 2/2       | Complete       | 2026-03-02  | -          |
-| 8. Content Production + Repurposing    | 3/4       | In Progress    |             | -          |
+| 8. Content Production + Repurposing    | 4/5 | In Progress|  | -          |
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
 | 10. Content Preparation & Distribution | 0/7       | Planned        |             | -          |
 | 11. Automation Guide Series            | 3/3 | Complete    | 2026-03-03 | -          |
