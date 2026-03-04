@@ -60,7 +60,7 @@ rajphotovideo-email-automation — the missed call text-back automation. Trigger
 Any prospect's full name, unblurred phone number, or personal details in the text exchange. Blur before recording. Do not show API keys, webhook tokens, or tool login credentials.
 
 **CTA placement (mid-video, ~60% mark):**
-"If you want to talk about building something like this for your business, I'll leave a link in the description to book a free 15-minute call. No pitch — just a conversation about what's costing you time."
+"If this is something you're dealing with in your business, stick around — I'll show you the numbers in a second."
 
 [Exact timestamp target: approximately 3:30-4:00 into an 8-minute video]
 

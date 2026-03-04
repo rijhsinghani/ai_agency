@@ -59,6 +59,8 @@
 **CTA placement (mid-video, ~60% mark):**
 "If this is something you're dealing with in your business, stick around — I'll show you exactly how it works."
 
+> **Note:** The mid-video CTA should be soft engagement — keep the viewer watching. Do NOT mention the booking link here. The booking CTA goes in Section 6 only. Good mid-video CTAs: tease the results, invite engagement ("stick around"), acknowledge the viewer's situation. Bad mid-video CTAs: "book a call," any URL, anything that sounds like a pitch.
+
 [Exact timestamp target: ]
 
 ---
