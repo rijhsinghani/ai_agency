@@ -21,6 +21,12 @@ from services.caption_burnin import burn_captions
 from services.color_correct import apply_color_correction
 from services.intro_outro import splice_intro_outro
 from services.encode import final_encode
+from services.clip_extraction import analyze_video_for_clips, extract_clips
+from services.content_generator import (
+    generate_platform_content,
+    store_drafts_in_supabase,
+)
+from services.thumbnail_trigger import trigger_thumbnail_generation
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -117,6 +123,74 @@ def run_pipeline(bucket_name: str, object_name: str) -> dict:
         gcs.bucket(GCS_OUTPUT_BUCKET).blob(output_srt_name).upload_from_filename(
             srt_path
         )
+
+        # Step 10: Clip extraction (Gemini 3.1 Pro) — non-fatal
+        logger.info("Step 10: Analyzing video for Short/Reel clip moments")
+        try:
+            clip_metadata = analyze_video_for_clips(
+                f"gs://{GCS_OUTPUT_BUCKET}/{output_video_name}"
+            )
+            clips_dir = os.path.join(tmpdir, "clips")
+            clip_paths = extract_clips(final_path, clip_metadata, clips_dir)
+
+            # Upload clips to GCS
+            for clip_path in clip_paths:
+                clip_name = f"{GCS_OUTPUT_PREFIX}clips/{video_stem}/{os.path.basename(clip_path)}"
+                gcs.bucket(GCS_OUTPUT_BUCKET).blob(clip_name).upload_from_filename(
+                    clip_path
+                )
+                logger.info(f"Uploaded clip: gs://{GCS_OUTPUT_BUCKET}/{clip_name}")
+        except Exception as e:
+            logger.warning(f"Clip extraction failed (non-fatal): {e}")
+            clip_metadata = []
+            clip_paths = []
+
+        # Step 11: Content generation (Claude) — non-fatal
+        logger.info("Step 11: Generating platform content with Claude")
+        try:
+            transcript_text = ""
+            if os.path.exists(srt_path):
+                # Extract plain text from SRT
+                with open(srt_path, "r") as f:
+                    lines = f.readlines()
+                # SRT format: index, timestamp, text, blank line
+                transcript_text = " ".join(
+                    line.strip()
+                    for line in lines
+                    if line.strip() and not line.strip().isdigit() and "-->" not in line
+                )
+
+            content = generate_platform_content(
+                transcript=transcript_text,
+                topic_title=video_stem.replace("-", " ").replace("_", " "),
+                hook=clip_metadata[0]["hook"] if clip_metadata else "Watch to learn",
+                brand="sameer_automations",
+            )
+
+            # TODO: Pass content_bank_id from the trigger event metadata
+            # For now, log the generated content
+            logger.info(f"Generated YouTube title: {content.get('youtube_title')}")
+            logger.info(
+                f"Generated Twitter thread: {len(content.get('twitter_thread', []))} tweets"
+            )
+
+        except Exception as e:
+            logger.warning(f"Content generation failed (non-fatal): {e}")
+            content = {}
+
+        # Step 12: Thumbnail trigger — non-fatal
+        logger.info("Step 12: Queuing thumbnail generation")
+        try:
+            trigger_uri = trigger_thumbnail_generation(
+                video_title=video_stem.replace("-", " ").replace("_", " "),
+                processed_video_gcs_uri=f"gs://{GCS_OUTPUT_BUCKET}/{output_video_name}",
+                brand="sameer_automations",
+                content_bank_id=video_stem,
+                output_bucket=GCS_OUTPUT_BUCKET,
+            )
+            logger.info(f"Thumbnail trigger queued: {trigger_uri}")
+        except Exception as e:
+            logger.warning(f"Thumbnail trigger failed (non-fatal): {e}")
 
         logger.info("Pipeline complete")
         return {
