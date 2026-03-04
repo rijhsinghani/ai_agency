@@ -39,7 +39,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 | Phase         | 11 of 11 (Phase 11: Automation Guide Series) — in progress                                                 |
 | Plan          | 3 of 3 complete — 11-01 guide-generator CLI, 11-02 PDF rendering + landing pages, 11-03 social post drafts |
 | Status        | Phase 11 ALL PLANS COMPLETE — guide CLI, 5 PDFs with logo, 6 HTML pages with logo, 10 social drafts        |
-| Last activity | 2026-03-03 — 11-02 complete; brand logo added to PDF template + all landing pages; all 5 PDFs re-rendered  |
+| Last activity | 2026-03-04 - Completed quick task 4: Fix banner and profile pic SVG to PNG exports                         |
 
 **Progress:**
 
@@ -154,6 +154,12 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - Phase 6: Case Studies + Content Tooling (TOOL-01, TOOL-02, CASE-01 to CASE-03) — ideation + social proof
 - Phase 7: Content Production + Repurposing (PROD-01, PROD-02, TOOL-03, TOOL-04) — first video + pipeline
 - Phase 8: Giveaway + Social Proof (GIVE-01, GIVE-02) — trust accelerators
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 4 | Fix banner and profile pic SVG to PNG exports - custom fonts not rendering | 2026-03-04 | 5aa3dc9 | [4-fix-banner-and-profile-pic-svg-to-png-ex](./quick/4-fix-banner-and-profile-pic-svg-to-png-ex/) |
 
 ### Blockers / Concerns
 
