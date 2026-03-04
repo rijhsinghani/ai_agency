@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: "Checkpoint: 10-04 Task 2 — manual Slack App setup + end-to-end verification pending"
-last_updated: "2026-03-04T23:26:02.924Z"
+stopped_at: Completed 10-03-PLAN.md
+last_updated: "2026-03-04T23:29:01.706Z"
 progress:
   total_phases: 11
   completed_phases: 5
   total_plans: 24
-  completed_plans: 19
-  percent: 75
+  completed_plans: 20
+  percent: 83
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[████████░░] 75%
+[████████░░] 83%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -77,6 +77,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 08-content-production-repurposing P06 | 2 | 2 tasks | 5 files |
 | Phase 10 P02 | 4 | 2 tasks | 15 files |
 | Phase 10-automated-content-preparation-distribution-pipeline P01 | 6 | 2 tasks | 2 files |
+| Phase 10-automated-content-preparation-distribution-pipeline P03 | 4 | 2 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -155,6 +156,9 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[10-02] Flask used instead of FastAPI for Cloud Run video pipeline** — Eventarc sends standard HTTP POST with CloudEvent headers; no async streaming needed, Flask is leaner
 - **[10-02] Whisper uses lazy import in transcription.py** — openai-whisper is container-only dependency; dev tests mock sys.modules["whisper"] to avoid install requirement
 - **[10-02] color_correct and intro_outro are graceful pass-throughs** — brand.cube and intro/outro assets not yet created; pipeline runs end-to-end without them via shutil.copy
+- **[10-03] patch.object(module, 'genai', mock) for already-imported dependencies** — google.generativeai bound at module load time; sys.modules patch doesn't intercept existing references; patch module attribute directly
+- **[10-03] SLOP_BANLIST expanded to 19 phrases** — plan required 8 minimum; full list injected into Claude prompt on every call for comprehensive brand voice enforcement
+- **[10-03] AI generation Steps 10-12 are non-fatal** — video already processed/uploaded before AI runs; AI generation is best-effort, never blocks pipeline success
 
 ### v2.0 Roadmap Structure
 
@@ -195,7 +199,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-04T23:26:02.921Z
-Stopped at: Checkpoint: 10-04 Task 2 — manual Slack App setup + end-to-end verification pending
+Last session: 2026-03-04T23:29:01.703Z
+Stopped at: Completed 10-03-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
