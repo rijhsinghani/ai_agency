@@ -1,0 +1,550 @@
+{
+  "name": "slack-approval-workflow",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Slack OAuth2: n8n Credentials → New → Slack OAuth2 API\n     Paste your Bot Token (xoxb-...) from Slack App → OAuth & Permissions\n     Name it exactly: 'Slack Content Pipeline Bot'\n   - Supabase API: n8n Credentials → New → Supabase API\n     Enter your Supabase project URL and service role key (NOT anon key)\n     Name it exactly: 'Supabase Content Engine'\n\n3. SLACK APP SETUP (one-time)\n   a. Go to https://api.slack.com/apps → Create New App → From scratch\n      App Name: 'Content Pipeline Bot' | Pick your workspace\n   b. OAuth & Permissions → Bot Token Scopes → Add: chat:write, chat:write.public\n   c. OAuth & Permissions → Install to Workspace → Allow → copy Bot Token\n   d. Create #content-pipeline channel in Slack → Invite the bot\n   e. Basic Information → App Credentials → copy Signing Secret (for reference)\n\n4. CONFIGURE WORKFLOW PARAMETERS\n   - In the 'Flow 1: Send Slack Approval Message' node:\n     Set the 'channel' parameter to your #content-pipeline channel ID\n     (Right-click channel in Slack → Copy Link → last path segment is channel ID)\n   - The Google Sheets URL in the Block Kit message is dynamically constructed\n     from the content_bank row — no manual configuration needed\n\n5. REGISTER WEBHOOK URL IN SLACK APP\n   - Open the 'Flow 2: Receive Slack Button Callback' webhook node in n8n\n   - Copy the webhook URL (shown when workflow is in test/production mode)\n   - In your Slack App: Interactivity & Shortcuts → Turn On\n   - Paste the webhook URL as the Request URL → Save Changes\n\n6. HOW TO ACTIVATE\n   After credential setup and webhook URL registration:\n   Toggle the workflow to Active (top-right switch in n8n)\n\n7. HOW TO TEST\n   - Manually update any content_bank row status to 'pending_review' in Supabase\n   - Within 60 seconds, a Block Kit message should appear in #content-pipeline\n   - Click 'Approve All' — content_bank status should change to 'approved' in ~5 seconds\n   - No 'Operation failed' error in Slack confirms the 3-second response pattern worked\n\n8. APPROVE SELECTED NOTE\n   The 'Approve Selected' button in v1 behaves identically to 'Approve All'.\n   A future iteration can add a Slack modal for per-platform selection.\n   This simplification is intentional — documented here for the v2 backlog.\n\n9. PUBLISHING HANDOFF\n   After Approve All, the workflow currently stores content_bank_id in a Set node\n   as a placeholder for the publishing workflow trigger. Connect the\n   'Flow 2: Handoff to Publishing Workflow' node to the platform-publishers\n   workflow Execute Workflow node once publishing workflows are ready.",
+  "nodes": [
+    {
+      "id": "flow1-supabase-trigger",
+      "name": "Flow 1: Supabase Trigger (pending_review)",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=pending_review rows only."
+    },
+    {
+      "id": "flow1-filter-pending-review",
+      "name": "Flow 1: Filter status = pending_review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "pending_review"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'pending_review'. Ignores all other INSERT/UPDATE events to avoid noise in #content-pipeline."
+    },
+    {
+      "id": "flow1-send-slack-message",
+      "name": "Flow 1: Send Slack Approval Message",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [600, 200],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "SLACK_CRED_ID_PLACEHOLDER",
+          "name": "Slack Content Pipeline Bot"
+        }
+      },
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "channel": "YOUR_SLACK_CHANNEL_ID_HERE",
+        "text": "Content ready for review: {{ $json.topic_title }}",
+        "blocksUi": {
+          "blocksValues": [
+            {
+              "type": "header",
+              "text": {
+                "type": "plain_text",
+                "text": "=Content Ready for Review: {{ $json.topic_title }}"
+              }
+            },
+            {
+              "type": "image",
+              "title": {
+                "type": "plain_text",
+                "text": "Thumbnail Options (A/B/C/D)"
+              },
+              "image_url": "={{ $json.visual_assets && $json.visual_assets.thumbnail_grid_url ? $json.visual_assets.thumbnail_grid_url : 'https://via.placeholder.com/1280x720?text=Thumbnails+Generating' }}",
+              "alt_text": "4 thumbnail variations"
+            },
+            {
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "=*Brand:* {{ $json.brand }} | *Status:* Pending Review\\n*YouTube:* {{ $json.platform_angles && $json.platform_angles.youtube_long && $json.platform_angles.youtube_long.title ? $json.platform_angles.youtube_long.title : 'No title yet' }}\\n*Twitter:* {{ $json.platform_angles && $json.platform_angles.twitter && $json.platform_angles.twitter[0] ? $json.platform_angles.twitter[0] : 'No tweet yet' }}\\n*Instagram:* {{ $json.platform_angles && $json.platform_angles.instagram ? $json.platform_angles.instagram : 'No caption yet' }}\\n<https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE|View all drafts in Google Sheets>"
+              }
+            },
+            {
+              "type": "actions",
+              "elements": [
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Approve All"
+                  },
+                  "style": "primary",
+                  "action_id": "approve_all",
+                  "value": "={{ $json.id }}"
+                },
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Approve Selected"
+                  },
+                  "action_id": "approve_selected",
+                  "value": "={{ $json.id }}"
+                },
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Edit in Sheets"
+                  },
+                  "action_id": "edit",
+                  "url": "=https://docs.google.com/spreadsheets/d/YOUR_GOOGLE_SHEET_ID_HERE"
+                },
+                {
+                  "type": "button",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Reject"
+                  },
+                  "style": "danger",
+                  "action_id": "reject",
+                  "value": "={{ $json.id }}"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "notes": "Sends a 4-block Block Kit message to #content-pipeline. Block count: 1 header + 1 image + 1 section + 1 actions = 4 blocks total (well under Slack's 50-block limit). The fallback 'text' field is shown in notifications and accessibility contexts."
+    },
+    {
+      "id": "flow2-webhook-trigger",
+      "name": "Flow 2: Receive Slack Button Callback",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [160, 500],
+      "parameters": {
+        "path": "slack-content-approval",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "notes": "Receives interactive callbacks from Slack when a user clicks any button in the approval message. Slack sends application/x-www-form-urlencoded with a 'payload' field containing JSON. The responseMode=responseNode means the Respond to Webhook node controls the response."
+    },
+    {
+      "id": "flow2-respond-immediately",
+      "name": "Flow 2: Respond to Webhook (200 OK Immediately)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [380, 500],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({\"response_action\": \"clear\"}) }}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "notes": "CRITICAL: This node MUST fire before any Supabase operations. Slack has a 3-second timeout on interactive callbacks — if no HTTP 200 is received within 3 seconds, Slack shows 'Operation failed' to the user. Sending response_action:clear dismisses any loading state in the Slack UI."
+    },
+    {
+      "id": "flow2-parse-payload",
+      "name": "Flow 2: Parse Slack Payload",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [600, 500],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "parsed_payload",
+              "value": "={{ JSON.parse($json.body.payload) }}",
+              "type": "object"
+            },
+            {
+              "name": "action_id",
+              "value": "={{ JSON.parse($json.body.payload).actions[0].action_id }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ JSON.parse($json.body.payload).actions[0].value }}",
+              "type": "string"
+            },
+            {
+              "name": "user_name",
+              "value": "={{ JSON.parse($json.body.payload).user.name }}",
+              "type": "string"
+            },
+            {
+              "name": "channel_id",
+              "value": "={{ JSON.parse($json.body.payload).channel.id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Slack sends the interactive callback as application/x-www-form-urlencoded with a single 'payload' field containing URL-encoded JSON. This Set node decodes it and extracts the key fields: action_id (which button was clicked), content_bank_id (the row UUID), user_name, and channel_id for the confirmation message."
+    },
+    {
+      "id": "flow2-switch-action",
+      "name": "Flow 2: Route on action_id",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [820, 500],
+      "parameters": {
+        "mode": "rules",
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action_id }}",
+                    "rightValue": "approve_all",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "approve_all"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action_id }}",
+                    "rightValue": "approve_selected",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "approve_selected"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.action_id }}",
+                    "rightValue": "reject",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "reject"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "Routes the callback to the appropriate handler based on action_id. Note: 'edit' action_id is NOT routed here — the Edit in Sheets button uses a url field (opens Google Sheets directly) and does NOT send a callback to this webhook. Approve Selected routes to the same handler as Approve All in v1 — see workflow notes for v2 backlog item."
+    },
+    {
+      "id": "flow2-supabase-approve",
+      "name": "Flow 2: Supabase Update → status = approved",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1040, 400],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Updates content_bank.status to 'approved' for the approved content item. This runs AFTER the Respond to Webhook node has already sent HTTP 200 to Slack — ensuring the 3-second timeout pattern is honored."
+    },
+    {
+      "id": "flow2-supabase-reject",
+      "name": "Flow 2: Supabase Update → status = rejected",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1040, 600],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "rejected"
+            }
+          ]
+        }
+      },
+      "notes": "Updates content_bank.status to 'rejected' for the rejected content item. Runs AFTER the Respond to Webhook node has already sent HTTP 200 to Slack."
+    },
+    {
+      "id": "flow2-handoff-publishing",
+      "name": "Flow 2: Handoff to Publishing Workflow",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1260, 400],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "trigger",
+              "value": "slack_approved",
+              "type": "string"
+            },
+            {
+              "name": "approved_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Placeholder: stores approved content_bank_id for downstream publishing workflow. Connect this node to an 'Execute Workflow' node pointing to the platform-publishers workflow once publishing workflows are ready. The trigger and approved_at fields provide audit context."
+    },
+    {
+      "id": "flow2-slack-confirm-approve",
+      "name": "Flow 2: Slack Confirmation (Approved)",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [1480, 400],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "SLACK_CRED_ID_PLACEHOLDER",
+          "name": "Slack Content Pipeline Bot"
+        }
+      },
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "channel": "={{ $('Flow 2: Parse Slack Payload').item.json.channel_id }}",
+        "text": "=Content approved by {{ $('Flow 2: Parse Slack Payload').item.json.user_name }}. Publishing handoff queued. (ID: {{ $('Flow 2: Parse Slack Payload').item.json.content_bank_id }})"
+      },
+      "notes": "Sends a follow-up message to the same channel confirming the approval. This is a separate API call AFTER the Respond to Webhook node — not part of the 3-second response window. The channel_id is captured from the original Slack callback payload."
+    },
+    {
+      "id": "flow2-slack-confirm-reject",
+      "name": "Flow 2: Slack Confirmation (Rejected)",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [1260, 600],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "SLACK_CRED_ID_PLACEHOLDER",
+          "name": "Slack Content Pipeline Bot"
+        }
+      },
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "channel": "={{ $('Flow 2: Parse Slack Payload').item.json.channel_id }}",
+        "text": "=Content rejected by {{ $('Flow 2: Parse Slack Payload').item.json.user_name }}. Status set to rejected in content bank. (ID: {{ $('Flow 2: Parse Slack Payload').item.json.content_bank_id }})"
+      },
+      "notes": "Sends a follow-up message to the same channel confirming the rejection. Separate API call AFTER responding to Slack webhook."
+    }
+  ],
+  "connections": {
+    "Flow 1: Supabase Trigger (pending_review)": {
+      "main": [
+        [
+          {
+            "node": "Flow 1: Filter status = pending_review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 1: Filter status = pending_review": {
+      "main": [
+        [
+          {
+            "node": "Flow 1: Send Slack Approval Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Flow 2: Receive Slack Button Callback": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Respond to Webhook (200 OK Immediately)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Respond to Webhook (200 OK Immediately)": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Parse Slack Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Parse Slack Payload": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Route on action_id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Route on action_id": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Supabase Update → status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flow 2: Supabase Update → status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Flow 2: Supabase Update → status = rejected",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Supabase Update → status = approved": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Handoff to Publishing Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Handoff to Publishing Workflow": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Slack Confirmation (Approved)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flow 2: Supabase Update → status = rejected": {
+      "main": [
+        [
+          {
+            "node": "Flow 2: Slack Confirmation (Rejected)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": ["content-bank", "slack", "approval", "block-kit", "webhook"],
+  "staticData": null,
+  "pinData": {}
+}
