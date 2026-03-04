@@ -59,7 +59,7 @@ class TestAnalyzeVideoForClips:
     """Test analyze_video_for_clips using mocked Gemini API."""
 
     def _make_mock_genai(self, clips: list):
-        """Build a mock google.generativeai module returning given clips."""
+        """Build mock genai objects to patch at the module level."""
         mock_response = MagicMock()
         mock_response.text = json.dumps(clips)
 
@@ -73,6 +73,8 @@ class TestAnalyzeVideoForClips:
         return mock_genai
 
     def test_returns_list_of_clip_dicts(self):
+        from services import clip_extraction as ce
+
         clips = [
             {
                 "start_time": "01:00",
@@ -84,14 +86,11 @@ class TestAnalyzeVideoForClips:
         ]
         mock_genai = self._make_mock_genai(clips)
 
-        with patch.dict("sys.modules", {"google.generativeai": mock_genai}):
-            import importlib
-            import services.clip_extraction as ce
-
-            importlib.reload(ce)
-
-            with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}):
-                result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
+        with (
+            patch.object(ce, "genai", mock_genai),
+            patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}),
+        ):
+            result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
 
         assert isinstance(result, list)
         assert len(result) == 1
@@ -99,6 +98,8 @@ class TestAnalyzeVideoForClips:
         assert result[0]["hook"] == "This one trick saves 40% on missed calls"
 
     def test_required_fields_present(self):
+        from services import clip_extraction as ce
+
         clips = [
             {
                 "start_time": "03:45",
@@ -110,14 +111,11 @@ class TestAnalyzeVideoForClips:
         ]
         mock_genai = self._make_mock_genai(clips)
 
-        with patch.dict("sys.modules", {"google.generativeai": mock_genai}):
-            import importlib
-            import services.clip_extraction as ce
-
-            importlib.reload(ce)
-
-            with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}):
-                result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
+        with (
+            patch.object(ce, "genai", mock_genai),
+            patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}),
+        ):
+            result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
 
         clip = result[0]
         assert "start_time" in clip
@@ -127,6 +125,8 @@ class TestAnalyzeVideoForClips:
         assert "strength_score" in clip
 
     def test_strips_markdown_fences_from_response(self):
+        from services import clip_extraction as ce
+
         clips = [
             {
                 "start_time": "00:10",
@@ -145,23 +145,17 @@ class TestAnalyzeVideoForClips:
         mock_genai.GenerativeModel.return_value = mock_model
         mock_genai.types.GenerationConfig = MagicMock
 
-        with patch.dict("sys.modules", {"google.generativeai": mock_genai}):
-            import importlib
-            import services.clip_extraction as ce
-
-            importlib.reload(ce)
-
-            with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}):
-                result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
+        with (
+            patch.object(ce, "genai", mock_genai),
+            patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}),
+        ):
+            result = ce.analyze_video_for_clips("gs://bucket/video.mp4")
 
         assert len(result) == 1
         assert result[0]["hook"] == "Hook"
 
     def test_raises_when_gemini_api_key_missing(self):
-        import importlib
-        import services.clip_extraction as ce
-
-        importlib.reload(ce)
+        from services import clip_extraction as ce
 
         env_without_key = {k: v for k, v in os.environ.items() if k != "GEMINI_API_KEY"}
         with patch.dict(os.environ, env_without_key, clear=True):
@@ -169,6 +163,8 @@ class TestAnalyzeVideoForClips:
                 ce.analyze_video_for_clips("gs://bucket/video.mp4")
 
     def test_uses_gemini_31_pro_preview_model(self):
+        from services import clip_extraction as ce
+
         clips = [
             {
                 "start_time": "00:05",
@@ -180,14 +176,11 @@ class TestAnalyzeVideoForClips:
         ]
         mock_genai = self._make_mock_genai(clips)
 
-        with patch.dict("sys.modules", {"google.generativeai": mock_genai}):
-            import importlib
-            import services.clip_extraction as ce
-
-            importlib.reload(ce)
-
-            with patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}):
-                ce.analyze_video_for_clips("gs://bucket/video.mp4")
+        with (
+            patch.object(ce, "genai", mock_genai),
+            patch.dict(os.environ, {"GEMINI_API_KEY": "test-key"}),
+        ):
+            ce.analyze_video_for_clips("gs://bucket/video.mp4")
 
         mock_genai.GenerativeModel.assert_called_once_with("gemini-3.1-pro-preview")
 
