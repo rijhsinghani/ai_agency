@@ -139,12 +139,14 @@ Before the camera goes on, confirm every field above is filled in. Check:
 
 ---
 
-## SOP Checklist Progress
+## Production Prep Progress
 
-Mark each checklist as you complete it:
+Mark each item as you complete it:
 
 - [ ] ops/sop/outline-template.md — used and complete (this file)
-- [ ] ops/sop/recording-checklist.md — completed before filming
+- [ ] content/videos/Video-1-talking-points.md — reviewed before filming (key phrases, transitions, metrics)
+- [ ] content/videos/diagrams/video-1-automation-flow.excalidraw — loaded in Excalidraw for screen-share
+- [ ] content/videos/Video-1-workflow-diagrams.md — ASCII reference diagrams reviewed
 - [ ] ops/sop/editing-checklist.md — completed during editing
 - [ ] ops/sop/publish-checklist.md — completed before publishing
 
