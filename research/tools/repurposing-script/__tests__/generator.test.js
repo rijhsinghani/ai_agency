@@ -67,3 +67,45 @@ describe("generateDraft", () => {
     await generateDraft(SAMPLE_TRANSCRIPT, "instagram");
   });
 });
+
+describe("generateDraft CTA mode passthrough", () => {
+  it("passes ctaMode to buildPrompt via user message content", async () => {
+    const mockInstance = new Anthropic();
+    let capturedContent;
+    mockInstance.messages.create.mockImplementation(async (params) => {
+      capturedContent = params.messages[0].content;
+      return { content: [{ text: "Draft." }] };
+    });
+    Anthropic.mockImplementation(() => mockInstance);
+
+    // Call with booking mode — prompt should contain the booking URL
+    await generateDraft(SAMPLE_TRANSCRIPT, "twitter", "booking");
+    expect(capturedContent).toContain("calendar.app.google/psycao3CrXjGnmk48");
+  });
+
+  it("value mode prompt does not contain booking URL", async () => {
+    const mockInstance = new Anthropic();
+    let capturedContent;
+    mockInstance.messages.create.mockImplementation(async (params) => {
+      capturedContent = params.messages[0].content;
+      return { content: [{ text: "Draft." }] };
+    });
+    Anthropic.mockImplementation(() => mockInstance);
+
+    await generateDraft(SAMPLE_TRANSCRIPT, "twitter", "value");
+    expect(capturedContent).not.toContain("calendar.app.google");
+  });
+
+  it("defaults to value mode when ctaMode is not provided", async () => {
+    const mockInstance = new Anthropic();
+    let capturedContent;
+    mockInstance.messages.create.mockImplementation(async (params) => {
+      capturedContent = params.messages[0].content;
+      return { content: [{ text: "Draft." }] };
+    });
+    Anthropic.mockImplementation(() => mockInstance);
+
+    await generateDraft(SAMPLE_TRANSCRIPT, "twitter");
+    expect(capturedContent).not.toContain("calendar.app.google");
+  });
+});
