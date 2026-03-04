@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 08-06-PLAN.md
-last_updated: "2026-03-04T19:39:29.650Z"
+stopped_at: Completed 10-02-PLAN.md
+last_updated: "2026-03-04T23:19:22.226Z"
 progress:
   total_phases: 11
   completed_phases: 5
   total_plans: 24
-  completed_plans: 16
-  percent: 67
+  completed_plans: 17
+  percent: 71
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[███████░░░] 67%
+[███████░░░] 71%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -75,6 +75,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 11-automation-guide-series P02 | 15 | 2 tasks | 17 files |
 | Phase 08-content-production-repurposing P05 | 3 | 2 tasks | 4 files |
 | Phase 08-content-production-repurposing P06 | 2 | 2 tasks | 5 files |
+| Phase 10 P02 | 4 | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -147,6 +148,9 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[08-06] Excalidraw diagram uses fontFamily 2 (Helvetica)** — clean/professional look for branded business content, not fontFamily 1 (Virgil hand-drawn)
 - **[08-06] Mid-video CTA pattern confirmed** — soft engagement only ("stick around") at 60% mark; booking CTA exclusively in verbatim closing line; consistent with 08-05 fix
 - **[08-06] recording-checklist.md deleted permanently** — generic filming checklist is wrong deliverable; talking points + Excalidraw diagram are correct filming prep tools
+- **[10-02] Flask used instead of FastAPI for Cloud Run video pipeline** — Eventarc sends standard HTTP POST with CloudEvent headers; no async streaming needed, Flask is leaner
+- **[10-02] Whisper uses lazy import in transcription.py** — openai-whisper is container-only dependency; dev tests mock sys.modules["whisper"] to avoid install requirement
+- **[10-02] color_correct and intro_outro are graceful pass-throughs** — brand.cube and intro/outro assets not yet created; pipeline runs end-to-end without them via shutil.copy
 
 ### v2.0 Roadmap Structure
 
@@ -187,7 +191,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-04T19:39:29.647Z
-Stopped at: Completed 08-06-PLAN.md
+Last session: 2026-03-04T23:19:22.224Z
+Stopped at: Completed 10-02-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
