@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 10-02-PLAN.md
-last_updated: "2026-03-04T23:19:22.226Z"
+stopped_at: Completed 10-01-PLAN.md
+last_updated: "2026-03-04T23:21:55.286Z"
 progress:
   total_phases: 11
   completed_phases: 5
   total_plans: 24
-  completed_plans: 17
-  percent: 71
+  completed_plans: 18
+  percent: 75
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[███████░░░] 71%
+[████████░░] 75%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -76,6 +76,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 08-content-production-repurposing P05 | 3 | 2 tasks | 4 files |
 | Phase 08-content-production-repurposing P06 | 2 | 2 tasks | 5 files |
 | Phase 10 P02 | 4 | 2 tasks | 15 files |
+| Phase 10-automated-content-preparation-distribution-pipeline P01 | 6 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -148,6 +149,9 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[08-06] Excalidraw diagram uses fontFamily 2 (Helvetica)** — clean/professional look for branded business content, not fontFamily 1 (Virgil hand-drawn)
 - **[08-06] Mid-video CTA pattern confirmed** — soft engagement only ("stick around") at 60% mark; booking CTA exclusively in verbatim closing line; consistent with 08-05 fix
 - **[08-06] recording-checklist.md deleted permanently** — generic filming checklist is wrong deliverable; talking points + Excalidraw diagram are correct filming prep tools
+- **[10-01] sync_source anti-loop pattern** — Direction A only processes sync_source='supabase' rows; Direction B sets sync_source='supabase' immediately after Supabase write; prevents infinite bounce-back between triggers
+- **[10-01] sheets_row_id write-back on first append** — Direction A captures Google Sheets row number after append and stores in content_bank.sheets_row_id for targeted subsequent updates
+- **[10-01] platform_angles JSONB with 6 standardized keys** — youtube_long, youtube_short, twitter, instagram, substack, threads — consistent across all 20 seed rows; enforced as convention, not constraint
 - **[10-02] Flask used instead of FastAPI for Cloud Run video pipeline** — Eventarc sends standard HTTP POST with CloudEvent headers; no async streaming needed, Flask is leaner
 - **[10-02] Whisper uses lazy import in transcription.py** — openai-whisper is container-only dependency; dev tests mock sys.modules["whisper"] to avoid install requirement
 - **[10-02] color_correct and intro_outro are graceful pass-throughs** — brand.cube and intro/outro assets not yet created; pipeline runs end-to-end without them via shutil.copy
@@ -191,7 +195,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-04T23:19:22.224Z
-Stopped at: Completed 10-02-PLAN.md
+Last session: 2026-03-04T23:21:55.282Z
+Stopped at: Completed 10-01-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
