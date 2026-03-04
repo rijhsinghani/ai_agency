@@ -156,7 +156,11 @@ class TestAudioNormalize:
 
 
 class TestTranscription:
-    """Test services/transcription.py."""
+    """Test services/transcription.py.
+
+    whisper is a container-only dependency (openai-whisper). Tests mock it at the
+    services.transcription module level since the module uses a lazy import.
+    """
 
     def test_returns_srt_path(self, tmp_path):
         input_file = str(tmp_path / "input.mp4")
@@ -169,11 +173,16 @@ class TestTranscription:
                 {"start": 2.5, "end": 5.0, "text": "This is a test"},
             ]
         }
+        mock_whisper = MagicMock()
+        mock_whisper.load_model.return_value = mock_model
 
-        with patch("whisper.load_model", return_value=mock_model):
-            from services.transcription import transcribe_video
+        with patch.dict("sys.modules", {"whisper": mock_whisper}):
+            # Force reimport to pick up mocked whisper
+            import importlib
+            import services.transcription as trans_mod
 
-            result = transcribe_video(input_file, output_dir)
+            importlib.reload(trans_mod)
+            result = trans_mod.transcribe_video(input_file, output_dir)
             assert result.endswith(".srt")
             assert os.path.exists(result)
 
@@ -183,14 +192,19 @@ class TestTranscription:
 
         mock_model = MagicMock()
         mock_model.transcribe.return_value = {"segments": []}
+        mock_whisper = MagicMock()
+        mock_whisper.load_model.return_value = mock_model
 
-        with patch("whisper.load_model", return_value=mock_model) as mock_load:
-            from services.transcription import transcribe_video
+        with patch.dict("sys.modules", {"whisper": mock_whisper}):
+            import importlib
+            import services.transcription as trans_mod
 
-            transcribe_video(input_file, output_dir)
-            mock_load.assert_called_once_with("medium")
+            importlib.reload(trans_mod)
+            trans_mod.transcribe_video(input_file, output_dir)
+            mock_whisper.load_model.assert_called_once_with("medium")
 
     def test_srt_format_timestamp(self):
+        """Test timestamp formatting directly — no whisper dependency needed."""
         from services.transcription import _format_timestamp
 
         assert _format_timestamp(0.0) == "00:00:00,000"
