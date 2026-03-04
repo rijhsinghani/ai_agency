@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 08-05-PLAN.md
-last_updated: "2026-03-04T18:52:50.146Z"
+stopped_at: Completed 08-06-PLAN.md
+last_updated: "2026-03-04T19:39:29.650Z"
 progress:
   total_phases: 11
   completed_phases: 5
-  total_plans: 23
-  completed_plans: 15
-  percent: 65
+  total_plans: 24
+  completed_plans: 16
+  percent: 67
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[███████░░░] 65%
+[███████░░░] 67%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -74,6 +74,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 11-automation-guide-series P03 | 5 | 2 tasks | 11 files |
 | Phase 11-automation-guide-series P02 | 15 | 2 tasks | 17 files |
 | Phase 08-content-production-repurposing P05 | 3 | 2 tasks | 4 files |
+| Phase 08-content-production-repurposing P06 | 2 | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -143,6 +144,9 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[11-03] Social post drafts written directly** — ANTHROPIC_API_KEY not in project .env; Claude Code wrote drafts applying brand voice rules; all 10 drafts meet quality criteria (280-char tweets, no banned phrases, no emojis, soft CTA, guide URLs)
 - **[11-02] Brand logo SVG inlined in template.js** — no external file reference in PDF renderer; brand/logo-icon-light.svg content embedded directly ensures logo renders correctly regardless of puppeteer working directory
 - **[11-02] Logo in HTML nav as 24px inline SVG beside wordmark** — flex items-center gap-2 pattern; consistent across all 6 guide HTML pages without external image dependency
+- **[08-06] Excalidraw diagram uses fontFamily 2 (Helvetica)** — clean/professional look for branded business content, not fontFamily 1 (Virgil hand-drawn)
+- **[08-06] Mid-video CTA pattern confirmed** — soft engagement only ("stick around") at 60% mark; booking CTA exclusively in verbatim closing line; consistent with 08-05 fix
+- **[08-06] recording-checklist.md deleted permanently** — generic filming checklist is wrong deliverable; talking points + Excalidraw diagram are correct filming prep tools
 
 ### v2.0 Roadmap Structure
 
@@ -177,7 +181,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-04T18:52:50.143Z
-Stopped at: Completed 08-05-PLAN.md
+Last session: 2026-03-04T19:39:29.647Z
+Stopped at: Completed 08-06-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
