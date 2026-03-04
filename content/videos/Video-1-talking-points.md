@@ -119,7 +119,7 @@ Talking points for the origin story video. Organized by section. Speak naturally
 - Booking URL: https://calendar.app.google/psycao3CrXjGnmk48
 
 **Mid-video CTA (place at ~60% mark, around minute 5-6):**
-"By the way, if this is clicking for you and you want to see what it looks like for your specific business, there's a link in the description. 15-minute call, free, no pitch."
+"If this is something you're dealing with in your business, stick around — I'll show you the numbers in a second."
 
 ---
 
