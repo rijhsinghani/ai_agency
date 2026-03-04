@@ -1,0 +1,369 @@
+{
+  "name": "content-bank-sync",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Supabase API: go to n8n Credentials → New → Supabase API\n     Enter your Supabase project URL and service role key (NOT anon key)\n     Name it exactly: 'Supabase Content Engine'\n   - Google Sheets OAuth2: go to n8n Credentials → New → Google Sheets OAuth2 API\n     Authorize with the Google account that owns the sheet\n     Name it exactly: 'Google Sheets Content Bank'\n\n3. GOOGLE SHEETS SETUP\n   Create a new Google Sheet named 'Content Bank' with these columns in order:\n   id | brand | topic_title | hook | status | talking_points | platform_angles | visual_assets | service_package_links | sync_source | created_at | updated_at\n   Share the sheet with your Google service account (editor access).\n   Copy the Sheet ID from the URL (the long string between /d/ and /edit)\n   Paste the Sheet ID into: Direction A → Google Sheets Append Row node → Document ID field\n   Paste the Sheet ID into: Direction A → Google Sheets Update Row node → Document ID field\n   Paste the Sheet ID into: Direction B → Google Sheets Trigger node → Document ID field\n   Set Sheet Name to 'Sheet1' (or rename your sheet tab and update here)\n\n4. HOW TO ACTIVATE\n   After credential setup and Sheet ID configuration:\n   Toggle the workflow to Active (top-right switch in n8n)\n   Test by inserting a row into content_bank in Supabase — it should appear in the Sheet within seconds\n\n5. ANTI-LOOP GUARD EXPLANATION\n   The sync_source field prevents infinite loops:\n   - When Supabase triggers Direction A (Supabase → Sheets), sync_source on the row is 'supabase'\n   - The Direction A trigger IF node checks: only process rows where sync_source = 'supabase'\n   - When a user edits the Sheet and Direction B (Sheets → Supabase) runs, it sets sync_source = 'supabase' in Supabase immediately after writing\n   - This means the next Supabase trigger sees sync_source = 'supabase' and Direction A processes it normally (updating the sheet with the canonical data)\n   - To mark a row as sheet-edited (triggering Direction B): set the sync_source column value to 'sheets' in the Google Sheet\n   - The Direction B trigger IF node checks: only process rows where sync_source column = 'sheets'\n\n6. FIELD NOTES\n   - talking_points, platform_angles, visual_assets, service_package_links are JSON/array columns\n     In Google Sheets these appear as JSON strings — edit as JSON text\n   - sheets_row_id stores the Google Sheets row number so updates hit the correct row\n     This is written automatically by Direction A on first sync\n   - The Supabase table name is 'content_bank' (no schema prefix needed if using public schema)\n",
+  "nodes": [
+    {
+      "id": "direction-a-trigger",
+      "name": "Direction A: Supabase Trigger (INSERT/UPDATE)",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events via Supabase Realtime. Fires for every row change regardless of sync_source — the IF node below filters to supabase-originated changes only."
+    },
+    {
+      "id": "direction-a-filter",
+      "name": "Direction A: Filter sync_source = supabase",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.sync_source }}",
+              "operation": "equal",
+              "value2": "supabase"
+            }
+          ]
+        }
+      },
+      "notes": "Anti-loop guard: only process rows where sync_source = 'supabase'. Rows written by Direction B (Sheets → Supabase) are immediately set to sync_source = 'supabase' after write, so they pass this filter — but the sheet already has the data, so the update is idempotent."
+    },
+    {
+      "id": "direction-a-check-sheets-row",
+      "name": "Direction A: Check sheets_row_id",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.sheets_row_id }}",
+              "operation": "isEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Routes to Append (new row, no sheets_row_id yet) or Update (existing row, sheets_row_id is set)."
+    },
+    {
+      "id": "direction-a-append",
+      "name": "Direction A: Google Sheets Append Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [820, 100],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CRED_ID_PLACEHOLDER",
+          "name": "Google Sheets Content Bank"
+        }
+      },
+      "parameters": {
+        "operation": "append",
+        "documentId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "sheetName": "Sheet1",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "brand": "={{ $json.brand }}",
+            "topic_title": "={{ $json.topic_title }}",
+            "hook": "={{ $json.hook }}",
+            "status": "={{ $json.status }}",
+            "talking_points": "={{ JSON.stringify($json.talking_points) }}",
+            "platform_angles": "={{ JSON.stringify($json.platform_angles) }}",
+            "visual_assets": "={{ JSON.stringify($json.visual_assets) }}",
+            "service_package_links": "={{ JSON.stringify($json.service_package_links) }}",
+            "sync_source": "supabase",
+            "created_at": "={{ $json.created_at }}",
+            "updated_at": "={{ $json.updated_at }}"
+          }
+        },
+        "options": {
+          "returnAll": true
+        }
+      },
+      "notes": "Appends a new row to the Content Bank sheet. After this runs, the write-back-row-id node captures the assigned row number and writes it back to Supabase."
+    },
+    {
+      "id": "direction-a-write-back-row-id",
+      "name": "Direction A: Write sheets_row_id Back to Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1040, 100],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Direction A: Supabase Trigger (INSERT/UPDATE)').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "sheets_row_id",
+              "fieldValue": "={{ $json.updates[0].updatedRange.split('!')[1].replace(/[A-Z]/g, '').split(':')[0] }}"
+            }
+          ]
+        }
+      },
+      "notes": "Writes the Google Sheets row number back to content_bank.sheets_row_id so future updates can target the correct row. The row number is extracted from the updatedRange field returned by the Sheets API."
+    },
+    {
+      "id": "direction-a-update",
+      "name": "Direction A: Google Sheets Update Row",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [820, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CRED_ID_PLACEHOLDER",
+          "name": "Google Sheets Content Bank"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "documentId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "sheetName": "Sheet1",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "brand": "={{ $json.brand }}",
+            "topic_title": "={{ $json.topic_title }}",
+            "hook": "={{ $json.hook }}",
+            "status": "={{ $json.status }}",
+            "talking_points": "={{ JSON.stringify($json.talking_points) }}",
+            "platform_angles": "={{ JSON.stringify($json.platform_angles) }}",
+            "visual_assets": "={{ JSON.stringify($json.visual_assets) }}",
+            "service_package_links": "={{ JSON.stringify($json.service_package_links) }}",
+            "sync_source": "supabase",
+            "created_at": "={{ $json.created_at }}",
+            "updated_at": "={{ $json.updated_at }}"
+          }
+        },
+        "options": {
+          "rowNumber": "={{ $json.sheets_row_id }}"
+        }
+      },
+      "notes": "Updates the existing row in the Content Bank sheet using sheets_row_id to target the correct row. No row-id write-back needed since the row already exists."
+    },
+    {
+      "id": "direction-b-trigger",
+      "name": "Direction B: Google Sheets Trigger (Poll Every 5min)",
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [160, 500],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CRED_ID_PLACEHOLDER",
+          "name": "Google Sheets Content Bank"
+        }
+      },
+      "parameters": {
+        "documentId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "sheetName": "Sheet1",
+        "triggerOn": "rowUpdate",
+        "options": {
+          "pollInterval": 5
+        }
+      },
+      "notes": "Polls the Content Bank Google Sheet every 5 minutes for row changes. Returns only changed rows. To trigger a sync from Sheets to Supabase, set the sync_source column value to 'sheets' in the Google Sheet — the IF filter below will pick it up."
+    },
+    {
+      "id": "direction-b-filter",
+      "name": "Direction B: Filter sync_source = sheets",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 500],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.sync_source }}",
+              "operation": "equal",
+              "value2": "sheets"
+            }
+          ]
+        }
+      },
+      "notes": "Anti-loop guard: only process rows where the sync_source column in the Google Sheet equals 'sheets'. Rows written by Direction A have sync_source = 'supabase' and are skipped here, preventing bounce-back."
+    },
+    {
+      "id": "direction-b-update-supabase",
+      "name": "Direction B: Supabase Update Row",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [600, 500],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "brand",
+              "fieldValue": "={{ $json.brand }}"
+            },
+            {
+              "fieldId": "topic_title",
+              "fieldValue": "={{ $json.topic_title }}"
+            },
+            {
+              "fieldId": "hook",
+              "fieldValue": "={{ $json.hook }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.status }}"
+            },
+            {
+              "fieldId": "talking_points",
+              "fieldValue": "={{ JSON.parse($json.talking_points) }}"
+            },
+            {
+              "fieldId": "platform_angles",
+              "fieldValue": "={{ JSON.parse($json.platform_angles) }}"
+            },
+            {
+              "fieldId": "visual_assets",
+              "fieldValue": "={{ JSON.parse($json.visual_assets || '{}') }}"
+            },
+            {
+              "fieldId": "service_package_links",
+              "fieldValue": "={{ JSON.parse($json.service_package_links || '[]') }}"
+            },
+            {
+              "fieldId": "sync_source",
+              "fieldValue": "supabase"
+            }
+          ]
+        }
+      },
+      "notes": "Updates the content_bank row in Supabase with the values edited in Google Sheets. Immediately sets sync_source = 'supabase' after write — this is the anti-loop guard that prevents the Direction A Supabase trigger from bouncing the change back to Sheets in an infinite loop."
+    }
+  ],
+  "connections": {
+    "Direction A: Supabase Trigger (INSERT/UPDATE)": {
+      "main": [
+        [
+          {
+            "node": "Direction A: Filter sync_source = supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Direction A: Filter sync_source = supabase": {
+      "main": [
+        [
+          {
+            "node": "Direction A: Check sheets_row_id",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Direction A: Check sheets_row_id": {
+      "main": [
+        [
+          {
+            "node": "Direction A: Google Sheets Append Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Direction A: Google Sheets Update Row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Direction A: Google Sheets Append Row": {
+      "main": [
+        [
+          {
+            "node": "Direction A: Write sheets_row_id Back to Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Direction B: Google Sheets Trigger (Poll Every 5min)": {
+      "main": [
+        [
+          {
+            "node": "Direction B: Filter sync_source = sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Direction B: Filter sync_source = sheets": {
+      "main": [
+        [
+          {
+            "node": "Direction B: Supabase Update Row",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": ["content-bank", "supabase", "google-sheets", "bidirectional-sync"],
+  "staticData": null,
+  "pinData": {}
+}
