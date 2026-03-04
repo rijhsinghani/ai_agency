@@ -106,13 +106,13 @@
   <rect x="540" y="665" width="48" height="2" fill="#7B2FBE"/>
 
   <!-- Name -->
-  <text x="540" y="720" font-family="'Roc Grotesk', 'Outfit', sans-serif" font-size="74" font-weight="700" letter-spacing="1" fill="url(#nameGrad)" text-anchor="start">Sameer Rijhsinghani</text>
+  <text x="540" y="720" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="74" font-weight="700" letter-spacing="1" fill="url(#nameGrad)" text-anchor="start">Sameer Automations</text>
 
   <!-- Tagline -->
-  <text x="540" y="775" font-family="'Gilroy', 'DM Sans', sans-serif" font-size="25" font-weight="400" letter-spacing="0.5" fill="#A8A29E" text-anchor="start">Smart systems. Built for your business.</text>
+  <text x="540" y="775" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="25" font-weight="400" letter-spacing="0.5" fill="#A8A29E" text-anchor="start">Smart systems. Built for your business.</text>
 
   <!-- Stats -->
-  <g font-family="'Roc Grotesk', 'Outfit', sans-serif" text-anchor="start">
+  <g font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" text-anchor="start">
     <circle cx="540" cy="815" r="3.5" fill="#4DD9E8" opacity="0.7"/>
     <text x="555" y="819" font-size="16" font-weight="600" fill="#4DD9E8" letter-spacing="0.5">60s</text>
     <text x="598" y="819" font-size="13" font-weight="400" fill="#A8A29E">response time</text>

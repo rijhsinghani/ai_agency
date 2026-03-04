@@ -16,7 +16,7 @@
 
     <!-- Purple inner glow behind the S -->
     <radialGradient id="sGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.20"/>
+      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.35"/>
       <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
     </radialGradient>
 
@@ -41,17 +41,17 @@
     <ellipse cx="400" cy="400" rx="260" ry="260" fill="url(#sGlow)"/>
 
     <!-- Connection paths (behind S logo, triangle formation) -->
-    <g opacity="0.5">
-      <path d="M 200 300 Q 300 260 400 220" stroke="#4DD9E8" stroke-width="0.8" fill="none" opacity="0.3" stroke-dasharray="4 6"/>
-      <path d="M 400 220 Q 520 230 600 250" stroke="#FF8A4C" stroke-width="0.8" fill="none" opacity="0.25" stroke-dasharray="4 6"/>
-      <path d="M 600 250 Q 590 430 550 600" stroke="#9B4FDE" stroke-width="0.8" fill="none" opacity="0.25" stroke-dasharray="4 6"/>
-      <path d="M 550 600 Q 380 470 200 300" stroke="#7B2FBE" stroke-width="0.8" fill="none" opacity="0.2" stroke-dasharray="4 6"/>
+    <g opacity="0.8">
+      <path d="M 200 300 Q 300 260 400 220" stroke="#4DD9E8" stroke-width="1.2" fill="none" opacity="0.5" stroke-dasharray="4 6"/>
+      <path d="M 400 220 Q 520 230 600 250" stroke="#FF8A4C" stroke-width="1.2" fill="none" opacity="0.45" stroke-dasharray="4 6"/>
+      <path d="M 600 250 Q 590 430 550 600" stroke="#9B4FDE" stroke-width="1.2" fill="none" opacity="0.45" stroke-dasharray="4 6"/>
+      <path d="M 550 600 Q 380 470 200 300" stroke="#7B2FBE" stroke-width="1.2" fill="none" opacity="0.4" stroke-dasharray="4 6"/>
     </g>
 
     <!-- Connection nodes (triangle formation around S logo) -->
-    <circle cx="200" cy="300" r="3.5" fill="#4DD9E8" opacity="0.7"/>
-    <circle cx="600" cy="250" r="3.5" fill="#FF8A4C" opacity="0.7"/>
-    <circle cx="550" cy="600" r="3.5" fill="#9B4FDE" opacity="0.7"/>
+    <circle cx="200" cy="300" r="5" fill="#4DD9E8" opacity="0.9"/>
+    <circle cx="600" cy="250" r="5" fill="#FF8A4C" opacity="0.9"/>
+    <circle cx="550" cy="600" r="5" fill="#9B4FDE" opacity="0.9"/>
 
     <!-- Flow gradient for S-wave icon -->
     <defs>
@@ -100,7 +100,7 @@
     <text
       x="400"
       y="750"
-      font-family="'Roc Grotesk', 'Outfit', sans-serif"
+      font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
       font-size="28"
       font-weight="700"
       letter-spacing="6"
@@ -111,6 +111,6 @@
   </g>
 
   <!-- Purple border ring (outside clip, rendered on top) -->
-  <circle cx="400" cy="400" r="390" fill="none" stroke="#7B2FBE" stroke-width="6" opacity="0.8"/>
+  <circle cx="400" cy="400" r="390" fill="none" stroke="#7B2FBE" stroke-width="6" opacity="1.0"/>
 
 </svg>
