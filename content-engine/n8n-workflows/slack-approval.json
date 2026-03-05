@@ -8,10 +8,7 @@
       "name": "Flow 1: Supabase Trigger (pending_review)",
       "type": "n8n-nodes-base.supabaseTrigger",
       "typeVersion": 1,
-      "position": [
-        160,
-        200
-      ],
+      "position": [160, 200],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -20,10 +17,7 @@
       },
       "parameters": {
         "table": "content_bank",
-        "events": [
-          "INSERT",
-          "UPDATE"
-        ]
+        "events": ["INSERT", "UPDATE"]
       },
       "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=pending_review rows only."
     },
@@ -32,10 +26,7 @@
       "name": "Flow 1: Filter status = pending_review",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [
-        380,
-        200
-      ],
+      "position": [380, 200],
       "parameters": {
         "conditions": {
           "string": [
@@ -54,10 +45,7 @@
       "name": "Flow 1: Send Slack Approval Message",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [
-        600,
-        200
-      ],
+      "position": [600, 200],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -67,7 +55,7 @@
       "parameters": {
         "resource": "message",
         "operation": "post",
-        "channel": "YOUR_SLACK_CHANNEL_ID_HERE",
+        "channel": "C0AGG5L97EG",
         "text": "Content ready for review: {{ $json.topic_title }}",
         "blocksUi": {
           "blocksValues": [
@@ -147,10 +135,7 @@
       "name": "Flow 2: Receive Slack Button Callback",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [
-        160,
-        500
-      ],
+      "position": [160, 500],
       "parameters": {
         "path": "slack-content-approval",
         "httpMethod": "POST",
@@ -164,10 +149,7 @@
       "name": "Flow 2: Respond to Webhook (200 OK Immediately)",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [
-        380,
-        500
-      ],
+      "position": [380, 500],
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify({\"response_action\": \"clear\"}) }}",
@@ -182,10 +164,7 @@
       "name": "Flow 2: Parse Slack Payload",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3,
-      "position": [
-        600,
-        500
-      ],
+      "position": [600, 500],
       "parameters": {
         "mode": "manual",
         "assignments": {
@@ -225,10 +204,7 @@
       "name": "Flow 2: Route on action_id",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
-      "position": [
-        820,
-        500
-      ],
+      "position": [820, 500],
       "parameters": {
         "mode": "rules",
         "rules": {
@@ -310,10 +286,7 @@
       "name": "Flow 2: Supabase Update \u2192 status = approved",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
-      "position": [
-        1040,
-        400
-      ],
+      "position": [1040, 400],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -348,10 +321,7 @@
       "name": "Flow 2: Supabase Update \u2192 status = rejected",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
-      "position": [
-        1040,
-        600
-      ],
+      "position": [1040, 600],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -386,10 +356,7 @@
       "name": "Flow 2: Handoff to Publishing Workflow",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3,
-      "position": [
-        1260,
-        400
-      ],
+      "position": [1260, 400],
       "parameters": {
         "mode": "manual",
         "assignments": {
@@ -419,10 +386,7 @@
       "name": "Flow 2: Slack Confirmation (Approved)",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [
-        1480,
-        400
-      ],
+      "position": [1480, 400],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -442,10 +406,7 @@
       "name": "Flow 2: Slack Confirmation (Rejected)",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [
-        1260,
-        600
-      ],
+      "position": [1260, 600],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -583,13 +544,7 @@
     "callerPolicy": "workflowsFromSameOwner",
     "errorWorkflow": ""
   },
-  "tags": [
-    "content-bank",
-    "slack",
-    "approval",
-    "block-kit",
-    "webhook"
-  ],
+  "tags": ["content-bank", "slack", "approval", "block-kit", "webhook"],
   "staticData": null,
   "pinData": {}
 }
