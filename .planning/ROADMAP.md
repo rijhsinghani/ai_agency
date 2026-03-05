@@ -4,7 +4,7 @@
 **Strategy:** Content-first. Build audience and trust through value content. Funnel to discovery calls.
 **Depth:** Quick (4 phases per milestone)
 **Created:** 2026-02-27
-**Revised:** 2026-03-03 — Phase 11 plans created (3 plans, 2 waves)
+**Revised:** 2026-03-05 — Phase 12 plans created (2 plans, 1 wave)
 
 ---
 
@@ -359,6 +359,7 @@ Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
 **Plans**: 9 plans (7 complete + 2 gap closure)
 
 Plans:
+
 - [x] 10-01-PLAN.md — Content bank schema + Google Sheets sync
 - [x] 10-02-PLAN.md — Video post-production pipeline (Cloud Run)
 - [x] 10-03-PLAN.md — AI content generation layer (Gemini + Claude)
@@ -433,10 +434,11 @@ Plans:
 | 5. Market Research + Pain Points       | v2.0      | 2/2            | Complete    | 2026-03-01 |
 | 6. Platform Foundation                 | 2/2       | Complete       | 2026-03-02  | -          |
 | 7. Case Studies + Content Tooling      | 2/2       | Complete       | 2026-03-02  | -          |
-| 8. Content Production + Repurposing    | 5/6 | In Progress|  | -          |
+| 8. Content Production + Repurposing    | 5/6       | In Progress    |             | -          |
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
-| 10. Content Preparation & Distribution | 9/9 | Complete    | 2026-03-05 | -          |
-| 11. Automation Guide Series            | 3/3 | Complete    | 2026-03-05 | -          |
+| 10. Content Preparation & Distribution | 9/9       | Complete       | 2026-03-05  | -          |
+| 11. Automation Guide Series            | 3/3       | Complete       | 2026-03-05  | -          |
+| 12. Social Content Optimization        | v3.0      | 0/2            | Planned     | -          |
 
 ---
 
@@ -449,7 +451,29 @@ Plans:
 5. **YouTube is the hub** — Everything starts as a YouTube video. Twitter and Instagram receive repurposed content, never original.
 6. **Human in the loop** — AI generates drafts. Founder publishes. Automate posting only after voice is established.
 
+### Phase 12: Social Content Optimization — Rewrite social drafts with competitive hooks, carousel format, keyword CTAs, hashtags, and flow diagram exports
+
+**Goal:** Transform existing 10 social drafts into engagement-optimized content with Hormozi-style hooks, build a carousel-generator CLI for Instagram carousel slides and flow diagram social assets
+**Requirements**: SOC-01, SOC-02, SOC-03, SOC-04, SOC-05, SOC-06
+**Depends on:** Phase 11
+**Plans:** 2 plans
+
+Plans:
+
+- [ ] 12-01-PLAN.md — Rewrite 10 social drafts with Hormozi hooks, keyword CTAs, hashtags (SOC-01, SOC-02, SOC-05)
+- [ ] 12-02-PLAN.md — Build carousel-generator CLI + render carousel slides + flow diagram PNGs (SOC-03, SOC-04, SOC-06)
+
+**Success Criteria** (what must be TRUE):
+
+1. All 10 social drafts (5 Twitter + 5 Instagram) rewritten with Hormozi-style pattern-interrupt hooks and dollar-math pain anchors
+2. Twitter threads expanded to 5-6 tweets with before/after and common mistake structure
+3. Instagram captions include keyword DM CTAs (MISSED/REVIEWS/PIPELINE/QUOTE/NOSHOW) and 5-8 niche hashtags
+4. Carousel-generator CLI produces 5-8 branded carousel slides per guide at 1080x1080 PNG
+5. Flow diagram social assets exported as square (1080x1080) and landscape (1200x675) PNG per guide
+6. All visual assets use dark #1A1A1A background, DM Sans font, purple-to-cyan gradient accents
+7. No emojis, no banned phrases, no hashtags on Twitter
+
 ---
 
 _Created: 2026-02-27_
-_Last updated: 2026-03-03 — Phase 11 plans created (3 plans, 2 waves)_
+_Last updated: 2026-03-05 — Phase 12 plans created (2 plans, 1 wave)_
