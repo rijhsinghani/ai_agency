@@ -38,6 +38,8 @@ def trigger_thumbnail_generation(
             "Generate 4 thumbnail variations using .claude/skills/youtube-thumbnail/SKILL.md. "
             "Store outputs in content_bank.visual_assets.thumbnails."
         ),
+        "grid_output_path": f"youtube-thumbnails/{content_bank_id[:8]}/comparison.png",
+        "headshot_dir": os.environ.get("HEADSHOT_DIR", ""),
     }
 
     gcs = storage.Client()

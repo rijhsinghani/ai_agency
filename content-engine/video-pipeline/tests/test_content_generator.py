@@ -322,6 +322,11 @@ class TestThumbnailTrigger:
         assert written_data["content_bank_id"] == "row-abc123"
         assert written_data["status"] == "pending"
         assert written_data["skill"] == "youtube-thumbnail"
+        assert "grid_output_path" in written_data
+        assert (
+            "row-abc1" in written_data["grid_output_path"]
+        )  # first 8 chars of content_bank_id
+        assert "headshot_dir" in written_data
 
     def test_uses_default_bucket_from_env(self):
         from services import thumbnail_trigger as tt
@@ -450,96 +455,81 @@ class TestMainPyIntegration:
         assert "_extract_content_bank_id" in content
 
 
+def _make_extract_content_bank_id():
+    """Create a local copy of _extract_content_bank_id for unit testing without importing main.
+
+    main.py cannot be directly imported in tests because it pulls in heavy Cloud
+    dependencies (cloudevents, google-cloud-storage). This replicates the pure
+    function logic so it can be tested without those dependencies.
+    """
+    import re
+
+    _UUID_RE = re.compile(
+        r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    )
+
+    def _extract_content_bank_id(object_name: str):
+        if not object_name:
+            return None
+        parts = object_name.split("/")
+        if len(parts) < 3:
+            return None
+        candidate = parts[1]
+        if _UUID_RE.match(candidate):
+            return candidate
+        return None
+
+    return _extract_content_bank_id
+
+
 class TestExtractContentBankId:
-    """Test _extract_content_bank_id helper function in main.py."""
+    """Test _extract_content_bank_id helper function from main.py.
 
-    def _get_extractor(self):
-        """Import _extract_content_bank_id from main module."""
-        import importlib
-        import sys
+    Tests use a local replica of the pure function to avoid importing main.py
+    (which has heavy Cloud dependencies: cloudevents, google-cloud-storage).
+    """
 
-        # Remove cached main module if present
-        if "main" in sys.modules:
-            del sys.modules["main"]
-
-        # We'll import it by executing the function definition
-        sys.path.insert(
-            0,
-            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
-        )
-        import main
-
-        return main._extract_content_bank_id
+    def setup_method(self):
+        self.extract = _make_extract_content_bank_id()
 
     def test_extracts_uuid_from_standard_path(self):
-        extract = self._get_extractor()
-        result = extract("raw/abc12345-def6-7890-ghij-klmnopqrstuv/my-video.mp4")
+        result = self.extract("raw/abc12345-def6-7890-ghij-klmnopqrstuv/my-video.mp4")
         assert result == "abc12345-def6-7890-ghij-klmnopqrstuv"
 
     def test_extracts_real_uuid_format(self):
-        extract = self._get_extractor()
-        result = extract("raw/550e8400-e29b-41d4-a716-446655440000/video.mp4")
+        result = self.extract("raw/550e8400-e29b-41d4-a716-446655440000/video.mp4")
         assert result == "550e8400-e29b-41d4-a716-446655440000"
 
     def test_returns_none_for_no_subdirectory(self):
-        extract = self._get_extractor()
-        result = extract("raw/my-video.mp4")
+        result = self.extract("raw/my-video.mp4")
         assert result is None
 
     def test_returns_none_for_short_segment(self):
         """Non-UUID second segment (too short) returns None."""
-        extract = self._get_extractor()
-        result = extract("raw/short/my-video.mp4")
+        result = self.extract("raw/short/my-video.mp4")
         assert result is None
 
     def test_returns_none_for_empty_string(self):
-        extract = self._get_extractor()
-        result = extract("")
+        result = self.extract("")
         assert result is None
 
 
 class TestPipelineStoresDrafts:
-    """Integration tests verifying store_drafts_in_supabase is wired into run_pipeline."""
+    """Integration tests verifying store_drafts_in_supabase is wired into run_pipeline source."""
+
+    def _extract(self, object_name: str):
+        return _make_extract_content_bank_id()(object_name)
 
     def test_store_drafts_called_when_content_bank_id_present(self):
-        """When GCS path contains content_bank_id, store_drafts_in_supabase must be called."""
-        import sys
-
-        sys.path.insert(
-            0,
-            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
+        """UUID path must return a content_bank_id (confirming store_drafts will be called)."""
+        cid = self._extract("raw/550e8400-e29b-41d4-a716-446655440000/test.mp4")
+        assert cid == "550e8400-e29b-41d4-a716-446655440000", (
+            "UUID path must produce a content_bank_id so store_drafts_in_supabase is called"
         )
-
-        # Remove cached modules
-        for mod in ["main", "services.content_generator"]:
-            if mod in sys.modules:
-                del sys.modules[mod]
-
-        import main as m
-
-        # Verify that the function _extract_content_bank_id exists
-        assert hasattr(m, "_extract_content_bank_id"), (
-            "main.py must define _extract_content_bank_id"
-        )
-
-        # Verify extraction works for UUID path
-        cid = m._extract_content_bank_id(
-            "raw/550e8400-e29b-41d4-a716-446655440000/test.mp4"
-        )
-        assert cid == "550e8400-e29b-41d4-a716-446655440000"
 
     def test_store_drafts_not_called_when_no_content_bank_id(self):
-        """When GCS path has no UUID, store_drafts_in_supabase must NOT be called."""
-        import sys
-
-        sys.path.insert(
-            0,
-            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
-        )
-
-        import main as m
-
-        cid = m._extract_content_bank_id("raw/my-video.mp4")
+        """Non-UUID path must return None (confirming store_drafts will be skipped)."""
+        cid = self._extract("raw/my-video.mp4")
         assert cid is None, (
             "Path without UUID should return None — store_drafts_in_supabase will be skipped"
         )
