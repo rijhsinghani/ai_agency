@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 import tempfile
 from pathlib import Path
@@ -30,6 +31,33 @@ from services.thumbnail_trigger import trigger_thumbnail_generation
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
+
+# UUID-format pattern: 8-4-4-4-12 alphanumeric characters with hyphens (36 chars total).
+# Accepts both standard hex UUIDs and Supabase row IDs that may contain non-hex letters.
+_UUID_RE = re.compile(
+    r"^[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}$"
+)
+
+
+def _extract_content_bank_id(object_name: str) -> str | None:
+    """Extract content_bank_id from GCS object path.
+
+    Convention: raw/{content_bank_id}/filename.mp4
+    where content_bank_id is a UUID (36 chars, 8-4-4-4-12 format).
+
+    Returns the UUID string if found, None otherwise.
+    """
+    if not object_name:
+        return None
+    parts = object_name.split("/")
+    # Expect at least 3 parts: ["raw", "<uuid>", "filename.mp4"]
+    if len(parts) < 3:
+        return None
+    candidate = parts[1]
+    if _UUID_RE.match(candidate):
+        return candidate
+    return None
+
 
 app = Flask(__name__)
 
@@ -66,6 +94,16 @@ def run_pipeline(bucket_name: str, object_name: str) -> dict:
     """Download raw video, run all 9 processing steps, upload result to output bucket."""
     gcs = storage.Client()
     video_stem = Path(object_name).stem  # e.g. "2026-03-10-my-video"
+
+    # Extract content_bank_id from GCS path (convention: raw/{content_bank_id}/filename.mp4)
+    content_bank_id = _extract_content_bank_id(object_name)
+    if content_bank_id:
+        logger.info(f"content_bank_id extracted from GCS path: {content_bank_id}")
+    else:
+        logger.info(
+            "No content_bank_id found in GCS path. "
+            "Upload videos to raw/{content_bank_id}/filename.mp4 to enable automatic Supabase storage."
+        )
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # Download raw video
@@ -167,12 +205,21 @@ def run_pipeline(bucket_name: str, object_name: str) -> dict:
                 brand="sameer_automations",
             )
 
-            # TODO: Pass content_bank_id from the trigger event metadata
-            # For now, log the generated content
             logger.info(f"Generated YouTube title: {content.get('youtube_title')}")
             logger.info(
                 f"Generated Twitter thread: {len(content.get('twitter_thread', []))} tweets"
             )
+
+            # Persist drafts to Supabase if content_bank_id is available
+            if content_bank_id is not None:
+                store_drafts_in_supabase(
+                    content_bank_id, content, clip_paths, clip_metadata
+                )
+            else:
+                logger.warning(
+                    "No content_bank_id extracted from GCS path — skipping Supabase draft storage. "
+                    "Upload videos to raw/{content_bank_id}/filename.mp4 to enable automatic storage."
+                )
 
         except Exception as e:
             logger.warning(f"Content generation failed (non-fatal): {e}")
@@ -185,7 +232,7 @@ def run_pipeline(bucket_name: str, object_name: str) -> dict:
                 video_title=video_stem.replace("-", " ").replace("_", " "),
                 processed_video_gcs_uri=f"gs://{GCS_OUTPUT_BUCKET}/{output_video_name}",
                 brand="sameer_automations",
-                content_bank_id=video_stem,
+                content_bank_id=content_bank_id or video_stem,
                 output_bucket=GCS_OUTPUT_BUCKET,
             )
             logger.info(f"Thumbnail trigger queued: {trigger_uri}")

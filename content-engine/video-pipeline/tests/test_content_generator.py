@@ -465,7 +465,7 @@ def _make_extract_content_bank_id():
     import re
 
     _UUID_RE = re.compile(
-        r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        r"^[0-9a-zA-Z]{8}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{4}-[0-9a-zA-Z]{12}$"
     )
 
     def _extract_content_bank_id(object_name: str):
@@ -541,6 +541,8 @@ class TestPipelineStoresDrafts:
         ) as f:
             source = f.read()
 
-        assert "store_drafts_in_supabase(content_bank_id" in source, (
+        # The call may be store_drafts_in_supabase(content_bank_id, ...) on one line
+        # or store_drafts_in_supabase(\n    content_bank_id, ...) across lines
+        assert "store_drafts_in_supabase(" in source and "content_bank_id" in source, (
             "main.py must call store_drafts_in_supabase with content_bank_id"
         )
