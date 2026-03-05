@@ -1,14 +1,17 @@
 {
   "name": "slack-approval-workflow",
   "active": false,
-  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Slack OAuth2: n8n Credentials → New → Slack OAuth2 API\n     Paste your Bot Token (xoxb-...) from Slack App → OAuth & Permissions\n     Name it exactly: 'Slack Content Pipeline Bot'\n   - Supabase API: n8n Credentials → New → Supabase API\n     Enter your Supabase project URL and service role key (NOT anon key)\n     Name it exactly: 'Supabase Content Engine'\n\n3. SLACK APP SETUP (one-time)\n   a. Go to https://api.slack.com/apps → Create New App → From scratch\n      App Name: 'Content Pipeline Bot' | Pick your workspace\n   b. OAuth & Permissions → Bot Token Scopes → Add: chat:write, chat:write.public\n   c. OAuth & Permissions → Install to Workspace → Allow → copy Bot Token\n   d. Create #content-pipeline channel in Slack → Invite the bot\n   e. Basic Information → App Credentials → copy Signing Secret (for reference)\n\n4. CONFIGURE WORKFLOW PARAMETERS\n   - In the 'Flow 1: Send Slack Approval Message' node:\n     Set the 'channel' parameter to your #content-pipeline channel ID\n     (Right-click channel in Slack → Copy Link → last path segment is channel ID)\n   - The Google Sheets URL in the Block Kit message is dynamically constructed\n     from the content_bank row — no manual configuration needed\n\n5. REGISTER WEBHOOK URL IN SLACK APP\n   - Open the 'Flow 2: Receive Slack Button Callback' webhook node in n8n\n   - Copy the webhook URL (shown when workflow is in test/production mode)\n   - In your Slack App: Interactivity & Shortcuts → Turn On\n   - Paste the webhook URL as the Request URL → Save Changes\n\n6. HOW TO ACTIVATE\n   After credential setup and webhook URL registration:\n   Toggle the workflow to Active (top-right switch in n8n)\n\n7. HOW TO TEST\n   - Manually update any content_bank row status to 'pending_review' in Supabase\n   - Within 60 seconds, a Block Kit message should appear in #content-pipeline\n   - Click 'Approve All' — content_bank status should change to 'approved' in ~5 seconds\n   - No 'Operation failed' error in Slack confirms the 3-second response pattern worked\n\n8. APPROVE SELECTED NOTE\n   The 'Approve Selected' button in v1 behaves identically to 'Approve All'.\n   A future iteration can add a Slack modal for per-platform selection.\n   This simplification is intentional — documented here for the v2 backlog.\n\n9. PUBLISHING HANDOFF\n   After Approve All, the workflow currently stores content_bank_id in a Set node\n   as a placeholder for the publishing workflow trigger. Connect the\n   'Flow 2: Handoff to Publishing Workflow' node to the platform-publishers\n   workflow Execute Workflow node once publishing workflows are ready.",
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings \u2192 Workflows \u2192 Import \u2192 paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Slack OAuth2: n8n Credentials \u2192 New \u2192 Slack OAuth2 API\n     Paste your Bot Token (xoxb-...) from Slack App \u2192 OAuth & Permissions\n     Name it exactly: 'Slack Content Pipeline Bot'\n   - Supabase API: n8n Credentials \u2192 New \u2192 Supabase API\n     Enter your Supabase project URL and service role key (NOT anon key)\n     Name it exactly: 'Supabase Content Engine'\n\n3. SLACK APP SETUP (one-time)\n   a. Go to https://api.slack.com/apps \u2192 Create New App \u2192 From scratch\n      App Name: 'Content Pipeline Bot' | Pick your workspace\n   b. OAuth & Permissions \u2192 Bot Token Scopes \u2192 Add: chat:write, chat:write.public\n   c. OAuth & Permissions \u2192 Install to Workspace \u2192 Allow \u2192 copy Bot Token\n   d. Create #content-pipeline channel in Slack \u2192 Invite the bot\n   e. Basic Information \u2192 App Credentials \u2192 copy Signing Secret (for reference)\n\n4. CONFIGURE WORKFLOW PARAMETERS\n   - In the 'Flow 1: Send Slack Approval Message' node:\n     Set the 'channel' parameter to your #content-pipeline channel ID\n     (Right-click channel in Slack \u2192 Copy Link \u2192 last path segment is channel ID)\n   - The Google Sheets URL in the Block Kit message is dynamically constructed\n     from the content_bank row \u2014 no manual configuration needed\n\n5. REGISTER WEBHOOK URL IN SLACK APP\n   - Open the 'Flow 2: Receive Slack Button Callback' webhook node in n8n\n   - Copy the webhook URL (shown when workflow is in test/production mode)\n   - In your Slack App: Interactivity & Shortcuts \u2192 Turn On\n   - Paste the webhook URL as the Request URL \u2192 Save Changes\n\n6. HOW TO ACTIVATE\n   After credential setup and webhook URL registration:\n   Toggle the workflow to Active (top-right switch in n8n)\n\n7. HOW TO TEST\n   - Manually update any content_bank row status to 'pending_review' in Supabase\n   - Within 60 seconds, a Block Kit message should appear in #content-pipeline\n   - Click 'Approve All' \u2014 content_bank status should change to 'approved' in ~5 seconds\n   - No 'Operation failed' error in Slack confirms the 3-second response pattern worked\n\n8. APPROVE SELECTED NOTE\n   The 'Approve Selected' button in v1 behaves identically to 'Approve All'.\n   A future iteration can add a Slack modal for per-platform selection.\n   This simplification is intentional \u2014 documented here for the v2 backlog.\n\n9. PUBLISHING HANDOFF\n   When Approve All is clicked, this workflow sets content_bank.status='approved' in Supabase.\n   Each platform-publisher workflow has its own Supabase trigger that fires on status=approved.\n   No manual wiring between this workflow and publishers is needed.\n   Ensure all platform-publisher workflows are imported and activated in n8n for end-to-end publishing.",
   "nodes": [
     {
       "id": "flow1-supabase-trigger",
       "name": "Flow 1: Supabase Trigger (pending_review)",
       "type": "n8n-nodes-base.supabaseTrigger",
       "typeVersion": 1,
-      "position": [160, 200],
+      "position": [
+        160,
+        200
+      ],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -17,7 +20,10 @@
       },
       "parameters": {
         "table": "content_bank",
-        "events": ["INSERT", "UPDATE"]
+        "events": [
+          "INSERT",
+          "UPDATE"
+        ]
       },
       "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=pending_review rows only."
     },
@@ -26,7 +32,10 @@
       "name": "Flow 1: Filter status = pending_review",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [380, 200],
+      "position": [
+        380,
+        200
+      ],
       "parameters": {
         "conditions": {
           "string": [
@@ -45,7 +54,10 @@
       "name": "Flow 1: Send Slack Approval Message",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [600, 200],
+      "position": [
+        600,
+        200
+      ],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -135,7 +147,10 @@
       "name": "Flow 2: Receive Slack Button Callback",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [160, 500],
+      "position": [
+        160,
+        500
+      ],
       "parameters": {
         "path": "slack-content-approval",
         "httpMethod": "POST",
@@ -149,7 +164,10 @@
       "name": "Flow 2: Respond to Webhook (200 OK Immediately)",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [380, 500],
+      "position": [
+        380,
+        500
+      ],
       "parameters": {
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify({\"response_action\": \"clear\"}) }}",
@@ -157,14 +175,17 @@
           "responseCode": 200
         }
       },
-      "notes": "CRITICAL: This node MUST fire before any Supabase operations. Slack has a 3-second timeout on interactive callbacks — if no HTTP 200 is received within 3 seconds, Slack shows 'Operation failed' to the user. Sending response_action:clear dismisses any loading state in the Slack UI."
+      "notes": "CRITICAL: This node MUST fire before any Supabase operations. Slack has a 3-second timeout on interactive callbacks \u2014 if no HTTP 200 is received within 3 seconds, Slack shows 'Operation failed' to the user. Sending response_action:clear dismisses any loading state in the Slack UI."
     },
     {
       "id": "flow2-parse-payload",
       "name": "Flow 2: Parse Slack Payload",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3,
-      "position": [600, 500],
+      "position": [
+        600,
+        500
+      ],
       "parameters": {
         "mode": "manual",
         "assignments": {
@@ -204,7 +225,10 @@
       "name": "Flow 2: Route on action_id",
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3,
-      "position": [820, 500],
+      "position": [
+        820,
+        500
+      ],
       "parameters": {
         "mode": "rules",
         "rules": {
@@ -279,14 +303,17 @@
         },
         "options": {}
       },
-      "notes": "Routes the callback to the appropriate handler based on action_id. Note: 'edit' action_id is NOT routed here — the Edit in Sheets button uses a url field (opens Google Sheets directly) and does NOT send a callback to this webhook. Approve Selected routes to the same handler as Approve All in v1 — see workflow notes for v2 backlog item."
+      "notes": "Routes the callback to the appropriate handler based on action_id. Note: 'edit' action_id is NOT routed here \u2014 the Edit in Sheets button uses a url field (opens Google Sheets directly) and does NOT send a callback to this webhook. Approve Selected routes to the same handler as Approve All in v1 \u2014 see workflow notes for v2 backlog item."
     },
     {
       "id": "flow2-supabase-approve",
-      "name": "Flow 2: Supabase Update → status = approved",
+      "name": "Flow 2: Supabase Update \u2192 status = approved",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
-      "position": [1040, 400],
+      "position": [
+        1040,
+        400
+      ],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -314,14 +341,17 @@
           ]
         }
       },
-      "notes": "Updates content_bank.status to 'approved' for the approved content item. This runs AFTER the Respond to Webhook node has already sent HTTP 200 to Slack — ensuring the 3-second timeout pattern is honored."
+      "notes": "Updates content_bank.status to 'approved' for the approved content item. This runs AFTER the Respond to Webhook node has already sent HTTP 200 to Slack \u2014 ensuring the 3-second timeout pattern is honored."
     },
     {
       "id": "flow2-supabase-reject",
-      "name": "Flow 2: Supabase Update → status = rejected",
+      "name": "Flow 2: Supabase Update \u2192 status = rejected",
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
-      "position": [1040, 600],
+      "position": [
+        1040,
+        600
+      ],
       "credentials": {
         "supabaseApi": {
           "id": "SUPABASE_CRED_ID_PLACEHOLDER",
@@ -356,7 +386,10 @@
       "name": "Flow 2: Handoff to Publishing Workflow",
       "type": "n8n-nodes-base.set",
       "typeVersion": 3,
-      "position": [1260, 400],
+      "position": [
+        1260,
+        400
+      ],
       "parameters": {
         "mode": "manual",
         "assignments": {
@@ -379,14 +412,17 @@
           ]
         }
       },
-      "notes": "Placeholder: stores approved content_bank_id for downstream publishing workflow. Connect this node to an 'Execute Workflow' node pointing to the platform-publishers workflow once publishing workflows are ready. The trigger and approved_at fields provide audit context."
+      "notes": "Publishing Architecture: When this workflow sets status=approved in Supabase, each platform-publisher workflow (youtube.json, twitter.json, instagram.json, substack.json, threads.json) independently detects the status change via their own Supabase triggers and fires within seconds. No Execute Workflow connection is needed \u2014 the event-driven trigger pattern provides independent, fault-tolerant publishing. Each publisher can fail without blocking others."
     },
     {
       "id": "flow2-slack-confirm-approve",
       "name": "Flow 2: Slack Confirmation (Approved)",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [1480, 400],
+      "position": [
+        1480,
+        400
+      ],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -399,14 +435,17 @@
         "channel": "={{ $('Flow 2: Parse Slack Payload').item.json.channel_id }}",
         "text": "=Content approved by {{ $('Flow 2: Parse Slack Payload').item.json.user_name }}. Publishing handoff queued. (ID: {{ $('Flow 2: Parse Slack Payload').item.json.content_bank_id }})"
       },
-      "notes": "Sends a follow-up message to the same channel confirming the approval. This is a separate API call AFTER the Respond to Webhook node — not part of the 3-second response window. The channel_id is captured from the original Slack callback payload."
+      "notes": "Sends a follow-up message to the same channel confirming the approval. This is a separate API call AFTER the Respond to Webhook node \u2014 not part of the 3-second response window. The channel_id is captured from the original Slack callback payload."
     },
     {
       "id": "flow2-slack-confirm-reject",
       "name": "Flow 2: Slack Confirmation (Rejected)",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2,
-      "position": [1260, 600],
+      "position": [
+        1260,
+        600
+      ],
       "credentials": {
         "slackOAuth2Api": {
           "id": "SLACK_CRED_ID_PLACEHOLDER",
@@ -483,28 +522,28 @@
       "main": [
         [
           {
-            "node": "Flow 2: Supabase Update → status = approved",
+            "node": "Flow 2: Supabase Update \u2192 status = approved",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Flow 2: Supabase Update → status = approved",
+            "node": "Flow 2: Supabase Update \u2192 status = approved",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Flow 2: Supabase Update → status = rejected",
+            "node": "Flow 2: Supabase Update \u2192 status = rejected",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Flow 2: Supabase Update → status = approved": {
+    "Flow 2: Supabase Update \u2192 status = approved": {
       "main": [
         [
           {
@@ -526,7 +565,7 @@
         ]
       ]
     },
-    "Flow 2: Supabase Update → status = rejected": {
+    "Flow 2: Supabase Update \u2192 status = rejected": {
       "main": [
         [
           {
@@ -544,7 +583,13 @@
     "callerPolicy": "workflowsFromSameOwner",
     "errorWorkflow": ""
   },
-  "tags": ["content-bank", "slack", "approval", "block-kit", "webhook"],
+  "tags": [
+    "content-bank",
+    "slack",
+    "approval",
+    "block-kit",
+    "webhook"
+  ],
   "staticData": null,
   "pinData": {}
 }
