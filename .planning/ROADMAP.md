@@ -402,7 +402,7 @@ Each guide follows a hybrid format: Page 1 (hook + cost), Page 2 (how it works),
 
 **Design doc**: `.planning/phases/11-automation-guide-series/11-DESIGN.md`
 
-**Plans:** 7/7 plans complete
+**Plans:** 8/9 plans executed
 
 Plans:
 
@@ -435,7 +435,7 @@ Plans:
 | 7. Case Studies + Content Tooling      | 2/2       | Complete       | 2026-03-02  | -          |
 | 8. Content Production + Repurposing    | 5/6 | In Progress|  | -          |
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
-| 10. Content Preparation & Distribution | 9/9 | Gap Closure | 2026-03-05 | -          |
+| 10. Content Preparation & Distribution | 8/9 | In Progress|  | -          |
 | 11. Automation Guide Series            | 3/3 | Complete    | 2026-03-03 | -          |
 
 ---
