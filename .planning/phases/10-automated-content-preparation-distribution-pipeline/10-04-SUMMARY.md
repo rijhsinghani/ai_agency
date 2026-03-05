@@ -44,6 +44,8 @@ key-decisions:
   - "Edit in Sheets uses url button type (no callback): opens Google Sheets directly without sending callback to n8n webhook; no handler needed"
   - "Block Kit message is 4 blocks: header + image + section + actions — deliberately lean, full drafts accessible via Edit in Sheets button"
   - "Publishing handoff is placeholder Set node: stores content_bank_id + trigger metadata; connect to Execute Workflow node for platform-publishers when ready"
+  - "Slack app named 'Oliver' (user preference over plan's 'Content Pipeline Bot')"
+  - "SLACK_CHANNEL_ID = C0AGG5L97EG (#content-pipeline channel)"
 
 patterns-established:
   - "Slack interactive callback decode: JSON.parse($json.body.payload) in Set node extracts action_id, value (content_bank_id), user.name, channel.id"
@@ -52,20 +54,20 @@ patterns-established:
 requirements-completed: [SC-5, SC-6]
 
 # Metrics
-duration: 2min
+duration: 45min
 completed: "2026-03-04"
 ---
 
 # Phase 10 Plan 04: Slack Approval Workflow Summary
 
-**n8n Slack Block Kit approval workflow — pending_review trigger sends 4-block interactive message to #content-pipeline; button callbacks handled with respondToWebhook-first pattern updating Supabase status to approved/rejected**
+**n8n Slack Block Kit approval workflow — pending_review trigger sends 4-block interactive message to #content-pipeline; button callbacks handled with respondToWebhook-first pattern updating Supabase status to approved/rejected; Slack app "Oliver" installed with channel C0AGG5L97EG**
 
 ## Performance
 
-- **Duration:** ~2 min (Task 1 automated)
+- **Duration:** ~45 min
 - **Started:** 2026-03-04T23:23:26Z
-- **Completed:** 2026-03-04T23:25:03Z (Task 1); Task 2 pending human checkpoint
-- **Tasks:** 1 of 2 complete (Task 2 = human-verify checkpoint)
+- **Completed:** 2026-03-04
+- **Tasks:** 2 of 2 complete
 - **Files modified:** 1
 
 ## Accomplishments
@@ -81,9 +83,9 @@ completed: "2026-03-04"
 Each task was committed atomically:
 
 1. **Task 1: Build Slack approval n8n workflow JSON** - `280cd36` (feat)
-2. **Task 2: Manual Slack App setup + verify** - PENDING (human-verify checkpoint)
+2. **Task 2: Manual Slack App setup + verify** - completed (human-verify checkpoint, verified by user)
 
-**Plan metadata:** (committed after checkpoint resolution)
+**Plan metadata:** (committed with this summary)
 
 ## Files Created/Modified
 
@@ -104,30 +106,25 @@ None - plan executed exactly as written.
 
 None.
 
-## User Setup Required
+## User Setup Completed
 
-External Slack App and n8n credential configuration required before the workflow can run.
+Slack App setup completed by user (Task 2 human-verify checkpoint):
 
-Setup steps documented in the workflow's `notes` field:
+- Slack app **"Oliver"** created and installed to workspace
+- Bot token obtained (xoxb-...)
+- Channel **#content-pipeline** created with ID **C0AGG5L97EG**
+- Bot invited to channel
 
-1. Create Slack App at https://api.slack.com/apps (name: "Content Pipeline Bot")
-2. Add Bot Token Scopes: `chat:write`, `chat:write.public`
-3. Install app to workspace → copy Bot Token (xoxb-...)
-4. Create `#content-pipeline` channel → invite bot
-5. Import `slack-approval.json` into n8n
-6. Add Slack credential (n8n → Credentials → New → Slack OAuth2 API → paste Bot Token)
-7. Configure Supabase credential (already done from Plan 01)
-8. Set `YOUR_SLACK_CHANNEL_ID_HERE` in the "Flow 1: Send Slack Approval Message" node
-9. Copy the Webhook URL from the "Flow 2: Receive Slack Button Callback" node
-10. Slack App → Interactivity & Shortcuts → Enable → paste webhook URL → Save
-11. Activate workflow
-12. Test: set any content_bank row status to `pending_review` → expect Block Kit message in #content-pipeline within 60 seconds
+Remaining n8n configuration (do before activating workflow):
 
-Required credentials:
-
-- `SLACK_BOT_TOKEN` (xoxb-...) from Slack App → OAuth & Permissions
-- `SLACK_CHANNEL_ID` for #content-pipeline channel
-- `SLACK_SIGNING_SECRET` from Slack App → Basic Information (for future request verification)
+1. Import `slack-approval.json` into n8n
+2. Add Slack credential (n8n → Credentials → New → Slack OAuth2 API → paste Bot Token)
+3. Configure Supabase credential (already done from Plan 01)
+4. Replace `YOUR_SLACK_CHANNEL_ID_HERE` with `C0AGG5L97EG` in the "Flow 1: Send Slack Approval Message" node
+5. Copy the Webhook URL from the "Flow 2: Receive Slack Button Callback" node
+6. Slack App "Oliver" → Interactivity & Shortcuts → Enable → paste webhook URL → Save
+7. Activate workflow
+8. Test: set any content_bank row status to `pending_review` → expect Block Kit message in #content-pipeline within 60 seconds
 
 ## Next Phase Readiness
 
@@ -138,4 +135,4 @@ Required credentials:
 ---
 
 _Phase: 10-automated-content-preparation-distribution-pipeline_
-_Completed: 2026-03-04 (Task 1); Task 2 pending_
+_Completed: 2026-03-04_
