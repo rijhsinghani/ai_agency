@@ -278,6 +278,14 @@ function buildHTML(markdownContent, guideMeta) {
     .replace(
       /<div class="page-break"><\/div>/,
       `${problemDiagram}<div class="page-break"></div>${flowDiagram}`,
+    )
+    .replace(
+      /<p><strong>Gotchas:<\/strong><\/p>\s*(<ul>[\s\S]*?<\/ul>)/g,
+      '<div class="gotcha-callout"><p><strong>Gotchas:</strong></p>$1</div>',
+    )
+    .replace(
+      /calendar\.app\.google\/psycao3CrXjGnmk48/g,
+      '<a href="https://calendar.app.google/psycao3CrXjGnmk48" style="color: #4DD9E8; text-decoration: underline;">calendar.app.google/psycao3CrXjGnmk48</a>',
     );
 
   return `<!DOCTYPE html>
@@ -308,7 +316,7 @@ function buildHTML(markdownContent, guideMeta) {
       background-color: #1A1A1A;
       color: #EDE9E3;
       font-family: 'Gilroy', 'DM Sans', system-ui, sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1.65;
       margin: 0;
       padding: 0;
@@ -503,6 +511,26 @@ function buildHTML(markdownContent, guideMeta) {
       color: rgba(237,233,227,0.9);
       font-size: 14px;
       font-style: italic;
+    }
+
+    /* Gotcha warning callout — amber border, subtle amber background */
+    .gotcha-callout {
+      margin: 16px 0 20px 0;
+      padding: 14px 20px;
+      background: rgba(245, 166, 35, 0.08);
+      border-left: 3px solid #f5a623;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .gotcha-callout p strong:first-child {
+      color: #f5a623;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .gotcha-callout ul {
+      margin: 8px 0 0 0;
+      color: rgba(237, 233, 227, 0.85);
     }
 
     /* Flow diagram — injected at top of page 2 */
