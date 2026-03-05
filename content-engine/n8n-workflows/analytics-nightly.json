@@ -1,0 +1,836 @@
+{
+  "name": "analytics-nightly",
+  "active": false,
+  "notes": "NIGHTLY ANALYTICS COLLECTION — runs at 2:00 AM daily\n\nPURPOSE\nPulls engagement metrics from all platform APIs for published content and stores them in the platform_analytics Supabase table. Also checks monthly AI cost budget and sends Slack alert if over $15.\n\nSETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Supabase API: Name it exactly 'Supabase Content Engine'\n   - Google Sheets OAuth2: Name it exactly 'Google Sheets Content Bank'\n   - Meta Graph API: Name it exactly 'Meta Graph API' (used for Instagram + Threads)\n   - YouTube Data API: Name it exactly 'YouTube Data API' (OAuth2, requires published channel)\n   - Slack API: Name it exactly 'Slack Content Pipeline' (for budget alerts to #content-pipeline)\n\n3. GOOGLE SHEETS SETUP\n   Create an 'Analytics' tab in the same Content Bank Google Sheet.\n   Columns in order: Date | Topic | Brand | Platform | Views | Likes | Comments | Shares | Reach\n   Update the Google Sheets node documentId with your Sheet ID.\n\n4. HOW TO ACTIVATE\n   Only activate AFTER:\n   - First content is published via the platform-publishers/ workflows\n   - platform_analytics table exists in Supabase (run 003_analytics.sql migration)\n   - All 5 credentials above are configured in n8n\n   Toggle workflow to Active to start nightly collection at 2 AM.\n\n5. TWITTER ANALYTICS LIMITATION (IMPORTANT)\n   Twitter/X free API tier does NOT include read access for tweet metrics.\n   The POST /2/tweets endpoint works on free tier for publishing.\n   GET endpoints for engagement data (views, likes, impressions) require the Basic tier ($100/month).\n   This contradicts the Phase 10 zero-subscriptions goal.\n   DECISION: Twitter metrics are logged as placeholder rows with raw_response = {\"error\": \"free_tier_no_read_access\"}.\n   Twitter analytics will remain at 0 until one of these conditions is met:\n   a) X restores free read access to the API\n   b) A free scraping solution is validated (e.g., nitter instance, Twitterpic)\n   c) Business growth justifies the $100/month Basic tier upgrade\n   Track engagement manually via Twitter Analytics dashboard in the meantime.\n\n6. SUBSTACK NOTE METRICS\n   Substack has no public API for Note engagement metrics (views, likes, restacks).\n   Notes are excluded from nightly analytics. Review manually at notes.sameerrijhsinghani.com.\n\n7. PLATFORM_ANALYTICS TABLE\n   Upsert pattern: ON CONFLICT (content_bank_id, platform, metric_date) DO UPDATE\n   This means running the workflow twice on the same day is safe — it overwrites with latest values.\n",
+  "nodes": [
+    {
+      "id": "nightly-cron",
+      "name": "Nightly Cron: 2:00 AM Daily",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [160, 300],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "notes": "Fires at 2:00 AM every day. Low-traffic window reduces rate limit risk on platform APIs."
+    },
+    {
+      "id": "get-published-content",
+      "name": "Get Published Content from Supabase",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [380, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "getAll",
+        "table": "content_bank",
+        "filterType": "string",
+        "filterString": "status=eq.published",
+        "options": {
+          "limit": 500
+        }
+      },
+      "notes": "Fetches all content_bank rows with status='published'. visual_assets JSONB contains platform post IDs: {youtube_video_id, instagram_post_id, threads_post_id, twitter_tweet_id, substack_url}."
+    },
+    {
+      "id": "split-by-platform",
+      "name": "Split by Platform",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "notes": "Process one content item at a time to avoid API rate limits. Each item fans out to platform branches below."
+    },
+    {
+      "id": "branch-youtube",
+      "name": "Branch: YouTube — Has video ID?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [820, 100],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets?.youtube_video_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only collect YouTube metrics if visual_assets.youtube_video_id is set."
+    },
+    {
+      "id": "youtube-metrics-api",
+      "name": "YouTube: GET Video Statistics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1040, 60],
+      "parameters": {
+        "method": "GET",
+        "url": "https://www.googleapis.com/youtube/v3/videos",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "youTubeOAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "statistics,contentDetails"
+            },
+            {
+              "name": "id",
+              "value": "={{ $('Get Published Content from Supabase').item.json.visual_assets.youtube_video_id }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "notes": "YouTube Data API v3 — returns viewCount, likeCount, commentCount, favoriteCount. Free quota: 10,000 units/day. This request costs 1 unit."
+    },
+    {
+      "id": "youtube-upsert-analytics",
+      "name": "YouTube: Upsert platform_analytics",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1260, 60],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "upsert",
+        "table": "platform_analytics",
+        "conflictColumns": "content_bank_id,platform,metric_date",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "content_bank_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "youtube"
+            },
+            {
+              "fieldId": "post_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.visual_assets.youtube_video_id }}"
+            },
+            {
+              "fieldId": "metric_date",
+              "fieldValue": "={{ $today.toFormat('yyyy-MM-dd') }}"
+            },
+            {
+              "fieldId": "views",
+              "fieldValue": "={{ parseInt($json.items?.[0]?.statistics?.viewCount || '0') }}"
+            },
+            {
+              "fieldId": "likes",
+              "fieldValue": "={{ parseInt($json.items?.[0]?.statistics?.likeCount || '0') }}"
+            },
+            {
+              "fieldId": "comments",
+              "fieldValue": "={{ parseInt($json.items?.[0]?.statistics?.commentCount || '0') }}"
+            },
+            {
+              "fieldId": "brand",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.brand }}"
+            },
+            {
+              "fieldId": "raw_response",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Upserts YouTube metrics into platform_analytics. ON CONFLICT (content_bank_id, platform, metric_date) updates existing row — safe to run multiple times per day."
+    },
+    {
+      "id": "branch-instagram",
+      "name": "Branch: Instagram — Has post ID?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [820, 260],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets?.instagram_post_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only collect Instagram metrics if visual_assets.instagram_post_id is set."
+    },
+    {
+      "id": "instagram-metrics-api",
+      "name": "Instagram: GET Post Insights",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1040, 220],
+      "credentials": {
+        "supabaseApi": {
+          "id": "META_GRAPH_API_CRED_ID_PLACEHOLDER",
+          "name": "Meta Graph API"
+        }
+      },
+      "parameters": {
+        "method": "GET",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('Get Published Content from Supabase').item.json.visual_assets.instagram_post_id }}/insights",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "metric",
+              "value": "plays,likes,comments,reach,saved,impressions"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $credential.accessToken }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "notes": "Meta Graph API: GET /{media-id}/insights. Returns plays (views for Reels), likes, comments, reach, saved, impressions. Requires instagram_business_account and media_insights permission."
+    },
+    {
+      "id": "instagram-upsert-analytics",
+      "name": "Instagram: Upsert platform_analytics",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1260, 220],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "upsert",
+        "table": "platform_analytics",
+        "conflictColumns": "content_bank_id,platform,metric_date",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "content_bank_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "instagram"
+            },
+            {
+              "fieldId": "post_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.visual_assets.instagram_post_id }}"
+            },
+            {
+              "fieldId": "metric_date",
+              "fieldValue": "={{ $today.toFormat('yyyy-MM-dd') }}"
+            },
+            {
+              "fieldId": "views",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'plays')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "likes",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'likes')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "comments",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'comments')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "reach",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'reach')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "saves",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'saved')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "impressions",
+              "fieldValue": "={{ $json.data?.find(m => m.name === 'impressions')?.values?.[0]?.value || 0 }}"
+            },
+            {
+              "fieldId": "brand",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.brand }}"
+            },
+            {
+              "fieldId": "raw_response",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "branch-threads",
+      "name": "Branch: Threads — Has post ID?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [820, 420],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets?.threads_post_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only collect Threads metrics if visual_assets.threads_post_id is set."
+    },
+    {
+      "id": "threads-metrics-api",
+      "name": "Threads: GET Post Metrics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1040, 380],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('Get Published Content from Supabase').item.json.visual_assets.threads_post_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "id,text,views,likes,replies,reposts,quotes"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $credential.accessToken }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "notes": "Meta Threads API: GET /{post-id}?fields=id,text,views,likes,replies,reposts,quotes. Uses same Meta access token as Instagram. Threads API became stable in 2024."
+    },
+    {
+      "id": "threads-upsert-analytics",
+      "name": "Threads: Upsert platform_analytics",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1260, 380],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "upsert",
+        "table": "platform_analytics",
+        "conflictColumns": "content_bank_id,platform,metric_date",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "content_bank_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "threads"
+            },
+            {
+              "fieldId": "post_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.visual_assets.threads_post_id }}"
+            },
+            {
+              "fieldId": "metric_date",
+              "fieldValue": "={{ $today.toFormat('yyyy-MM-dd') }}"
+            },
+            {
+              "fieldId": "views",
+              "fieldValue": "={{ $json.views || 0 }}"
+            },
+            {
+              "fieldId": "likes",
+              "fieldValue": "={{ $json.likes || 0 }}"
+            },
+            {
+              "fieldId": "comments",
+              "fieldValue": "={{ $json.replies || 0 }}"
+            },
+            {
+              "fieldId": "shares",
+              "fieldValue": "={{ ($json.reposts || 0) + ($json.quotes || 0) }}"
+            },
+            {
+              "fieldId": "brand",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.brand }}"
+            },
+            {
+              "fieldId": "raw_response",
+              "fieldValue": "={{ JSON.stringify($json) }}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "branch-twitter",
+      "name": "Branch: Twitter — Has tweet ID?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [820, 580],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets?.twitter_tweet_id }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Twitter/X free tier has no read access for tweet metrics. This branch logs a placeholder to document the gap."
+    },
+    {
+      "id": "twitter-placeholder-log",
+      "name": "Twitter: Log Free-Tier Read Access Gap",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1040, 540],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "upsert",
+        "table": "platform_analytics",
+        "conflictColumns": "content_bank_id,platform,metric_date",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "content_bank_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.id }}"
+            },
+            {
+              "fieldId": "platform",
+              "fieldValue": "twitter"
+            },
+            {
+              "fieldId": "post_id",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.visual_assets.twitter_tweet_id }}"
+            },
+            {
+              "fieldId": "metric_date",
+              "fieldValue": "={{ $today.toFormat('yyyy-MM-dd') }}"
+            },
+            {
+              "fieldId": "views",
+              "fieldValue": "0"
+            },
+            {
+              "fieldId": "likes",
+              "fieldValue": "0"
+            },
+            {
+              "fieldId": "comments",
+              "fieldValue": "0"
+            },
+            {
+              "fieldId": "brand",
+              "fieldValue": "={{ $('Get Published Content from Supabase').item.json.brand }}"
+            },
+            {
+              "fieldId": "raw_response",
+              "fieldValue": "{\"error\": \"free_tier_no_read_access\", \"note\": \"Twitter/X free API tier does not support GET endpoints for tweet engagement metrics. Upgrade to Basic tier ($100/month) for analytics. Track manually at analytics.twitter.com until then.\"}"
+            }
+          ]
+        }
+      },
+      "notes": "TWITTER FREE TIER LIMITATION: The Twitter/X free API tier does not include read access for tweet engagement metrics. POST /2/tweets works (publishing) but GET endpoints for views/likes/impressions require the Basic tier at $100/month. This contradicts the Phase 10 zero-subscriptions goal. Placeholder row logged with zeros and error documentation. Review manually at analytics.twitter.com."
+    },
+    {
+      "id": "merge-all-branches",
+      "name": "Merge All Platform Branches",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 2,
+      "position": [1480, 300],
+      "parameters": {
+        "mode": "combine",
+        "combinationMode": "multiplex",
+        "options": {}
+      },
+      "notes": "Merges results from all 4 platform branches (YouTube, Instagram, Threads, Twitter placeholder). Substack is excluded — no analytics API available."
+    },
+    {
+      "id": "check-cost-budget",
+      "name": "Check Monthly AI Cost Budget",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1700, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "getAll",
+        "table": "monthly_cost_summary",
+        "filterType": "string",
+        "filterString": "month=eq.{{ $now.startOf('month').toISO() }}",
+        "options": {
+          "limit": 1
+        }
+      },
+      "notes": "Queries monthly_cost_summary view for current month. Returns budget_status: OK / WARNING / OVER BUDGET."
+    },
+    {
+      "id": "check-budget-status",
+      "name": "Is Budget OVER BUDGET?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1920, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.budget_status }}",
+              "operation": "equal",
+              "value2": "OVER BUDGET"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "slack-over-budget-alert",
+      "name": "Slack: OVER BUDGET Alert to #content-pipeline",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [2140, 220],
+      "credentials": {
+        "slackApi": {
+          "id": "SLACK_CRED_ID_PLACEHOLDER",
+          "name": "Slack Content Pipeline"
+        }
+      },
+      "parameters": {
+        "operation": "post",
+        "channel": "#content-pipeline",
+        "text": "BUDGET ALERT: AI API costs for {{ $now.toFormat('MMMM yyyy') }} have exceeded the $15/month threshold. Current spend: ${{ $('Check Monthly AI Cost Budget').item.json.total_ai_cost_rounded }}. Check the monthly_cost_summary view in Supabase for breakdown by model and operation.",
+        "otherOptions": {
+          "mrkdwn": true
+        }
+      },
+      "notes": "Fires only when budget_status = 'OVER BUDGET' (total AI costs > $15/month). Sends alert to #content-pipeline Slack channel."
+    },
+    {
+      "id": "update-analytics-sheet",
+      "name": "Update Google Sheets Analytics Tab",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2140, 380],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "GOOGLE_SHEETS_CRED_ID_PLACEHOLDER",
+          "name": "Google Sheets Content Bank"
+        }
+      },
+      "parameters": {
+        "operation": "append",
+        "documentId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "sheetName": "Analytics",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $today.toFormat('yyyy-MM-dd') }}",
+            "Topic": "={{ $('Get Published Content from Supabase').item.json.topic_title }}",
+            "Brand": "={{ $('Get Published Content from Supabase').item.json.brand }}",
+            "Platform": "={{ $json.platform }}",
+            "Views": "={{ $json.views }}",
+            "Likes": "={{ $json.likes }}",
+            "Comments": "={{ $json.comments }}",
+            "Shares": "={{ $json.shares }}",
+            "Reach": "={{ $json.reach }}"
+          }
+        }
+      },
+      "notes": "Appends new analytics rows to the 'Analytics' tab in the Content Bank Google Sheet. Run daily — sheet grows as a historical record. Columns: Date | Topic | Brand | Platform | Views | Likes | Comments | Shares | Reach. Note: deduplicate manually if running more than once per day."
+    }
+  ],
+  "connections": {
+    "Nightly Cron: 2:00 AM Daily": {
+      "main": [
+        [
+          {
+            "node": "Get Published Content from Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Published Content from Supabase": {
+      "main": [
+        [
+          {
+            "node": "Split by Platform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split by Platform": {
+      "main": [
+        [
+          {
+            "node": "Branch: YouTube — Has video ID?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Branch: Instagram — Has post ID?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Branch: Threads — Has post ID?",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Branch: Twitter — Has tweet ID?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Branch: YouTube — Has video ID?": {
+      "main": [
+        [
+          {
+            "node": "YouTube: GET Video Statistics",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "YouTube: GET Video Statistics": {
+      "main": [
+        [
+          {
+            "node": "YouTube: Upsert platform_analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YouTube: Upsert platform_analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platform Branches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Branch: Instagram — Has post ID?": {
+      "main": [
+        [
+          {
+            "node": "Instagram: GET Post Insights",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Instagram: GET Post Insights": {
+      "main": [
+        [
+          {
+            "node": "Instagram: Upsert platform_analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instagram: Upsert platform_analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platform Branches",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Branch: Threads — Has post ID?": {
+      "main": [
+        [
+          {
+            "node": "Threads: GET Post Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Threads: GET Post Metrics": {
+      "main": [
+        [
+          {
+            "node": "Threads: Upsert platform_analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Threads: Upsert platform_analytics": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platform Branches",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Branch: Twitter — Has tweet ID?": {
+      "main": [
+        [
+          {
+            "node": "Twitter: Log Free-Tier Read Access Gap",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Twitter: Log Free-Tier Read Access Gap": {
+      "main": [
+        [
+          {
+            "node": "Merge All Platform Branches",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge All Platform Branches": {
+      "main": [
+        [
+          {
+            "node": "Check Monthly AI Cost Budget",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Monthly AI Cost Budget": {
+      "main": [
+        [
+          {
+            "node": "Is Budget OVER BUDGET?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Budget OVER BUDGET?": {
+      "main": [
+        [
+          {
+            "node": "Slack: OVER BUDGET Alert to #content-pipeline",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Google Sheets Analytics Tab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack: OVER BUDGET Alert to #content-pipeline": {
+      "main": [
+        [
+          {
+            "node": "Update Google Sheets Analytics Tab",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "analytics",
+    "nightly",
+    "platform-metrics",
+    "budget-monitoring",
+    "content-bank"
+  ],
+  "staticData": null,
+  "pinData": {}
+}
