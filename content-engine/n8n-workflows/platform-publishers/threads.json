@@ -1,0 +1,505 @@
+{
+  "name": "threads-publisher",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   Same Meta app as instagram-publisher workflow.\n   - META_ACCESS_TOKEN: long-lived Meta Graph API access token\n   - THREADS_USER_ID: your Threads user ID (same as or linked to Instagram user ID)\n   How to get THREADS_USER_ID:\n     Meta Graph API Explorer → GET /{user-id}?fields=id,name\n     Or: same as INSTAGRAM_USER_ID if accounts are linked\n\n3. META DEVELOPER APP SETUP\n   Same app used for Instagram publishing. Additionally:\n   - Add 'Threads API' product in App Dashboard → Add Product → Threads API\n   - Required scopes for Threads: threads_basic, threads_content_publish\n   - Grant these scopes when generating your access token\n\n4. VIDEO NOT SUPPORTED (ORGANIC API)\n   IMPORTANT: Threads organic API does NOT support video publishing as of early 2026.\n   Only Threads Ads (paid) support video. This workflow publishes:\n     - text + thumbnail image (when thumbnail is available)\n     - text only (fallback when no thumbnail is available)\n   When Threads adds organic video support, update media_type to VIDEO and use the\n   same two-step pattern as instagram-publisher. Monitor: @threadsapi.changelog on Threads.\n\n5. TWO-STEP PUBLISH PATTERN (same as Instagram)\n   Step 1: POST /{threads-user-id}/threads → returns container_id\n   Step 2: POST /{threads-user-id}/threads_publish → returns post_id\n\n6. HOW TO ACTIVATE\n   After credential setup: toggle to Active\n\n7. HOW TO TEST\n   - Update any content_bank row status to 'approved' with platform_angles.threads set\n   - If visual_assets.thumbnails is populated: posts as IMAGE type with thumbnail\n   - If no thumbnail: posts as TEXT type\n   - Check 'Update content_bank with Threads post ID' node output for confirmation\n\n8. KNOWN LIMITATION: VIDEO NOT SUPPORTED\n   Threads organic API does not support video publishing as of early 2026.\n   Only Threads Ads (paid promotion) support video upload.\n   This workflow posts text + thumbnail image as the best available alternative.\n   Track Threads API changelog for organic video support updates.\n   Reference: https://developers.facebook.com/docs/threads",
+  "nodes": [
+    {
+      "id": "thr-supabase-trigger",
+      "name": "Trigger: Supabase content_bank approved",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=approved rows only. Triggers when the Slack approval workflow sets status=approved."
+    },
+    {
+      "id": "thr-filter-approved",
+      "name": "Filter: status = approved",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'approved'. Ignores pending_review, draft, rejected, and published states."
+    },
+    {
+      "id": "thr-filter-has-threads",
+      "name": "Filter: has Threads content",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.platform_angles && $json.platform_angles.threads ? 'yes' : 'no' }}",
+              "operation": "equal",
+              "value2": "yes"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when platform_angles.threads is populated. The AI content generation pipeline (Phase 10-03) should populate this field with the Threads post text."
+    },
+    {
+      "id": "thr-set-variables",
+      "name": "Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [820, 120],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "threads_user_id",
+              "value": "={{ $env.THREADS_USER_ID || 'YOUR_THREADS_USER_ID_HERE' }}",
+              "type": "string"
+            },
+            {
+              "name": "meta_access_token",
+              "value": "={{ $env.META_ACCESS_TOKEN || 'YOUR_META_ACCESS_TOKEN_HERE' }}",
+              "type": "string"
+            },
+            {
+              "name": "threads_post_text",
+              "value": "={{ $json.platform_angles.threads }}",
+              "type": "string"
+            },
+            {
+              "name": "thumbnail_url",
+              "value": "={{ ($json.visual_assets && $json.visual_assets.thumbnails && $json.visual_assets.thumbnails.length > 0) ? $json.visual_assets.thumbnails[0] : (($json.visual_assets && $json.visual_assets.thumbnail_grid_url) ? $json.visual_assets.thumbnail_grid_url : '') }}",
+              "type": "string"
+            },
+            {
+              "name": "has_thumbnail",
+              "value": "={{ ($json.visual_assets && $json.visual_assets.thumbnails && $json.visual_assets.thumbnails.length > 0) || ($json.visual_assets && $json.visual_assets.thumbnail_grid_url && $json.visual_assets.thumbnail_grid_url.length > 0) ? 'yes' : 'no' }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "NOTE — VIDEO NOT SUPPORTED: Threads organic API does not support video publishing as of early 2026. Only Threads Ads (paid) support video. This workflow posts text + thumbnail image (or text-only as fallback). When Threads adds organic video support, update media_type to VIDEO and use the same two-step pattern as instagram-publisher. Monitor: @threadsapi.changelog on Threads."
+    },
+    {
+      "id": "thr-check-thumbnail",
+      "name": "Route: Has thumbnail?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1040, 120],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.has_thumbnail }}",
+              "operation": "equal",
+              "value2": "yes"
+            }
+          ]
+        }
+      },
+      "notes": "Routes to IMAGE post (True) or TEXT-only post (False). Checks visual_assets.thumbnails[0] and visual_assets.thumbnail_grid_url as fallback. IMAGE post requires a publicly accessible URL for the thumbnail."
+    },
+    {
+      "id": "thr-create-image-container",
+      "name": "Step 1a: Create Threads IMAGE Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1260, 60],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.threads_user_id }}/threads",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "media_type",
+              "value": "IMAGE"
+            },
+            {
+              "name": "image_url",
+              "value": "={{ $json.thumbnail_url }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.threads_post_text }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Creates a Threads media container with media_type=IMAGE and the thumbnail URL as image_url. Text content is included. Returns {id: container_id} which is used in the publish step. Note: VIDEO media_type is NOT supported organically as of early 2026 — only IMAGE and TEXT are available without Threads Ads."
+    },
+    {
+      "id": "thr-create-text-container",
+      "name": "Step 1b: Create Threads TEXT Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1260, 220],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('Set Variables').item.json.threads_user_id }}/threads",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "media_type",
+              "value": "TEXT"
+            },
+            {
+              "name": "text",
+              "value": "={{ $('Set Variables').item.json.threads_post_text }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('Set Variables').item.json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Fallback: creates a TEXT-only Threads container when no thumbnail is available. Text posts on Threads can be up to 500 characters. The threads_post_text should be trimmed to fit if needed."
+    },
+    {
+      "id": "thr-merge-container-id",
+      "name": "Merge: Capture Container ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1480, 140],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "container_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "threads_user_id",
+              "value": "={{ $('Set Variables').item.json.threads_user_id }}",
+              "type": "string"
+            },
+            {
+              "name": "meta_access_token",
+              "value": "={{ $('Set Variables').item.json.meta_access_token }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Set Variables').item.json.content_bank_id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Captures the container_id from either the IMAGE or TEXT container creation step. Both branches converge here before publishing. Also carries forward credentials needed for the publish step."
+    },
+    {
+      "id": "thr-publish-container",
+      "name": "Step 2: Publish Threads Post",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1700, 140],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.threads_user_id }}/threads_publish",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $json.container_id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Step 2 of 2 in Threads two-step publish. POST to /{threads-user-id}/threads_publish with creation_id=container_id publishes the post. Response contains {id: threads_post_id}. Unlike Instagram Reels, Threads does not require polling — publish is immediate."
+    },
+    {
+      "id": "thr-store-post-id",
+      "name": "Store Threads Post ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1920, 140],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "threads_post_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Merge: Capture Container ID').item.json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "published_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Stores the threads_post_id from the threads_publish response. This ID can be used to retrieve post insights via the Threads Insights API."
+    },
+    {
+      "id": "thr-update-content-bank",
+      "name": "Update content_bank with Threads post ID",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [2140, 140],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "platform_angles",
+              "fieldValue": "={{ JSON.stringify({ ...($('Trigger: Supabase content_bank approved').item.json.platform_angles || {}), threads_post_id: $json.threads_post_id, threads_published_at: $json.published_at }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Updates content_bank.platform_angles JSONB to include threads_post_id and threads_published_at. Merges with existing platform_angles to preserve all platform content and existing fields."
+    },
+    {
+      "id": "thr-no-content-log",
+      "name": "Log: No Threads content (skip)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [600, 360],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "skipped_reason",
+              "value": "No platform_angles.threads content available — AI content generation pipeline (Phase 10-03) must populate this field before Threads publishing can occur.",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Graceful skip when no Threads content is available. The AI generation pipeline should populate platform_angles.threads with the post text before this workflow triggers."
+    }
+  ],
+  "connections": {
+    "Trigger: Supabase content_bank approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: status = approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: has Threads content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Filter: has Threads content": {
+      "main": [
+        [
+          {
+            "node": "Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: No Threads content (skip)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Route: Has thumbnail?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route: Has thumbnail?": {
+      "main": [
+        [
+          {
+            "node": "Step 1a: Create Threads IMAGE Container",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Step 1b: Create Threads TEXT Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 1a: Create Threads IMAGE Container": {
+      "main": [
+        [
+          {
+            "node": "Merge: Capture Container ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 1b: Create Threads TEXT Container": {
+      "main": [
+        [
+          {
+            "node": "Merge: Capture Container ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge: Capture Container ID": {
+      "main": [
+        [
+          {
+            "node": "Step 2: Publish Threads Post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 2: Publish Threads Post": {
+      "main": [
+        [
+          {
+            "node": "Store Threads Post ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Threads Post ID": {
+      "main": [
+        [
+          {
+            "node": "Update content_bank with Threads post ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "content-bank",
+    "threads",
+    "meta-graph-api",
+    "publisher",
+    "threads-user-id"
+  ],
+  "staticData": null,
+  "pinData": {}
+}

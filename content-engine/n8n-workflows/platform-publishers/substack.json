@@ -1,0 +1,371 @@
+{
+  "name": "substack-publisher",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. INSTALL COMMUNITY NODE (REQUIRED)\n   n8n → Settings → Community Nodes → Install → search 'n8n-nodes-substack' → Install\n   Restart n8n after installation if prompted.\n   Source: https://www.npmjs.com/package/n8n-nodes-substack\n\n3. ADD SUBSTACK CREDENTIAL\n   n8n → Credentials → Add → Substack → paste your session cookie value\n   Name it: 'Substack Sameer'\n   How to get the session cookie:\n     a. Log into Substack in your browser\n     b. Open DevTools → Application tab → Storage → Cookies → substack.com\n     c. Find the cookie named 'substack.sid'\n     d. Copy the value and paste it into the n8n credential\n\n4. SESSION COOKIE ROTATION (MONTHLY)\n   IMPORTANT: Substack session cookies expire. Set a monthly reminder to:\n     a. Log into Substack in browser\n     b. Re-export the 'substack.sid' cookie value\n     c. Update the n8n Substack credential\n   The error handler in this workflow sends a Slack alert when the cookie has expired.\n\n5. WHAT THIS WORKFLOW PUBLISHES\n   Substack Notes ONLY (short-form, conversational posts)\n   Long-form newsletter posts require manual publish from the Substack editor.\n   This is intentional for v1 — Notes are better for regular engagement anyway.\n\n6. HOW TO ACTIVATE\n   After community node install and credential setup: toggle to Active\n\n7. HOW TO TEST\n   - Manually update any content_bank row status to 'approved' with platform_angles.substack set\n   - The workflow will publish a Substack Note with the substack intro text + booking CTA\n   - Check the 'Update content_bank with note result' node output for confirmation\n\n8. TROUBLESHOOTING\n   - 'Node type n8n-nodes-substack.substack not found': Community node not installed\n     → n8n Settings → Community Nodes → Install n8n-nodes-substack → restart n8n\n   - 'Unauthorized' or 'Authentication failed': Session cookie expired\n     → Re-export substack.sid from browser DevTools → update n8n credential\n   - Slack alert 'Substack publishing failed': Check n8n execution log for the specific error",
+  "nodes": [
+    {
+      "id": "sub-supabase-trigger",
+      "name": "Trigger: Supabase content_bank approved",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=approved rows only. Triggers when the Slack approval workflow sets status=approved."
+    },
+    {
+      "id": "sub-filter-approved",
+      "name": "Filter: status = approved",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'approved'. Ignores pending_review, draft, rejected, and published states."
+    },
+    {
+      "id": "sub-filter-has-substack",
+      "name": "Filter: has Substack content",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.platform_angles && $json.platform_angles.substack ? 'yes' : 'no' }}",
+              "operation": "equal",
+              "value2": "yes"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when platform_angles.substack is populated. The AI content generation pipeline (Phase 10-03) should populate this field with the opening paragraph / Notes post text."
+    },
+    {
+      "id": "sub-prepare-content",
+      "name": "Prepare Substack Note content",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [820, 120],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "note_body",
+              "value": "={{ $json.platform_angles.substack + '\\n\\nFull breakdown: https://calendar.app.google/psycao3CrXjGnmk48' }}",
+              "type": "string"
+            },
+            {
+              "name": "topic_title",
+              "value": "={{ $json.topic_title }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Builds the Substack Note body: substack intro paragraph + booking CTA link. The platform_angles.substack field should contain a conversational opening paragraph (not a full newsletter — that's what Notes are for)."
+    },
+    {
+      "id": "sub-publish-note",
+      "name": "Publish Substack Note",
+      "type": "n8n-nodes-substack.substack",
+      "typeVersion": 1,
+      "position": [1040, 120],
+      "credentials": {
+        "substackApi": {
+          "id": "SUBSTACK_CRED_ID_PLACEHOLDER",
+          "name": "Substack Sameer"
+        }
+      },
+      "parameters": {
+        "operation": "createNote",
+        "body": "={{ $json.note_body }}"
+      },
+      "onError": "continueErrorOutput",
+      "notes": "Publishes a Substack Note using the n8n-nodes-substack community node. Authentication uses session cookie stored in the 'Substack Sameer' credential. Notes are short-form conversational posts — NOT long-form newsletter posts. Long-form posts require manual publish from the Substack editor."
+    },
+    {
+      "id": "sub-check-community-node",
+      "name": "Fallback: Community Node Not Installed",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1040, 320],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "error_type",
+              "value": "community_node_missing_or_auth_failed",
+              "type": "string"
+            },
+            {
+              "name": "error_message",
+              "value": "Substack publishing failed. Either: (1) n8n-nodes-substack community node is not installed — install from n8n Settings → Community Nodes → search n8n-nodes-substack, OR (2) Substack session cookie has expired — re-export substack.sid from browser DevTools and update the n8n Substack credential.",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Prepare Substack Note content').item.json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "topic_title",
+              "value": "={{ $('Prepare Substack Note content').item.json.topic_title }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Error fallback when the Substack community node is missing or session cookie has expired. Routes to Slack error alert. The onError: continueErrorOutput on the Publish Substack Note node sends errors here instead of failing the workflow."
+    },
+    {
+      "id": "sub-slack-error-alert",
+      "name": "Slack Alert: Substack publishing failed",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2,
+      "position": [1260, 320],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "SLACK_CRED_ID_PLACEHOLDER",
+          "name": "Slack Content Pipeline Bot"
+        }
+      },
+      "parameters": {
+        "resource": "message",
+        "operation": "post",
+        "channel": "C0AGG5L97EG",
+        "text": "=Substack publishing failed for: {{ $json.topic_title }}\\n\\n{{ $json.error_message }}\\n\\nContent Bank ID: {{ $json.content_bank_id }}"
+      },
+      "notes": "Sends a Slack alert to #content-pipeline when Substack publishing fails. Most common cause: session cookie expiry (happens monthly). The alert message includes the topic title and a plain-English fix description. Channel ID C0AGG5L97EG = #content-pipeline."
+    },
+    {
+      "id": "sub-store-result",
+      "name": "Store Substack Note result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1260, 120],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "substack_note_id",
+              "value": "={{ $json.id || $json.note_id || 'published' }}",
+              "type": "string"
+            },
+            {
+              "name": "substack_note_url",
+              "value": "={{ $json.url || $json.canonical_url || '' }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Prepare Substack Note content').item.json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "published_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Captures the Substack Note result. The community node may return different field names depending on version (id, note_id, url, canonical_url). Uses || fallbacks to handle variations. published_at timestamp for audit trail."
+    },
+    {
+      "id": "sub-update-content-bank",
+      "name": "Update content_bank with note result",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1480, 120],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "platform_angles",
+              "fieldValue": "={{ JSON.stringify({ ...($('Trigger: Supabase content_bank approved').item.json.platform_angles || {}), substack_note_id: $json.substack_note_id, substack_note_url: $json.substack_note_url, substack_published_at: $json.published_at }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Updates content_bank.platform_angles JSONB to include substack_note_id, substack_note_url, and substack_published_at. Merges with existing platform_angles to preserve all platform content. The community node response format may vary — null url is acceptable."
+    },
+    {
+      "id": "sub-no-content-log",
+      "name": "Log: No Substack content (skip)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [600, 360],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "skipped_reason",
+              "value": "No platform_angles.substack content available — AI content generation pipeline (Phase 10-03) must populate this field before Substack publishing can occur.",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Graceful skip when no Substack content is available. The AI generation pipeline should populate platform_angles.substack with an opening paragraph before this workflow triggers."
+    }
+  ],
+  "connections": {
+    "Trigger: Supabase content_bank approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: status = approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: has Substack content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Filter: has Substack content": {
+      "main": [
+        [
+          {
+            "node": "Prepare Substack Note content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: No Substack content (skip)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Substack Note content": {
+      "main": [
+        [
+          {
+            "node": "Publish Substack Note",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Publish Substack Note": {
+      "main": [
+        [
+          {
+            "node": "Store Substack Note result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback: Community Node Not Installed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fallback: Community Node Not Installed": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert: Substack publishing failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store Substack Note result": {
+      "main": [
+        [
+          {
+            "node": "Update content_bank with note result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "content-bank",
+    "substack",
+    "notes",
+    "publisher",
+    "n8n-nodes-substack"
+  ],
+  "staticData": null,
+  "pinData": {}
+}
