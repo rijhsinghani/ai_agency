@@ -1,0 +1,449 @@
+{
+  "name": "youtube-publisher",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Google OAuth2 (YouTube Data API v3): n8n Credentials → New → Google OAuth2 API\n     Scope required: https://www.googleapis.com/auth/youtube.upload\n     Name it exactly: 'YouTube Content Publisher'\n     Note: YouTube upload REQUIRES OAuth2 with user consent — service accounts cannot upload to public channels\n   - Supabase API: n8n Credentials → New → Supabase API\n     Enter your Supabase project URL and service role key (NOT anon key)\n     Name it exactly: 'Supabase Content Engine'\n\n3. GCP SETUP (one-time)\n   a. GCP Console → APIs & Services → Enable 'YouTube Data API v3'\n   b. GCP Console → APIs & Services → Credentials → Create OAuth2 Client ID\n      Type: Web application\n      Name: n8n YouTube Publisher\n   c. Authorized redirect URIs → add your n8n OAuth callback URL\n      Format: https://[your-n8n-domain]/rest/oauth2-credential/callback\n   d. Copy Client ID and Client Secret → paste into n8n Google OAuth2 credential\n\n4. QUOTA AWARENESS (CRITICAL)\n   - Default YouTube Data API v3 quota: 10,000 units/day\n   - videos.insert cost: 1,600 units per upload\n   - Maximum uploads per day: 6 (10,000 / 1,600 = 6.25 → floor to 6)\n   - This workflow uploads 2 videos per run (long-form + Short) = 3,200 units/run\n   - Safe daily runs: 3 (3 x 3,200 = 9,600 units, leaves 400 buffer)\n   - If quota increase needed: YouTube API → Quotas → Request Increase (requires audit review)\n\n5. PRIVACY STATUS\n   Both long-form video and Shorts are uploaded as 'private'\n   Review and publish manually in YouTube Studio after AI-generated content review\n   This is intentional — the system creates drafts, you approve and make public\n\n6. HOW TO ACTIVATE\n   After credential setup: Toggle the workflow to Active (top-right switch in n8n)\n   This workflow triggers automatically when content_bank.status changes to 'approved'",
+  "nodes": [
+    {
+      "id": "yt-supabase-trigger",
+      "name": "Supabase Trigger (approved status)",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=approved rows only. Trigger fires on ALL changes — filter is applied next."
+    },
+    {
+      "id": "yt-filter-approved",
+      "name": "Filter: status = approved",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'approved'. Ignores pending_review, draft, rejected, and all other statuses. This prevents accidental early publishing."
+    },
+    {
+      "id": "yt-filter-has-video",
+      "name": "Filter: has processed_video",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets && $json.visual_assets.processed_video ? $json.visual_assets.processed_video : '' }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed if processed_video GCS path is present. If content was approved before video processing completed, this gate prevents a failed upload attempt. The false branch is a no-op (workflow stops)."
+    },
+    {
+      "id": "yt-prepare-longform-metadata",
+      "name": "Code: Prepare Long-form Metadata + Signed URL",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [820, 200],
+      "parameters": {
+        "jsCode": "// Quota cost reminder: 1,600 units per videos.insert call\n// Daily quota: 10,000 units → max 6 uploads/day\n// This run will use approximately 1,600 units for long-form\nconsole.log('YouTube upload initiated. Quota cost: ~1,600 units (of 10,000 daily limit)');\n\nconst item = $input.first().json;\nconst processedVideo = item.visual_assets.processed_video;\nconst youtubeMetadata = item.platform_angles && item.platform_angles.youtube_long\n  ? item.platform_angles.youtube_long\n  : { title: item.topic_title, description: '' };\n\n// Parse GCS path: gs://bucket-name/path/to/file.mp4\nlet gcsBucket = '';\nlet gcsObject = '';\nif (processedVideo.startsWith('gs://')) {\n  const withoutProtocol = processedVideo.replace('gs://', '');\n  const slashIdx = withoutProtocol.indexOf('/');\n  gcsBucket = withoutProtocol.substring(0, slashIdx);\n  gcsObject = withoutProtocol.substring(slashIdx + 1);\n} else {\n  // Already a signed URL or HTTPS path\n  gcsBucket = '';\n  gcsObject = '';\n}\n\n// CTA booking link per brand voice guidelines\nconst bookingCTA = 'Book a free 15-min discovery call: https://calendar.app.google/psycao3CrXjGnmk48';\nconst fullDescription = youtubeMetadata.description\n  ? youtubeMetadata.description + '\\n\\n' + bookingCTA\n  : bookingCTA;\n\nreturn [{\n  json: {\n    ...item,\n    longform: {\n      title: youtubeMetadata.title || item.topic_title,\n      description: fullDescription,\n      categoryId: '27',\n      privacyStatus: 'private',\n      gcs_path: processedVideo,\n      gcs_bucket: gcsBucket,\n      gcs_object: gcsObject\n    },\n    quota_estimate: '~1,600 units for long-form upload (of 10,000 daily limit)'\n  }\n}];"
+      },
+      "notes": "Prepares YouTube video metadata for the long-form upload. Sets privacyStatus=private so founder reviews before making public. Category 27 = Education (appropriate for automation/business content). Parses GCS path into bucket and object components for signed URL generation."
+    },
+    {
+      "id": "yt-generate-signed-url-longform",
+      "name": "HTTP Request: Generate GCS Signed URL (Long-form)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1040, 200],
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "YOUTUBE_OAUTH_CRED_ID_PLACEHOLDER",
+          "name": "YouTube Content Publisher"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "=https://storage.googleapis.com/storage/v1/b/{{ $json.longform.gcs_bucket }}/o/{{ encodeURIComponent($json.longform.gcs_object) }}?fields=mediaLink",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "notes": "Fetches the mediaLink from GCS for the processed video. The mediaLink is a pre-authenticated download URL. Alternative: generate a signed URL via the GCS signBlob API if service account credentials are available. YouTube requires the video to be at a publicly accessible URL during upload initiation."
+    },
+    {
+      "id": "yt-upload-longform",
+      "name": "HTTP Request: YouTube Upload Long-form (Resumable)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1260, 200],
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "YOUTUBE_OAUTH_CRED_ID_PLACEHOLDER",
+          "name": "YouTube Content Publisher"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Upload-Content-Type",
+              "value": "video/mp4"
+            },
+            {
+              "name": "X-Upload-Content-Length",
+              "value": "0"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "snippet": {
+            "title": "={{ $('Code: Prepare Long-form Metadata + Signed URL').item.json.longform.title }}",
+            "description": "={{ $('Code: Prepare Long-form Metadata + Signed URL').item.json.longform.description }}",
+            "categoryId": "27",
+            "defaultLanguage": "en",
+            "defaultAudioLanguage": "en"
+          },
+          "status": {
+            "privacyStatus": "private",
+            "selfDeclaredMadeForKids": false
+          }
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Initiates a resumable upload session with YouTube Data API v3. QUOTA COST: 1,600 units per call. This returns a Location header with the upload URL — the actual video bytes are then PUT to that URL. For large files (>5MB, typical for video), resumable upload is required by YouTube API guidelines. privacyStatus=private ensures founder reviews before publishing."
+    },
+    {
+      "id": "yt-store-longform-video-id",
+      "name": "Supabase: Store Long-form Video ID",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1480, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Supabase Trigger (approved status)').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "visual_assets",
+              "fieldValue": "={{ JSON.stringify({ ...$('Supabase Trigger (approved status)').item.json.visual_assets, youtube_upload_initiated: true, youtube_upload_timestamp: new Date().toISOString() }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Stores the YouTube upload initiation timestamp in content_bank.visual_assets. After the resumable upload URL is returned, the actual video ID is only available after YouTube processes the upload — which is asynchronous. The youtube_upload_initiated flag prevents duplicate uploads on re-trigger."
+    },
+    {
+      "id": "yt-filter-has-clips",
+      "name": "Filter: has clips for Shorts",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1700, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $('Supabase Trigger (approved status)').item.json.visual_assets && $('Supabase Trigger (approved status)').item.json.visual_assets.clips && $('Supabase Trigger (approved status)').item.json.visual_assets.clips.length > 0 ? 'yes' : '' }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed with Shorts upload if clips array is non-empty. Shorts require a 9:16 clip under 60 seconds. If no clips are available (video pipeline not yet run), skip Shorts upload gracefully."
+    },
+    {
+      "id": "yt-select-best-clip",
+      "name": "Code: Select Best Clip by strength_score",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 100],
+      "parameters": {
+        "jsCode": "// Quota cost reminder: 1,600 units per videos.insert call\n// Total for this run (long-form + Short): ~3,200 units (of 10,000 daily limit)\nconsole.log('YouTube Shorts upload initiated. Total quota this run: ~3,200 units (of 10,000 daily limit)');\n\nconst item = $('Supabase Trigger (approved status)').item.json;\nconst clips = item.visual_assets.clips || [];\n\n// Sort clips by strength_score descending, pick the best one\nconst sortedClips = [...clips].sort((a, b) => {\n  const scoreA = a.strength_score || 0;\n  const scoreB = b.strength_score || 0;\n  return scoreB - scoreA;\n});\n\nconst bestClip = sortedClips[0];\n\nif (!bestClip || !bestClip.path) {\n  throw new Error('No valid clip found with a GCS path — cannot upload Short');\n}\n\n// Parse GCS path for the clip\nlet gcsBucket = '';\nlet gcsObject = '';\nconst clipPath = bestClip.path;\nif (clipPath.startsWith('gs://')) {\n  const withoutProtocol = clipPath.replace('gs://', '');\n  const slashIdx = withoutProtocol.indexOf('/');\n  gcsBucket = withoutProtocol.substring(0, slashIdx);\n  gcsObject = withoutProtocol.substring(slashIdx + 1);\n}\n\n// CTA booking link per brand voice guidelines\nconst bookingCTA = 'Book a free 15-min discovery call: https://calendar.app.google/psycao3CrXjGnmk48';\n\n// Build Shorts description — #Shorts tag is required for YouTube to auto-classify\nconst shortsBaseDescription = item.platform_angles && item.platform_angles.youtube_short\n  ? item.platform_angles.youtube_short\n  : item.topic_title;\nconst shortsDescription = shortsBaseDescription + '\\n\\n#Shorts\\n\\n' + bookingCTA;\n\n// Shorts title: must be under 100 chars total\nconst rawTitle = item.topic_title + ' #Shorts';\nconst shortsTitle = rawTitle.length <= 100 ? rawTitle : rawTitle.substring(0, 97) + '...';\n\nreturn [{\n  json: {\n    ...item,\n    short: {\n      title: shortsTitle,\n      description: shortsDescription,\n      categoryId: '27',\n      privacyStatus: 'private',\n      gcs_path: clipPath,\n      gcs_bucket: gcsBucket,\n      gcs_object: gcsObject,\n      strength_score: bestClip.strength_score || 0\n    }\n  }\n}];"
+      },
+      "notes": "Selects the clip with the highest strength_score from visual_assets.clips array. The strength_score is set by the video clipper pipeline (10-02). Builds the Shorts metadata: title under 100 chars with #Shorts suffix, description includes #Shorts tag which is required for YouTube auto-classification as a Short (along with 9:16 aspect ratio + under 60s duration)."
+    },
+    {
+      "id": "yt-upload-short",
+      "name": "HTTP Request: YouTube Upload Short (Resumable)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2140, 100],
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "YOUTUBE_OAUTH_CRED_ID_PLACEHOLDER",
+          "name": "YouTube Content Publisher"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.googleapis.com/upload/youtube/v3/videos?uploadType=resumable&part=snippet,status",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Upload-Content-Type",
+              "value": "video/mp4"
+            },
+            {
+              "name": "X-Upload-Content-Length",
+              "value": "0"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "snippet": {
+            "title": "={{ $json.short.title }}",
+            "description": "={{ $json.short.description }}",
+            "categoryId": "27",
+            "defaultLanguage": "en",
+            "defaultAudioLanguage": "en"
+          },
+          "status": {
+            "privacyStatus": "private",
+            "selfDeclaredMadeForKids": false
+          }
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true,
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Initiates resumable upload session for the YouTube Short. Uses the SAME videos.insert endpoint as long-form — YouTube auto-classifies as Short based on: (1) 9:16 aspect ratio, (2) under 60 seconds duration, (3) #Shorts in description. QUOTA COST: 1,600 units. privacyStatus=private for founder review before publishing."
+    },
+    {
+      "id": "yt-store-short-video-id",
+      "name": "Supabase: Store Short Upload Initiated",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [2360, 100],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Supabase Trigger (approved status)').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "visual_assets",
+              "fieldValue": "={{ JSON.stringify({ ...$('Supabase Trigger (approved status)').item.json.visual_assets, youtube_upload_initiated: true, youtube_short_upload_initiated: true, youtube_short_upload_timestamp: new Date().toISOString() }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Stores Short upload initiation timestamp in content_bank.visual_assets. The youtube_short_upload_initiated flag prevents duplicate Short uploads. Both flags together indicate this content item has had its full YouTube publishing initiated."
+    }
+  ],
+  "connections": {
+    "Supabase Trigger (approved status)": {
+      "main": [
+        [
+          {
+            "node": "Filter: status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: status = approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: has processed_video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Filter: has processed_video": {
+      "main": [
+        [
+          {
+            "node": "Code: Prepare Long-form Metadata + Signed URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Code: Prepare Long-form Metadata + Signed URL": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request: Generate GCS Signed URL (Long-form)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request: Generate GCS Signed URL (Long-form)": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request: YouTube Upload Long-form (Resumable)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request: YouTube Upload Long-form (Resumable)": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Store Long-form Video ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase: Store Long-form Video ID": {
+      "main": [
+        [
+          {
+            "node": "Filter: has clips for Shorts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: has clips for Shorts": {
+      "main": [
+        [
+          {
+            "node": "Code: Select Best Clip by strength_score",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Code: Select Best Clip by strength_score": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request: YouTube Upload Short (Resumable)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request: YouTube Upload Short (Resumable)": {
+      "main": [
+        [
+          {
+            "node": "Supabase: Store Short Upload Initiated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "content-bank",
+    "youtube",
+    "platform-publisher",
+    "shorts",
+    "approved"
+  ],
+  "staticData": null,
+  "pinData": {}
+}
