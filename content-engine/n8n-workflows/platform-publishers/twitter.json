@@ -1,0 +1,411 @@
+{
+  "name": "twitter-publisher",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Twitter OAuth 1.0a: n8n Credentials → New → Twitter OAuth1 API\n     Name it exactly: 'Twitter Content Publisher'\n     Required fields:\n       Consumer Key (API Key): from developer.twitter.com → your app → Keys and Tokens\n       Consumer Secret (API Key Secret): from same location\n       Access Token: from developer.twitter.com → Keys and Tokens → Access Token (your posting account)\n       Access Token Secret: from same location\n\n3. TWITTER DEVELOPER APP SETUP (one-time)\n   a. Go to developer.twitter.com → Projects & Apps → Add App → Free tier\n   b. App settings → User authentication settings → App permissions → Read and write\n      (Write permission is REQUIRED for POST /2/tweets — read-only apps cannot post)\n   c. Keys and Tokens → Generate Access Token and Secret\n      These tokens are scoped to YOUR account (the account that will post the threads)\n   d. Note the API Key and API Key Secret (Consumer Key/Secret)\n\n4. RATE LIMIT AWARENESS (CRITICAL)\n   - Free tier hard limit: 500 posts/month\n   - A 5-tweet thread = 5 posts against the monthly limit\n   - A 10-tweet thread = 10 posts against the monthly limit\n   - At 1 video/week with 5-tweet threads: 20 posts/month from threads\n   - Remaining: ~480 posts/month for standalone tweets, replies, other content\n   - Monitor usage at: developer.twitter.com → your app → Rate Limits dashboard\n   - IMPORTANT: There is no automated usage tracking in this workflow — monitor manually\n\n5. THREAD CHAINING PATTERN\n   First tweet posts standalone. Each subsequent tweet replies to the previous one\n   using the in_reply_to_tweet_id field. This creates a proper Twitter thread where\n   all replies appear nested under the first tweet in readers' timelines.\n\n6. HOW TO ACTIVATE\n   After credential setup: Toggle the workflow to Active (top-right switch in n8n)\n   This workflow triggers automatically when content_bank.status changes to 'approved'",
+  "nodes": [
+    {
+      "id": "tw-supabase-trigger",
+      "name": "Supabase Trigger (approved status)",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 300],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=approved rows only. Same trigger pattern as youtube-publisher — both run independently when content is approved."
+    },
+    {
+      "id": "tw-filter-approved",
+      "name": "Filter: status = approved",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'approved'. This prevents accidental early publishing if status changes to other values. Twitter thread only fires on the approved transition."
+    },
+    {
+      "id": "tw-filter-has-twitter",
+      "name": "Filter: has twitter array",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 300],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.platform_angles && $json.platform_angles.twitter && Array.isArray($json.platform_angles.twitter) && $json.platform_angles.twitter.length > 0 ? 'yes' : '' }}",
+              "operation": "isNotEmpty"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed if platform_angles.twitter is a non-empty array. If AI content generation hasn't run yet or produced no tweets, skip gracefully rather than failing."
+    },
+    {
+      "id": "tw-validate-format-tweets",
+      "name": "Code: Validate and Format Tweet Array",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [820, 300],
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst rawTweets = item.platform_angles.twitter || [];\n\n// Validate and truncate tweets exceeding 280 characters\nconst tweets = rawTweets.map((tweet, index) => {\n  const text = String(tweet).trim();\n  if (text.length > 280) {\n    console.warn(`Tweet ${index + 1} exceeds 280 chars (${text.length}) — truncating to 277 + '...'`);\n    return text.substring(0, 277) + '...';\n  }\n  return text;\n}).filter(t => t.length > 0);\n\nif (tweets.length === 0) {\n  throw new Error('No valid tweets after validation — all tweets were empty or invalid');\n}\n\n// Rate limit awareness log\n// Free tier: 500 posts/month. Each tweet in a thread = 1 post.\nconsole.log(`Twitter thread posting. Posts used: ${tweets.length} of 500 monthly allowance`);\nconsole.log(`Monitor usage at: developer.twitter.com → your app → Rate Limits dashboard`);\n\nreturn [{\n  json: {\n    content_bank_id: item.id,\n    topic_title: item.topic_title,\n    tweets: tweets,\n    tweet_count: tweets.length,\n    first_tweet: tweets[0],\n    remaining_tweets: tweets.slice(1),\n    has_remaining: tweets.length > 1,\n    rate_limit_note: `Posts used this run: ${tweets.length} of 500 monthly allowance`\n  }\n}];"
+      },
+      "notes": "Validates the tweet array: trims whitespace, truncates tweets over 280 chars to 277 + '...', filters empty strings. Logs rate limit context. Splits into first_tweet (standalone) and remaining_tweets (will be chained as replies). The 500 posts/month limit is a Free tier hard cap — no automated tracking in v1."
+    },
+    {
+      "id": "tw-post-first-tweet",
+      "name": "HTTP Request: Post First Tweet",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1040, 300],
+      "credentials": {
+        "twitterOAuth1Api": {
+          "id": "TWITTER_OAUTH_CRED_ID_PLACEHOLDER",
+          "name": "Twitter Content Publisher"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.x.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth1Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "text": "={{ $json.first_tweet }}"
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "notes": "Posts the first tweet as a standalone tweet (no reply_to). This is the thread opener. The response data.id is the tweet ID that subsequent tweets will reply to via in_reply_to_tweet_id. Rate limit: counts as 1 post against the 500/month Free tier allowance."
+    },
+    {
+      "id": "tw-store-first-tweet-id",
+      "name": "Code: Store First Tweet ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1260, 300],
+      "parameters": {
+        "jsCode": "const firstTweetResponse = $input.first().json;\nconst validationData = $('Code: Validate and Format Tweet Array').item.json;\n\n// Extract the tweet ID from the response\n// Twitter API v2 returns: { data: { id: '...', text: '...' } }\nconst firstTweetId = firstTweetResponse.data && firstTweetResponse.data.id\n  ? firstTweetResponse.data.id\n  : null;\n\nif (!firstTweetId) {\n  throw new Error('Failed to get tweet ID from first tweet response — cannot chain thread replies');\n}\n\n// Construct the thread URL from the tweet ID\n// Twitter thread URL format: https://x.com/username/status/tweetId\n// We use a placeholder since we don't store the username in content_bank\nconst threadUrl = `https://x.com/i/web/status/${firstTweetId}`;\n\nconsole.log(`First tweet posted. ID: ${firstTweetId}`);\nconsole.log(`Thread URL: ${threadUrl}`);\n\nreturn [{\n  json: {\n    content_bank_id: validationData.content_bank_id,\n    topic_title: validationData.topic_title,\n    first_tweet_id: firstTweetId,\n    thread_url: threadUrl,\n    remaining_tweets: validationData.remaining_tweets,\n    tweet_count: validationData.tweet_count,\n    has_remaining: validationData.has_remaining,\n    rate_limit_note: validationData.rate_limit_note\n  }\n}];"
+      },
+      "notes": "Extracts the first tweet's ID from the Twitter API response and constructs the thread URL. The first_tweet_id is passed to the loop that chains subsequent tweets as replies using in_reply_to_tweet_id."
+    },
+    {
+      "id": "tw-check-has-remaining",
+      "name": "Filter: has remaining tweets",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1480, 300],
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.has_remaining }}",
+              "operation": "true"
+            }
+          ]
+        }
+      },
+      "notes": "If the thread only has 1 tweet, skip the loop entirely and go directly to Supabase storage. Otherwise, proceed to chain the remaining tweets as replies."
+    },
+    {
+      "id": "tw-split-remaining-tweets",
+      "name": "SplitInBatches: Remaining Tweets (1 at a time)",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [1700, 200],
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "notes": "Processes remaining tweets one at a time. Each tweet must be posted sequentially with the previous tweet's ID as the in_reply_to_tweet_id to form a proper thread chain. Batch size of 1 ensures strict sequential ordering."
+    },
+    {
+      "id": "tw-extract-current-tweet",
+      "name": "Code: Extract Current Tweet for Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1920, 200],
+      "parameters": {
+        "jsCode": "// This node runs once per remaining tweet in the thread\n// SplitInBatches feeds one item per batch — the item is the full data object\n// We track the loop index to pick the correct tweet from remaining_tweets\n\nconst data = $input.first().json;\nconst batchIndex = $runIndex || 0;\n\n// remaining_tweets is the array of tweets after the first one\nconst remainingTweets = data.remaining_tweets || [];\nconst currentTweet = remainingTweets[batchIndex];\n\nif (!currentTweet) {\n  throw new Error(`No tweet at batch index ${batchIndex} — remaining_tweets has ${remainingTweets.length} items`);\n}\n\nconsole.log(`Posting reply tweet ${batchIndex + 2} of ${data.tweet_count}: in_reply_to_tweet_id=${data.first_tweet_id}`);\n\nreturn [{\n  json: {\n    content_bank_id: data.content_bank_id,\n    first_tweet_id: data.first_tweet_id,\n    thread_url: data.thread_url,\n    remaining_tweets: remainingTweets,\n    tweet_count: data.tweet_count,\n    current_tweet_text: currentTweet,\n    reply_to_tweet_id: data.first_tweet_id\n  }\n}];"
+      },
+      "notes": "Extracts the current tweet text and sets the reply_to_tweet_id. In this implementation, all reply tweets chain back to the first tweet (flat thread structure). For a nested thread structure (each tweet replies to the previous), the previous tweet's ID would need to be tracked through loop iterations."
+    },
+    {
+      "id": "tw-delay-between-tweets",
+      "name": "Wait: 1 second between tweets",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [2140, 200],
+      "parameters": {
+        "amount": 1,
+        "unit": "seconds"
+      },
+      "notes": "1-second delay between tweet posts. Twitter API v2 Free tier does not explicitly document per-request rate limits for POST /2/tweets, but a 1-second delay provides safety margin against burst rejection (HTTP 429 Too Many Requests)."
+    },
+    {
+      "id": "tw-post-reply-tweet",
+      "name": "HTTP Request: Post Reply Tweet (in_reply_to_tweet_id)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [2360, 200],
+      "credentials": {
+        "twitterOAuth1Api": {
+          "id": "TWITTER_OAUTH_CRED_ID_PLACEHOLDER",
+          "name": "Twitter Content Publisher"
+        }
+      },
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.x.com/2/tweets",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "twitterOAuth1Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "text": "={{ $json.current_tweet_text }}",
+          "reply": {
+            "in_reply_to_tweet_id": "={{ $json.reply_to_tweet_id }}"
+          }
+        },
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": false
+            }
+          }
+        }
+      },
+      "notes": "Posts each reply tweet using in_reply_to_tweet_id to chain it to the first tweet. This creates the thread structure visible in Twitter timelines. Each call counts as 1 post against the 500/month Free tier allowance. The body includes both text and reply.in_reply_to_tweet_id per Twitter API v2 spec."
+    },
+    {
+      "id": "tw-store-thread-url",
+      "name": "Supabase: Store Thread URL",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [1700, 400],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "visual_assets",
+              "fieldValue": "={{ JSON.stringify({ ...$('Supabase Trigger (approved status)').item.json.visual_assets, twitter_thread_url: $json.thread_url, twitter_posted_at: new Date().toISOString(), twitter_tweet_count: $json.tweet_count }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Stores the Twitter thread URL and post metadata in content_bank.visual_assets. Logs: twitter_thread_url (link to the first tweet), twitter_posted_at (UTC timestamp), twitter_tweet_count (total posts used from 500/month allowance). This provides an audit trail for monthly rate limit tracking."
+    }
+  ],
+  "connections": {
+    "Supabase Trigger (approved status)": {
+      "main": [
+        [
+          {
+            "node": "Filter: status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: status = approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: has twitter array",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Filter: has twitter array": {
+      "main": [
+        [
+          {
+            "node": "Code: Validate and Format Tweet Array",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Code: Validate and Format Tweet Array": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request: Post First Tweet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request: Post First Tweet": {
+      "main": [
+        [
+          {
+            "node": "Code: Store First Tweet ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Store First Tweet ID": {
+      "main": [
+        [
+          {
+            "node": "Filter: has remaining tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: has remaining tweets": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches: Remaining Tweets (1 at a time)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Supabase: Store Thread URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches: Remaining Tweets (1 at a time)": {
+      "main": [
+        [
+          {
+            "node": "Code: Extract Current Tweet for Reply",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Supabase: Store Thread URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code: Extract Current Tweet for Reply": {
+      "main": [
+        [
+          {
+            "node": "Wait: 1 second between tweets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait: 1 second between tweets": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request: Post Reply Tweet (in_reply_to_tweet_id)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request: Post Reply Tweet (in_reply_to_tweet_id)": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches: Remaining Tweets (1 at a time)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "content-bank",
+    "twitter",
+    "platform-publisher",
+    "threads",
+    "approved"
+  ],
+  "staticData": null,
+  "pinData": {}
+}
