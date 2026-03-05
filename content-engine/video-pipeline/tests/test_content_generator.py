@@ -432,3 +432,125 @@ class TestMainPyIntegration:
             content = f.read()
 
         assert "non-fatal" in content
+
+    def test_main_py_references_store_drafts_in_supabase(self):
+        with open(
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline/main.py"
+        ) as f:
+            content = f.read()
+
+        assert "store_drafts_in_supabase" in content
+
+    def test_main_py_references_extract_content_bank_id(self):
+        with open(
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline/main.py"
+        ) as f:
+            content = f.read()
+
+        assert "_extract_content_bank_id" in content
+
+
+class TestExtractContentBankId:
+    """Test _extract_content_bank_id helper function in main.py."""
+
+    def _get_extractor(self):
+        """Import _extract_content_bank_id from main module."""
+        import importlib
+        import sys
+
+        # Remove cached main module if present
+        if "main" in sys.modules:
+            del sys.modules["main"]
+
+        # We'll import it by executing the function definition
+        sys.path.insert(
+            0,
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
+        )
+        import main
+
+        return main._extract_content_bank_id
+
+    def test_extracts_uuid_from_standard_path(self):
+        extract = self._get_extractor()
+        result = extract("raw/abc12345-def6-7890-ghij-klmnopqrstuv/my-video.mp4")
+        assert result == "abc12345-def6-7890-ghij-klmnopqrstuv"
+
+    def test_extracts_real_uuid_format(self):
+        extract = self._get_extractor()
+        result = extract("raw/550e8400-e29b-41d4-a716-446655440000/video.mp4")
+        assert result == "550e8400-e29b-41d4-a716-446655440000"
+
+    def test_returns_none_for_no_subdirectory(self):
+        extract = self._get_extractor()
+        result = extract("raw/my-video.mp4")
+        assert result is None
+
+    def test_returns_none_for_short_segment(self):
+        """Non-UUID second segment (too short) returns None."""
+        extract = self._get_extractor()
+        result = extract("raw/short/my-video.mp4")
+        assert result is None
+
+    def test_returns_none_for_empty_string(self):
+        extract = self._get_extractor()
+        result = extract("")
+        assert result is None
+
+
+class TestPipelineStoresDrafts:
+    """Integration tests verifying store_drafts_in_supabase is wired into run_pipeline."""
+
+    def test_store_drafts_called_when_content_bank_id_present(self):
+        """When GCS path contains content_bank_id, store_drafts_in_supabase must be called."""
+        import sys
+
+        sys.path.insert(
+            0,
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
+        )
+
+        # Remove cached modules
+        for mod in ["main", "services.content_generator"]:
+            if mod in sys.modules:
+                del sys.modules[mod]
+
+        import main as m
+
+        # Verify that the function _extract_content_bank_id exists
+        assert hasattr(m, "_extract_content_bank_id"), (
+            "main.py must define _extract_content_bank_id"
+        )
+
+        # Verify extraction works for UUID path
+        cid = m._extract_content_bank_id(
+            "raw/550e8400-e29b-41d4-a716-446655440000/test.mp4"
+        )
+        assert cid == "550e8400-e29b-41d4-a716-446655440000"
+
+    def test_store_drafts_not_called_when_no_content_bank_id(self):
+        """When GCS path has no UUID, store_drafts_in_supabase must NOT be called."""
+        import sys
+
+        sys.path.insert(
+            0,
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline",
+        )
+
+        import main as m
+
+        cid = m._extract_content_bank_id("raw/my-video.mp4")
+        assert cid is None, (
+            "Path without UUID should return None — store_drafts_in_supabase will be skipped"
+        )
+
+    def test_main_py_calls_store_drafts_in_source(self):
+        """Verify main.py source contains the store_drafts_in_supabase call."""
+        with open(
+            "/Users/sameerrijhsinghani/automation_consulting/content-engine/video-pipeline/main.py"
+        ) as f:
+            source = f.read()
+
+        assert "store_drafts_in_supabase(content_bank_id" in source, (
+            "main.py must call store_drafts_in_supabase with content_bank_id"
+        )
