@@ -356,7 +356,18 @@ Build shared capabilities in content-engine repo, consultancy-specific config in
 
 Estimated monthly cost: $5-15/mo (compute + AI API, no subscriptions)
 
-**Plans**: TBD
+**Plans**: 9 plans (7 complete + 2 gap closure)
+
+Plans:
+- [x] 10-01-PLAN.md — Content bank schema + Google Sheets sync
+- [x] 10-02-PLAN.md — Video post-production pipeline (Cloud Run)
+- [x] 10-03-PLAN.md — AI content generation layer (Gemini + Claude)
+- [x] 10-04-PLAN.md — Slack approval workflow
+- [x] 10-05-PLAN.md — YouTube + Twitter publisher workflows
+- [x] 10-06-PLAN.md — Instagram, Substack, Threads publishers
+- [x] 10-07-PLAN.md — Analytics feedback loop + multi-brand routing
+- [ ] 10-08-PLAN.md — Wire store_drafts_in_supabase + content_bank_id threading + Slack handoff (SC-4, SC-5, SC-6)
+- [ ] 10-09-PLAN.md — youtube-thumbnail skill + trigger fix (SC-10)
 
 **Success Criteria** (what must be TRUE):
 
@@ -424,7 +435,7 @@ Plans:
 | 7. Case Studies + Content Tooling      | 2/2       | Complete       | 2026-03-02  | -          |
 | 8. Content Production + Repurposing    | 5/6 | In Progress|  | -          |
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
-| 10. Content Preparation & Distribution | 7/7 | Complete   | 2026-03-05 | -          |
+| 10. Content Preparation & Distribution | 9/9 | Gap Closure | 2026-03-05 | -          |
 | 11. Automation Guide Series            | 3/3 | Complete    | 2026-03-03 | -          |
 
 ---
