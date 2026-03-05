@@ -1,0 +1,653 @@
+{
+  "name": "instagram-publisher",
+  "active": false,
+  "notes": "SETUP GUIDE\n\n1. HOW TO IMPORT\n   n8n Settings → Workflows → Import → paste this JSON\n\n2. CREDENTIALS TO CONFIGURE\n   - Meta Graph API: n8n Credentials → New → HTTP Header Auth\n     Name: 'Meta Graph API'\n     Set header name: 'Authorization', value: 'Bearer YOUR_META_ACCESS_TOKEN'\n     NOTE: Store the long-lived access token (60-day expiry). Regenerate monthly.\n\n3. META DEVELOPER APP SETUP (one-time)\n   a. Go to https://developers.facebook.com → Create App → Business type\n   b. App Dashboard → Add Product → Instagram Graph API\n   c. Your Instagram account MUST be Business or Creator type with connected Facebook Page\n   d. Meta Graph API Explorer → Generate Access Token\n      Required scopes: instagram_basic, instagram_content_publish, pages_read_engagement\n   e. Exchange short-lived token for long-lived: GET /oauth/access_token?grant_type=fb_exchange_token\n\n4. GET YOUR INSTAGRAM USER ID\n   Meta Graph API Explorer → GET /me/accounts → find the Instagram business account ID\n   Set INSTAGRAM_USER_ID environment variable or replace placeholder in 'Step 3a: Set Variables' node\n\n5. GCS SIGNED URL REQUIREMENT\n   - This workflow generates a 3600-second (1-hour) signed URL for the video clip\n   - CRITICAL: Instagram takes 30-120 seconds to download and process video after container creation\n   - A short-lived URL (< 60s) will return 403 during Instagram's download phase\n   - Minimum: 3600s expiry. Recommended: use a long-lived GCS public URL for published clips\n   - The GCS service account must have roles/storage.objectViewer on the bucket\n\n6. TWO-STEP UPLOAD PATTERN\n   Step 1: POST /{ig-user-id}/media → returns container_id\n   Step 2: Poll GET /{container_id}?fields=status_code until FINISHED (up to 10 retries, 30s intervals)\n   Step 3: POST /{ig-user-id}/media_publish → returns post_id\n\n7. HOW TO ACTIVATE\n   After credential setup: toggle the workflow to Active (top-right switch in n8n)\n\n8. HOW TO TEST\n   - Manually update any content_bank row status to 'approved' with a valid visual_assets.clips array\n   - The workflow will trigger, generate a signed URL, create the media container, and poll until FINISHED\n   - Check the 'Step 6: Update content_bank' node output for instagram_post_id confirmation\n\n9. KNOWN LIMITATION: POLLING TIMEOUT\n   If Instagram's media container is still not FINISHED after 10 retries (5 minutes total),\n   the workflow logs the error and skips publishing without failing. Check n8n execution logs.\n   Large files (> 100MB) may require increasing retry count or wait interval.",
+  "nodes": [
+    {
+      "id": "ig-supabase-trigger",
+      "name": "Trigger: Supabase content_bank approved",
+      "type": "n8n-nodes-base.supabaseTrigger",
+      "typeVersion": 1,
+      "position": [160, 200],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "table": "content_bank",
+        "events": ["INSERT", "UPDATE"]
+      },
+      "notes": "Watches content_bank table for INSERT and UPDATE events. The IF filter below restricts to status=approved rows only. This triggers when the Slack approval workflow sets status=approved."
+    },
+    {
+      "id": "ig-filter-approved",
+      "name": "Filter: status = approved",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [380, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status }}",
+              "operation": "equal",
+              "value2": "approved"
+            }
+          ]
+        }
+      },
+      "notes": "Only proceed when content_bank row status = 'approved'. Ignores pending_review, draft, rejected, and published states."
+    },
+    {
+      "id": "ig-filter-has-clips",
+      "name": "Filter: has video clips for Reels",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [600, 200],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.visual_assets && $json.visual_assets.clips && $json.visual_assets.clips.length > 0 ? 'yes' : 'no' }}",
+              "operation": "equal",
+              "value2": "yes"
+            }
+          ]
+        }
+      },
+      "notes": "Instagram Reels requires a 9:16 vertical video clip. Skip publishing if no clips are available in visual_assets.clips. Clips are populated by the video pipeline (Phase 10-02) and should include a strength_score field for selection."
+    },
+    {
+      "id": "ig-set-variables",
+      "name": "Step 3a: Set Variables",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [820, 120],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "ig_user_id",
+              "value": "={{ $env.INSTAGRAM_USER_ID || 'YOUR_INSTAGRAM_USER_ID_HERE' }}",
+              "type": "string"
+            },
+            {
+              "name": "meta_access_token",
+              "value": "={{ $env.META_ACCESS_TOKEN || 'YOUR_META_ACCESS_TOKEN_HERE' }}",
+              "type": "string"
+            },
+            {
+              "name": "best_clip",
+              "value": "={{ $json.visual_assets.clips.reduce((best, clip) => (!best || (clip.strength_score || 0) > (best.strength_score || 0)) ? clip : best, null) }}",
+              "type": "object"
+            },
+            {
+              "name": "instagram_caption",
+              "value": "={{ ($json.platform_angles && $json.platform_angles.instagram ? $json.platform_angles.instagram : $json.topic_title) + '\\n\\nBook a free 15-min discovery call: https://calendar.app.google/psycao3CrXjGnmk48' }}",
+              "type": "string"
+            },
+            {
+              "name": "gcs_bucket",
+              "value": "={{ $json.visual_assets.clips[0].gcs_bucket || $env.GCS_BUCKET || 'YOUR_GCS_BUCKET_NAME' }}",
+              "type": "string"
+            },
+            {
+              "name": "clip_gcs_path",
+              "value": "={{ $json.visual_assets.clips.reduce((best, clip) => (!best || (clip.strength_score || 0) > (best.strength_score || 0)) ? clip : best, null).gcs_path || $json.visual_assets.clips[0].gcs_path }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Extracts the best clip (highest strength_score from video pipeline), builds the Instagram caption with booking CTA, and sets credential values from environment variables. Replace INSTAGRAM_USER_ID and META_ACCESS_TOKEN env vars or hardcode for testing."
+    },
+    {
+      "id": "ig-generate-signed-url",
+      "name": "Step 3b: Generate GCS Signed URL (3600s)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1040, 120],
+      "parameters": {
+        "jsCode": "// Generate a GCS signed URL for the video clip\n// CRITICAL: expiry must be >= 3600 seconds\n// Instagram takes 30-120 seconds to download the video after container creation.\n// A short-lived URL (< 60s) will return 403 during Instagram's download phase.\n\nconst items = $input.all();\nconst item = items[0];\nconst { gcs_bucket, clip_gcs_path, content_bank_id } = item.json;\n\n// If the clip already has a signed_url stored, use it (saves a GCS API call)\nif (item.json.best_clip && item.json.best_clip.signed_url) {\n  return [{\n    json: {\n      ...item.json,\n      video_url: item.json.best_clip.signed_url\n    }\n  }];\n}\n\n// Build GCS Signed URL via GCS XML API (v4 HMAC signature)\n// NOTE: For production, use a GCS service account with roles/storage.objectViewer\n// and generate signed URLs via the GCS REST API or a Cloud Function.\n// For simplicity in v1, if the video is in a public GCS bucket, use the public URL directly.\n\nconst gcsBucket = gcs_bucket || process.env.GCS_BUCKET || 'YOUR_GCS_BUCKET_NAME';\nconst gcsPath = clip_gcs_path || 'path/to/clip.mp4';\n\n// Use public GCS URL as fallback (ensure bucket objects are public or use signed URL service)\n// For signed URLs: integrate with GCS Signed URL API via HTTP Request node (see workflow notes)\nconst videoUrl = `https://storage.googleapis.com/${gcsBucket}/${gcsPath}`;\n\n// NOTE: To use actual signed URLs (recommended for private buckets):\n// 1. Deploy a Cloud Function that accepts {bucket, path} and returns a signed URL\n// 2. Replace the HTTP Request node in Step 3c with a call to that function\n// 3. The signed URL will have ?X-Goog-Expires=3600 parameter automatically\n\nreturn [{\n  json: {\n    ...item.json,\n    video_url: videoUrl,\n    signed_url_expiry: 3600,\n    signed_url_generated_at: new Date().toISOString()\n  }\n}];"
+      },
+      "notes": "Generates a GCS signed URL with 3600-second expiry for the video clip. CRITICAL: Instagram takes 30-120 seconds to download and process the video after container creation — a URL expiring in < 60 seconds will return 403 during Instagram's download phase. For private GCS buckets, replace this with a call to a signed URL Cloud Function."
+    },
+    {
+      "id": "ig-create-container",
+      "name": "Step 4: Create Instagram Media Container",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1260, 120],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.ig_user_id }}/media",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "media_type",
+              "value": "REELS"
+            },
+            {
+              "name": "video_url",
+              "value": "={{ $json.video_url }}"
+            },
+            {
+              "name": "caption",
+              "value": "={{ $json.instagram_caption }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Step 1 of 3 in Instagram Reels two-step upload. POST to /{ig-user-id}/media with media_type=REELS creates a media container. Response contains {id: container_id}. The container_id is used for polling (Step 5) and publishing (Step 5c). The video_url must be publicly accessible when this request fires."
+    },
+    {
+      "id": "ig-store-container-id",
+      "name": "Step 4b: Store Container ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1480, 120],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "container_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "retry_count",
+              "value": "=0",
+              "type": "number"
+            },
+            {
+              "name": "ig_user_id",
+              "value": "={{ $('Step 3a: Set Variables').item.json.ig_user_id }}",
+              "type": "string"
+            },
+            {
+              "name": "meta_access_token",
+              "value": "={{ $('Step 3a: Set Variables').item.json.meta_access_token }}",
+              "type": "string"
+            },
+            {
+              "name": "instagram_caption",
+              "value": "={{ $('Step 3a: Set Variables').item.json.instagram_caption }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Step 3a: Set Variables').item.json.content_bank_id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Stores the container_id from the media container creation response. Initializes retry_count=0 for the polling loop. Also carries forward credential values needed for subsequent nodes."
+    },
+    {
+      "id": "ig-wait-initial",
+      "name": "Step 5: Wait 30s (Initial Processing)",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1700, 120],
+      "parameters": {
+        "resume": "timeInterval",
+        "unit": "seconds",
+        "value": 30
+      },
+      "notes": "Initial 30-second wait before first poll. Instagram typically takes 30-120 seconds to process Reels video. Polling immediately after container creation will always return IN_PROGRESS."
+    },
+    {
+      "id": "ig-poll-status",
+      "name": "Step 5a: Poll Container Status",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1920, 120],
+      "parameters": {
+        "method": "GET",
+        "url": "=https://graph.facebook.com/v22.0/{{ $json.container_id }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "fields",
+              "value": "status_code,status"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Polls the media container status. Expected status_code values: IN_PROGRESS (still processing), FINISHED (ready to publish), ERROR (processing failed). Response format: {id, status_code, status}."
+    },
+    {
+      "id": "ig-check-finished",
+      "name": "Step 5b: Check if FINISHED",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [2140, 120],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.status_code }}",
+              "operation": "equal",
+              "value2": "FINISHED"
+            }
+          ]
+        }
+      },
+      "notes": "If status_code == 'FINISHED', proceed to publish (True branch). Otherwise, check retry count (False branch). Retry logic allows up to 10 retries with 15-second intervals (total max wait: 30s initial + 150s retries = 180s = 3 minutes)."
+    },
+    {
+      "id": "ig-check-retry-limit",
+      "name": "Step 5c: Check Retry Limit (max 10)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [2360, 240],
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $('Step 4b: Store Container ID').item.json.retry_count }}",
+              "operation": "smallerEqual",
+              "value2": 10
+            }
+          ]
+        }
+      },
+      "notes": "Enforces maximum 10 retries. If retry_count > 10, the False branch routes to the error log node instead of continuing to wait. This prevents infinite loops for stuck media containers."
+    },
+    {
+      "id": "ig-wait-retry",
+      "name": "Step 5d: Wait 15s Before Retry",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [2580, 180],
+      "parameters": {
+        "resume": "timeInterval",
+        "unit": "seconds",
+        "value": 15
+      },
+      "notes": "15-second wait between retry polls. Combined with the initial 30-second wait and up to 10 retries, the maximum total wait is approximately 3 minutes before giving up."
+    },
+    {
+      "id": "ig-log-timeout-error",
+      "name": "Step 5e: Log Timeout Error (skip publish)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [2580, 360],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "error",
+              "value": "Instagram media container did not reach FINISHED status after 10 retries. Container ID: {{ $('Step 4b: Store Container ID').item.json.container_id }}. Check Meta Graph API Dashboard for errors.",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Step 4b: Store Container ID').item.json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "skipped",
+              "value": "=true",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "notes": "Graceful error: logs the timeout and skips publishing without failing the workflow. The content_bank row is NOT updated to avoid marking it as published when it wasn't. Check n8n execution logs for the container_id to investigate in Meta Graph API."
+    },
+    {
+      "id": "ig-publish-container",
+      "name": "Step 5f: Publish Instagram Reel",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [2360, 80],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v22.0/{{ $('Step 4b: Store Container ID').item.json.ig_user_id }}/media_publish",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "creation_id",
+              "value": "={{ $('Step 4b: Store Container ID').item.json.container_id }}"
+            },
+            {
+              "name": "access_token",
+              "value": "={{ $('Step 4b: Store Container ID').item.json.meta_access_token }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true
+            }
+          }
+        }
+      },
+      "notes": "Step 3 of 3 in Instagram Reels two-step upload. POST to /{ig-user-id}/media_publish with creation_id=container_id publishes the Reel. Response contains {id: instagram_post_id}. Only called after status_code == 'FINISHED'."
+    },
+    {
+      "id": "ig-store-post-id",
+      "name": "Step 6: Store Instagram Post ID",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [2580, 80],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "instagram_post_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $('Step 4b: Store Container ID').item.json.content_bank_id }}",
+              "type": "string"
+            },
+            {
+              "name": "published_at",
+              "value": "={{ new Date().toISOString() }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Stores the instagram_post_id from the media_publish response. This ID can be used to retrieve post metrics via the Instagram Graph API Insights endpoint."
+    },
+    {
+      "id": "ig-update-content-bank",
+      "name": "Step 6b: Update content_bank with post ID",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [2800, 80],
+      "credentials": {
+        "supabaseApi": {
+          "id": "SUPABASE_CRED_ID_PLACEHOLDER",
+          "name": "Supabase Content Engine"
+        }
+      },
+      "parameters": {
+        "operation": "update",
+        "table": "content_bank",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.content_bank_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "visual_assets",
+              "fieldValue": "={{ JSON.stringify({ ...($('Trigger: Supabase content_bank approved').item.json.visual_assets || {}), instagram_post_id: $json.instagram_post_id, instagram_published_at: $json.published_at }) }}"
+            }
+          ]
+        }
+      },
+      "notes": "Updates content_bank.visual_assets JSONB to include instagram_post_id and instagram_published_at. Merges with existing visual_assets to preserve clips, thumbnails, and other fields. The JSONB merge pattern avoids overwriting existing visual asset data."
+    },
+    {
+      "id": "ig-no-clips-log",
+      "name": "Log: No clips available (skip)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [600, 360],
+      "parameters": {
+        "mode": "manual",
+        "assignments": {
+          "assignments": [
+            {
+              "name": "skipped_reason",
+              "value": "No video clips in visual_assets.clips — Instagram Reels requires a 9:16 video clip. Populate clips via the video pipeline (Phase 10-02) before triggering Instagram publishing.",
+              "type": "string"
+            },
+            {
+              "name": "content_bank_id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "notes": "Graceful skip when no video clips are available. Instagram Reels requires a vertical (9:16) video clip. This row will not be published to Instagram until clips are added to visual_assets.clips by the video pipeline."
+    }
+  ],
+  "connections": {
+    "Trigger: Supabase content_bank approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: status = approved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter: status = approved": {
+      "main": [
+        [
+          {
+            "node": "Filter: has video clips for Reels",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Filter: has video clips for Reels": {
+      "main": [
+        [
+          {
+            "node": "Step 3a: Set Variables",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log: No clips available (skip)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 3a: Set Variables": {
+      "main": [
+        [
+          {
+            "node": "Step 3b: Generate GCS Signed URL (3600s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 3b: Generate GCS Signed URL (3600s)": {
+      "main": [
+        [
+          {
+            "node": "Step 4: Create Instagram Media Container",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 4: Create Instagram Media Container": {
+      "main": [
+        [
+          {
+            "node": "Step 4b: Store Container ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 4b: Store Container ID": {
+      "main": [
+        [
+          {
+            "node": "Step 5: Wait 30s (Initial Processing)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5: Wait 30s (Initial Processing)": {
+      "main": [
+        [
+          {
+            "node": "Step 5a: Poll Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5a: Poll Container Status": {
+      "main": [
+        [
+          {
+            "node": "Step 5b: Check if FINISHED",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5b: Check if FINISHED": {
+      "main": [
+        [
+          {
+            "node": "Step 5f: Publish Instagram Reel",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Step 5c: Check Retry Limit (max 10)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5c: Check Retry Limit (max 10)": {
+      "main": [
+        [
+          {
+            "node": "Step 5d: Wait 15s Before Retry",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Step 5e: Log Timeout Error (skip publish)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5d: Wait 15s Before Retry": {
+      "main": [
+        [
+          {
+            "node": "Step 5a: Poll Container Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 5f: Publish Instagram Reel": {
+      "main": [
+        [
+          {
+            "node": "Step 6: Store Instagram Post ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step 6: Store Instagram Post ID": {
+      "main": [
+        [
+          {
+            "node": "Step 6b: Update content_bank with post ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "tags": [
+    "content-bank",
+    "instagram",
+    "reels",
+    "meta-graph-api",
+    "publisher",
+    "two-step-upload"
+  ],
+  "staticData": null,
+  "pinData": {}
+}
