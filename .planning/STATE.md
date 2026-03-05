@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 10-08-PLAN.md
-last_updated: "2026-03-05T15:38:54.861Z"
+stopped_at: Phase 12 context gathered
+last_updated: "2026-03-05T18:07:08.019Z"
 progress:
-  total_phases: 11
+  total_phases: 12
   completed_phases: 6
   total_plans: 26
   completed_plans: 25
@@ -94,6 +94,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 ### Roadmap Evolution
 
 - **2026-03-02**: Added Phase 10 (v3.0 Content Automation Pipeline) — Automated Content Preparation & Distribution Pipeline. Seven sub-parts: content bank (Supabase + Google Sheets), video post-production (Cloud Run ffmpeg pipeline), AI content generation (Gemini 3.1 Pro + Claude), Slack approval workflow, multi-platform publishing (Twitter/X, Instagram, YouTube, Substack, Threads via direct APIs), multi-brand support (Sameer Automations + Raj Photo Video), analytics feedback loop. Zero subscriptions, $5-15/mo estimated. Depends on Phase 8 + Phase 9.
+- **2026-03-05**: Added Phase 12 — Social Content Optimization. Rewrite all 10 social drafts using competitive analysis (Hormozi hooks, carousel format for Instagram, keyword-trigger DM CTAs, hashtags, flow diagram exports as social assets).
 
 ### Key Decisions
 
@@ -215,7 +216,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-05T01:52:57.874Z
-Stopped at: Completed 10-08-PLAN.md
+Last session: 2026-03-05T18:07:08.015Z
+Stopped at: Phase 12 context gathered
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
