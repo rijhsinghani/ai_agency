@@ -1,18 +1,22 @@
 # Review: quote-writer — twitter
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, Hormozi format)
 
 ---
 
-1/ You run a small law firm. Every Sunday night: 2 hours writing proposals — same structure, same sections, different client details. You type it out because it has to sound right. Meanwhile the proposals from Thursday sit unread because no one followed up.
+1/ You're spending 20 hours a month writing proposals. That's a full week of billable time — every month — on document assembly that doesn't require a lawyer to do it.
 
-2/ At 1-2 quotes per day, that's up to 20 hours a month on document assembly. That's a week of billable time. Every month.
+2/ Sunday night. Two hours. Same structure. Same sections. Same boilerplate. Different client details. You type it out anyway because it has to sound right. The proposals from Thursday sit unread because no one followed up.
 
-3/ The fix: leave a 10-minute voice memo. Client name, matter type, scope, fee structure. The automation transcribes it, sends it to Claude API, and returns a formatted draft with your firm's sections already in place. You review, make 2 edits, and send.
+3/ 1-2 quotes a day at 2 hours each. 20 hours a month. At your billing rate, that's not an admin cost — it's a revenue leak. Every month. All year.
 
-4/ The follow-up sequence runs automatically: Day 2, Day 5, and Day 10 check-ins go out via email — stopped the moment the prospect replies or signs. Full breakdown: sameerautomations.com/guides/quote-writer.html — Reply if you want the breakdown.
+4/ Leave a 10-minute voice memo: client name, matter type, scope, fee structure. The automation transcribes it, runs it through Claude API with your firm's template, and returns a formatted draft. You review, make 2 edits, send.
+
+5/ The follow-up sequence runs automatically: Day 2, Day 5, Day 10. Stopped the moment the prospect replies or signs. Proposals stop going cold. Conversion goes up without extra effort.
+
+6/ Full breakdown: sameerautomations.com/guides/quote-writer.html — DM me QUOTE for the walkthrough. Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: QUOTE. CTA: https://calendar.app.google/psycao3CrXjGnmk48_

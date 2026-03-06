@@ -1,18 +1,22 @@
 # Review: missed-call-textback — twitter
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, Hormozi format)
 
 ---
 
-1/ Your salon misses 5 calls a week. At $80 a booking, that's $20,800 walking out the door every year. Not from slow business. From a broken process.
+1/ You're paying $20,800 a year for a problem that takes 30 seconds to fix. It's not a slow market. It's a broken process happening every time you're in the chair.
 
-2/ The caller doesn't wait. They dial the next number. A salon owner surveyed in r/femalehairadvice put it plainly: "I called 3 salons. The first one texted me back in a minute. I booked with them. Never heard from the other two."
+2/ Phone rings. You're with a client. You ignore it. That caller dials the next number in Google Maps. You call back 3 hours later. They already booked someone else. This happens 5 times a week.
 
-3/ The fix: a text that goes out 30 seconds after every missed call. "Caught your call — tied up with a client. Can I reach you in an hour?" No app to check. No action from you. ~50% of callers reply and rebook.
+3/ 5 missed calls a week. $80 each. That's $400 a week leaving your business. $20,800 a year. Not from losing clients. From not responding fast enough to keep them.
 
-4/ Setup takes 2-3 hours with Twilio + n8n. After that it runs on its own, including 7 PM on a Saturday. Full breakdown with DIY map: sameerautomations.com/guides/missed-call-textback.html — DM me if this is happening to you.
+4/ A Twilio workflow sends a text 30 seconds after every missed call: "Caught your call — tied up with a client. Can I reach you in an hour?" No app to check. No action from you. Runs at 7 PM on Saturday.
+
+5/ Manual follow-up converts at 5%. Automated, timed response converts at 40%. That's not a small edge. That's the difference between a full book and a half-empty one.
+
+6/ Full breakdown: sameerautomations.com/guides/missed-call-textback.html — DM me MISSED for the walkthrough. Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: MISSED. CTA: https://calendar.app.google/psycao3CrXjGnmk48_

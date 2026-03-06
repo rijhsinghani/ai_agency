@@ -1,18 +1,22 @@
 # Review: no-show-killer — twitter
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, Hormozi format)
 
 ---
 
-1/ 3 no-shows a week. You show up, set up, wait 10 minutes, pack up. At $80 a session, that's $240/week. Every week, all year. By December, that's $12,480 gone and nothing to show for it but a calendar full of blank slots you couldn't fill in time.
+1/ 3 no-shows a week. $80 a session. $240 gone every week. By December, that's $12,480 you showed up for and never got paid. Not from losing clients — from not having a reminder sequence.
 
-2/ A trainer in r/personaltraining tracked this: "My no-show rate went from 22% to 4% after I started texting every client the night before. Zero tolerance policy." They weren't sending manual texts — they set up a reminder sequence.
+2/ You show up. Set up. Wait 10 minutes. They don't come. You pack up. That's not just $80 gone. That's a slot you couldn't sell to someone else because you had no warning.
 
-3/ The fix: a 48-hour text, then a 2-hour text, then a reschedule link they can use without calling you. No-show rate drops from 20% to 5%. That's 3 empty slots becoming 0-1 per week. System costs $100/month. Recovering 2 sessions a week pays for it in the first 7 days.
+3/ 3 no-shows a week at $80 each is $12,480 a year. The system that prevents them costs $100 a month. Recovering 2 sessions a week pays for it in the first 7 days of every month.
 
-4/ Runs on Twilio + n8n. Connects to Mindbody, Acuity, or a Google Calendar. Full breakdown with DIY map: sameerautomations.com/guides/no-show-killer.html — DM me if this is the problem.
+4/ A Twilio workflow sends a text 48 hours before: "Reminder: your session is Thursday at 6 AM. Reply CANCEL to reschedule." Two hours before, a shorter follow-up. One-tap reschedule link included.
+
+5/ No-show rate drops from 20% to 5%. That's 3 empty slots becoming 0-1 per week. The difference is not stricter policies — it's a consistent, automated commitment device.
+
+6/ Full breakdown: sameerautomations.com/guides/no-show-killer.html — DM me NOSHOW for the walkthrough. Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: NOSHOW. CTA: https://calendar.app.google/psycao3CrXjGnmk48_
