@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Phase 12 context gathered
-last_updated: "2026-03-05T18:07:08.019Z"
+stopped_at: Completed 12-01-PLAN.md
+last_updated: "2026-03-06T01:10:20.573Z"
 progress:
   total_phases: 12
   completed_phases: 6
-  total_plans: 26
-  completed_plans: 25
-  percent: 96
+  total_plans: 28
+  completed_plans: 26
+  percent: 93
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[██████████] 96%
+[█████████░] 93%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -84,6 +84,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 10-automated-content-preparation-distribution-pipeline P07 | 4 | 2 tasks | 4 files |
 | Phase 10 P09 | 131 | 2 tasks | 3 files |
 | Phase 10-automated-content-preparation-distribution-pipeline P08 | 4 | 2 tasks | 3 files |
+| Phase 12-social-content-optimization P01 | 3 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -175,6 +176,8 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[10-09] youtube-thumbnail skill reuses scripts** — .claude/skills/youtube/scripts/ shared; no code duplication between standalone thumbnail skill and full youtube pipeline skill
 - **[10-09] grid_output_path uses content_bank_id[:8]** — short prefix gives uniqueness without excessive path length in thumbnail trigger JSON
 - **[10-09] headshot_dir in trigger JSON** — HEADSHOT_DIR env var passed to trigger JSON; skill can override from trigger if environment differs from pipeline host
+- **[12-01] Hormozi 6-tweet thread format adopted** — hook, mistake, math, fix, proof, CTA — replaces 4-tweet informational structure from Phase 11; dollar-math annual loss figures lead every hook
+- **[12-01] Keyword DM CTAs locked** — MISSED, REVIEWS, PIPELINE, QUOTE, NOSHOW — trackable per guide; Instagram hashtag blocks use 8 niche tags per vertical; zero hashtags on Twitter
 
 ### v2.0 Roadmap Structure
 
@@ -216,7 +219,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-05T18:07:08.015Z
-Stopped at: Phase 12 context gathered
+Last session: 2026-03-06T01:10:20.570Z
+Stopped at: Completed 12-01-PLAN.md
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
