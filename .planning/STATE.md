@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Content Marketing Engine
 status: unknown
-stopped_at: Completed 12-01-PLAN.md
-last_updated: "2026-03-06T01:10:20.573Z"
+stopped_at: Completed 12-02-PLAN.md — carousel-generator CLI + 45 PNG assets for all 5 guides
+last_updated: "2026-03-06T01:12:27.699Z"
 progress:
   total_phases: 12
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 28
-  completed_plans: 26
-  percent: 93
+  completed_plans: 27
+  percent: 96
 ---
 
 # Project State: AI Automation Agency
@@ -43,7 +43,7 @@ See: .planning/PROJECT.md (updated 2026-03-01)
 
 **Progress:**
 
-[█████████░] 93%
+[██████████] 96%
 Phase 8: [██████████] Plans 01+02+03 of 3 complete (SOP checklists, repurposing CLI, video clipper)
 Phase 9: [██████████] Plans 01+02 of 2 complete (giveaway doc + social proof replacement)
 Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-generator CLI, 5 PDFs + logo + landing pages, 10 social drafts)
@@ -85,6 +85,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 | Phase 10 P09 | 131 | 2 tasks | 3 files |
 | Phase 10-automated-content-preparation-distribution-pipeline P08 | 4 | 2 tasks | 3 files |
 | Phase 12-social-content-optimization P01 | 3 | 2 tasks | 10 files |
+| Phase 12-social-content-optimization P02 | 6 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -176,6 +177,8 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 - **[10-09] youtube-thumbnail skill reuses scripts** — .claude/skills/youtube/scripts/ shared; no code duplication between standalone thumbnail skill and full youtube pipeline skill
 - **[10-09] grid_output_path uses content_bank_id[:8]** — short prefix gives uniqueness without excessive path length in thumbnail trigger JSON
 - **[10-09] headshot_dir in trigger JSON** — HEADSHOT_DIR env var passed to trigger JSON; skill can override from trigger if environment differs from pipeline host
+- **[12-02] Block Google Fonts CDN via request interception** — prevents navigation timeout on repeated setContent calls when reusing puppeteer page across multiple slides; domcontentloaded + system-ui fallback
+- **[12-02] 7 slides per guide: hook/problem/math/fix/proof/flow/cta** — consistent narrative arc; dollar-math pain anchors from guide data baked into slide content registry
 - **[12-01] Hormozi 6-tweet thread format adopted** — hook, mistake, math, fix, proof, CTA — replaces 4-tweet informational structure from Phase 11; dollar-math annual loss figures lead every hook
 - **[12-01] Keyword DM CTAs locked** — MISSED, REVIEWS, PIPELINE, QUOTE, NOSHOW — trackable per guide; Instagram hashtag blocks use 8 niche tags per vertical; zero hashtags on Twitter
 
@@ -219,7 +222,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 ## Session Continuity
 
-Last session: 2026-03-06T01:10:20.570Z
-Stopped at: Completed 12-01-PLAN.md
+Last session: 2026-03-06T01:12:27.696Z
+Stopped at: Completed 12-02-PLAN.md — carousel-generator CLI + 45 PNG assets for all 5 guides
 Resume: Phase 11 Plans 01+03 complete. 11-02 (PDF rendering + landing pages) is plan 2 of 3 — still needed. guide-generator CLI ready at research/tools/guide-generator/. Run `node index.js --all --preview` to build all 5 PDFs + preview PNGs into website/guides/. All 5 guide markdown files in research/tools/guide-generator/guides/. 10 social post drafts in research/tools/repurposing-script/review/ ready for posting.
 ```
