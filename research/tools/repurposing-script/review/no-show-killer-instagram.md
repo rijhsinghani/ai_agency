@@ -1,22 +1,27 @@
 # Review: no-show-killer — instagram
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, keyword CTAs, hashtags)
 
 ---
 
-3 no-shows a week. You show up, set up, wait 10 minutes, pack up. At $80 a session, that's $240 a week — every week, all year. By December, that's $12,480 gone and nothing to show for it but a calendar full of blank slots you couldn't fill in time.
+3 no-shows a week is $12,480 a year you showed up for and never got paid.
 
-The fix isn't calling every client the day before. You don't have time for that. It's a 48-hour text, then a 2-hour text, then a reschedule link they can use without calling you.
+At $80 a session, 3 no-shows a week is $240 gone every week — every week, all year. By December, that's $12,480 in slots you held, prepared for, and lost. Not from bad clients. From not having a system that makes cancellations easy and no-shows expensive.
 
-Here's what the sequence looks like. A member books a session. 48 hours before, they get a text: "Reminder: your session with [trainer] is Thursday at 6 AM. Reply CANCEL to reschedule." 2 hours before, a shorter follow-up. If they need to cancel, one tap opens the booking page and they pick a new slot — no phone call, no back-and-forth.
+You show up. Set up. Wait 10 minutes. They don't come. You can't fill the slot because you had no warning. You lose the session fee and the time. This happens 3 times a week, 52 weeks a year.
 
-No-show rate drops from 20% to 5%. That's 3 empty slots becoming 0-1 per week. The system costs $100/month. Recovering 2 sessions a week pays for itself in the first 7 days of every month.
+A Twilio workflow sends a text 48 hours before every session: "Reminder: your session is Thursday at 6 AM. Reply CANCEL to reschedule." A shorter follow-up goes out 2 hours before. If they need to cancel, a one-tap link opens the booking page so they pick a new slot — no phone call, no back-and-forth.
 
-A trainer in r/personaltraining tracked this exact change and posted: "My no-show rate went from 22% to 4% after I started texting every client the night before." That's what a consistent reminder sequence does — it's not a reminder, it's a commitment device.
+No-show rate drops from 20% to 5%. That's 3 empty slots becoming 0-1 per week. The system costs $100 a month. Recovering 2 sessions a week pays for it in the first 7 days.
 
-DM me if empty slots are eating your revenue.
+Full breakdown: sameerautomations.com/guides/no-show-killer.html
+
+DM me NOSHOW for the full walkthrough.
+Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
+
+#noshow #personaltrainer #smallbusinessautomation #appointmentreminders #automationtips #gymowner #fitnessbusiness #clientmanagement
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: NOSHOW. CTA: https://calendar.app.google/psycao3CrXjGnmk48_

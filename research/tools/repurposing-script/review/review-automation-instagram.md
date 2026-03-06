@@ -1,22 +1,27 @@
 # Review: review-automation — instagram
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, keyword CTAs, hashtags)
 
 ---
 
-Your dental practice has 8 Google reviews and a 3.9 rating. The practice two miles away has 94 reviews and a 4.7 rating. When a new patient searches "dentist near me" on a Monday morning, they click the second result. Not yours.
+Your dental practice has 8 Google reviews. The one two miles away has 94. New patients click the second result. Not yours.
 
-That gap costs you 25-30% of the clicks you should be getting from Google Maps — and you're not in the room when it happens.
+That gap costs you 25-30% of the clicks you should be getting from Google Maps. For a practice getting 30 new patient inquiries a month from search, that's 8-9 calls you're not receiving. At $400 average value, that's $1,600-$2,000 a month in patients who never even dialed your number.
 
-The fix isn't asking patients to leave reviews at the front desk. That gets a 5% response rate. It's a text that lands 2 hours after their appointment, when they're still feeling good about the visit: "Thanks for coming in today — if you had a great experience, a quick Google review would mean a lot to us." One tap opens your review page directly.
+You're not losing them at the front desk. You're losing them before they ever call. The practice with more reviews ranks higher, gets clicked more, and fills its schedule first. You're not in the room when that decision gets made.
 
-That timing change alone takes your response rate from 5% to 40%. For a practice with 10 appointments a day, that's 4 new reviews per day instead of 1 per week. In 3 months, you've closed the gap. In 6 months, you're the practice with 90 reviews and the 4.7 rating.
+The fix isn't asking patients to leave reviews at checkout. That gets a 5% response rate. It's a text that lands 2 hours after their appointment, when they're still thinking about the visit: one tap opens your Google review page directly. Response rate goes to 40%. Ten appointments a day becomes 4 new reviews per day instead of 1 per week.
 
-For a practice doing 30 new patient inquiries per month from search, that's 8-9 more calls at a 25% lift in visibility. At $400 average value and a 50% booking rate, that's $1,600-$2,000 in recovered monthly revenue — from patients who never knew you existed before.
+At that rate, you close the gap in 3 months. In 6, you're the practice with 90 reviews and the 4.7 rating that new patients click first.
 
-DM me if you want to see how the system is built.
+Full breakdown: sameerautomations.com/guides/review-automation.html
+
+DM me REVIEWS for the full walkthrough.
+Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
+
+#googlereviews #dentalmarketing #smallbusinessautomation #reputationmanagement #automationtips #dentaloffice #localseo #businessgrowth
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: REVIEWS. CTA: https://calendar.app.google/psycao3CrXjGnmk48_

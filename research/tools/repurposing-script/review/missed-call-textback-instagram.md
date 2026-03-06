@@ -1,22 +1,27 @@
 # Review: missed-call-textback — instagram
 
 **Status:** DRAFT — not posted
-**Generated:** 2026-03-03T19:15:00.000Z
+**Rewritten:** 2026-03-05 (Phase 12 — competitive hooks, keyword CTAs, hashtags)
 
 ---
 
-Your salon misses 5 calls a week. You're with a client, scissors in hand, and the phone rings. Each one of those calls is worth $80 in booked appointments. Most of them never call back.
+You're paying $20,800 a year for a problem that takes 30 seconds to fix.
 
-Do the math: 5 calls a week, $80 each, 52 weeks. That's $20,800 walking out the door every year. Not from a slow market. From a broken process that takes 30 seconds to fix.
+5 missed calls a week. $80 each. That's $400 walking out the door every single week. Not from slow business. From a broken process that happens every time you're busy with a client.
 
-Here's what the fix looks like. A missed call hits your business line. Within 30 seconds, the caller gets a text: "Hey, caught your call — tied up with a client right now. Can I reach you in an hour?" Most people reply. The lead stays warm until you're free.
+Phone rings. You're in the chair, scissors in hand. You let it go. That caller opens Google Maps and dials the next salon. You call back 3 hours later. They already have an appointment somewhere else. This happens 5 times a week, every week, all year.
 
-No app to check. No action from you. It runs every time, including 7 PM on a Saturday. The system uses Twilio for the SMS and an n8n workflow that listens for missed call signals from your phone system. Setup takes 2-3 hours. After that it runs itself.
+A Twilio workflow sends a text within 30 seconds of every missed call: "Caught your call — tied up with a client right now. Can I reach you in an hour?" No app to check. No action from you. It runs on its own, including 7 PM on a Saturday.
 
-The businesses that text back within a minute book the client. The ones that call back 3 hours later don't.
+Manual follow-up converts at 5%. Automated, timed response converts at 40%. The businesses that text back within a minute book the client. The ones that call back 3 hours later don't.
 
-DM me if this is happening in your business.
+Full breakdown: sameerautomations.com/guides/missed-call-textback.html
+
+DM me MISSED for the full walkthrough.
+Or grab 15 min: https://calendar.app.google/psycao3CrXjGnmk48
+
+#missedcalls #salonowner #smallbusinessautomation #beautysalon #automationtips #salonmarketing #businessautomation #clientretention
 
 ---
 
-_Review before posting. Edit as needed. CTA must include: https://calendar.app.google/psycao3CrXjGnmk48_
+_Review before posting. Keyword: MISSED. CTA: https://calendar.app.google/psycao3CrXjGnmk48_
