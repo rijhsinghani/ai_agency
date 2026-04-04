@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero Spline Preview — Sameer Automations</title>
+
+    <!-- Spline 3D viewer -->
+    <script
+      type="module"
+      src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"
+    ></script>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: "#0E0E0E",
+              surface: "#161616",
+              "surface-raised": "#1E1E1E",
+              cream: "#EDE9E3",
+              "cream-dim": "#A8A29E",
+              purple: "#7B2FBE",
+              "purple-soft": "#9B4FDE",
+              "purple-muted": "rgba(123, 47, 190, 0.12)",
+              accent: "#D4A574",
+              pink: "#FF6B9D",
+              cyan: "#4DD9E8",
+              orange: "#FF8A4C",
+              lime: "#C4F042",
+            },
+            fontFamily: {
+              display: ['"Roc Grotesk"', '"Outfit"', "system-ui", "sans-serif"],
+              body: ['"Gilroy"', '"DM Sans"', "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts fallbacks -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ── Font faces ── */
+      @font-face {
+        font-family: "Roc Grotesk";
+        src: local("Roc Grotesk Bold");
+        font-weight: 700;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Roc Grotesk";
+        src: local("Roc Grotesk");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Gilroy";
+        src: local("Gilroy");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Gilroy";
+        src: local("Gilroy SemiBold");
+        font-weight: 600;
+        font-display: swap;
+      }
+
+      * {
+        font-family: "Gilroy", "DM Sans", system-ui, sans-serif;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Roc Grotesk", "Outfit", system-ui, sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: #0e0e0e;
+        color: #ede9e3;
+        overflow-x: hidden;
+      }
+
+      /* ── Grain overlay ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 256px 256px;
+      }
+
+      /* ── Mouse spotlight ── */
+      #mouseSpotlight {
+        position: fixed;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(123, 47, 190, 0.12) 0%,
+          rgba(123, 47, 190, 0.05) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.4s ease;
+        opacity: 0;
+        z-index: 30;
+        top: 0;
+        left: 0;
+      }
+      #mouseSpotlight.active {
+        opacity: 1;
+      }
+
+      /* ── Gradient text ── */
+      .text-gradient-purple {
+        background: linear-gradient(
+          135deg,
+          #7b2fbe 0%,
+          #9b4fde 60%,
+          #c084fc 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ── "on autopilot" glow pulse ── */
+      @keyframes autoPilotGlow {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 0px rgba(123, 47, 190, 0));
+          opacity: 1;
+        }
+        50% {
+          filter: drop-shadow(0 0 20px rgba(155, 79, 222, 0.6))
+            drop-shadow(0 0 40px rgba(123, 47, 190, 0.3));
+          opacity: 0.95;
+        }
+      }
+      .autopilot-glow {
+        animation: autoPilotGlow 3.5s ease-in-out infinite;
+        display: inline;
+      }
+
+      /* ── Section reveal ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal-delay-1 {
+        transition-delay: 100ms;
+      }
+      .reveal-delay-2 {
+        transition-delay: 200ms;
+      }
+      .reveal-delay-3 {
+        transition-delay: 320ms;
+      }
+      .reveal-delay-4 {
+        transition-delay: 440ms;
+      }
+      .reveal-delay-5 {
+        transition-delay: 560ms;
+      }
+
+      /* ── CTA button ── */
+      .cta-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .cta-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+      .cta-btn:hover::before {
+        left: 100%;
+      }
+      .cta-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(123, 47, 190, 0.35);
+      }
+
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) skewX(-15deg);
+        }
+        100% {
+          transform: translateX(200%) skewX(-15deg);
+        }
+      }
+      .cta-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        transform: translateX(-100%) skewX(-15deg);
+      }
+      .cta-btn:hover::after {
+        animation: shimmer 0.7s ease forwards;
+      }
+
+      /* ── Circuit button glow ── */
+      .circuit-btn {
+        transition:
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+      }
+      .circuit-btn:hover {
+        box-shadow:
+          0 0 20px rgba(123, 47, 190, 0.3),
+          0 0 40px rgba(123, 47, 190, 0.1),
+          inset 0 0 12px rgba(123, 47, 190, 0.05);
+      }
+
+      /* ── Arch nodes ── */
+      .arch-node {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        animation: nodePulse 3s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      .arch-node-cyan {
+        background: #4dd9e8;
+        box-shadow: 0 0 8px rgba(77, 217, 232, 0.4);
+      }
+      .arch-node-purple {
+        background: #7b2fbe;
+        box-shadow: 0 0 8px rgba(123, 47, 190, 0.4);
+      }
+      .arch-node-orange {
+        background: #ff8a4c;
+        box-shadow: 0 0 8px rgba(255, 138, 76, 0.4);
+      }
+
+      @keyframes nodePulse {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+
+      .arch-conn {
+        height: 1px;
+        flex: 1;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(168, 162, 158, 0.2) 0px,
+          rgba(168, 162, 158, 0.2) 4px,
+          transparent 4px,
+          transparent 10px
+        );
+      }
+
+      /* ── Stat number ── */
+      .stat-number {
+        transition:
+          color 0.3s ease,
+          transform 0.3s ease;
+        display: inline-block;
+      }
+      .stat-number:hover {
+        transform: scale(1.04);
+      }
+
+      /* ── Glassmorphic stat cards ── */
+      .glass-card {
+        background: rgba(22, 22, 22, 0.7);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease,
+          transform 0.3s ease;
+      }
+      .glass-card:hover {
+        border-color: rgba(123, 47, 190, 0.25);
+        transform: translateY(-3px);
+      }
+      .glass-card.cyan-glow:hover {
+        box-shadow: 0 8px 32px rgba(77, 217, 232, 0.12);
+      }
+      .glass-card.orange-glow:hover {
+        box-shadow: 0 8px 32px rgba(255, 138, 76, 0.12);
+      }
+      .glass-card.purple-glow:hover {
+        box-shadow: 0 8px 32px rgba(123, 47, 190, 0.18);
+      }
+
+      /* ── Status badge pulse ── */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+
+      /* ── Floating particles ── */
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(123, 47, 190, 0.2);
+        pointer-events: none;
+        animation: floatParticle linear infinite;
+      }
+      @keyframes floatParticle {
+        0% {
+          transform: translateY(0px) translateX(0px);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 0.6;
+        }
+        100% {
+          transform: translateY(-100vh) translateX(20px);
+          opacity: 0;
+        }
+      }
+
+      /* ── Spline scene container ── */
+      #splineContainer {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+      }
+      spline-viewer {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+      /* Overlay gradients for text readability */
+      #splineContainer::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(to right, rgba(14, 14, 14, 0.92), transparent 40%),
+          linear-gradient(to bottom, transparent 40%, rgba(14, 14, 14, 0.95));
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* ── Selection ── */
+      ::selection {
+        background: rgba(123, 47, 190, 0.3);
+        color: #ede9e3;
+      }
+
+      /* ── Scrollbar ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0e0e0e;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #7b2fbe;
+      }
+
+      /* ── Reduced motion ── */
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .particle {
+          display: none;
+        }
+        .autopilot-glow {
+          animation: none;
+        }
+        .arch-node {
+          animation: none;
+        }
+        .cta-btn::before,
+        .cta-btn::after {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="bg-base text-cream min-h-screen">
+    <!-- Mouse spotlight -->
+    <div id="mouseSpotlight" aria-hidden="true"></div>
+
+    <!-- Hero section -->
+    <section
+      id="top"
+      class="relative min-h-screen flex items-center pt-20"
+      style="min-height: 100svh"
+    >
+      <!-- Spline 3D background -->
+      <div id="splineContainer" aria-hidden="true">
+        <spline-viewer
+          url="https://prod.spline.design/us3ALejTXl6usHZ7/scene.splinecode"
+          loading-anim-type="spinner-small-dark"
+        ></spline-viewer>
+      </div>
+
+      <!-- Floating particles -->
+      <div id="particles" aria-hidden="true"></div>
+
+      <!-- Ambient purple aura (complements Spline) -->
+      <div
+        class="absolute top-1/4 right-[15%] w-[560px] h-[380px] rounded-full pointer-events-none hidden lg:block"
+        style="
+          background: rgba(123, 47, 190, 0.06);
+          filter: blur(130px);
+          z-index: 2;
+        "
+        aria-hidden="true"
+      ></div>
+
+      <!-- Decorative: large S watermark -->
+      <div
+        class="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none hidden lg:block"
+        style="opacity: 0.03; z-index: 2"
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 100 100"
+          width="500"
+          height="500"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="hw-flowGrad" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7B2FBE" />
+              <stop offset="50%" stop-color="#9B4FDE" />
+              <stop offset="100%" stop-color="#4DD9E8" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
+            stroke="url(#hw-flowGrad)"
+            stroke-width="3"
+            stroke-linecap="round"
+            fill="none"
+          />
+        </svg>
+      </div>
+
+      <!-- Hero content -->
+      <div
+        class="relative max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36"
+        style="z-index: 10"
+      >
+        <div class="max-w-3xl">
+          <!-- Status badge -->
+          <div
+            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border text-sm mb-10 reveal"
+            style="
+              border-color: rgba(123, 47, 190, 0.25);
+              background: rgba(123, 47, 190, 0.12);
+              color: #9b4fde;
+            "
+          >
+            <span
+              class="w-2 h-2 rounded-full shrink-0"
+              style="
+                background: #7b2fbe;
+                animation: pulse 2.5s ease-in-out infinite;
+              "
+            ></span>
+            Taking on 3 new clients this month
+          </div>
+
+          <!-- Headline -->
+          <h1
+            class="font-display font-bold leading-[1.0] tracking-[-0.03em] mb-8 reveal reveal-delay-1"
+            style="font-size: clamp(3rem, 6.5vw, 5.75rem)"
+          >
+            From first lead to final payment.<br />
+            <span style="color: rgba(237, 233, 227, 0.5)"
+              >Your entire business</span
+            ><br />
+            <span class="text-gradient-purple autopilot-glow"
+              >on autopilot.</span
+            >
+          </h1>
+
+          <!-- Subtext -->
+          <p
+            class="text-lg lg:text-[1.2rem] leading-relaxed max-w-xl mb-12 reveal reveal-delay-2"
+            style="color: #a8a29e"
+          >
+            Stop losing jobs to slow follow-up and Sunday evening paperwork. I
+            build custom systems that answer your leads, draft your quotes,
+            collect your reviews, and get you paid — 24/7.
+          </p>
+
+          <!-- Arch nodes decoration -->
+          <div
+            aria-hidden="true"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0;
+              width: 120px;
+              margin: 16px 0 0;
+              opacity: 0.4;
+            "
+          >
+            <span class="arch-node arch-node-cyan"></span>
+            <span class="arch-conn"></span>
+            <span class="arch-node arch-node-purple"></span>
+            <span class="arch-conn"></span>
+            <span class="arch-node arch-node-orange"></span>
+          </div>
+
+          <!-- CTAs -->
+          <div
+            class="flex flex-col sm:flex-row gap-4 mb-20 reveal reveal-delay-3"
+            style="margin-top: 32px"
+          >
+            <a
+              href="#book"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-bold text-base rounded-xl cta-btn circuit-btn"
+              style="
+                background: #7b2fbe;
+                color: white;
+                box-shadow: 0 4px 28px rgba(123, 47, 190, 0.32);
+              "
+            >
+              See what you're losing — free
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="#how-it-works"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 font-medium text-base rounded-xl transition-all duration-300"
+              style="
+                border: 1px solid rgba(237, 233, 227, 0.12);
+                color: #ede9e3;
+              "
+              onmouseover="
+                this.style.borderColor = 'rgba(237,233,227,0.22)';
+                this.style.background = 'rgba(237,233,227,0.03)';
+              "
+              onmouseout="
+                this.style.borderColor = 'rgba(237,233,227,0.12)';
+                this.style.background = 'transparent';
+              "
+            >
+              Watch how it works
+            </a>
+          </div>
+
+          <!-- Stats strip -->
+          <div class="flex flex-wrap gap-10 lg:gap-16 reveal reveal-delay-4">
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl stat-number tracking-tight"
+                style="color: #4dd9e8"
+              >
+                60s
+              </div>
+              <div class="text-sm mt-2 tracking-wide" style="color: #a8a29e">
+                Average response time
+              </div>
+            </div>
+            <div
+              class="w-px hidden sm:block self-stretch"
+              style="background: rgba(237, 233, 227, 0.08)"
+            ></div>
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl stat-number tracking-tight"
+                style="color: #ff8a4c"
+              >
+                2x
+              </div>
+              <div class="text-sm mt-2 tracking-wide" style="color: #a8a29e">
+                More jobs booked
+              </div>
+            </div>
+            <div
+              class="w-px hidden sm:block self-stretch"
+              style="background: rgba(237, 233, 227, 0.08)"
+            ></div>
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl text-gradient-purple stat-number tracking-tight"
+              >
+                &lt; 1 wk
+              </div>
+              <div class="text-sm mt-2 tracking-wide" style="color: #a8a29e">
+                Setup to live
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom edge fade -->
+      <div
+        class="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style="
+          height: 160px;
+          background: linear-gradient(to top, #0e0e0e, transparent);
+          z-index: 10;
+        "
+        aria-hidden="true"
+      ></div>
+    </section>
+
+    <!-- Glassmorphic stats section -->
+    <section
+      class="relative py-24 px-6 lg:px-10"
+      style="background: #0e0e0e; z-index: 10"
+    >
+      <div class="max-w-5xl mx-auto">
+        <!-- Section header -->
+        <div class="text-center mb-16 reveal">
+          <p
+            class="text-sm tracking-[0.15em] uppercase font-semibold mb-4"
+            style="color: #7b2fbe"
+          >
+            Built to perform
+          </p>
+          <h2
+            class="font-display font-bold text-3xl lg:text-4xl tracking-tight"
+            style="color: #ede9e3"
+          >
+            Numbers that speak for themselves
+          </h2>
+        </div>
+
+        <!-- Glassmorphic stat cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <!-- 60s card -->
+          <div
+            class="glass-card cyan-glow p-8 text-center reveal reveal-delay-1"
+          >
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6"
+              style="
+                background: rgba(77, 217, 232, 0.1);
+                border: 1px solid rgba(77, 217, 232, 0.2);
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#4DD9E8"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <div
+              class="font-display font-bold text-5xl tracking-tight mb-3"
+              style="color: #4dd9e8"
+            >
+              60s
+            </div>
+            <div class="font-semibold text-base mb-2" style="color: #ede9e3">
+              Average response time
+            </div>
+            <div class="text-sm leading-relaxed" style="color: #a8a29e">
+              Every lead texted back within a minute. Automatically. While you
+              sleep.
+            </div>
+          </div>
+
+          <!-- 2x card -->
+          <div
+            class="glass-card orange-glow p-8 text-center reveal reveal-delay-2"
+          >
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6"
+              style="
+                background: rgba(255, 138, 76, 0.1);
+                border: 1px solid rgba(255, 138, 76, 0.2);
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#FF8A4C"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                <polyline points="17 6 23 6 23 12" />
+              </svg>
+            </div>
+            <div
+              class="font-display font-bold text-5xl tracking-tight mb-3"
+              style="color: #ff8a4c"
+            >
+              2x
+            </div>
+            <div class="font-semibold text-base mb-2" style="color: #ede9e3">
+              More jobs booked
+            </div>
+            <div class="text-sm leading-relaxed" style="color: #a8a29e">
+              Faster follow-up wins jobs. Most competitors respond in hours — or
+              not at all.
+            </div>
+          </div>
+
+          <!-- < 1 wk card -->
+          <div
+            class="glass-card purple-glow p-8 text-center reveal reveal-delay-3"
+          >
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-6"
+              style="
+                background: rgba(123, 47, 190, 0.12);
+                border: 1px solid rgba(123, 47, 190, 0.25);
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#9B4FDE"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div
+              class="font-display font-bold text-5xl tracking-tight mb-3 text-gradient-purple"
+            >
+              &lt; 1 wk
+            </div>
+            <div class="font-semibold text-base mb-2" style="color: #ede9e3">
+              Setup to live
+            </div>
+            <div class="text-sm leading-relaxed" style="color: #a8a29e">
+              From discovery call to fully automated workflows, live and running
+              in days.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // ── Mouse spotlight ──
+      const spotlight = document.getElementById("mouseSpotlight");
+      let spotlightTimeout;
+
+      document.addEventListener("mousemove", (e) => {
+        spotlight.style.left = e.clientX + "px";
+        spotlight.style.top = e.clientY + "px";
+        spotlight.classList.add("active");
+        clearTimeout(spotlightTimeout);
+        spotlightTimeout = setTimeout(() => {
+          spotlight.classList.remove("active");
+        }, 2000);
+      });
+
+      // ── Floating particles ──
+      function createParticles() {
+        const container = document.getElementById("particles");
+        const count = 28;
+
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("div");
+          p.classList.add("particle");
+
+          const size = Math.random() * 3 + 2; // 2-5px
+          const left = Math.random() * 100;
+          const delay = Math.random() * 20;
+          const duration = Math.random() * 10 + 10; // 10-20s
+          const opacity = Math.random() * 0.15 + 0.05;
+
+          p.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${left}%;
+            bottom: -10px;
+            background: rgba(123, 47, 190, ${opacity});
+            animation-duration: ${duration}s;
+            animation-delay: -${delay}s;
+            z-index: 5;
+          `;
+
+          container.appendChild(p);
+        }
+      }
+
+      // ── Reveal on scroll ──
+      function setupReveal() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+
+        document.querySelectorAll(".reveal").forEach((el) => {
+          observer.observe(el);
+        });
+      }
+
+      // ── Init ──
+      document.addEventListener("DOMContentLoaded", () => {
+        // Respect reduced motion
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (!prefersReducedMotion) {
+          createParticles();
+        }
+
+        setupReveal();
+
+        // Trigger reveal for elements already in view
+        setTimeout(() => {
+          document.querySelectorAll(".reveal").forEach((el) => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+              el.classList.add("visible");
+            }
+          });
+        }, 100);
+      });
+    </script>
+  </body>
+</html>

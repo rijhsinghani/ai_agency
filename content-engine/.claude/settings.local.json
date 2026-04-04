@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(cd:*)",
+      "WebFetch(domain:21st.dev)",
+      "WebSearch",
+      "WebFetch(domain:mcp.harishgarg.com)",
+      "Bash(claude mcp:*)",
+      "Bash(cat:*)"
+    ]
+  }
+}

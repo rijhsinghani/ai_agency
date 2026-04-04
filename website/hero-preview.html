@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hero Preview — Particle Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              base: "#0E0E0E",
+              surface: "#161616",
+              "surface-raised": "#1E1E1E",
+              cream: "#EDE9E3",
+              "cream-dim": "#A8A29E",
+              purple: "#7B2FBE",
+              "purple-soft": "#9B4FDE",
+              "purple-muted": "rgba(123, 47, 190, 0.12)",
+              accent: "#D4A574",
+              pink: "#FF6B9D",
+              cyan: "#4DD9E8",
+              orange: "#FF8A4C",
+              lime: "#C4F042",
+            },
+            fontFamily: {
+              display: ['"Roc Grotesk"', '"Outfit"', "system-ui", "sans-serif"],
+              body: ['"Gilroy"', '"DM Sans"', "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Font faces ── */
+      @font-face {
+        font-family: "Roc Grotesk";
+        src: local("Roc Grotesk Bold");
+        font-weight: 700;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Roc Grotesk";
+        src: local("Roc Grotesk");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Gilroy";
+        src: local("Gilroy");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "Gilroy";
+        src: local("Gilroy SemiBold");
+        font-weight: 600;
+        font-display: swap;
+      }
+
+      * {
+        font-family: "Gilroy", "DM Sans", system-ui, sans-serif;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      .font-display {
+        font-family: "Roc Grotesk", "Outfit", system-ui, sans-serif;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #0e0e0e;
+        color: #ede9e3;
+        overflow-x: hidden;
+      }
+
+      /* ── Grain overlay ── */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 256px 256px;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 256px 256px;
+      }
+
+      /* ── Particle canvas ── */
+      #particleCanvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* ── Hero glow background ── */
+      .hero-glow {
+        background:
+          radial-gradient(
+            ellipse 55% 50% at 72% 28%,
+            rgba(123, 47, 190, 0.09) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 20% 80%,
+            rgba(155, 79, 222, 0.04) 0%,
+            transparent 60%
+          );
+      }
+
+      /* ── Gradient headline text ── */
+      .text-gradient-purple {
+        background: linear-gradient(
+          135deg,
+          #7b2fbe 0%,
+          #9b4fde 60%,
+          #c084fc 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ── Adaptive Spotlight ── */
+      .hero-spotlight {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(123, 47, 190, 0.08) 0%,
+          rgba(123, 47, 190, 0.03) 40%,
+          transparent 70%
+        );
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        transition: opacity 0.4s ease;
+        opacity: 0;
+        z-index: 1;
+      }
+      .hero-spotlight.active {
+        opacity: 1;
+      }
+
+      /* ── CTA button ── */
+      .cta-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .cta-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+      .cta-btn:hover::before {
+        left: 100%;
+      }
+      .cta-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(123, 47, 190, 0.25);
+      }
+      @keyframes shimmer {
+        0% {
+          transform: translateX(-100%) skewX(-15deg);
+        }
+        100% {
+          transform: translateX(200%) skewX(-15deg);
+        }
+      }
+      .cta-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        transform: translateX(-100%) skewX(-15deg);
+      }
+      .cta-btn:hover::after {
+        animation: shimmer 0.7s ease forwards;
+      }
+      .circuit-btn {
+        transition:
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+      }
+      .circuit-btn:hover {
+        box-shadow:
+          0 0 20px rgba(123, 47, 190, 0.3),
+          0 0 40px rgba(123, 47, 190, 0.1),
+          inset 0 0 12px rgba(123, 47, 190, 0.05);
+      }
+
+      /* ── Stat hover ── */
+      .stat-number {
+        transition:
+          color 0.3s ease,
+          transform 0.3s ease;
+        display: inline-block;
+      }
+      .stat-number:hover {
+        transform: scale(1.04);
+      }
+
+      /* ── Arch nodes ── */
+      .arch-node {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        animation: nodePulse 3s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      .arch-node-cyan {
+        background: #4dd9e8;
+        box-shadow: 0 0 8px rgba(77, 217, 232, 0.4);
+      }
+      .arch-node-purple {
+        background: #7b2fbe;
+        box-shadow: 0 0 8px rgba(123, 47, 190, 0.4);
+      }
+      .arch-node-orange {
+        background: #ff8a4c;
+        box-shadow: 0 0 8px rgba(255, 138, 76, 0.4);
+      }
+      .arch-conn {
+        height: 1px;
+        flex: 1;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(168, 162, 158, 0.2) 0px,
+          rgba(168, 162, 158, 0.2) 4px,
+          transparent 4px,
+          transparent 10px
+        );
+      }
+      @keyframes nodePulse {
+        0%,
+        100% {
+          opacity: 0.7;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
+        }
+      }
+
+      /* ── Pulse badge dot ── */
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.6;
+          transform: scale(0.85);
+        }
+      }
+
+      /* ── S-wave gradient flow ── */
+      @keyframes gradient-flow {
+        0% {
+          stop-color: #7b2fbe;
+        }
+        50% {
+          stop-color: #4dd9e8;
+        }
+        100% {
+          stop-color: #7b2fbe;
+        }
+      }
+      #hw-flowGrad stop:first-child {
+        animation: gradient-flow 8s ease-in-out infinite;
+      }
+      #hw-flowGrad stop:last-child {
+        animation: gradient-flow 8s ease-in-out infinite reverse;
+      }
+
+      /* ── Reveal animation ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── Selection ── */
+      ::selection {
+        background: rgba(123, 47, 190, 0.3);
+        color: #ede9e3;
+      }
+
+      /* ── Reduced motion ── */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-base text-cream">
+    <!-- ── HERO SECTION ── -->
+    <section
+      id="top"
+      class="relative min-h-screen flex items-center pt-20 hero-glow"
+    >
+      <!-- Particle network canvas -->
+      <canvas id="particleCanvas" aria-hidden="true"></canvas>
+
+      <!-- Mouse-following spotlight -->
+      <div id="heroSpotlight" class="hero-spotlight" aria-hidden="true"></div>
+
+      <!-- Ambient purple aura glow -->
+      <div
+        class="absolute top-1/4 right-[15%] w-[560px] h-[380px] bg-purple/[0.08] blur-[130px] rounded-full pointer-events-none hidden lg:block"
+        aria-hidden="true"
+      ></div>
+
+      <!-- Decorative: large S watermark -->
+      <div
+        class="absolute right-0 top-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none hidden lg:block"
+      >
+        <svg
+          viewBox="0 0 100 100"
+          width="500"
+          height="500"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <linearGradient id="hw-flowGrad" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7B2FBE" />
+              <stop offset="50%" stop-color="#9B4FDE" />
+              <stop offset="100%" stop-color="#4DD9E8" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M 80 20 C 40 20, 20 20, 20 40 C 20 60, 80 40, 80 60 C 80 80, 60 80, 20 80"
+            stroke="url(#hw-flowGrad)"
+            stroke-width="3"
+            stroke-linecap="round"
+            fill="none"
+          />
+        </svg>
+      </div>
+
+      <div
+        class="relative max-w-7xl mx-auto px-6 lg:px-10 py-24 lg:py-36"
+        style="z-index: 2"
+      >
+        <div class="max-w-3xl">
+          <!-- Status badge -->
+          <div
+            class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-purple/25 bg-purple-muted text-sm text-purple-soft mb-10 reveal"
+          >
+            <span
+              class="w-2 h-2 rounded-full bg-purple shrink-0"
+              style="animation: pulse 2.5s ease-in-out infinite"
+            ></span>
+            Taking on 3 new clients this month
+          </div>
+
+          <!-- Headline with gradient accent -->
+          <h1
+            class="font-display font-bold text-[clamp(3rem,6.5vw,5.75rem)] leading-[1.0] tracking-[-0.03em] mb-8 reveal"
+          >
+            From first lead to final payment.<br />
+            <span class="text-cream/50">Your entire business</span><br />
+            <span class="text-gradient-purple">on autopilot.</span>
+          </h1>
+
+          <p
+            class="text-lg lg:text-[1.2rem] text-cream-dim leading-relaxed max-w-xl mb-12 reveal"
+          >
+            Stop losing jobs to slow follow-up and Sunday evening paperwork. I
+            build custom systems that answer your leads, draft your quotes,
+            collect your reviews, and get you paid — 24/7.
+          </p>
+
+          <div
+            class="hero-nodes"
+            aria-hidden="true"
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              gap: 0;
+              width: 120px;
+              margin: 16px 0 0;
+              opacity: 0.4;
+            "
+          >
+            <span class="arch-node arch-node-cyan"></span>
+            <span class="arch-conn"></span>
+            <span class="arch-node arch-node-purple"></span>
+            <span class="arch-conn"></span>
+            <span class="arch-node arch-node-orange"></span>
+          </div>
+
+          <div
+            class="flex flex-col sm:flex-row gap-4 mb-20 reveal"
+            style="margin-top: 2rem"
+          >
+            <a
+              href="#"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-purple text-white font-bold text-base rounded-xl cta-btn circuit-btn shadow-[0_4px_28px_rgba(123,47,190,0.32)]"
+            >
+              See what you're losing — free
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="#"
+              class="inline-flex items-center justify-center gap-2.5 px-8 py-4 border border-cream/[0.12] text-cream font-medium text-base rounded-xl hover:border-cream/[0.22] hover:bg-cream/[0.03] transition-all duration-300"
+            >
+              Watch how it works
+            </a>
+          </div>
+
+          <!-- Stats strip -->
+          <div class="flex flex-wrap gap-10 lg:gap-16 reveal">
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl counter stat-number tracking-tight"
+                style="color: #4dd9e8"
+              >
+                60s
+              </div>
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
+                Average response time
+              </div>
+            </div>
+            <div
+              class="w-px bg-cream/[0.08] hidden sm:block self-stretch"
+            ></div>
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl counter stat-number tracking-tight"
+                style="color: #ff8a4c"
+              >
+                2x
+              </div>
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
+                More jobs booked
+              </div>
+            </div>
+            <div
+              class="w-px bg-cream/[0.08] hidden sm:block self-stretch"
+            ></div>
+            <div>
+              <div
+                class="font-display font-bold text-4xl lg:text-5xl text-gradient-purple counter stat-number tracking-tight"
+              >
+                &lt; 1 wk
+              </div>
+              <div class="text-sm text-cream-dim mt-2 tracking-wide">
+                Setup to live
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom edge fade -->
+      <div
+        class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-base to-transparent pointer-events-none"
+        style="z-index: 2"
+      ></div>
+    </section>
+
+    <script>
+      // ─────────────────────────────────────────────────────────────────
+      // PARTICLE NETWORK CANVAS
+      // ─────────────────────────────────────────────────────────────────
+      (function () {
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const PARTICLE_COUNT = 80;
+        const CONNECTION_DISTANCE = 120;
+        const MOUSE_ATTRACT_DISTANCE = 150;
+        const MOUSE_ATTRACT_STRENGTH = 0.025; // 2.5% per frame
+        const MOUSE_GLOW_DISTANCE = 200;
+        const MAX_CONNECTION_OPACITY = 0.15;
+        const MAX_CONNECTION_OPACITY_NEAR_MOUSE = 0.4;
+
+        // Color palette
+        const COLORS = [
+          // 40% purple
+          ...Array(32).fill("#7B2FBE"),
+          // 30% cyan
+          ...Array(24).fill("#4DD9E8"),
+          // 30% cream (translucent)
+          ...Array(24).fill("rgba(237,233,227,0.3)"),
+        ];
+
+        let mouse = { x: -9999, y: -9999 };
+        let particles = [];
+        let animationId = null;
+
+        // Respect prefers-reduced-motion
+        const prefersReducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        function resize() {
+          const section = canvas.parentElement;
+          canvas.width = section.offsetWidth;
+          canvas.height = section.offsetHeight;
+        }
+
+        function randomBetween(min, max) {
+          return min + Math.random() * (max - min);
+        }
+
+        function createParticle() {
+          const colorKey = COLORS[Math.floor(Math.random() * COLORS.length)];
+          return {
+            x: randomBetween(0, canvas.width),
+            y: randomBetween(0, canvas.height),
+            vx: randomBetween(-0.18, 0.18),
+            vy: randomBetween(-0.14, 0.14),
+            radius: randomBetween(1.5, 3.5),
+            color: colorKey,
+            // base opacity for the dot itself
+            opacity: randomBetween(0.45, 0.85),
+          };
+        }
+
+        function initParticles() {
+          particles = [];
+          for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(createParticle());
+          }
+        }
+
+        function drawParticle(p) {
+          ctx.save();
+          ctx.globalAlpha = p.opacity;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function drawConnections() {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const a = particles[i];
+              const b = particles[j];
+              const dx = b.x - a.x;
+              const dy = b.y - a.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist > CONNECTION_DISTANCE) continue;
+
+              // Base opacity: falls off with distance
+              const baseOpacity =
+                (1 - dist / CONNECTION_DISTANCE) * MAX_CONNECTION_OPACITY;
+
+              // Check if either particle is near the mouse
+              const dax = a.x - mouse.x;
+              const day = a.y - mouse.y;
+              const distToMouseA = Math.sqrt(dax * dax + day * day);
+
+              const dbx = b.x - mouse.x;
+              const dby = b.y - mouse.y;
+              const distToMouseB = Math.sqrt(dbx * dbx + dby * dby);
+
+              const nearMouse =
+                distToMouseA < MOUSE_GLOW_DISTANCE ||
+                distToMouseB < MOUSE_GLOW_DISTANCE;
+
+              let finalOpacity = baseOpacity;
+              if (nearMouse) {
+                const closestMouseDist = Math.min(distToMouseA, distToMouseB);
+                const mouseFactor = 1 - closestMouseDist / MOUSE_GLOW_DISTANCE;
+                finalOpacity = Math.max(
+                  baseOpacity,
+                  mouseFactor * MAX_CONNECTION_OPACITY_NEAR_MOUSE,
+                );
+              }
+
+              // Line width scales slightly with opacity
+              const lineWidth = 0.3 + finalOpacity * 1.2;
+
+              ctx.save();
+              ctx.globalAlpha = finalOpacity;
+              ctx.strokeStyle = nearMouse ? "#9B4FDE" : "#A8A29E";
+              ctx.lineWidth = Math.min(lineWidth, 0.5);
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+              ctx.restore();
+            }
+          }
+        }
+
+        function drawCursorGlow() {
+          if (mouse.x < 0 || mouse.x > canvas.width) return;
+          const grad = ctx.createRadialGradient(
+            mouse.x,
+            mouse.y,
+            0,
+            mouse.x,
+            mouse.y,
+            180,
+          );
+          grad.addColorStop(0, "rgba(123, 47, 190, 0.06)");
+          grad.addColorStop(0.5, "rgba(123, 47, 190, 0.02)");
+          grad.addColorStop(1, "transparent");
+          ctx.save();
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, 180, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        function updateParticles() {
+          particles.forEach((p) => {
+            // Mouse attraction: pull toward cursor if within range
+            const dx = mouse.x - p.x;
+            const dy = mouse.y - p.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < MOUSE_ATTRACT_DISTANCE && dist > 0) {
+              const factor =
+                (1 - dist / MOUSE_ATTRACT_DISTANCE) * MOUSE_ATTRACT_STRENGTH;
+              p.vx += dx * factor * 0.1;
+              p.vy += dy * factor * 0.1;
+            }
+
+            // Speed damping to prevent runaway velocity
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 0.5) {
+              p.vx = (p.vx / speed) * 0.5;
+              p.vy = (p.vy / speed) * 0.5;
+            }
+
+            // Drift
+            p.x += p.vx;
+            p.y += p.vy;
+
+            // Wrap around edges
+            if (p.x < -10) p.x = canvas.width + 10;
+            if (p.x > canvas.width + 10) p.x = -10;
+            if (p.y < -10) p.y = canvas.height + 10;
+            if (p.y > canvas.height + 10) p.y = -10;
+          });
+        }
+
+        function render() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          drawCursorGlow();
+          drawConnections();
+          particles.forEach(drawParticle);
+
+          if (!prefersReducedMotion) {
+            updateParticles();
+            animationId = requestAnimationFrame(render);
+          }
+        }
+
+        // Init
+        resize();
+        initParticles();
+
+        if (prefersReducedMotion) {
+          // Draw a single static frame
+          render();
+        } else {
+          render();
+        }
+
+        // Handle resize
+        let resizeTimer;
+        window.addEventListener("resize", () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            resize();
+            initParticles();
+          }, 150);
+        });
+
+        // Mouse tracking (relative to canvas/section)
+        const section = canvas.parentElement;
+        section.addEventListener("mousemove", (e) => {
+          const rect = section.getBoundingClientRect();
+          mouse.x = e.clientX - rect.left;
+          mouse.y = e.clientY - rect.top;
+        });
+
+        section.addEventListener("mouseleave", () => {
+          mouse.x = -9999;
+          mouse.y = -9999;
+        });
+      })();
+
+      // ─────────────────────────────────────────────────────────────────
+      // HERO SPOTLIGHT (mouse-following glow overlay)
+      // ─────────────────────────────────────────────────────────────────
+      (function () {
+        const spotlight = document.getElementById("heroSpotlight");
+        const section = document.getElementById("top");
+        let active = false;
+
+        section.addEventListener("mousemove", (e) => {
+          const rect = section.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          spotlight.style.left = x + "px";
+          spotlight.style.top = y + "px";
+          if (!active) {
+            spotlight.classList.add("active");
+            active = true;
+          }
+        });
+
+        section.addEventListener("mouseleave", () => {
+          spotlight.classList.remove("active");
+          active = false;
+        });
+      })();
+
+      // ─────────────────────────────────────────────────────────────────
+      // REVEAL ANIMATIONS (intersection observer)
+      // ─────────────────────────────────────────────────────────────────
+      (function () {
+        const reveals = document.querySelectorAll(".reveal");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+
+        // Stagger hero reveals on load
+        let delay = 0;
+        reveals.forEach((el) => {
+          el.style.transitionDelay = delay + "ms";
+          delay += 100;
+          observer.observe(el);
+        });
+
+        // Trigger immediately since elements are in viewport
+        setTimeout(() => {
+          reveals.forEach((el) => el.classList.add("visible"));
+        }, 50);
+      })();
+    </script>
+  </body>
+</html>
