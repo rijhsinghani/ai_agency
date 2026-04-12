@@ -438,7 +438,7 @@ Plans:
 | 9. Giveaway + Social Proof             | 2/2       | Complete       | 2026-03-03  | -          |
 | 10. Content Preparation & Distribution | 9/9       | Complete       | 2026-03-05  | -          |
 | 11. Automation Guide Series            | 3/3       | Complete       | 2026-03-05  | -          |
-| 12. Social Content Optimization        | 2/2 | Complete   | 2026-03-06 | -          |
+| 12. Social Content Optimization        | 2/2       | Complete       | 2026-03-06  | -          |
 
 ---
 
@@ -473,7 +473,23 @@ Plans:
 6. All visual assets use dark #1A1A1A background, DM Sans font, purple-to-cyan gradient accents
 7. No emojis, no banned phrases, no hashtags on Twitter
 
+### Phase 13: Landing Page Rebuild — sameerautomations.com
+
+**Goal:** Ship sameerautomations.com to GCP Cloud Run as a Next.js 15 rebuild of the landing page, using 21st.dev Magic for distinctive components, shadcn/ui primitives, brand-voice-compliant copy, and the existing System Architecture visual language. Executed as a 4-wave parallel team (designer + builder-A + builder-B + shipper).
+**Requirements**: [LP-01, LP-02, LP-03, LP-04, LP-05, LP-06]
+**Depends on:** Phase 9 (brand + case study metrics already locked)
+**Plans:** 6 plans across 4 waves
+
+Plans:
+
+- [ ] 13-01-PLAN.md (wave 1) — Designer: 21st.dev inspiration scrape + ui-ux-pro-max style plan + extract case study metrics to proof.json (LP-01)
+- [ ] 13-02-PLAN.md (wave 1) — Builder-A scaffold: Next.js 15 + Tailwind v4 + shadcn/ui + brand tokens in website-v2/ (LP-01)
+- [ ] 13-03-PLAN.md (wave 2) — Builder-A sections: nav, hero + Input/Output Bridge visual, problem strip, how-it-works — in worktree wave2/builder-a (LP-02, LP-03)
+- [ ] 13-04-PLAN.md (wave 2) — Builder-B sections: 4 automation cards, 3 proof blocks, FAQ, final CTA, footer — in worktree wave2/builder-b (LP-02, LP-03, LP-04)
+- [ ] 13-05-PLAN.md (wave 3) — Shipper: merge worktrees, lead form to n8n, Plausible, SEO, Dockerfile, cloudbuild, Cloud Run deploy us-east4, domain mapping (LP-04, LP-05, LP-06)
+- [ ] 13-06-PLAN.md (wave 4) — Verification + cutover: Lighthouse, live HTTPS, form E2E, DNS cut in Cloudflare, archive legacy website/ (LP-05, LP-06)
+
 ---
 
 _Created: 2026-02-27_
-_Last updated: 2026-03-05 — Phase 12 plans created (2 plans, 1 wave)_
+_Last updated: 2026-04-12 — Phase 13 plans created (6 plans, 4 waves)_
