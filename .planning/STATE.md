@@ -97,6 +97,7 @@ Phase 11: [██████████] Plans 01+02+03 of 3 complete (guide-g
 
 - **2026-03-02**: Added Phase 10 (v3.0 Content Automation Pipeline) — Automated Content Preparation & Distribution Pipeline. Seven sub-parts: content bank (Supabase + Google Sheets), video post-production (Cloud Run ffmpeg pipeline), AI content generation (Gemini 3.1 Pro + Claude), Slack approval workflow, multi-platform publishing (Twitter/X, Instagram, YouTube, Substack, Threads via direct APIs), multi-brand support (Sameer Automations + Raj Photo Video), analytics feedback loop. Zero subscriptions, $5-15/mo estimated. Depends on Phase 8 + Phase 9.
 - **2026-03-05**: Added Phase 12 — Social Content Optimization. Rewrite all 10 social drafts using competitive analysis (Hormozi hooks, carousel format for Instagram, keyword-trigger DM CTAs, hashtags, flow diagram exports as social assets).
+- **2026-04-12**: Added Phase 13 — Landing Page Rebuild. Rebuild sameerautomations.com on Next.js 15 + 21st.dev Magic components, deploy to GCP Cloud Run us-east4. 4-wave parallel team (designer + 2 builders + shipper). Detailed plan at ~/.claude/plans/snazzy-sauteeing-pixel.md.
 
 ### Key Decisions
 

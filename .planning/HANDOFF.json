@@ -1,0 +1,154 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-04-12T22:16:13.892Z",
+  "phase": "13",
+  "phase_name": "Landing Page Rebuild — sameerautomations.com",
+  "phase_dir": ".planning/phases/13-landing-page-rebuild-sameerautomations",
+  "plan": 0,
+  "task": 0,
+  "total_tasks": 6,
+  "status": "paused",
+  "completed_tasks": [
+    {
+      "id": 1,
+      "name": "Phase 13 registered in ROADMAP.md",
+      "status": "done",
+      "commit": "61295ce"
+    },
+    {
+      "id": 2,
+      "name": "CONTEXT.md written from PRD",
+      "status": "done",
+      "commit": "61295ce"
+    },
+    {
+      "id": 3,
+      "name": "6 plan files created (13-01..06-PLAN.md)",
+      "status": "done",
+      "commit": "e0db5ba"
+    },
+    {
+      "id": 4,
+      "name": "Designer inspiration scrape + style plan + hero options",
+      "status": "done",
+      "commit": null
+    },
+    {
+      "id": 5,
+      "name": "Content extraction (problem strip, cards, FAQ, footer, SEO, proof)",
+      "status": "done",
+      "commit": null
+    },
+    {
+      "id": 6,
+      "name": "Brand-voice.md updated to growth-partner positioning",
+      "status": "done",
+      "commit": null
+    },
+    {
+      "id": 7,
+      "name": "v2 research — futuristic AI growth agency sites + new hero options + revised section architecture",
+      "status": "done",
+      "commit": null
+    }
+  ],
+  "remaining_tasks": [
+    {
+      "id": 8,
+      "name": "Scaffold Next.js 15 in website-v2/ (13-02-PLAN)",
+      "status": "not_started"
+    },
+    {
+      "id": 9,
+      "name": "Generate hero + all sections via 21st.dev Magic MCP with user approval per section",
+      "status": "not_started"
+    },
+    {
+      "id": 10,
+      "name": "Wire forms, analytics, SEO (13-05-PLAN)",
+      "status": "not_started"
+    },
+    {
+      "id": 11,
+      "name": "GCP Cloud Run deploy + DNS cutover (13-05/06-PLAN)",
+      "status": "not_started"
+    }
+  ],
+  "blockers": [
+    {
+      "description": "21st.dev Magic MCP installed but requires session restart to activate",
+      "type": "technical",
+      "workaround": "Restart Claude Code session — .mcp.json is already written"
+    }
+  ],
+  "human_actions_pending": [
+    {
+      "action": "Restart Claude Code session to activate 21st.dev Magic MCP",
+      "context": ".mcp.json written with API key, needs session reload",
+      "blocking": true
+    },
+    {
+      "action": "Review updated brand-voice.md",
+      "context": "Opened in editor — confirms growth partner positioning, revenue share model, expanded service pillars",
+      "blocking": false
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Hero: Option 5 — 'Marketing, content, and follow-up — handled'",
+      "rationale": "Communicates relief + breadth. Fits growth partner positioning.",
+      "phase": "13"
+    },
+    {
+      "decision": "11-section architecture (growth partner layout)",
+      "rationale": "Added services grid, technology preview, origin story, pricing tiers. Replaced narrow automation-shop layout.",
+      "phase": "13"
+    },
+    {
+      "decision": "Dark base shade: TBD (user hasn't picked yet)",
+      "rationale": "#0E0E0E vs #1A1A1A deferred to next session",
+      "phase": "13"
+    },
+    {
+      "decision": "Positioning pivot: growth partner, not automation shop",
+      "rationale": "Sameer's offering is broader — branding, email, content, lead automation, digital presence. Free entry + revenue share model.",
+      "phase": "13"
+    },
+    {
+      "decision": "Brand-voice.md updated to reflect growth partner positioning",
+      "rationale": "Landing page needs source-of-truth brand doc updated first",
+      "phase": "13"
+    },
+    {
+      "decision": "Proof blocks: TBD (needs re-evaluation against broader positioning)",
+      "rationale": "Original proof blocks were automation-focused ($4,200 text-back). Need transformation stories for growth partner.",
+      "phase": "13"
+    },
+    {
+      "decision": "Deploy target: GCP Cloud Run us-east4",
+      "rationale": "Matches studio-os pattern",
+      "phase": "13"
+    }
+  ],
+  "uncommitted_files": [
+    ".mcp.json",
+    "brand/brand-voice.md",
+    "website-v2/research/inspiration.md",
+    "website-v2/research/inspiration-v2.md",
+    "website-v2/research/style-plan.md",
+    "website-v2/research/hero-options.md",
+    "website-v2/research/hero-options-v2.md",
+    "website-v2/research/section-order.md",
+    "website-v2/research/section-order-v2.md",
+    "website-v2/research/proof.json",
+    "website-v2/content/problem-strip.json",
+    "website-v2/content/automation-cards.json",
+    "website-v2/content/how-it-works.json",
+    "website-v2/content/faq.json",
+    "website-v2/content/footer.json",
+    "website-v2/content/seo.json",
+    "website-v2/content/n8n-webhook.md"
+  ],
+  "next_action": "Restart Claude Code session. Run /gsd:resume-work. Magic MCP will be live. Scaffold Next.js in website-v2/, then generate hero section via Magic MCP for user visual review.",
+  "context_notes": "Major positioning pivot mid-session. Sameer realized his niche is broader than automation — he's an AI growth partner for small businesses. Free entry + revenue share model. Brand-voice.md was updated. Content files (problem strip, FAQ, etc.) were written for the OLD narrower positioning and will need partial rewrites to match the growth-partner framing. The v2 research files (hero-options-v2.md, section-order-v2.md, inspiration-v2.md) reflect the NEW positioning. Use those, not the v1 files."
+}

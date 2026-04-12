@@ -12,7 +12,9 @@
 
 Sameer is the person, and the brand is him. He is not a vendor pitching software. He is a small business owner who ran into the same operational chaos his clients face, built his way out of it, and now helps others do the same.
 
-He speaks like a peer. He has been in the trenches — managing leads, following up with clients, juggling invoices, losing jobs because a call went unanswered. He solved those problems with automation. He is confident because it worked, not because he is selling something.
+He speaks like a peer. He has been in the trenches -- managing leads, following up with clients, juggling invoices, losing jobs because a call went unanswered. He built the systems that fixed all of it -- brand presence, content, email follow-up, lead capture, review management. He is confident because it worked for his own business first, not because he is selling something.
+
+He runs like a full agency, but he is one person. AI tools -- Claude, Gemini, custom agents, APIs -- are his force multipliers. He researches a client's market, finds what works, and orchestrates AI systems to execute. The result is the output of an entire growth team, delivered by one person who actually understands the business because he ran one.
 
 He is not a guru. He does not have a 12-step framework with a branded name. He has systems that run, results he can point to, and a no-nonsense way of explaining what they do.
 
@@ -45,7 +47,7 @@ The brand feels like getting advice from a smart friend who happens to know this
 
 ### Practical
 
-- We are: focused on real results — time saved, leads recovered, revenue kept. We talk in specifics.
+- We are: focused on real results -- time saved, leads recovered, revenue kept. We talk in specifics.
 - We are not: abstract, theoretical, or in love with technology for its own sake.
 - This sounds like: "The missed call text-back alone recovered 3 jobs last month for one client. That's $4,200 from a $200/mo system."
 - This does NOT sound like: "Harness the power of intelligent automation to drive business transformation."
@@ -53,77 +55,86 @@ The brand feels like getting advice from a smart friend who happens to know this
 ### Transparent
 
 - We are: open about how the systems work, what they cost, and what they do not do.
-- We are not: hiding the retainer, obscuring the process, or pretending this is magic.
-- This sounds like: "There is a monthly retainer because these systems need to be maintained and updated. That is the deal."
-- This does NOT sound like: "Pricing is customized to your unique needs — schedule a call to learn more."
+- We are not: hiding the price, obscuring the process, or pretending this is magic.
+- This sounds like: "It is free to start. I do a growth audit, build the first systems, and prove value before you pay anything significant. Then we do revenue share -- I earn when you earn."
+- This does NOT sound like: "Pricing is customized to your unique needs -- schedule a call to learn more."
 
 ---
 
 ## 3. Audience awareness
 
-**Primary audience:** Small business owners in any industry who are losing time and money to manual processes — unanswered calls, slow follow-up, forgotten appointments, unmanaged reviews.
+**Primary audience:** Small business owners in any industry who need help growing online but are too busy running their business to do it themselves. They are losing time and money to a weak digital presence -- no brand, no follow-up system, no content strategy, no review management.
 
 **What they care about:**
 
+- Growing their business online and getting found by new customers
+- Having a professional digital presence without becoming a marketing expert
 - Getting their time back
-- Not losing jobs to competitors who respond faster
+- Not losing jobs to competitors who show up online and they do not
 - Knowing what they are paying for and what it does
 - Seeing proof before committing
+- Not spending $3K-$5K upfront on something they do not understand yet
+
+**Why they are not already solving this:** They cannot afford a traditional marketing agency. They do not have time to learn digital marketing themselves. They have been burned by vendors who charged upfront and delivered templates. Sameer's model -- free entry, prove value first, revenue share -- removes every one of those barriers.
 
 **Expertise level:** They understand their business deeply. They do not understand automation or AI. They do not need to. Never explain the technology unless asked. Explain the outcome.
 
-**How they want to be addressed:** As capable adults who are busy, not confused. They are not failing — they are stretched thin. The framing is always "here is a better system," never "here is what you have been doing wrong."
+**How they want to be addressed:** As capable adults who are busy, not confused. They are not failing -- they are stretched thin. The framing is always "here is a better system," never "here is what you have been doing wrong."
 
-**Industry representation:** Content and examples should represent varied industries — not just trades. The automations we build apply to any small business where the owner is physically busy serving customers when leads come in: dental offices, salons, photography studios, cleaning companies, law firms, gyms, tutoring centers, and trades alike. Rotate industries in examples, social proof, and case studies to reinforce the "any industry" positioning.
+**Industry representation:** Content and examples should represent varied industries -- not just trades. The systems we build apply to any small business where the owner is physically busy serving customers when leads come in: dental offices, salons, photography studios, cleaning companies, law firms, gyms, tutoring centers, and trades alike. Rotate industries in examples, social proof, and case studies to reinforce the "any industry" positioning.
 
 ---
 
 ## 4. Core messaging pillars
 
-### Real automations
+### Real systems
 
-Show actual systems: the workflow, the trigger, the output. Screenshots, Loom walkthroughs, screen recordings. No mock-ups. No stock demos.
+Show actual systems across the full scope: brand builds, content pipelines, email sequences, lead capture workflows, review automation. Screenshots, Loom walkthroughs, screen recordings. No mock-ups. No stock demos. "Systems" means the interconnected set of tools that run a business's growth -- not a single automation in isolation.
+
+### Growth partnership model
+
+Free to start. Prove value first. Revenue share aligns incentives. This is the core differentiator: Sameer does not charge $3K upfront for something the client does not understand yet. He does a growth audit at no cost, builds the initial systems, demonstrates results, and then earns a percentage of the revenue those systems drive. When the client grows, Sameer grows. When the systems do not perform, Sameer does not get paid. This is the opposite of every agency that charges monthly whether or not anything works.
 
 ### Case studies with numbers
 
-Every case study leads with the metric: time saved, revenue recovered, response rate improvement. The story follows the number, not the other way around.
+Every case study leads with the transformation arc: where the business started (invisible online, no reviews, no follow-up) and where it ended (fully booked, 100+ reviews, 3x inbound leads). The metrics follow the story. Single-metric proof ("$4,200 recovered") still works for social content, but the full case studies show the complete picture.
 
 ### Behind-the-scenes builds
 
 Document the build process as content. What the client asked for, what Sameer actually built, where it got complicated, how it resolved. This builds trust and demonstrates expertise simultaneously.
 
-### What's worth automating
+### What's worth building
 
-Educate the audience on which manual processes have the highest ROI to automate. This positions Sameer as an advisor, not a salesperson, and generates organic search and social traction.
+Educate the audience on which gaps in their digital presence have the highest ROI to close. Brand first or follow-up first? Content or reviews? This positions Sameer as an advisor, not a salesperson, and generates organic search and social traction.
 
 ### Origin story
 
-Sameer ran a wedding photography business (Raj Photo Video). He built automations for his own lead follow-up, booking, and client communication. It worked. He started building the same systems for other business owners. This is the through-line that makes every piece of content credible.
+Sameer ran a wedding photography business (Raj Photo Video). He built the systems -- content, email, lead follow-up, reviews, branding -- that grew his own business. It worked. He started building the same systems for other business owners. This is the through-line that makes every piece of content credible.
 
 ---
 
 ## 5. Tone spectrum
 
-| Context         | Tone                   | Notes                                                                                     |
-| --------------- | ---------------------- | ----------------------------------------------------------------------------------------- |
-| YouTube videos  | Conversational, direct | Talk like you are explaining to a friend. No scripted stiffness. First-person throughout. |
-| Landing page    | Confident, specific    | Lead with pain, follow with proof, close with the offer. Minimal adjectives.              |
-| Outreach emails | Peer-level, brief      | Under 100 words. One observation, one relevant result, one ask. Never pitch features.     |
-| Social media    | Practical, punchy      | One idea per post. No threads that bury the point. Metrics up front.                      |
-| Discovery calls | Consultative, honest   | Ask more than you pitch. If automation will not help them, say so.                        |
+| Context         | Tone                   | Notes                                                                                                                  |
+| --------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| YouTube videos  | Conversational, direct | Talk like you are explaining to a friend. No scripted stiffness. First-person throughout.                              |
+| Landing page    | Confident, specific    | Lead with the gap in their digital presence, show the transformation, offer the free growth audit. Minimal adjectives. |
+| Outreach emails | Peer-level, brief      | Under 100 words. One observation, one relevant result, one ask. Never pitch features.                                  |
+| Social media    | Practical, punchy      | One idea per post. No threads that bury the point. Metrics up front.                                                   |
+| Discovery calls | Consultative, honest   | Ask more than you pitch. If the systems will not help them, say so.                                                    |
 
 ---
 
 ## 6. Style rules
 
-- No emojis anywhere — not in captions, emails, YouTube titles, or DMs
-- Use contractions (it's, you're, we'll) — they are conversational and keep the tone human
+- No emojis anywhere -- not in captions, emails, YouTube titles, or DMs
+- Use contractions (it's, you're, we'll) -- they are conversational and keep the tone human
 - No jargon: say "automated follow-up," not "AI-powered omnichannel engagement"
 - No buzzwords: not "synergy," "leverage" (as a verb), "game-changer," "revolutionary," "seamless"
-- Never name a current or past employer — use "across industries" or "in my own business" instead
+- Never name a current or past employer -- use "across industries" or "in my own business" instead
 - Oxford comma: always
 - Headings and titles: sentence case, not Title Case
-- Numbers: always use numerals for business metrics (3 jobs, $4,200, 40%, 12 minutes) — never write them out
+- Numbers: always use numerals for business metrics (3 jobs, $4,200, 40%, 12 minutes) -- never write them out
 - Paragraph length: keep it short. Two to four sentences max in content designed for web or social.
 
 ---
@@ -132,14 +143,17 @@ Sameer ran a wedding photography business (Raj Photo Video). He built automation
 
 | Use this              | Not this                                                       |
 | --------------------- | -------------------------------------------------------------- |
-| automation            | AI solution, AI-powered tool                                   |
-| system                | platform, suite, ecosystem                                     |
+| systems               | tools, products, platform, suite, ecosystem                    |
+| automation            | AI solution, AI-powered tool (acceptable as subset of systems) |
+| growth partner        | vendor, agency, consultant                                     |
+| digital presence      | online marketing, digital marketing strategy                   |
+| growth audit          | discovery call (on landing page -- calls are fine in outreach) |
 | small business owner  | SMB, entrepreneur, solopreneur (unless they use it themselves) |
 | follow-up             | outreach, nurture sequence                                     |
 | missed call text-back | SMS re-engagement                                              |
 | review management     | reputation management                                          |
 | build                 | implement, deploy, onboard                                     |
-| retainer              | maintenance fee, subscription                                  |
+| revenue share         | commission, affiliate fee                                      |
 | I built this          | our team developed                                             |
 | across industries     | (never name specific employers)                                |
 
@@ -153,7 +167,7 @@ Sameer has a day job at a large financial institution. This must not appear in a
 
 1. Never name any employer, current or past, by name.
 2. Never reference financial services, banking, treasury markets, fixed income, or any related domain in connection with Sameer's background.
-3. "Enterprise background" is acceptable as a phrase only if vague — "I have worked across industries" is the approved formulation.
+3. "Enterprise background" is acceptable as a phrase only if vague -- "I have worked across industries" is the approved formulation.
 4. If a client, journalist, or follower asks about Sameer's day job, the answer is that he focuses on his business in public content and does not discuss unrelated work.
 5. All case studies reference clients by industry and result only, never by name, unless the client provides written approval.
 
@@ -165,7 +179,7 @@ This is a non-negotiable security constraint, not a stylistic preference. When i
 
 ### Design language
 
-The brand uses a **System Architecture** visual language. Every asset — website, YouTube thumbnails, social graphics — shares these recurring elements:
+The brand uses a **System Architecture** visual language. Every asset -- website, YouTube thumbnails, social graphics -- shares these recurring elements:
 
 - **Dot grids:** Regular arrays of low-opacity dots that fill negative space and create depth
 - **Arch-nodes:** Small glowing circles placed at compositional anchor points, colored in brand purples and cyan
@@ -182,7 +196,7 @@ These elements appear at low opacity and never compete with primary content. The
 | Headings     | Roc Grotesk    | Outfit, sans-serif        | 700 (bold)    |
 | Body text    | Gilroy         | DM Sans, sans-serif       | 400 (regular) |
 | Code / data  | JetBrains Mono | monospace                 | 400           |
-| Web fallback | system-ui      | -apple-system, sans-serif | —             |
+| Web fallback | system-ui      | -apple-system, sans-serif | ---           |
 
 Roc Grotesk carries authority without feeling corporate. Gilroy is clean and readable at body sizes. Both pair well with the geometric quality of the icon system.
 
@@ -207,14 +221,14 @@ The purple-to-cyan gradient is the signature visual motif. It appears on the log
 
 The logo icon uses the **Input/Output Bridge** concept: an S-shaped data flow connecting two system nodes.
 
-- **S-wave path:** Fluid cubic bezier curve with a three-stop gradient (primary purple → light purple → cyan)
+- **S-wave path:** Fluid cubic bezier curve with a three-stop gradient (primary purple to light purple to cyan)
 - **Input node:** Top-right position, primary purple fill with cyan glow filter and white filament center
 - **Output node:** Bottom-left position, cyan fill with cyan glow filter and white filament center
 - **Atmospheric halos:** Radial gradients behind each node (purple for input, cyan for output), fading to transparent
 - **Tagline size:** 13px in all lockup variants
 - **ViewBox:** 100x100 (square)
 
-The icon reads as a data pipeline transforming input to output — directly reflecting the automation value proposition.
+The icon reads as a data pipeline transforming input to output -- directly reflecting the automation value proposition.
 
 ### YouTube thumbnail guidelines
 
@@ -222,6 +236,6 @@ The icon reads as a data pipeline transforming input to output — directly refl
 - **Heading font:** Roc Grotesk Bold, white or light text
 - **Body font:** Gilroy Regular for supporting text
 - **Architecture elements:** Include at least one dot-grid region and one or two arch-nodes
-- **Accent bar:** A thin gradient line (purple → cyan) as a section divider or frame element
+- **Accent bar:** A thin gradient line (purple to cyan) as a section divider or frame element
 - **Icon placement:** Small logo icon in a consistent corner position
-- **Color usage:** Primary purple and cyan as accents only — do not fill large areas with saturated color
+- **Color usage:** Primary purple and cyan as accents only -- do not fill large areas with saturated color

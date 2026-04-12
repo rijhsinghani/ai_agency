@@ -1,0 +1,34 @@
+{
+  "section": "automation-cards",
+  "intro": "Four systems I build most often. Each one is a fixed-scope package, not a custom project, so they ship fast.",
+  "cards": [
+    {
+      "id": "missed-call-text-back",
+      "title": "Missed call text-back",
+      "what_it_does": "Every unanswered call gets an automatic text within 30 seconds so the lead stays warm until you're free to call back.",
+      "cost_without_it": "A solo dental office missing 6 calls a day at an average new-patient value of $600 bleeds roughly $1,200 a month in lost bookings.",
+      "time_to_live": "Running in 2 to 3 days after the kickoff call."
+    },
+    {
+      "id": "instant-lead-response",
+      "title": "Instant lead response",
+      "what_it_does": "New form fills, ad clicks, and voicemails get a qualifying text inside 60 seconds, book the prospect to your calendar, and notify you only when it's real.",
+      "cost_without_it": "Studies show replying in 5 minutes closes 21 times more business than replying in 30, and most owners reply in 2 hours or more.",
+      "time_to_live": "Running in 3 to 5 days."
+    },
+    {
+      "id": "review-management",
+      "title": "Review management",
+      "what_it_does": "Two hours after every job is marked complete, the customer gets a one-tap link to leave a Google review while the work is still fresh.",
+      "cost_without_it": "A salon stuck at 31 reviews while the competitor sits at 147 loses roughly 25 to 30 percent of map-pack visibility every month.",
+      "time_to_live": "Running in 2 days."
+    },
+    {
+      "id": "booking-confirmation-sequences",
+      "title": "Booking confirmation sequences",
+      "what_it_does": "Automatic 24-hour and 1-hour reminders with a self-serve reschedule link cut no-shows roughly in half.",
+      "cost_without_it": "A cleaning company running 40 jobs a month at 15 percent no-shows wastes 6 slots worth about $1,800 in revenue and drive time.",
+      "time_to_live": "Running in 2 to 3 days."
+    }
+  ]
+}

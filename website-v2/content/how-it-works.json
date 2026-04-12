@@ -1,0 +1,26 @@
+{
+  "section": "how-it-works",
+  "intro": "Four steps from first call to a system running in your business.",
+  "steps": [
+    {
+      "number": 1,
+      "title": "Discovery call",
+      "body": "A 15-minute call to hear where leads are leaking, what tools you already use, and whether automation is the right fix."
+    },
+    {
+      "number": 2,
+      "title": "Scope and quote",
+      "body": "A plain-English scope with the exact automation, the build fee, the monthly retainer, and the timeline. No mystery pricing."
+    },
+    {
+      "number": 3,
+      "title": "Build",
+      "body": "I build, test with 10 to 20 simulated leads, and run it against your live setup before anything touches a real customer."
+    },
+    {
+      "number": 4,
+      "title": "Handoff and retainer",
+      "body": "You get a Loom walkthrough, a written runbook, and ongoing monitoring on retainer so the system keeps working next month."
+    }
+  ]
+}

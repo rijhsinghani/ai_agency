@@ -1,0 +1,123 @@
+{
+  "_comment": "Extracted from research/case-studies/ on 2026-04-12. Each block represents one giant-metric proof block for section 5 of the landing page. Industries are rotated: event services, trades (roofing), local services (HVAC), cleaning, plumbing. Never name clients — industry label only. Source file paths included for builder verification.",
+  "_source": "/Users/sameerrijhsinghani/automation_consulting/research/case-studies/",
+  "_count": 5,
+  "_display_rule": "Pick 3 of 5 for the landing page v1. Claude recommends blocks 1, 3, and 4 for maximum industry spread and metric-type diversity (revenue recovered / close-rate improvement / review growth). Keep block 2 and 5 as alternates.",
+
+  "proof_blocks": [
+    {
+      "id": "proof-01",
+      "priority": 1,
+      "industry_label": "Event services",
+      "metric_xl": "$4,200",
+      "metric_unit": "/mo",
+      "metric_type": "revenue recovered",
+      "headline": "$4,200/mo recovered from leads that used to go cold",
+      "caption": "Response time dropped from 4 hours to 60 seconds. Weekly admin dropped from 7 hours to under 1. Three jobs a month recovered at an average of $1,400 per booking.",
+      "system_installed": "Missed call text-back + automated lead follow-up + booking confirmation sequence",
+      "timeframe": "Running for 12+ months",
+      "system_cost": "$200/mo retainer",
+      "roi_one_liner": "$4,200 recovered against $200 retainer",
+      "source_file": "research/case-studies/01-raj-photo-video.md",
+      "source_note": "Originally framed as wedding photography. Reframed as 'event services' to honor the rotate-industries rule. This is also the origin-story case — Sameer built this for his own business first."
+    },
+    {
+      "id": "proof-02",
+      "priority": 2,
+      "industry_label": "HVAC",
+      "metric_xl": "$1,200",
+      "metric_unit": "/mo",
+      "metric_type": "revenue recovered",
+      "headline": "$1,200/mo recovered from missed calls during field work",
+      "caption": "Solo technician getting 5+ missed calls a week while on roofs and under units. Text-back fires in 30 seconds. About half of missed callers reply. Two real leads a month are now recovered that used to go to whoever called them back first.",
+      "system_installed": "Missed call text-back",
+      "timeframe": "Running for 8 months",
+      "system_cost": "$200/mo retainer",
+      "roi_one_liner": "$1,200 recovered against $200 retainer",
+      "source_file": "research/case-studies/02-missed-call-text-back.md"
+    },
+    {
+      "id": "proof-03",
+      "priority": 1,
+      "industry_label": "Roofing",
+      "metric_xl": "$4,000",
+      "metric_unit": "/mo",
+      "metric_type": "close-rate improvement",
+      "headline": "Close rate jumped from 25% to 35% on sent quotes",
+      "caption": "20 quotes a month. Before, follow-up happened when the owner remembered. After, a 3-touch sequence fires automatically on day 2, 5, and 10. Two additional closes a month at $2,000 per job — $4,000 in recovered revenue.",
+      "system_installed": "Quote follow-up sequence (3-touch over 10 days, stops on reply)",
+      "timeframe": "Running for 6 months",
+      "system_cost": "$300/mo retainer",
+      "roi_one_liner": "$4,000 recovered against $300 retainer",
+      "source_file": "research/case-studies/03-quote-follow-up.md"
+    },
+    {
+      "id": "proof-04",
+      "priority": 1,
+      "industry_label": "Local services",
+      "metric_xl": "31 to 147",
+      "metric_unit": "Google reviews",
+      "metric_type": "review growth",
+      "headline": "From 31 Google reviews to 147 in 90 days",
+      "caption": "Every completed job triggers a review request 2 hours later, while the customer is still happy. 4 to 5 additional jobs a month from improved local search visibility. The window for asking is 2 hours wide — automation is the only way to hit it every time.",
+      "system_installed": "Review and reputation automation (post-job trigger + 3-day follow-up)",
+      "timeframe": "90-day result",
+      "system_cost": "$200/mo retainer",
+      "roi_one_liner": "$1,600 to $2,000 in monthly revenue against $200 retainer",
+      "source_file": "research/case-studies/05-review-reputation.md"
+    },
+    {
+      "id": "proof-05",
+      "priority": 2,
+      "industry_label": "Cleaning",
+      "metric_xl": "15% to 7%",
+      "metric_unit": "no-show rate",
+      "metric_type": "cost reduction",
+      "headline": "No-show rate cut in half with automated reminders",
+      "caption": "40 appointments a month at $300 per job. Before, 6 wasted trips a month. After, 24-hour and 1-hour reminders with a reschedule link cut no-shows in half. Three recovered jobs a month, plus saved drive time.",
+      "system_installed": "Appointment reminder sequence (24-hour + 1-hour triggers, self-serve reschedule)",
+      "timeframe": "Running for 4 months",
+      "system_cost": "$200/mo retainer",
+      "roi_one_liner": "$900 recovered against $200 retainer",
+      "source_file": "research/case-studies/06-appointment-reminders.md"
+    }
+  ],
+
+  "industry_coverage_check": {
+    "rule": "Brand voice requires rotating at least 5 distinct industries across the page (non-photo).",
+    "industries_named_in_proof_section": [
+      "Event services",
+      "HVAC",
+      "Roofing",
+      "Local services",
+      "Cleaning"
+    ],
+    "count": 5,
+    "status": "PASS"
+  },
+
+  "metric_type_diversity_check": {
+    "rule": "Proof blocks should not all be the same metric type — variety increases credibility.",
+    "types_used": [
+      "revenue recovered (2 blocks)",
+      "close-rate improvement (1 block)",
+      "review growth (1 block)",
+      "cost reduction (1 block)"
+    ],
+    "status": "PASS"
+  },
+
+  "confidentiality_check": {
+    "rule": "Never name a client. Industry label only unless written approval exists.",
+    "clients_named": 0,
+    "employers_named": 0,
+    "status": "PASS"
+  },
+
+  "builder_notes": {
+    "display": "Use the <MetricXL /> primitive from components/brand/. Render metric_xl at 7.5rem Roc Grotesk Bold. Caption at 1.125rem Gilroy Regular. Industry label as cyan-outline badge above the metric.",
+    "count_up_animation": "Only animate numeric metric_xl values (proof-01: 4200, proof-02: 1200, proof-03 and proof-04 and proof-05 are not plain numbers). For non-numeric values (31 to 147, 15% to 7%), use a fade-up only.",
+    "picked_for_v1": ["proof-01", "proof-03", "proof-04"],
+    "alternates": ["proof-02", "proof-05"]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "section": "problem-strip",
+  "tiles": [
+    {
+      "title": "Leads go cold in minutes",
+      "body": "A prospect who waits 2 hours for a reply has already called the next business on the list."
+    },
+    {
+      "title": "Calls get missed every day",
+      "body": "You're with a client, on a job, or mid-cleaning, and the phone rings into voicemail nobody checks."
+    },
+    {
+      "title": "Manual follow-up eats your week",
+      "body": "Quotes sent, reminders to make, reviews to chase, all landing back on the one person running the business."
+    }
+  ]
+}

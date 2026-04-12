@@ -1,0 +1,32 @@
+{
+  "title": "Sameer Automations — Smart systems. Built for your business.",
+  "description": "Custom automations for small service businesses. Every lead gets a response in 60 seconds, every missed call gets a text back in 30, every job gets a review request. Built in days, not months.",
+  "canonical": "https://sameerautomations.com",
+  "og": {
+    "title": "Sameer Automations — Smart systems. Built for your business.",
+    "description": "Custom automations for dental, salon, trades, cleaning, law, and other local service businesses. Recover missed calls, reply to leads in under a minute, and stop chasing reviews by hand.",
+    "type": "website",
+    "url": "https://sameerautomations.com",
+    "image": "/brand/og-image.png",
+    "site_name": "Sameer Automations"
+  },
+  "twitter": {
+    "card": "summary_large_image",
+    "site": "@SameerAutomates",
+    "creator": "@SameerAutomates",
+    "title": "Sameer Automations — Smart systems. Built for your business.",
+    "description": "I built automations for my own small business. Now I build them for other owners. Leads answered in 60 seconds, missed calls recovered in 30, reviews that ask themselves."
+  },
+  "keywords": [
+    "small business automation",
+    "missed call text back",
+    "lead response automation",
+    "n8n consultant",
+    "Twilio SMS automation",
+    "Google review automation",
+    "appointment reminder system",
+    "AI automation for small business"
+  ],
+  "robots": "index,follow",
+  "theme_color": "#7B2FBE"
+}

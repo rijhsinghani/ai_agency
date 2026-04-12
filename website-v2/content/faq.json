@@ -1,0 +1,41 @@
+{
+  "section": "faq",
+  "items": [
+    {
+      "q": "What does this cost?",
+      "a": "Builds run $1,500 to $3,000 up front depending on the automation, plus a $200 to $500 per month retainer for monitoring, fixes, and tweaks. Payment is 50 percent at kickoff and 50 percent at go-live. The retainer starts the day the system goes live."
+    },
+    {
+      "q": "What happens if I leave?",
+      "a": "You can cancel the retainer with 30 days' notice. The automation keeps running on your accounts, your phone numbers, and your tools. You own the instance. I just stop maintaining it."
+    },
+    {
+      "q": "Who owns the automations?",
+      "a": "You do. The Twilio number, the n8n workflows, the API keys, the customer data, all of it lives in accounts registered to your business. If we part ways, nothing gets held hostage."
+    },
+    {
+      "q": "Why a retainer?",
+      "a": "APIs change, phone carriers update filtering rules, Google tweaks review policies, and your business shifts. The retainer covers monitoring, breakage fixes, and small adjustments so the system keeps earning its keep every month."
+    },
+    {
+      "q": "How fast can this run?",
+      "a": "Most single-automation builds ship in 2 to 5 business days after the scope is signed. Missed call text-back and review automation are usually live inside a week."
+    },
+    {
+      "q": "What if I don't know what I need?",
+      "a": "That's what the discovery call is for. If automation won't help, I'll say so on the call instead of selling you a package. If it will, you'll leave the call with a short list of the highest-impact options for your business."
+    },
+    {
+      "q": "Which tools do you use?",
+      "a": "n8n for the workflow logic, Twilio for SMS and voice, and the Claude API for any text generation. Everything runs on accounts in your name. No proprietary platform you can't leave."
+    },
+    {
+      "q": "Is this just SaaS with extra steps?",
+      "a": "No. SaaS gives you a generic product and a login. I build a specific workflow for your business, your tools, and your customers, and the stack stays yours. If a SaaS tool solves your problem better and cheaper, I'll tell you to buy it."
+    },
+    {
+      "q": "Do you serve my industry?",
+      "a": "Probably. I work across dental offices, salons, trades, law firms, cleaning companies, gyms, real estate agents, tutoring centers, and other local service businesses. The systems are the same, the copy changes to match your industry."
+    }
+  ]
+}

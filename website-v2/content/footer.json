@@ -1,0 +1,52 @@
+{
+  "final_cta": {
+    "headline": "Stop losing leads you already earned",
+    "subhead": "15 minutes on a call, an honest read on whether automation will move the needle, and a scope you can say yes or no to. No pressure, no pitch deck.",
+    "primary_button": {
+      "label": "Book a discovery call",
+      "href": "https://calendar.app.google/psycao3CrXjGnmk48"
+    },
+    "secondary_button": {
+      "label": "See what gets built",
+      "href": "#automations"
+    }
+  },
+  "footer": {
+    "tagline": "Smart systems. Built for your business. By Sameer.",
+    "nav": [
+      { "label": "What gets built", "href": "#automations" },
+      { "label": "Proof", "href": "#proof" },
+      { "label": "How it works", "href": "#how-it-works" },
+      { "label": "FAQ", "href": "#faq" },
+      {
+        "label": "Book a call",
+        "href": "https://calendar.app.google/psycao3CrXjGnmk48"
+      }
+    ],
+    "socials": [
+      {
+        "label": "YouTube",
+        "handle": "@SameerAutomates",
+        "href": "https://www.youtube.com/@SameerAutomates"
+      },
+      {
+        "label": "Twitter",
+        "handle": "@SameerAutomates",
+        "href": "https://twitter.com/SameerAutomates"
+      },
+      {
+        "label": "Instagram",
+        "handle": "@SameerAutomates",
+        "href": "https://instagram.com/SameerAutomates"
+      }
+    ],
+    "contact": {
+      "email": "sameer@rajphotovideo.com"
+    },
+    "legal": {
+      "company": "Sameer Automations",
+      "year": 2026,
+      "rights": "All rights reserved."
+    }
+  }
+}
