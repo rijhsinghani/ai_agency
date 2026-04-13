@@ -1,11 +1,11 @@
 {
   "version": "1.0",
-  "timestamp": "2026-04-12T22:16:13.892Z",
+  "timestamp": "2026-04-13T00:36:33.632Z",
   "phase": "13",
   "phase_name": "Landing Page Rebuild — sameerautomations.com",
   "phase_dir": ".planning/phases/13-landing-page-rebuild-sameerautomations",
-  "plan": 0,
-  "task": 0,
+  "plan": 2,
+  "task": 1,
   "total_tasks": 6,
   "status": "paused",
   "completed_tasks": [
@@ -30,98 +30,127 @@
     {
       "id": 4,
       "name": "Designer inspiration scrape + style plan + hero options",
-      "status": "done",
-      "commit": null
+      "status": "done"
     },
-    {
-      "id": 5,
-      "name": "Content extraction (problem strip, cards, FAQ, footer, SEO, proof)",
-      "status": "done",
-      "commit": null
-    },
+    { "id": 5, "name": "Content extraction (7 JSON files)", "status": "done" },
     {
       "id": 6,
       "name": "Brand-voice.md updated to growth-partner positioning",
-      "status": "done",
-      "commit": null
+      "status": "done"
     },
     {
       "id": 7,
-      "name": "v2 research — futuristic AI growth agency sites + new hero options + revised section architecture",
-      "status": "done",
-      "commit": null
+      "name": "v2 research (hero options, section order, inspiration)",
+      "status": "done"
+    },
+    {
+      "id": 8,
+      "name": "21st.dev Magic MCP installed in .mcp.json",
+      "status": "done"
+    },
+    {
+      "id": 9,
+      "name": "Next.js 16 scaffold (package.json, tailwind v4, layout, globals.css)",
+      "status": "done"
+    },
+    {
+      "id": 10,
+      "name": "Hero.tsx hand-coded",
+      "status": "done_but_rejected",
+      "progress": "Renders at localhost:3000 but Sameer rejected visual quality — wants 21st.dev Magic components"
     }
   ],
   "remaining_tasks": [
     {
-      "id": 8,
-      "name": "Scaffold Next.js 15 in website-v2/ (13-02-PLAN)",
-      "status": "not_started"
-    },
-    {
-      "id": 9,
-      "name": "Generate hero + all sections via 21st.dev Magic MCP with user approval per section",
-      "status": "not_started"
-    },
-    {
-      "id": 10,
-      "name": "Wire forms, analytics, SEO (13-05-PLAN)",
-      "status": "not_started"
-    },
-    {
       "id": 11,
-      "name": "GCP Cloud Run deploy + DNS cutover (13-05/06-PLAN)",
+      "name": "Subscribe to 21st.dev Pro ($20/mo) for API access",
+      "status": "not_started"
+    },
+    {
+      "id": 12,
+      "name": "Generate hero via 21st.dev Magic MCP with growth-partner content",
+      "status": "not_started"
+    },
+    {
+      "id": 13,
+      "name": "Generate remaining 10 sections via Magic MCP",
+      "status": "not_started"
+    },
+    {
+      "id": 14,
+      "name": "Update content JSONs to match growth-partner positioning",
+      "status": "not_started"
+    },
+    { "id": 15, "name": "Wire forms to n8n webhook", "status": "not_started" },
+    {
+      "id": 16,
+      "name": "Plausible analytics + SEO metadata",
+      "status": "not_started"
+    },
+    {
+      "id": 17,
+      "name": "Dockerfile + cloudbuild.yaml + Cloud Run deploy",
+      "status": "not_started"
+    },
+    {
+      "id": 18,
+      "name": "DNS cutover for sameerautomations.com",
+      "status": "not_started"
+    },
+    {
+      "id": 19,
+      "name": "Verification (Lighthouse, live HTTPS, form E2E)",
       "status": "not_started"
     }
   ],
   "blockers": [
     {
-      "description": "21st.dev Magic MCP installed but requires session restart to activate",
+      "description": "21st.dev free tier exhausted — need Pro subscription ($20/mo) for API/MCP access",
+      "type": "human_action",
+      "workaround": "Sameer confirmed he'll pay"
+    },
+    {
+      "description": "Content JSONs written for OLD automation-shop positioning",
       "type": "technical",
-      "workaround": "Restart Claude Code session — .mcp.json is already written"
+      "workaround": "Rewrite after 21st.dev subscription active"
     }
   ],
   "human_actions_pending": [
     {
-      "action": "Restart Claude Code session to activate 21st.dev Magic MCP",
-      "context": ".mcp.json written with API key, needs session reload",
+      "action": "Subscribe to 21st.dev Pro plan ($20/mo)",
+      "context": "Free tier API limit hit after 2 requests. Pro enables unlimited Magic MCP component generation.",
       "blocking": true
-    },
-    {
-      "action": "Review updated brand-voice.md",
-      "context": "Opened in editor — confirms growth partner positioning, revenue share model, expanded service pillars",
-      "blocking": false
     }
   ],
   "decisions": [
     {
-      "decision": "Hero: Option 5 — 'Marketing, content, and follow-up — handled'",
-      "rationale": "Communicates relief + breadth. Fits growth partner positioning.",
+      "decision": "Growth partner positioning (not automation shop)",
+      "rationale": "Broader: branding, email, content, lead automation, reviews, digital presence. Revenue share (10%) not upfront fees.",
       "phase": "13"
     },
     {
-      "decision": "11-section architecture (growth partner layout)",
-      "rationale": "Added services grid, technology preview, origin story, pricing tiers. Replaced narrow automation-shop layout.",
+      "decision": "Hero: Option 5 — cycling word animation",
+      "rationale": "Marketing/Branding/Email/Reviews/Websites cycle with ', content, and follow-up — handled.'",
       "phase": "13"
     },
     {
-      "decision": "Dark base shade: TBD (user hasn't picked yet)",
-      "rationale": "#0E0E0E vs #1A1A1A deferred to next session",
+      "decision": "11-section architecture",
+      "rationale": "Hero, problem strip, services grid, transformation stories, how-it-works, tech preview, origin story, social proof, pricing, FAQ, final CTA",
       "phase": "13"
     },
     {
-      "decision": "Positioning pivot: growth partner, not automation shop",
-      "rationale": "Sameer's offering is broader — branding, email, content, lead automation, digital presence. Free entry + revenue share model.",
+      "decision": "21st.dev Magic for component generation (NOT hand-coded)",
+      "rationale": "Hand-coded hero rejected. Sameer wants the futuristic look/feel that Magic produces.",
       "phase": "13"
     },
     {
-      "decision": "Brand-voice.md updated to reflect growth partner positioning",
-      "rationale": "Landing page needs source-of-truth brand doc updated first",
+      "decision": "Next.js 16 + Tailwind v4 stack",
+      "rationale": "create-next-app installed Next 16.2.3 (latest). Tailwind v4 with @import syntax.",
       "phase": "13"
     },
     {
-      "decision": "Proof blocks: TBD (needs re-evaluation against broader positioning)",
-      "rationale": "Original proof blocks were automation-focused ($4,200 text-back). Need transformation stories for growth partner.",
+      "decision": "Dark base shade: TBD",
+      "rationale": "#0E0E0E vs #1A1A1A still undecided",
       "phase": "13"
     },
     {
@@ -131,24 +160,16 @@
     }
   ],
   "uncommitted_files": [
-    ".mcp.json",
-    "brand/brand-voice.md",
-    "website-v2/research/inspiration.md",
-    "website-v2/research/inspiration-v2.md",
-    "website-v2/research/style-plan.md",
-    "website-v2/research/hero-options.md",
-    "website-v2/research/hero-options-v2.md",
-    "website-v2/research/section-order.md",
-    "website-v2/research/section-order-v2.md",
-    "website-v2/research/proof.json",
-    "website-v2/content/problem-strip.json",
-    "website-v2/content/automation-cards.json",
-    "website-v2/content/how-it-works.json",
-    "website-v2/content/faq.json",
-    "website-v2/content/footer.json",
-    "website-v2/content/seo.json",
-    "website-v2/content/n8n-webhook.md"
+    "website-v2/app/globals.css",
+    "website-v2/app/layout.tsx",
+    "website-v2/app/components/Hero.tsx",
+    "website-v2/app/page.tsx",
+    "website-v2/package.json",
+    "website-v2/tailwind.config.ts",
+    "website-v2/next.config.ts",
+    "website-v2/postcss.config.mjs",
+    "website-v2/tsconfig.json"
   ],
-  "next_action": "Restart Claude Code session. Run /gsd:resume-work. Magic MCP will be live. Scaffold Next.js in website-v2/, then generate hero section via Magic MCP for user visual review.",
-  "context_notes": "Major positioning pivot mid-session. Sameer realized his niche is broader than automation — he's an AI growth partner for small businesses. Free entry + revenue share model. Brand-voice.md was updated. Content files (problem strip, FAQ, etc.) were written for the OLD narrower positioning and will need partial rewrites to match the growth-partner framing. The v2 research files (hero-options-v2.md, section-order-v2.md, inspiration-v2.md) reflect the NEW positioning. Use those, not the v1 files."
+  "next_action": "After subscribing to 21st.dev Pro, generate hero section via Magic MCP with exact growth-partner content from brand-voice.md and hero-options-v2.md",
+  "context_notes": "Scaffold works (localhost:3000 returns 200). Hero renders but Sameer rejected visual quality — wants 21st.dev Magic components. CSS @import bug was fixed (switched to next/font/google). Sameer confirmed he'll pay for 21st.dev Pro. Key insight: hand-coded Tailwind doesn't meet the visual bar for this project."
 }
