@@ -74,7 +74,7 @@ Answer these questions honestly.
 4. Has a customer ever told you they called but did not leave a voicemail?
 5. Have you tried calling back and found the lead had already booked someone else?
 
-If you answered yes to 3 or more: you have a missed-call problem that is costing you real money right now. It does not matter whether you run a salon, a dental practice, a law firm, a photography studio, a cleaning company, or anything else where you are heads-down serving one client while the next one is trying to reach you.
+If you answered yes to 3 or more: you have a missed-call problem that is costing you real money right now. You're a gym owner or trainer, real estate agent, photographer or videographer — any owner-led business where the founder is with a client when the phone rings. Consistent follow-up is what wins, and you can't do it if you are heads-down serving one client while the next one is trying to reach you.
 
 ---
 
