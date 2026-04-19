@@ -308,6 +308,384 @@ function GridCell({ config, typeKit }) {
     );
   }
 
+  // DATA-CARD — two-column comparison: 40% vs 10%
+  if (kind === "data-card") {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#1A1A1A",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "14px 12px",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* dot grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(rgba(168,162,158,.06) 0.6px, transparent 0.6px)",
+            backgroundSize: "14px 14px",
+            opacity: 0.7,
+          }}
+        />
+        {/* two columns */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            width: "100%",
+            alignItems: "stretch",
+            flex: 1,
+            maxHeight: "72%",
+          }}
+        >
+          {/* left column */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: typeKit.fontFamily,
+                fontWeight: 700,
+                fontSize: 48,
+                lineHeight: 1.0,
+                color: "#7B2FBE",
+                letterSpacing: "0em",
+              }}
+            >
+              40%
+            </div>
+            <div
+              style={{
+                fontSize: 9,
+                fontFamily: typeKit.fontFamily,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.55)",
+                textAlign: "center",
+                lineHeight: 1.3,
+              }}
+            >
+              5-MIN
+              <br />
+              RESPONSE
+            </div>
+          </div>
+          {/* divider */}
+          <div
+            style={{
+              width: 1,
+              background: "rgba(255,255,255,0.1)",
+              alignSelf: "stretch",
+              margin: "0 4px",
+            }}
+          />
+          {/* right column */}
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 6,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: typeKit.fontFamily,
+                fontWeight: 700,
+                fontSize: 48,
+                lineHeight: 1.0,
+                color: "rgba(255,255,255,0.45)",
+                letterSpacing: "0em",
+              }}
+            >
+              10%
+            </div>
+            <div
+              style={{
+                fontSize: 9,
+                fontFamily: typeKit.fontFamily,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.35)",
+                textAlign: "center",
+                lineHeight: 1.3,
+              }}
+            >
+              2-HOUR
+              <br />
+              RESPONSE
+            </div>
+          </div>
+        </div>
+        {/* bottom caption */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            fontSize: 9,
+            fontFamily: typeKit.fontFamily,
+            fontWeight: 700,
+            letterSpacing: "0.16em",
+            textTransform: "uppercase",
+            color: "#7B2FBE",
+            textAlign: "center",
+            marginTop: 10,
+          }}
+        >
+          SPEED = CLOSE RATE
+        </div>
+      </div>
+    );
+  }
+
+  // PROOF-CARD — single big metric with attribution
+  if (kind === "proof-card") {
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#1A1A1A",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "14px 12px",
+          boxSizing: "border-box",
+          gap: 0,
+        }}
+      >
+        {/* dot grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(rgba(168,162,158,.06) 0.6px, transparent 0.6px)",
+            backgroundSize: "14px 14px",
+            opacity: 0.7,
+          }}
+        />
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          {/* top label */}
+          <div
+            style={{
+              fontSize: 9,
+              fontFamily: typeKit.fontFamily,
+              fontWeight: 700,
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "#7B2FBE",
+              textAlign: "center",
+            }}
+          >
+            CLIENT RESULT — WEEK 1
+          </div>
+          {/* metric */}
+          <div
+            style={{
+              fontFamily: typeKit.fontFamily,
+              fontWeight: 700,
+              fontSize: 52,
+              lineHeight: 1.0,
+              color: "#7B2FBE",
+              letterSpacing: "0em",
+              marginTop: 6,
+            }}
+          >
+            +12 HRS
+          </div>
+          {/* hairline under metric */}
+          <div
+            style={{
+              width: "70%",
+              height: 1,
+              background: "rgba(123,47,190,0.4)",
+              marginTop: 4,
+            }}
+          />
+          {/* subline */}
+          <div
+            style={{
+              fontSize: 11,
+              fontFamily: typeKit.fontFamily,
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.7)",
+              textAlign: "center",
+              marginTop: 4,
+            }}
+          >
+            / WEEK
+          </div>
+          {/* attribution */}
+          <div
+            style={{
+              fontSize: 9,
+              fontFamily: "-apple-system, system-ui, sans-serif",
+              fontWeight: 400,
+              color: "rgba(255,255,255,0.4)",
+              textAlign: "center",
+              marginTop: 10,
+              fontStyle: "italic",
+            }}
+          >
+            — Real estate operator, 4 agents
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // LIST-CARD — numbered list of 5 tasks
+  if (kind === "list-card") {
+    const items = [
+      "MISSED CALLS",
+      "REVIEW REQUESTS",
+      "FOLLOW-UP",
+      "INVOICES",
+      "RESCHEDULES",
+    ];
+    return (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#1A1A1A",
+          position: "relative",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          padding: "14px 12px",
+          boxSizing: "border-box",
+        }}
+      >
+        {/* dot grid */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(rgba(168,162,158,.06) 0.6px, transparent 0.6px)",
+            backgroundSize: "14px 14px",
+            opacity: 0.7,
+          }}
+        />
+        {/* headline */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            fontFamily: typeKit.fontFamily,
+            fontWeight: 700,
+            fontSize: (typeKit.sizeScale || 1) * 13,
+            lineHeight: 1.1,
+            textTransform: "uppercase",
+            letterSpacing: "0.02em",
+            textAlign: "center",
+            color: "white",
+            marginBottom: 12,
+            flex: "0 0 auto",
+          }}
+        >
+          <span style={{ color: "#7B2FBE" }}>5</span> TASKS TO AUTOMATE FIRST
+        </div>
+        {/* list */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            justifyContent: "center",
+          }}
+        >
+          {items.map((item, idx) => (
+            <div key={idx}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "7px 0",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: 9,
+                    fontFamily: typeKit.fontFamily,
+                    fontWeight: 700,
+                    color: "rgba(255,255,255,0.35)",
+                    letterSpacing: "0.06em",
+                    minWidth: 16,
+                    textAlign: "right",
+                  }}
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontFamily: typeKit.fontFamily,
+                    fontWeight: 700,
+                    color: "white",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {item}
+                </span>
+              </div>
+              {idx < items.length - 1 && (
+                <div
+                  style={{
+                    height: 1,
+                    background: "rgba(255,255,255,0.08)",
+                  }}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return null;
 }
 
