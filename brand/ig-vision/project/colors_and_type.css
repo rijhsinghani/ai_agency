@@ -4,114 +4,138 @@
    ───────────────────────────────────────────────────────── */
 
 /* ── Fonts ─────────────────────────────────────────────── */
-/* Both brand fonts ship with this repo.
-   Roc Grotesk (display) — full weight family.
-   Gilroy (body) — Light + ExtraBold.
-   JetBrains Mono (code/data) loaded from Google Fonts. */
+/* Inter (display + body) — Google Fonts, no watermarks.
+   JetBrains Mono (code/data) — Google Fonts. */
 
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
-
-/* Roc Grotesk — full family (Fontspring demo OTFs). */
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-thin.otf")       format("opentype"); font-weight: 100; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-extralight.otf") format("opentype"); font-weight: 200; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-light.otf")      format("opentype"); font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-regular.otf")    format("opentype"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-medium.otf")     format("opentype"); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-bold.otf")       format("opentype"); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-extrabold.otf")  format("opentype"); font-weight: 800; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-heavy.otf")      format("opentype"); font-weight: 900; font-style: normal; font-display: swap; }
-@font-face { font-family: "Roc Grotesk"; src: url("fonts/Fontspring-DEMO-rocgrotesk-black.otf")      format("opentype"); font-weight: 950; font-style: normal; font-display: swap; }
-
-/* Optional widths — expose as separate families for display flex */
-@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/Fontspring-DEMO-rocgroteskwide-bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Roc Grotesk Cond"; src: url("fonts/Fontspring-DEMO-rocgroteskcond-bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
-
-/* Gilroy — body. Light (300) + ExtraBold (800). */
-@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-Light.otf")     format("opentype"); font-weight: 300; font-display: swap; }
-@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-Light.otf")     format("opentype"); font-weight: 400; font-display: swap; }
-@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 700; font-display: swap; }
-@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 800; font-display: swap; }
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
 
 :root {
   /* ── Colors: core brand ─────────────────────────────── */
-  --sa-purple: #7b2fbe;            /* Primary purple — anchor, input nodes, primary CTA */
-  --sa-purple-soft: #9b4fde;       /* Light purple — gradient mid-stop, secondary hits */
+  --sa-purple: #7b2fbe; /* Primary purple — anchor, input nodes, primary CTA */
+  --sa-purple-soft: #9b4fde; /* Light purple — gradient mid-stop, secondary hits */
   --sa-purple-muted: rgba(123, 47, 190, 0.12); /* Purple wash for icon chips */
-  --sa-cyan: #4dd9e8;              /* Output node, accent highlights, glow */
-  --sa-orange: #d97706;            /* Warm orange — results/ROI numbers */
-  --sa-orange-light: #ff8a4c;      /* Warmer orange used in headline stats */
-  --sa-accent: #d4a574;            /* Warm tan — editorial dividers, warm nodes */
-  --sa-pink: #ff6b9d;              /* Occasional accent */
-  --sa-lime: #c4f042;              /* Occasional accent */
+  --sa-cyan: #4dd9e8; /* Output node, accent highlights, glow */
+  --sa-orange: #d97706; /* Warm orange — results/ROI numbers */
+  --sa-orange-light: #ff8a4c; /* Warmer orange used in headline stats */
+  --sa-accent: #d4a574; /* Warm tan — editorial dividers, warm nodes */
+  --sa-pink: #ff6b9d; /* Occasional accent */
+  --sa-lime: #c4f042; /* Occasional accent */
 
   /* Semantic */
   --sa-success: #10b981;
-  --sa-error:   #ef4444;
+  --sa-error: #ef4444;
 
   /* Neutrals (dark) */
-  --sa-base: #0e0e0e;              /* Page bg */
-  --sa-base-alt: #1a1a1a;          /* Alt dark base (per brand doc) */
-  --sa-navy: #0f172a;              /* Alternative dark background */
-  --sa-surface: #161616;           /* Section bg */
-  --sa-surface-raised: #1e1e1e;    /* Card bg */
+  --sa-base: #0e0e0e; /* Page bg */
+  --sa-base-alt: #1a1a1a; /* Alt dark base (per brand doc) */
+  --sa-navy: #0f172a; /* Alternative dark background */
+  --sa-surface: #161616; /* Section bg */
+  --sa-surface-raised: #1e1e1e; /* Card bg */
   --sa-border: rgba(237, 233, 227, 0.06);
   --sa-border-strong: rgba(237, 233, 227, 0.12);
-  --sa-border-hover: rgba(123, 47, 190, 0.30);
+  --sa-border-hover: rgba(123, 47, 190, 0.3);
 
   /* Foreground */
-  --sa-cream: #ede9e3;             /* Primary text on dark */
-  --sa-cream-dim: #a8a29e;         /* Secondary text */
-  --sa-cream-faint: rgba(237, 233, 227, 0.50);
-  --sa-white: #f5f5f5;             /* Soft white (light-mode bg / invert text) */
-  --sa-gray: #6b7280;              /* Mid gray — borders on light */
+  --sa-cream: #ede9e3; /* Primary text on dark */
+  --sa-cream-dim: #a8a29e; /* Secondary text */
+  --sa-cream-faint: rgba(237, 233, 227, 0.5);
+  --sa-white: #f5f5f5; /* Soft white (light-mode bg / invert text) */
+  --sa-gray: #6b7280; /* Mid gray — borders on light */
 
   /* ── Signature gradient ─────────────────────────────── */
-  --sa-gradient-brand: linear-gradient(135deg, #7b2fbe 0%, #9b4fde 60%, #4dd9e8 100%);
-  --sa-gradient-purple-text: linear-gradient(135deg, #7b2fbe 0%, #9b4fde 60%, #c084fc 100%);
-  --sa-gradient-s-wave: linear-gradient(180deg, #7b2fbe 0%, #9b4fde 50%, #4dd9e8 100%);
+  --sa-gradient-brand: linear-gradient(
+    135deg,
+    #7b2fbe 0%,
+    #9b4fde 60%,
+    #4dd9e8 100%
+  );
+  --sa-gradient-purple-text: linear-gradient(
+    135deg,
+    #7b2fbe 0%,
+    #9b4fde 60%,
+    #c084fc 100%
+  );
+  --sa-gradient-s-wave: linear-gradient(
+    180deg,
+    #7b2fbe 0%,
+    #9b4fde 50%,
+    #4dd9e8 100%
+  );
 
   /* ── Atmosphere ─────────────────────────────────────── */
-  --sa-mesh-hero: radial-gradient(ellipse 55% 50% at 72% 28%, rgba(123,47,190,.09) 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 40% at 20% 80%, rgba(155,79,222,.04) 0%, transparent 60%);
-  --sa-mesh-section: radial-gradient(ellipse 600px 400px at 20% 50%, rgba(123,47,190,.05), transparent),
-                     radial-gradient(ellipse 500px 300px at 80% 30%, rgba(155,79,222,.03), transparent);
-  --sa-mesh-results: radial-gradient(ellipse 600px 400px at 30% 60%, rgba(217,119,6,.05), transparent),
-                     radial-gradient(ellipse 500px 300px at 70% 40%, rgba(77,217,232,.04), transparent);
-  --sa-dot-grid: radial-gradient(rgba(168,162,158,.05) 0.6px, transparent 0.6px) 0 0 / 48px 48px;
+  --sa-mesh-hero:
+    radial-gradient(
+      ellipse 55% 50% at 72% 28%,
+      rgba(123, 47, 190, 0.09) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 20% 80%,
+      rgba(155, 79, 222, 0.04) 0%,
+      transparent 60%
+    );
+  --sa-mesh-section:
+    radial-gradient(
+      ellipse 600px 400px at 20% 50%,
+      rgba(123, 47, 190, 0.05),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 500px 300px at 80% 30%,
+      rgba(155, 79, 222, 0.03),
+      transparent
+    );
+  --sa-mesh-results:
+    radial-gradient(
+      ellipse 600px 400px at 30% 60%,
+      rgba(217, 119, 6, 0.05),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 500px 300px at 70% 40%,
+      rgba(77, 217, 232, 0.04),
+      transparent
+    );
+  --sa-dot-grid: radial-gradient(
+      rgba(168, 162, 158, 0.05) 0.6px,
+      transparent 0.6px
+    )
+    0 0 / 48px 48px;
   --sa-grain-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 
   /* ── Typography ─────────────────────────────────────── */
-  --sa-font-display: "Roc Grotesk", system-ui, sans-serif;
-  --sa-font-body: "Gilroy", system-ui, sans-serif;
-  --sa-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sa-font-display: "Inter", system-ui, sans-serif;
+  --sa-font-body: "Inter", system-ui, sans-serif;
+  --sa-font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type scale — fluid where useful */
-  --sa-text-hero: clamp(3rem, 6.5vw, 5.75rem);  /* h1 page-hero */
-  --sa-text-h1:   clamp(2.25rem, 4vw, 3.25rem);
-  --sa-text-h2:   clamp(1.875rem, 3vw, 2.75rem);
-  --sa-text-h3:   1.5rem;    /* 24 */
-  --sa-text-h4:   1.25rem;   /* 20 */
-  --sa-text-lg:   1.125rem;  /* 18 */
-  --sa-text-base: 1rem;      /* 16 */
-  --sa-text-sm:   0.9375rem; /* 15 */
-  --sa-text-xs:   0.8125rem; /* 13 */
+  --sa-text-hero: clamp(3rem, 6.5vw, 5.75rem); /* h1 page-hero */
+  --sa-text-h1: clamp(2.25rem, 4vw, 3.25rem);
+  --sa-text-h2: clamp(1.875rem, 3vw, 2.75rem);
+  --sa-text-h3: 1.5rem; /* 24 */
+  --sa-text-h4: 1.25rem; /* 20 */
+  --sa-text-lg: 1.125rem; /* 18 */
+  --sa-text-base: 1rem; /* 16 */
+  --sa-text-sm: 0.9375rem; /* 15 */
+  --sa-text-xs: 0.8125rem; /* 13 */
   --sa-text-eyebrow: 0.75rem; /* 12 — uppercased, tracked 0.2em */
 
   /* Weights */
   --sa-weight-regular: 400;
-  --sa-weight-medium:  500;
+  --sa-weight-medium: 500;
   --sa-weight-semibold: 600;
-  --sa-weight-bold:    700;
+  --sa-weight-bold: 700;
 
   /* Tracking */
   --sa-track-tight: -0.03em;
   --sa-track-snug: -0.02em;
   --sa-track-normal: 0;
   --sa-track-wide: 0.04em;
-  --sa-track-eyebrow: 0.20em;
+  --sa-track-eyebrow: 0.2em;
 
   /* Line-height */
-  --sa-lh-display: 1.0;
+  --sa-lh-display: 1;
   --sa-lh-heading: 1.08;
   --sa-lh-body: 1.55;
 
@@ -133,26 +157,26 @@
   /* ── Radii ──────────────────────────────────────────── */
   --sa-radius-sm: 6px;
   --sa-radius-md: 10px;
-  --sa-radius-lg: 12px;   /* buttons */
-  --sa-radius-xl: 16px;   /* input chips */
+  --sa-radius-lg: 12px; /* buttons */
+  --sa-radius-xl: 16px; /* input chips */
   --sa-radius-2xl: 20px;
   --sa-radius-card: 20px; /* default card rounding used by .card-premium */
   --sa-radius-pill: 999px;
 
   /* ── Shadows / elevation ────────────────────────────── */
   --sa-shadow-cta: 0 4px 28px rgba(123, 47, 190, 0.32);
-  --sa-shadow-cta-sm: 0 2px 16px rgba(123, 47, 190, 0.30);
+  --sa-shadow-cta-sm: 0 2px 16px rgba(123, 47, 190, 0.3);
   --sa-shadow-lift: 0 20px 60px -15px rgba(123, 47, 190, 0.15);
   --sa-shadow-featured:
-      0 0 0 1px rgba(123,47,190,0.35),
-      0 20px 60px -15px rgba(123,47,190,0.25),
-      0 0 80px -20px rgba(123,47,190,0.12);
-  --sa-shadow-node-purple: 0 0 8px rgba(123, 47, 190, 0.40);
-  --sa-shadow-node-cyan:   0 0 8px rgba(77, 217, 232, 0.40);
-  --sa-shadow-node-orange: 0 0 8px rgba(255, 138, 76, 0.40);
-  --sa-shadow-circuit: 0 0 20px rgba(123,47,190,.3),
-                      0 0 40px rgba(123,47,190,.1),
-                      inset 0 0 12px rgba(123,47,190,.05);
+    0 0 0 1px rgba(123, 47, 190, 0.35),
+    0 20px 60px -15px rgba(123, 47, 190, 0.25),
+    0 0 80px -20px rgba(123, 47, 190, 0.12);
+  --sa-shadow-node-purple: 0 0 8px rgba(123, 47, 190, 0.4);
+  --sa-shadow-node-cyan: 0 0 8px rgba(77, 217, 232, 0.4);
+  --sa-shadow-node-orange: 0 0 8px rgba(255, 138, 76, 0.4);
+  --sa-shadow-circuit:
+    0 0 20px rgba(123, 47, 190, 0.3), 0 0 40px rgba(123, 47, 190, 0.1),
+    inset 0 0 12px rgba(123, 47, 190, 0.05);
 
   /* ── Motion ─────────────────────────────────────────── */
   --sa-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -162,8 +186,15 @@
 }
 
 /* ── Base ────────────────────────────────────────────── */
-html, body { background: var(--sa-base); color: var(--sa-cream); }
-body { font-family: var(--sa-font-body); font-weight: 400; }
+html,
+body {
+  background: var(--sa-base);
+  color: var(--sa-cream);
+}
+body {
+  font-family: var(--sa-font-body);
+  font-weight: 400;
+}
 
 /* ── Semantic text elements ──────────────────────────── */
 .sa-hero,
@@ -174,33 +205,38 @@ h1.sa-hero {
   line-height: var(--sa-lh-display);
   letter-spacing: var(--sa-track-tight);
 }
-h1, .sa-h1 {
+h1,
+.sa-h1 {
   font-family: var(--sa-font-display);
   font-weight: var(--sa-weight-bold);
   font-size: var(--sa-text-h1);
   line-height: var(--sa-lh-heading);
   letter-spacing: var(--sa-track-snug);
 }
-h2, .sa-h2 {
+h2,
+.sa-h2 {
   font-family: var(--sa-font-display);
   font-weight: var(--sa-weight-bold);
   font-size: var(--sa-text-h2);
   line-height: var(--sa-lh-heading);
   letter-spacing: var(--sa-track-snug);
 }
-h3, .sa-h3 {
+h3,
+.sa-h3 {
   font-family: var(--sa-font-display);
   font-weight: var(--sa-weight-bold);
   font-size: var(--sa-text-h3);
   line-height: 1.2;
 }
-h4, .sa-h4 {
+h4,
+.sa-h4 {
   font-family: var(--sa-font-display);
   font-weight: var(--sa-weight-bold);
   font-size: var(--sa-text-h4);
   line-height: 1.25;
 }
-p, .sa-p {
+p,
+.sa-p {
   font-family: var(--sa-font-body);
   font-size: var(--sa-text-base);
   line-height: var(--sa-lh-body);
@@ -211,7 +247,11 @@ p, .sa-p {
   line-height: var(--sa-lh-body);
   color: var(--sa-cream-dim);
 }
-code, kbd, samp, pre, .sa-mono {
+code,
+kbd,
+samp,
+pre,
+.sa-mono {
   font-family: var(--sa-font-mono);
   font-feature-settings: "liga" 0;
 }
@@ -234,8 +274,12 @@ code, kbd, samp, pre, .sa-mono {
   background: currentColor;
   flex-shrink: 0;
 }
-.sa-eyebrow.cyan  { color: var(--sa-cyan);   }
-.sa-eyebrow.orange{ color: var(--sa-orange-light); }
+.sa-eyebrow.cyan {
+  color: var(--sa-cyan);
+}
+.sa-eyebrow.orange {
+  color: var(--sa-orange-light);
+}
 
 /* Gradient text */
 .sa-text-gradient {
@@ -254,8 +298,15 @@ code, kbd, samp, pre, .sa-mono {
   color: var(--sa-orange-light);
   letter-spacing: var(--sa-track-snug);
 }
-.sa-metric.cyan { color: var(--sa-cyan); }
-.sa-metric.purple { background: var(--sa-gradient-purple-text); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.sa-metric.cyan {
+  color: var(--sa-cyan);
+}
+.sa-metric.purple {
+  background: var(--sa-gradient-purple-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 /* Data/code */
 .sa-code {

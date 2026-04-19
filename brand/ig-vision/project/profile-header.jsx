@@ -246,10 +246,10 @@ function ProfileHeader({ typeKit, highlightTreatment }) {
           color: "#F5F5F3",
         }}
       >
-        <div>🤖 AI growth partner</div>
-        <div>🎯 For founders who are the brand</div>
-        <div>🛠 Solo, AI-powered, limited slots</div>
-        <div>↓ Free audit</div>
+        <div>Growth systems for founders who do everything.</div>
+        <div style={{ color: "rgba(245,245,243,0.7)" }}>
+          I build the stack you'd have with a full team — one person, AI-first.
+        </div>
       </div>
 
       {/* link */}
