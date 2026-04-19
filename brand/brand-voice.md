@@ -127,7 +127,8 @@ Sameer ran a wedding photography business (Raj Photo Video). He built the system
 
 ## 6. Style rules
 
-- No emojis anywhere -- not in captions, emails, YouTube titles, or DMs
+- **No emojis** in captions, emails, YouTube titles, or DMs
+- **Exception:** structural emoji bullets (e.g. 🤖 🎯 🛠) are allowed **only in the IG bio** as visual list markers, never as expression or filler. Max 4 in the bio. All other surfaces remain emoji-free.
 - Use contractions (it's, you're, we'll) -- they are conversational and keep the tone human
 - No jargon: say "automated follow-up," not "AI-powered omnichannel engagement"
 - No buzzwords: not "synergy," "leverage" (as a verb), "game-changer," "revolutionary," "seamless"
