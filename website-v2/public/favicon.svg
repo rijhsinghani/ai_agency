@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32" role="img" aria-label="Sameer Automations favicon">
+  <title>Sameer Automations</title>
+  <!-- Simplified favicon: no filters, no halos, flow gradient S-wave with solid dots -->
+  <defs>
+    <linearGradient id="flowGrad" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7B2FBE"/>
+      <stop offset="50%" stop-color="#9B4FDE"/>
+      <stop offset="100%" stop-color="#4DD9E8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- S-wave bridge -->
+  <path
+    d="M 80 20
+       C 40 20, 20 20, 20 40
+       C 20 60, 80 40, 80 60
+       C 80 80, 60 80, 20 80"
+    stroke="url(#flowGrad)"
+    stroke-width="8"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- Input node (solid, no glow) -->
+  <circle cx="80" cy="20" r="6" fill="#7B2FBE"/>
+
+  <!-- Output node (solid, no glow) -->
+  <circle cx="20" cy="80" r="6" fill="#4DD9E8"/>
+</svg>
