@@ -25,4 +25,4 @@ The whole workflow runs as a single command. What used to take an afternoon now 
 
 ## Why this matters for your business
 
-If you are a freelancer, photographer, contractor, or any sole proprietor running a service business, your bookkeeping situation probably looks exactly like this. The work is not complicated — it is just repetitive enough that it never feels worth doing until it has to be done. An automation like this pays for itself the first time it prevents a missed deduction or a panicked tax-season scramble.
+If you are a photographer or any sole proprietor running a service business, your bookkeeping situation probably looks exactly like this. The work is not complicated — it is just repetitive enough that it never feels worth doing until it has to be done. An automation like this pays for itself the first time it prevents a missed deduction or a panicked tax-season scramble.
