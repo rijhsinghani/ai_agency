@@ -136,6 +136,13 @@ None — re-render completed cleanly on first run after logo update.
 - Social post drafts for all 5 guides are in research/tools/repurposing-script/review/ (from Plan 03) and ready for posting
 - Phase 11 is now fully complete (Plans 01, 02, 03 all done)
 
+## Self-Check: PASSED
+
+- FOUND: all 5 PDFs, all 5 PNGs, all 6 HTML pages
+- FOUND: commits 79dd5ac (Task 1) and c645574 (logo fix)
+- Logo SVG present in template.js (S-wave bridge confirmed)
+- Logo present in all 6 HTML pages (navFlowGrad gradient reference verified)
+
 ---
 
 _Phase: 11-automation-guide-series_

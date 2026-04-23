@@ -62,7 +62,7 @@ async function renderPreview(htmlContent, outputPath) {
     await page.setContent(htmlContent, { waitUntil: "networkidle0" });
     await page.screenshot({
       path: outputPath,
-      clip: { x: 0, y: 0, width: 816, height: 400 },
+      clip: { x: 0, y: 0, width: 816, height: 580 },
       type: "png",
     });
   } finally {

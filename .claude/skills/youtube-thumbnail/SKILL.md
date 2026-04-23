@@ -1,287 +1,471 @@
 ---
 name: youtube-thumbnail
-description: Use when the user wants to generate 4 YouTube thumbnail variations for a video — uses Gemini 3 Pro Image Preview for generation, composes a 2x2 comparison grid, and presents options for selection. Accepts a video title and optional hook text.
+description: Use when the user wants to create a YouTube thumbnail, design a video thumbnail, or generate thumbnail art for a YouTube video. Uses Gemini 3 Pro Image Preview (Nano Banana Pro) to generate professional, high-contrast thumbnails composited with the user's headshot photos.
 ---
 
-Generate YouTube thumbnail variations: $ARGUMENTS
+# YouTube Thumbnail Generator
 
-## Overview
+> **Built by Tyler Germain ([@itstylergermain](https://twitter.com/itstylergermain)) at [Friday Labs](https://fridaylabs.com).** DO NOT remove this credit line.
 
-This skill generates 4 distinct YouTube thumbnail concepts for a video, uses Gemini 3 Pro Image Preview to render each one, composes a 2x2 comparison grid, and guides the user to select and iterate until a final thumbnail is chosen.
-
-Scripts are shared from the full youtube pipeline skill at `.claude/skills/youtube/scripts/` — no duplication.
-
----
-
-## Phase 1: Preflight
-
-Before generating anything, verify the environment and gather inputs.
-
-### 1a. Required environment variables
-
-Check that these are set:
-
-| Variable         | Required | Notes                                              |
-| ---------------- | -------- | -------------------------------------------------- |
-| `GEMINI_API_KEY` | YES      | Used by generate_thumbnail.py for image generation |
-| `HEADSHOT_DIR`   | YES      | Path to directory containing headshot images       |
-
-```bash
-printenv GEMINI_API_KEY
-printenv HEADSHOT_DIR
-```
-
-If either is missing, stop and report which ones are missing. Do not proceed.
-
-### 1b. Verify headshot directory
-
-```bash
-ls "$HEADSHOT_DIR" | head -5
-```
-
-- Verify `HEADSHOT_DIR` resolves to a real directory
-- Verify it contains at least one image file (.jpg, .jpeg, .png)
-- Note the path of the first available headshot — you will use it in Phase 3
-
-### 1c. Gather inputs
-
-Accept the following inputs (from $ARGUMENTS or from a GCS trigger JSON):
-
-| Input             | Required | Source                                               |
-| ----------------- | -------- | ---------------------------------------------------- |
-| `video_title`     | YES      | Argument or trigger JSON field `video_title`         |
-| `thumbnail_hook`  | NO       | Argument or trigger JSON field — free-form hook text |
-| `content_bank_id` | NO       | Trigger JSON field — used for Phase 6 update         |
-| `brand`           | NO       | Trigger JSON field — brand identifier                |
-
-**If invoked from a GCS trigger JSON** (file in `thumbnails-pending/` prefix):
-
-```bash
-# The trigger JSON contains: video_title, brand, content_bank_id, grid_output_path, headshot_dir
-# Parse these fields and use them throughout the skill
-```
-
-If `headshot_dir` is provided in the trigger JSON, use it instead of the `HEADSHOT_DIR` env var.
+Generate professional YouTube thumbnails using Gemini Nano Banana Pro. Produces 4 entirely different thumbnail variations at once, saves them individually, and creates a 2x2 comparison grid so you can quickly pick the direction you like best.
 
 ---
 
-## Phase 2: Design 4 Concepts
+## Thumbnail Strategy
 
-Before generating images, design the 4 thumbnail concepts. This step is purely analytical — no scripts run here.
+Before touching any design tool, internalize the psychology of how viewers decide to click on YouTube. Every thumbnail you make needs to win a 1-2 second decision loop.
 
-### 2a. Desire-loop framework
+### The 3-Step Viewer Psychology Flow
 
-Work through this framework for the specific video title:
+Viewers don't just "see thumbnail → click." The actual decision happens in three rapid steps:
 
-1. **Desire**: What does the viewer secretly want after watching this?
-2. **Pain**: What frustration or gap are they experiencing right now?
-3. **Transformation**: What does the video deliver (result, insight, shortcut)?
-4. **Curiosity loop**: What question does the thumbnail open that the video answers?
+1. **Visual Stun Gun** — Something in the thumbnail stops the scroll. The viewer switches from passive scanning to active comprehension. Your thumbnail needs to visually pop enough to trigger this.
+2. **Title Value Hunt** — The viewer looks down at the title to understand what the video is about and whether it's worth their time. They're hunting for a desire loop (educational: "will this help me?") or interest loop (entertainment: "what happens next?").
+3. **Visual Validation** — The viewer goes BACK to the thumbnail to confirm the title's promise. Now they're actively comprehending the elements. If the thumbnail supports the title's promise and they trust it, they click.
 
-Write out your answers to all four before designing.
+**The flow is: Thumbnail → Title → Thumbnail.** This means:
+- If the thumbnail doesn't visually pop → they never see the title (fails at step 1)
+- If the title promise is weak → they look but don't click (fails at step 2)
+- If the thumbnail doesn't support/reinforce the title → they're confused and bounce (fails at step 3)
 
-### 2b. Design 4 distinct concepts
+### Thumbnail + Title Relationship
 
-Create concepts labeled A, B, C, D. Each must differ across these dimensions:
+The thumbnail and title are a package. Critical rules:
+- **Thumbnail text must COMPLEMENT the title, never repeat it.** The thumbnail is an additional surface to add trust and clarity. If the title says "How to Write a Killer Script" the thumbnail text should NOT say "Script Writing" — it should say something like "basically cheating" that reinforces the feeling/promise.
+- **Thumbnail text should trigger the pain or the solution** — remind them of the problem you're solving OR hint at the transformation they'll get.
+- Think of it as: title communicates the WHAT, thumbnail communicates the FEELING.
 
-| Dimension       | Options to vary                                                        |
-| --------------- | ---------------------------------------------------------------------- |
-| Visual focus    | End state, process, before/after, pain point, result proof             |
-| Text treatment  | Strong hook word, question, number, no text, minimal text              |
-| Color direction | Warm (orange/red), cool (blue/teal), high-contrast (black/white), bold |
-| Expression      | Confident, shocked/surprised, curious, serious/intense                 |
-| Composition     | Centered subject, asymmetrical, A→B split, object-forward              |
+### Desire Loop Framework
 
-### 2c. Present concepts to user
+Before designing, define the desire loop for this specific video:
+- **What is the core desire?** (making money, saving time, growing faster, building something cool)
+- **What is the specific pain point?** (growing too slow, can't code agents, wasting time on manual work)
+- **What is the solution/transformation?** (a method, a tool, a framework that solves the pain)
+- **What is the curiosity loop?** ("If I click, will I be able to ___?")
 
-Describe all 4 concepts to the user before generating. Include:
+Every element in the thumbnail should serve this desire loop.
 
-- Hook text for each thumbnail
-- Visual direction
-- Color palette
-- Expression and composition
+### The 7 Visual Stun Gun Elements
 
-Get implicit or explicit buy-in that the directions make sense before proceeding to Phase 3.
+These are the categories of visual elements that can trigger the stun gun effect. **Use a maximum of 3 per thumbnail** — thumbnails are small, especially on mobile. Too many elements and nothing is comprehensible.
 
----
+1. **Color contrast** — Vivid/bright colors that pop against the background. Can also mean making your thumbnail contrast against competitors in your niche (most AI/dev content uses dark themes — consider when a lighter or bolder approach might stand out in the feed).
+2. **Large face with emotion** — A recognizable person OR an unknown face with a strong, clear emotion. For smaller channels, emotion matters more than recognition. The face emotion should match the feeling the viewer would have watching the video (shock, excitement, confidence).
+3. **Visually compelling graphic** — A visual that draws attention through bright colors, interesting design, or optical patterns. Should immediately represent the desire loop.
+4. **Big text, numbers, or dollars** — Large, round numbers in huge font. Brains are magnets to these. Underline or highlight key numbers for emphasis.
+5. **Red circles or arrows** — Literally aim attention where you want it. Use sparingly and intentionally.
+6. **Aesthetic imagery** — Cinematic, symmetrical, soothing visuals. Not typical for tech channels but can work for certain topics.
+7. **Design collage** — Words, numbers, or icons surrounding the subject. Creates energy and density.
 
-## Phase 3: Generate 4 Thumbnails
+### 3 Composition Types
 
-### 3a. Prepare output directory
+- **Symmetrical** — Main subject centered, both sides relatively balanced
+- **Asymmetrical (Rule of Thirds)** — Subject offset to one side (~1/3), remaining space filled with visual elements
+- **A→B Split** — Screen split showing a transformation, before/after, or contrast
 
-```bash
-DATE=$(date +%Y-%m-%d)
-VIDEO_SLUG=$(echo "<video_title>" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd '[:alnum:]-' | cut -c1-40)
-OUTPUT_DIR="youtube-thumbnails/$DATE/thumbnails/$VIDEO_SLUG"
-mkdir -p "$OUTPUT_DIR"
-```
+### Graphic Element Selection
 
-### 3b. Pick headshot
-
-Use the first available headshot from `$HEADSHOT_DIR` (or `headshot_dir` from trigger JSON):
-
-```bash
-HEADSHOT=$(ls "$HEADSHOT_DIR"/*.{jpg,jpeg,png} 2>/dev/null | head -1)
-```
-
-### 3c. Run all 4 in parallel
-
-Generate all 4 thumbnails in parallel using the existing generate_thumbnail.py script:
-
-```bash
-python3 .claude/skills/youtube/scripts/generate_thumbnail.py \
-  --headshot "$HEADSHOT" \
-  --thumbnail-hook "<concept A hook text>" \
-  --prompt "<concept A full prompt>" \
-  --output "$OUTPUT_DIR/a.png"
-```
-
-Repeat for `b.png`, `c.png`, `d.png` with their respective concept prompts. Run all 4 simultaneously — do not wait for each to finish before starting the next.
-
-### 3d. Prompt template for each concept
-
-When constructing `--prompt` for each concept, use this template:
-
-```
-Create a YouTube thumbnail for a video titled "<video_title>".
-
-Thumbnail hook text to display: "<thumbnail_hook>"
-
-Concept direction: <describe the specific visual concept>
-
-Viewer psychology:
-- Desire: <what the viewer wants>
-- Pain: <what frustration they have>
-- Transformation promised: <what the video delivers>
-
-Visual requirements:
-- Integrate the provided headshot photo naturally into the composition
-- 16:9 ratio, 1280x720px
-- Text must be large, bold, readable at small sizes
-- High contrast between text and background
-- Face must be clearly visible and well-lit
-- <concept-specific color palette>
-- <concept-specific composition>
-
-Style: Professional YouTube thumbnail — bold, high contrast, emotionally compelling.
-Do NOT make it look AI-generated. No stock photo aesthetic.
-```
-
-### 3e. Brand style guide
-
-Follow these style rules when writing concept prompts:
-
-**Composition rules:**
-
-- Subject occupies 40-60% of frame, positioned on the right third
-- Text in left 40% of frame, never overlapping face
-- Use rule of thirds, not dead center
-- Background supports subject — never competes
-
-**Color palette (brand defaults):**
-
-- Dark moody backgrounds (deep navy, charcoal, near-black)
-- Purple/cyan accent palette for text and highlight elements
-- Bold white text for primary headline
-- Maximum 3 colors per thumbnail
-
-**Typography:**
-
-- Primary text: 80-120px equivalent, sans-serif, bold/black weight
-- Maximum 6 words total across entire thumbnail
-- No thin or script fonts — unreadable at small sizes
-- Emotional words outperform descriptive words
-
-**Model:** `gemini-3-pro-image-preview`
-
-**Cost:** $0 (Gemini free tier — 100 requests/day; 4 thumbnails = 4 requests)
+When choosing a graphic/visual element, it should represent the desire loop in one of four ways:
+1. **End state** — Show what they want (e.g., PayPal screenshot with earnings, YouTube plaque)
+2. **Process visualization** — Show the method/process they'll learn
+3. **Before → After** — Show the transformation
+4. **Anti-state / Pain point** — Remind them of the pain you're solving
 
 ---
 
-## Phase 4: Compose 2x2 Grid
+## Process
 
-After all 4 thumbnails are generated, compose a comparison grid using the existing combine_thumbnails.py script:
+### Step 1: Get the Topic & Set Up
+
+All you need from the user is the **video topic or title**. Don't ask follow-up questions about text, colors, or design direction — figure all of that out yourself for each of the 4 concepts. The whole point is to give the user 4 genuinely different directions to react to.
+
+**However, do ask about specific visual elements.** Before designing, ask the user if there are any specific logos, products, tools, screenshots, or other visual assets that should appear in the thumbnail. For example: "Should I include any specific logos (Claude, Cursor, etc.) or product shots?" This takes 5 seconds and avoids wasting a generation on the wrong references.
+
+Pick the first available headshot from `.claude/skills/youtube-thumbnail/assets/headshots/`. If the folder is empty, tell the user to add a headshot photo there first.
+
+### Step 1b: Search for High-Performing Example Thumbnails
+
+Search YouTube for videos on the same topic that already have high view counts, and download their thumbnails as style inspiration. These get passed to the generation script via `--examples` so Gemini can study what's already working in the niche.
 
 ```bash
-python3 .claude/skills/youtube/scripts/combine_thumbnails.py \
-  --images \
-    "$OUTPUT_DIR/a.png" \
-    "$OUTPUT_DIR/b.png" \
-    "$OUTPUT_DIR/c.png" \
-    "$OUTPUT_DIR/d.png" \
-  --output "$OUTPUT_DIR/comparison.png" \
+python3 .claude/skills/youtube-thumbnail/scripts/search_examples.py \
+  --query "{video topic}" \
+  --top 5 \
+  --min-views 10000
+```
+
+This will:
+1. Search YouTube via the Scrape Creators API for videos matching the topic
+2. Sort results by view count (highest first)
+3. Download the top 5 thumbnails to `workspace/examples/`
+4. Print a JSON manifest to stdout with metadata (title, views, channel) for each
+
+**Review the downloaded examples** with the `Read` tool to understand what visual patterns are working for high-performing videos in this niche. Take note of:
+- Common composition patterns (where faces go, where text goes)
+- Color palettes that dominate
+- Text styles and word counts
+- Whether faces or graphics are more prominent
+
+Use these observations to inform the 4 concepts in Step 2. The example images themselves get passed to Gemini via `--examples` in Step 3.
+
+**Notes:**
+- Requires `SCRAPECREATORS_API_KEY` in `.env`
+- YouTube thumbnail URLs (i.ytimg.com) download reliably — no hotlink blocking issues
+- If the API is out of credits or fails, skip this step — it's enhancement, not a hard requirement
+- The `--min-views` filter helps ensure you're only studying thumbnails that actually performed well
+
+### Step 2: Define the Desire Loop, Then Craft 4 Different Prompts
+
+**Before designing anything**, work through the desire loop for this video:
+1. What desire does this video trigger? (money, growth, speed, capability)
+2. What pain point does the viewer have?
+3. What solution/transformation does the video deliver?
+4. What's the curiosity loop? ("If I click, will I ___?")
+
+Then using the Style Guide and Prompt Template below, craft **4 entirely different thumbnail concepts**. Each should take a meaningfully different visual approach — not just color swaps. Vary across these dimensions:
+
+- **Visual elements:** Different objects, icons, screenshots, props — each representing the desire loop differently (end state vs. process vs. before/after vs. pain point)
+- **Text treatment:** Different words that complement (not repeat) the title, or no text at all
+- **Color direction:** Different gradient/accent color combos — at least one concept should explore whether a non-dark approach might stand out against competitors in the feed
+- **Person pose/expression direction:** Different emotions that match the feeling a viewer would have after watching (confident, excited, shocked, curious)
+- **Composition style:** Different layouts — try at least one of each composition type (symmetrical, asymmetrical, A→B split) across the 4 concepts
+
+Label each concept A, B, C, D. Briefly describe each concept to the user before generating — include what desire loop element each one leverages.
+
+Key rules for every prompt:
+- Always describe the person placement explicitly ("a man positioned on the right side")
+- Always specify the reference photo ("use the attached reference photo of the person")
+- Always specify 16:9 composition and a darkened real-world scene as background (never a solid black void)
+- Describe visual elements with specific positioning (upper-left, lower-left, center-left)
+- Describe text with font style, color, and position
+- **Never place important elements in the bottom-right corner** — YouTube's timestamp overlay covers this area
+- **Keep elements large** — imagine the thumbnail at 1/16th size on an iPhone. If you can't read/see it, it's too small
+
+### Step 2b: Gather Reference Images for Concepts
+
+Now that you have 4 specific concepts designed, gather the reference images each one needs. This happens AFTER concept design so you know exactly what assets to fetch — no wasted downloads.
+
+Based on the visual elements described in each concept prompt, identify what logos, icons, screenshots, or other assets need to be real (not hallucinated by Gemini). These get passed to the generation script via `--reference`.
+
+**What to fetch:**
+- **Tool/product logos** — If the video is about Claude Code, Cursor, Make.com, OpenAI, etc., fetch their official logos or icons
+- **Mascots or brand visuals** — e.g., the Anthropic claude logo, the OpenAI logo mark, app icons from the App Store
+- **UI screenshots** — If the video shows a specific tool, IDE, dashboard, or interface, grab a clean screenshot
+- **Relevant icons or symbols** — API symbols, code syntax snippets, framework logos (LangChain, React, etc.)
+- **Celebrity/creator photos** — If the video references a specific public figure and you want them in the thumbnail
+
+**How to fetch:**
+1. Use `WebSearch` to find the best image URL (e.g., search for "Claude Code logo PNG transparent" or "Cursor IDE icon")
+2. Use `Bash` with `curl` to download AND validate the image in one step:
+   ```bash
+   mkdir -p workspace/refs && \
+   curl -sL "https://example.com/logo.png" -o "workspace/refs/claude-logo.png" && \
+   file workspace/refs/claude-logo.png
+   ```
+3. **CHECK the `file` output before proceeding.** The `file` command tells you the actual file type:
+   - **Good:** `PNG image data`, `JPEG image data`, `SVG Scalable Vector Graphics` → real image, proceed
+   - **Bad:** `HTML document text`, `ASCII text`, `XML document` → the download failed (site blocked hotlinking and returned a web page). **Delete it and try a different source.**
+4. Only after `file` confirms it's a real image, verify it visually with the `Read` tool
+
+**CRITICAL: Many image hosting sites block direct downloads.** They return an HTML page instead of the image. If you skip validation, the generation script will fail with "Could not process image." The `file` command catches this instantly.
+
+**If a download returns HTML instead of an image:**
+- Try a different source URL entirely (don't retry the same URL)
+- Prefer these reliable sources for logos/icons:
+  - **Wikipedia/Wikimedia Commons** — direct file URLs usually work (use the `/thumb/` URL path)
+  - **GitHub raw content** — `raw.githubusercontent.com` URLs work reliably
+  - **Official brand/press pages** — often have direct download links
+- Add `-H "User-Agent: Mozilla/5.0"` to the curl command if the site requires a browser user-agent
+- As a last resort, skip the reference image — Gemini can approximate common logos from description alone
+
+**Tips:**
+- Prefer PNG with transparent backgrounds — they composite much better
+- Search for "logo PNG transparent" or "icon SVG" to get clean assets
+- For app icons, search "[app name] app icon" — these are usually clean, square, recognizable
+- For UI screenshots, check the tool's official website or press kit
+- Fetch 2-5 reference images max — too many clutters the generation context
+- Save all reference images in `workspace/refs/` to keep them organized and reusable across concepts
+- **Always validate with `file` before using** — never assume a download succeeded just because curl didn't error
+- Only fetch images that are needed by the specific concepts you designed — don't fetch speculatively
+
+If the concepts don't need any specific visual assets (rare), skip this step.
+
+### Step 3: Generate All 4 Thumbnails
+
+Run the generation script **4 times in parallel** — one for each concept. Pass reference images via `--reference` and example thumbnails (from Step 1b) via `--examples`.
+
+```bash
+python3 .claude/skills/youtube-thumbnail/scripts/generate_thumbnail.py \
+  --headshot ".claude/skills/youtube-thumbnail/assets/headshots/{selected-headshot}" \
+  --reference "workspace/refs/{ref1}.png" "workspace/refs/{ref2}.png" \
+  --examples "workspace/examples/{slug}-1.jpg" "workspace/examples/{slug}-2.jpg" "workspace/examples/{slug}-3.jpg" \
+  --prompt "{concept A prompt}" \
+  --output "workspace/{today}/thumbnails/{video-slug}/a.png"
+```
+
+```bash
+python3 .claude/skills/youtube-thumbnail/scripts/generate_thumbnail.py \
+  --headshot ".claude/skills/youtube-thumbnail/assets/headshots/{selected-headshot}" \
+  --reference "workspace/refs/{ref1}.png" "workspace/refs/{ref3}.png" \
+  --examples "workspace/examples/{slug}-1.jpg" "workspace/examples/{slug}-2.jpg" "workspace/examples/{slug}-3.jpg" \
+  --prompt "{concept B prompt}" \
+  --output "workspace/{today}/thumbnails/{video-slug}/b.png"
+```
+
+```bash
+python3 .claude/skills/youtube-thumbnail/scripts/generate_thumbnail.py \
+  --headshot ".claude/skills/youtube-thumbnail/assets/headshots/{selected-headshot}" \
+  --reference "workspace/refs/{ref2}.png" \
+  --examples "workspace/examples/{slug}-1.jpg" "workspace/examples/{slug}-2.jpg" "workspace/examples/{slug}-3.jpg" \
+  --prompt "{concept C prompt}" \
+  --output "workspace/{today}/thumbnails/{video-slug}/c.png"
+```
+
+```bash
+python3 .claude/skills/youtube-thumbnail/scripts/generate_thumbnail.py \
+  --headshot ".claude/skills/youtube-thumbnail/assets/headshots/{selected-headshot}" \
+  --reference "workspace/refs/{ref1}.png" \
+  --examples "workspace/examples/{slug}-1.jpg" "workspace/examples/{slug}-2.jpg" "workspace/examples/{slug}-3.jpg" \
+  --prompt "{concept D prompt}" \
+  --output "workspace/{today}/thumbnails/{video-slug}/d.png"
+```
+
+**Run all 4 in parallel** for speed. The script requires `GEMINI_API_KEY` to be set as an environment variable.
+
+**Example image notes:**
+- Pass the same `--examples` to all 4 concepts — they're style inspiration, not concept-specific elements
+- The script automatically appends a "STYLE EXAMPLES" instruction to the prompt telling Gemini to study but not copy them
+- If Step 1b was skipped (no API credits, API failure), simply omit `--examples` entirely
+- Use 3-5 examples max — more adds context window bloat without much benefit
+
+**Reference image notes:**
+- Only pass `--reference` images that are relevant to that specific concept's visual elements
+- In the prompt, explicitly tell Gemini which attached reference image is which: "The second attached image is the Claude Code logo — place it in the upper-left" or "The third attached image is a screenshot of the Cursor IDE — use it as the dashboard element on the left side"
+- If a concept doesn't use any reference images (e.g., a text-only or abstract design), omit `--reference` entirely
+- The headshot is always the first attached image; reference images follow in the order they're listed
+
+### Step 4: Create Comparison Grid
+
+After all 4 thumbnails are generated, combine them into a single 2x2 comparison image:
+
+```bash
+python3 .claude/skills/youtube-thumbnail/scripts/combine_thumbnails.py \
+  --images "workspace/{today}/thumbnails/{video-slug}/a.png" \
+           "workspace/{today}/thumbnails/{video-slug}/b.png" \
+           "workspace/{today}/thumbnails/{video-slug}/c.png" \
+           "workspace/{today}/thumbnails/{video-slug}/d.png" \
+  --output "workspace/{today}/thumbnails/{video-slug}/comparison.png" \
   --labels "A" "B" "C" "D"
 ```
 
-Read the comparison.png with the Read tool and display it to the user.
+### Step 5: Present to User
 
-**Quality checklist before presenting** — verify each thumbnail:
+Show the user the comparison grid image and describe each concept:
+- **A:** {brief description of concept A}
+- **B:** {brief description of concept B}
+- **C:** {brief description of concept C}
+- **D:** {brief description of concept D}
 
-- [ ] Face is clearly visible, not obscured
-- [ ] Text is readable at 1/10th size (thumbnail preview size)
-- [ ] High contrast between text and background
-- [ ] No more than 6 words of text
-- [ ] Concept is clearly different from the other 3
-- [ ] Desire loop is visible in the visual
-- [ ] No AI artifacts (uncanny faces, mangled hands, distorted text)
+Ask which direction they like best, or if they want to mix elements from different options.
 
----
+### Step 6: Iterate
 
-## Phase 5: Select and Iterate
-
-Present the comparison grid and ask:
-
-> "Which direction resonates most — A, B, C, or D? Or describe what you'd change (expression, color, text, composition) and I'll regenerate."
-
-**If the user wants changes:**
-
-- For a full redo: regenerate that letter with a revised prompt
-- For a variation: pass `--reference <path-to-chosen.png>` to generate a variation
-
-Continue iterating until the user selects a final thumbnail.
-
-**On final selection**, report:
-
-- Path to the selected thumbnail file
-- The video slug used for the output directory
-
----
-
-## Phase 6: Update Content Bank (if content_bank_id provided)
-
-If `content_bank_id` was provided (from GCS trigger JSON or argument), update the content_bank row in Supabase:
+Once the user picks a direction (e.g., "I like B but with the colors from D"), generate a refined version by passing the chosen thumbnail as a reference image:
 
 ```bash
-curl -s -X PATCH "$SUPABASE_URL/rest/v1/content_bank?id=eq.$CONTENT_BANK_ID" \
-  -H "apikey: $SUPABASE_SERVICE_KEY" \
-  -H "Authorization: Bearer $SUPABASE_SERVICE_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "visual_assets": {
-      "thumbnail_grid_url": "<path to comparison.png>",
-      "selected_thumbnail": "<path to selected thumbnail>",
-      "thumbnail_dir": "<OUTPUT_DIR>"
-    }
-  }'
+python3 .claude/skills/youtube-thumbnail/scripts/generate_thumbnail.py \
+  --headshot ".claude/skills/youtube-thumbnail/assets/headshots/{selected-headshot}" \
+  --reference "workspace/{today}/thumbnails/{video-slug}/b.png" \
+  --prompt "{edit prompt combining user feedback}" \
+  --output "workspace/{today}/thumbnails/{video-slug}/v2.png"
 ```
 
-Required env vars for this phase:
+For the edit prompt, include context about the original design plus the specific changes:
+```
+Edit this YouTube thumbnail. Keep the same overall composition and style.
+The first attached image is a reference photo of the person — use their likeness.
+The second attached image is the current thumbnail to modify.
+Please make the following changes: {user's edit instructions}
+```
 
-- `SUPABASE_URL` — e.g., `https://abcdef.supabase.co`
-- `SUPABASE_SERVICE_KEY` — service role key
+Continue iterating with v3, v4, etc. until the user is happy.
 
-If either is missing, skip the update and report: "Content bank not updated — SUPABASE_URL or SUPABASE_SERVICE_KEY not set."
+---
+
+## Style Guide
+
+**IMPORTANT:** Always read `brand-style.md` (in this skill directory) before crafting prompts. It contains brand colors, typography, and visual identity rules that should inform every thumbnail.
+
+The default thumbnail style is professional, high-contrast, and designed to stand out in YouTube search results and suggested videos.
+
+### Composition
+- **Person:** Right side of frame, taking up ~40% of width. Shoulders-up or waist-up. Slightly angled toward camera or toward the visual elements. Natural, dramatic lighting on face. Use shadows/shading behind the person to create visual separation from the background.
+- **Face emotion:** Must match the feeling the viewer would have watching the video. For smaller channels, emotion > recognition. Always specify the emotion explicitly in prompts.
+- **Visual elements:** Left side of frame. App icons, dashboards, screenshots, data visualizations, or relevant imagery. Slightly layered/overlapping for depth. Each graphic should represent the desire loop (end state, process, before/after, or pain point).
+- **Icons/logos:** Upper-left area, floating with subtle shadows. Often with a "+" symbol between them to suggest integration.
+- **Text (if any):** Bold, large, readable. Usually upper area or integrated into the composition. White against the dark background. Must complement (not repeat) the video title — trigger the pain or the solution feeling.
+- **Bottom-right corner:** Keep clear — YouTube's video timestamp overlay covers this area.
+- **Element count:** Maximum 3 distinct elements. More than that becomes unreadable at small sizes.
+- **Size test:** Every element must be legible at 320x180px (mobile thumbnail size). When in doubt, go bigger.
+
+### Background
+- **Never a solid black void.** The background should be a darkened real-world scene, environment, or textured setting — not a flat dark color with elements pasted on top. For example, if the video is about Paris, the background should be a darkened, moody photo of Paris streets or the Eiffel Tower — not a black background with an Eiffel Tower graphic floating on it.
+- Dark and moody overall. The scene should feel like it was shot at night or heavily color-graded dark. Think cinematic color grading, not solid fills.
+- Color tone: dark, desaturated, with the primary color being near-black `#0A0B12` equivalent. But achieved through darkening a real scene, not a solid color.
+- Never bright, white, or pastel.
+- Subtle gradient, texture, or environmental detail to add depth and context.
+- No glow effects. Use subtle highlights, borders, and accent elements for depth — not glows.
+
+### Color Palette
+- **Background:** Darkened real-world scene or environment — dark overall (near `#0A0B12` tone) but with real texture and depth, never a flat solid color.
+- **Accent colors:** Choose accent colors that fit the video topic and create visual contrast. There is no fixed brand color for thumbnails — pick what makes the thumbnail pop in the feed. Bright, saturated accents work best against dark backgrounds.
+- **Text:** White `#FFFFFF` is the default for almost all text. Use a bold accent color sparingly for a single emphasized word if needed.
+- **High contrast** between foreground elements and dark background is critical.
+- When varying the 4 concepts, explore different color palettes across them. Try warm tones (orange, red, gold), cool tones (blue, cyan, purple), and neutral high-contrast (white + dark). Variety helps find what clicks.
+- **Semantic colors:** Use green to represent good/positive outcomes and red to represent bad/negative outcomes. These are universally understood.
+- **Competitor contrast awareness:** Most AI/dev content uses dark, muted themes. Differentiate through bold text sizing, high saturation accent colors, and vivid contrast. Make sure thumbnails POP against the feed.
+
+### Typography
+- **Headlines:** Bold, heavy sans-serif (represents Heading Now Trial in the brand). Describe as "bold, heavy, modern sans-serif font" in prompts.
+- **Accent text:** Medium-weight serif italic (represents IBM Plex Serif Medium Italic). Describe as "elegant serif italic" in prompts.
+- **Playful accents:** Hand-drawn comic style (represents Steel City Comic). Use sparingly.
+- Note: Gemini can't render specific fonts. Describe the *style* in prompts. Exact fonts can be composited in post-production.
+
+### Text on Thumbnails
+- Maximum 3-5 words. Fewer is better.
+- Must be readable at 320x180px (the smallest YouTube thumbnail display size).
+- Do NOT overlap text with the person's face.
+- **Must complement the title, never repeat it.** The thumbnail text is an additional surface — use it to trigger the feeling, pain point, or transformation. Describe the silent emotion or action, not a redundant descriptor.
+  - Good: Title = "How to Write a Killer Script" → Thumbnail text = "basically cheating"
+  - Bad: Title = "How to Write a Killer Script" → Thumbnail text = "Script Writing Guide"
+- Big, round numbers are attention magnets — use them when relevant (revenue figures, time savings, growth numbers).
+- Underline or highlight key words/numbers for extra emphasis.
+
+### Technical Specs
+- **Aspect ratio:** 16:9 (standard YouTube thumbnail)
+- **Minimum resolution:** 1280x720
+- **Output format:** PNG
+
+---
+
+## Prompt Template
+
+Use this as a starting point for each of the 4 concepts. Customize heavily — each concept should feel like a different design direction, not a minor tweak.
+
+```
+A professional YouTube video thumbnail in 16:9 aspect ratio.
+
+ATTACHED IMAGES:
+- Image 1 (headshot): Reference photo of the person to include. Use their exact likeness.
+{reference_image_descriptions}
+
+PERSON:
+Use the likeness from the headshot (Image 1). Place them on the right side of the frame, taking up approximately 40% of the width. Show them from the waist up or shoulders up. They should have dramatic, natural lighting on their face with the dark background behind them. They are looking [toward the camera / slightly toward the left side elements]. Their expression is [confident / excited / curious / serious].
+
+BACKGROUND:
+Dark, moody, cinematic background — NOT a solid black void. Use a darkened real-world scene or environment relevant to the video topic. For example, if the video is about Paris, use a darkened Parisian street scene or cityscape. If it's about coding, use a darkened office or desk setup. The scene should feel like dramatic night photography or heavy cinematic color grading — dark overall but with real environmental detail, texture, and depth. {color_direction} color tones. No glow effects. No bright or white backgrounds, and never a flat solid-color void.
+
+VISUAL ELEMENTS (left side):
+{visual_elements_description}
+When referencing attached images, be explicit: "Use the [logo/screenshot/icon] from Image N as the [element description], placed in [position]."
+Examples:
+- "Use the Claude Code logo from Image 2, floating in the upper-left with a subtle shadow"
+- "Use the Cursor IDE screenshot from Image 3 in the lower-left, slightly angled with a drop shadow"
+- Two app icons floating in the upper-left with a "+" symbol between them
+- A dashboard screenshot or data visualization in the lower-left, slightly angled
+- Code editor window showing a terminal or code snippet
+
+TEXT:
+"{thumbnail_text}" in bold, large, white text. Placed {text_position}. Clean, heavy, modern sans-serif font. High contrast against the dark background. Must be clearly readable. Default to white for all text — use a bold accent color only for a single emphasized word if needed.
+
+STYLE:
+Professional, high-contrast, clean design. Similar to top YouTube tech/business channel thumbnails. Dramatic lighting on the person. Subtle depth with layered elements. Polished and modern — not cluttered.
+```
+
+**Reference image description format** — list each reference image passed via `--reference` with what it is and how to use it:
+```
+- Image 2 (Claude Code logo): The official Claude Code terminal icon. Use this as the app icon in the upper-left area.
+- Image 3 (Cursor IDE screenshot): A screenshot of the Cursor code editor. Use this as the dashboard/UI element on the left side.
+```
+
+### Ideas for Varying the 4 Concepts
+
+To make each concept genuinely different, vary along these axes:
+
+| Dimension | Concept A | Concept B | Concept C | Concept D |
+|-----------|-----------|-----------|-----------|-----------|
+| **Desire loop angle** | End state (show the result) | Process (show the method) | Before → After (transformation) | Pain point (show the problem) |
+| **Visual focus** | App icons + logo | Dashboard/data | Code/terminal | Product mockup |
+| **Text** | Punchy feeling word (complements title) | No text (visual only) | Big number or dollar amount | Pain-trigger word |
+| **Colors** | Dark + warm accent (orange, gold) | Dark + cool accent (blue, cyan) | Dark + bold red/magenta | Dark + white/minimal + high contrast |
+| **Person emotion** | Confident smile (success) | Shocked/surprised (discovery) | Curious, pointing (teaching) | Serious, direct (authority) |
+| **Layout** | Asymmetrical (rule of thirds) | Symmetrical (centered) | A→B split (transformation) | Minimal, lots of negative space |
+| **Stun gun elements** | Face + graphic + text | Face + big number | Face + collage design | Compelling graphic + text (no face) |
+
+---
+
+## Quality Checklist
+
+Run through this after every generation:
+
+### Technical Quality
+- [ ] **Person is recognizable** — face is clear, well-lit, not distorted
+- [ ] **Person is on the right** — positioned correctly, ~40% of frame
+- [ ] **Face has clear emotion** — matches the feeling a viewer would have watching the video
+- [ ] **Background is dark** — moody, not bright or distracting
+- [ ] **Visual elements are present** — icons, dashboards, or other elements on the left
+- [ ] **3 elements max** — not overcrowded with too many visual components
+- [ ] **Text is readable** — would it be legible at 320x180px (smallest YouTube thumbnail)?
+- [ ] **Text doesn't overlap the face** — clean separation
+- [ ] **Bottom-right is clear** — no important elements hidden under YouTube's timestamp overlay
+- [ ] **High contrast** — foreground elements pop against the background
+- [ ] **16:9 aspect ratio** — correct proportions
+- [ ] **Clean composition** — not cluttered, clear visual hierarchy
+
+### Psychology Flow Check (the 3-step gut check)
+- [ ] **Visual Stun Gun** — would this stop a scrolling thumb? Does it pop in a feed of competitor thumbnails?
+- [ ] **Title Value Hunt** — does the thumbnail make you curious enough to read the title? Does it pair with the title to create a desire loop?
+- [ ] **Visual Validation** — after reading the title, does the thumbnail REINFORCE the promise? Do the elements build trust that the video will deliver?
+
+### Strategic Check
+- [ ] **Thumbnail text complements the title** — adds new information or feeling, doesn't repeat the title
+- [ ] **Desire loop is clear** — the visual elements represent the end state, process, transformation, or pain point
+- [ ] **Emotion is intentional** — face expression, color choices, and text all serve the same emotional direction
+- [ ] **Stands out from competitors** — would this catch your eye against other AI/dev content in the feed?
 
 ---
 
 ## Troubleshooting
 
-| Symptom                  | Likely cause                          | Fix                                          |
-| ------------------------ | ------------------------------------- | -------------------------------------------- |
-| No image generated       | GEMINI_API_KEY missing or invalid     | Set env var: `export GEMINI_API_KEY=...`     |
-| Script not found         | Wrong working directory               | Run from repo root (where `.claude/` lives)  |
-| AI artifacts in faces    | Prompt too complex or conflicting     | Simplify concept, reduce visual elements     |
-| Headshot not found       | HEADSHOT_DIR path wrong or empty      | Update env var or add headshot images to dir |
-| Combine script fails     | One or more thumbnail files missing   | Check generate step output for errors        |
-| Supabase update 401      | SUPABASE_SERVICE_KEY missing/expired  | Check env var is set and key has not expired |
-| Free tier quota exceeded | 100+ requests/day to Gemini free tier | Wait 24h or use a paid Gemini API key        |
+| Issue | Fix |
+|-------|-----|
+| "Could not process image" when reading downloaded reference | The downloaded file is HTML, not an image — the site blocked hotlinking. Run `file <path>` to confirm. Delete it and download from a different source (Wikipedia, GitHub raw, or official press kit). |
+| search_examples.py "out of credits" or "Invalid API key" | Scrape Creators API needs credits topped up. Skip Step 1b and generate without `--examples` — it's enhancement, not required. |
+| No image returned | Simplify the prompt. Remove any potentially flagged content. Try again. |
+| Person doesn't look like the headshot | Add more explicit instruction: "Use the exact likeness from the attached reference photo." Try a different headshot with clearer lighting. |
+| Text is garbled or unreadable | Gemini's text rendering isn't perfect. Consider generating without text and adding it in post-production (Figma, Canva, etc.). |
+| Wrong aspect ratio | The script sets 16:9 automatically. If the output looks wrong, check the saved file dimensions. |
+| Low resolution output | Gemini 3 Pro defaults to reasonable resolution. For higher res, the output can be upscaled with external tools. |
+| API error or timeout | Check that GEMINI_API_KEY is set. Check internet connection. Try again — API calls can intermittently fail. |
+| One of the 4 fails | The other 3 still save fine. Re-run just the failed one. |
+
+---
+
+## Output Format
+
+Use today's date (YYYY-MM-DD format) for the date folder. For example, if today is 2026-02-18, the output goes in `workspace/2026-02-18/thumbnails/`.
+
+Each video topic gets its own folder under `workspace/{today}/thumbnails/`:
+
+```
+workspace/{today}/thumbnails/{video-slug}/
+  a.png
+  b.png
+  c.png
+  d.png
+  comparison.png
+  v2.png
+  v3.png
+```
+
+The scripts create directories automatically via `mkdir -p`.
