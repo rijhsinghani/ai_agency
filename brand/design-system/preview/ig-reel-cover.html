@@ -1,0 +1,115 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  /* Reel cover at 1080×1920 (9:16). Preview tile 240px wide → scale 0.222 */
+  .reel {
+    width: 200px;
+    aspect-ratio: 9 / 16;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4), 0 0 0 1px rgba(252,252,252,.06);
+    flex-shrink: 0;
+  }
+  .reel-inner {
+    position: absolute; inset: 0;
+    transform: scale(0.185);
+    transform-origin: top left;
+    width: 1080px; height: 1920px;
+  }
+
+  /* Safe-zone overlay — IG chrome eats top ~250px (header) and bottom ~430px (caption + buttons + scrubber) */
+  .safe-overlay {
+    position: absolute; left:0; right:0;
+    background: rgba(160, 85, 255, .14);
+    border: 1px dashed rgba(160, 85, 255, .55);
+    pointer-events: none;
+  }
+  .safe-overlay.top    { top: 0;    height: 46.25px; }   /* 250 * 0.185 */
+  .safe-overlay.bottom { bottom: 0; height: 79.55px; }   /* 430 * 0.185 */
+  .safe-overlay span {
+    position: absolute; left: 8px; top: 6px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 8.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(160,85,255,.95);
+  }
+
+  .ig-h1 { font-family:"Roc Grotesk Wide",sans-serif; font-weight:950; line-height:.86; letter-spacing:-.025em; color:#FCFCFC; }
+  .ig-mono { font-family:"JetBrains Mono",ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase; }
+
+  .reel-cap {
+    font-family:"JetBrains Mono",ui-monospace,monospace;
+    font-size:9.5px; color:#6B7280; text-align:center; margin-top:8px; letter-spacing:.04em;
+  }
+</style>
+</head>
+<body>
+<div class="card" style="padding:20px 18px;">
+
+  <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
+    <div>
+      <div class="label" style="margin-bottom:4px;">Instagram · Reel cover</div>
+      <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:700; font-size:18px; color:#FCFCFC;">3 cover patterns</div>
+    </div>
+    <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:9.5px; color:#A8A29E;">1080×1920 · 9:16</div>
+  </div>
+
+  <div class="row" style="gap:14px; align-items:flex-start; justify-content:center;">
+
+    <!-- 1 · YELLOW TILE / hot lede -->
+    <div>
+      <div class="reel">
+        <div class="reel-inner" style="background:#FFCF01;">
+          <!-- Headline placed inside safe area (250px to 1490px vertical), 100px side cushions -->
+          <div style="position:absolute; top:380px; left:100px; right:100px;">
+            <div class="ig-mono" style="font-size:36px; color:#0A1117; opacity:.55; margin-bottom:60px;">REEL · 47 sec</div>
+            <div class="ig-h1" style="font-size:172px; color:#0A1117;">I FIRED<br>MY COLD<br>CALLERS.</div>
+            <div style="font-family:'Gilroy',sans-serif; font-weight:700; font-size:44px; color:#0A1117; margin-top:80px; line-height:1.25;">A bot books better<br>than they did. ↓</div>
+          </div>
+        </div>
+        <!-- Safe-zone guides -->
+        <div class="safe-overlay top"><span>HEADER · avoid</span></div>
+        <div class="safe-overlay bottom"><span>CAPTION + UI · avoid</span></div>
+      </div>
+      <div class="reel-cap">cover · yellow tile</div>
+    </div>
+
+    <!-- 2 · DARK / mesh + question hook -->
+    <div>
+      <div class="reel">
+        <div class="reel-inner" style="background:#0A1117; background-image: radial-gradient(ellipse 60% 40% at 70% 30%, rgba(160,85,255,.3) 0%, transparent 60%), radial-gradient(ellipse 50% 35% at 25% 75%, rgba(49,216,254,.18) 0%, transparent 60%);">
+          <div style="position:absolute; top:430px; left:100px; right:100px;">
+            <div class="ig-mono" style="font-size:36px; color:#31D8FE; margin-bottom:60px;">·  CASE · 02</div>
+            <div class="ig-h1" style="font-size:154px;">$0 → $42K<br>IN 90<br>DAYS.</div>
+            <div style="font-family:'Gilroy',sans-serif; font-weight:600; font-size:42px; color:#A8A29E; margin-top:80px; line-height:1.32;">One automation. Same team. Same ad spend.</div>
+          </div>
+        </div>
+        <div class="safe-overlay top"><span>HEADER · avoid</span></div>
+        <div class="safe-overlay bottom"><span>CAPTION + UI · avoid</span></div>
+      </div>
+      <div class="reel-cap">cover · dark + mesh</div>
+    </div>
+
+    <!-- 3 · LIME / contrarian / question -->
+    <div>
+      <div class="reel">
+        <div class="reel-inner" style="background:#B5ED30;">
+          <div style="position:absolute; top:420px; left:100px; right:100px;">
+            <div class="ig-mono" style="font-size:36px; color:#0A1117; opacity:.55; margin-bottom:50px;">HOT TAKE · 38 sec</div>
+            <div class="ig-h1" style="font-size:152px; color:#0A1117;">YOUR<br>CRM IS<br>THE<br>PROBLEM.</div>
+          </div>
+          <div style="position:absolute; bottom:540px; left:100px; right:100px;">
+            <div style="font-family:'Gilroy',sans-serif; font-weight:700; font-size:42px; color:#0A1117; line-height:1.25;">3 things I'd rip out<br>tomorrow. ↓</div>
+          </div>
+        </div>
+        <div class="safe-overlay top"><span>HEADER · avoid</span></div>
+        <div class="safe-overlay bottom"><span>CAPTION + UI · avoid</span></div>
+      </div>
+      <div class="reel-cap">cover · lime hot-take</div>
+    </div>
+
+  </div>
+
+  <div class="meta" style="margin-top:18px;">Three cover patterns covering the recurring Reel formats: <strong style="color:#FCFCFC;">tile</strong> (high-saturation surface, dark Roc Wide Black), <strong style="color:#FCFCFC;">dark + mesh</strong> (case-study / numerical hook), <strong style="color:#FCFCFC;">contrarian tile</strong> (hot-take). Side cushions are now <strong style="color:#FCFCFC;">100px</strong> on every cover so the widest line ($42K, MY COLD CALLERS, PROBLEM.) clears the edge with breathing room. Purple safe-zones mark IG chrome (top header ~250px, caption + UI ~430px). The <span style="color:#A055FF;">↓ arrow</span> at the bottom of the safe area is a system-wide swipe cue.</div>
+</div>
+</body></html>

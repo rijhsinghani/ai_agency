@@ -1,0 +1,116 @@
+/* Card base — used inside all preview/*.html files.
+   Cards render at ~700×H with minimal framing.
+   The asset name shows OUTSIDE the card in the Design System tab. */
+
+/* Gilroy — secondary face, body + tertiary headings (per brand p.28) */
+@font-face {
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Light.otf") format("opentype");
+  font-weight: 300 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-ExtraBold.otf") format("opentype");
+  font-weight: 600 900;
+  font-display: swap;
+}
+
+/* Roc Grotesk Wide — primary heading face (per brand p.27).
+   Full 9-weight family is now loaded so any Wide reference renders correctly. */
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-thin.otf")       format("opentype"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-extralight.otf") format("opentype"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-light.otf")      format("opentype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-regular.otf")    format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-medium.otf")     format("opentype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-bold.otf")       format("opentype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-extrabold.otf")  format("opentype"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-heavy.otf")      format("opentype"); font-weight: 900; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-black.otf")      format("opentype"); font-weight: 950; font-display: swap; }
+
+html, body {
+  margin: 0;
+  background: #0A1117;
+  color: #FCFCFC;
+  font-family: "Gilroy", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  width: 700px;
+  box-sizing: border-box;
+  padding: 24px;
+  background: #0A1117;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  /* grain */
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  z-index: 0;
+}
+
+.card > * { position: relative; z-index: 1; }
+
+.row { display: flex; align-items: stretch; gap: 12px; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #a8a29e;
+  font-weight: 600;
+}
+.meta {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  color: #a8a29e;
+}
+.title {
+  /* Default preview-card title style. Roc Grotesk Wide reserved for display
+     scale (33pt+); for tertiary card titles, override per-file with Gilroy. */
+  font-family: "Roc Grotesk Wide", system-ui, sans-serif;
+  font-weight: 700;
+  color: #FCFCFC;
+  letter-spacing: -0.01em;
+}
+
+/* Grain + dot-grid bases */
+.dot-grid-bg {
+  background-color: #161616;
+  background-image: radial-gradient(rgba(168,162,158,.06) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+}
+
+/* Arch-node */
+@keyframes nodePulse {
+  0%,100% { opacity: 0.75; transform: scale(1); }
+  50%     { opacity: 1;    transform: scale(1.18); }
+}
+.arch-node {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+  animation: nodePulse 3s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.an-cyan   { background: #31D8FE; box-shadow: 0 0 8px rgba(49,216,254,.55); }
+.an-purple { background: #A055FF; box-shadow: 0 0 8px rgba(160,85,255,.55); }
+.an-orange { background: #FF8135; box-shadow: 0 0 8px rgba(255,129,53,.55); }
+.an-yellow { background: #FFCF01; box-shadow: 0 0 8px rgba(255,207,1,.55); }
+.an-warm   { background: #d4a574; box-shadow: 0 0 8px rgba(212,165,116,.4); }
+.an-softpurple { background: #C084FC; box-shadow: 0 0 8px rgba(192,132,252,.45); }
+
+.arch-conn {
+  flex: 1; height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(168,162,158,.25) 0 4px, transparent 4px 10px);
+  align-self: center;
+}

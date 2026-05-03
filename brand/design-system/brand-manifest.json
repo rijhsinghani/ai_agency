@@ -1,0 +1,236 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "sameer-automations-brand-manifest",
+  "version": "1.0.0",
+  "description": "Single source of truth for video editing. Read this before generating any Remotion / Hyperframe component. Every color, font, and overlay used in a Sameer Automations Reel MUST resolve to a token in this file.",
+  "fps": 30,
+  "format": {
+    "reel": { "width": 1080, "height": 1920, "aspect": "9:16" },
+    "carousel_slide": { "width": 1080, "height": 1350, "aspect": "4:5" },
+    "story": { "width": 1080, "height": 1920, "aspect": "9:16" }
+  },
+  "safeZones": {
+    "reel": {
+      "_comment": "IG chrome eats these regions. Never place legible content here.",
+      "topPx": 250,
+      "bottomPx": 430,
+      "leftPx": 60,
+      "rightPx": 60,
+      "talkingHead": {
+        "_comment": "Sameer's standard framing — close-up, face fills top ~60% of frame, torso/hands bottom ~35%. Overlays MUST avoid the face zone (top 250 → bottom 1280). Use only the lowerStrip and side rails.",
+        "faceBoxApprox":   { "top": 250,  "bottom": 1280, "_use": "DO NOT place overlays here. The face is the content." },
+        "lowerStrip":      { "bottom": 460, "left": 60,  "right": 60,  "height": 240, "_use": "name lower-third, captions, single-line stat — narrow band BELOW chest line so face stays clear. Top edge sits below shoulders at y≈1220." },
+        "leftGutter":      { "top": 720,  "left": 0,   "width": 460, "bottom": 460, "_use": "vertical-gradient gutter for NumberedList / SystemDiagram. Only dims the strip behind the overlay, not the face." },
+        "rightGutter":     { "top": 720,  "right": 0,  "width": 460, "bottom": 460, "_use": "mirror of leftGutter" },
+        "topChapterStrip": { "top": 270,  "left": 60,  "right": 60,  "height": 120, "_use": "chapter / section pills. Sits ABOVE the face, in the IG safe-zone padding." }
+      }
+    }
+  },
+  "colors": {
+    "_rule": "Use ONLY these tokens. Do not invent hex values. Use the named token in components.",
+    "base": {
+      "ink": "#0A1117",
+      "paper": "#FCFCFC",
+      "muted": "#A8A29E",
+      "dim": "#6B7280"
+    },
+    "primary": {
+      "purple": "#A055FF",
+      "softPurple": "#C084FC"
+    },
+    "secondary": {
+      "cyan": "#31D8FE",
+      "yellow": "#FFCF01",
+      "orange": "#FF8135",
+      "lime": "#B5ED30",
+      "pink": "#FA61AA"
+    },
+    "accent": {
+      "_rule": "Per-overlay accent — pick ONE per shot. Rotate across a Reel for rhythm. Never two saturated overlays on screen at the same time.",
+      "allowed": ["purple", "cyan", "yellow", "lime", "pink", "orange"]
+    },
+    "overlayScrim": {
+      "_comment": "RGBA scrims that sit between the talking head and overlays so type stays legible.",
+      "darkBottom": "linear-gradient(180deg, transparent 0%, rgba(10,17,23,.85) 100%)",
+      "darkTop":    "linear-gradient(180deg, rgba(10,17,23,.85) 0%, transparent 100%)",
+      "spotlight":  "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(160,85,255,.18) 0%, transparent 65%)"
+    }
+  },
+  "type": {
+    "_rule": "Two families only. Never substitute. Both are loaded from /fonts/ via the @font-face block in /reels/fonts.css.",
+    "families": {
+      "display": {
+        "name": "Roc Grotesk Wide",
+        "fileBase": "fonts/rocgroteskwide-",
+        "weights": [100, 200, 300, 400, 500, 700, 800, 900, 950],
+        "_use": "All display headings, stat numerals, chapter titles. Tracking: -0.025em at display scale, -0.012em at body-display scale."
+      },
+      "body": {
+        "name": "Gilroy",
+        "files": ["fonts/Gilroy-Light.otf", "fonts/Gilroy-ExtraBold.otf"],
+        "weightRanges": [[300, 500], [600, 900]],
+        "_use": "All body, captions, lower-third subtext."
+      },
+      "mono": {
+        "name": "JetBrains Mono",
+        "fallback": "ui-monospace, Menlo, monospace",
+        "_use": "All eyebrows, timecodes, mono rails. Always uppercase, letter-spacing 0.14em."
+      }
+    },
+    "scales": {
+      "_unit": "px at 1080×1920 native",
+      "display_xl": { "size": 200, "weight": 950, "lineHeight": 0.86, "tracking": "-0.025em", "_use": "Reel cover hero" },
+      "display_l":  { "size": 160, "weight": 950, "lineHeight": 0.88, "tracking": "-0.025em", "_use": "Quote pull, chapter title" },
+      "display_m":  { "size": 108, "weight": 800, "lineHeight": 1.0,  "tracking": "-0.012em", "_use": "End-card primary, lower-third headline" },
+      "display_s":  { "size": 72,  "weight": 800, "lineHeight": 1.05, "tracking": "-0.012em", "_use": "List item, system-diagram label" },
+      "body_l":     { "size": 46,  "weight": 600, "lineHeight": 1.32, "_use": "Lower-third subtitle, list body" },
+      "body_m":     { "size": 38,  "weight": 500, "lineHeight": 1.32, "_use": "Caption strip" },
+      "mono_eyebrow": { "size": 32, "weight": 500, "tracking": "0.14em", "uppercase": true, "_use": "All eyebrows / section markers" }
+    }
+  },
+  "motion": {
+    "_rule": "Mixed personality: snappy for stats/numbers, soft for words. Never both within the same overlay.",
+    "presets": {
+      "snap_in": {
+        "duration": 8,
+        "_unit": "frames @ 30fps",
+        "easing": "linear",
+        "transform": "translateY(20px) -> translateY(0)",
+        "opacity": "0 -> 1",
+        "_use": "Stat numerals, system-diagram nodes"
+      },
+      "soft_in": {
+        "duration": 14,
+        "_unit": "frames @ 30fps",
+        "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "transform": "scale(0.94) translateY(12px) -> scale(1) translateY(0)",
+        "opacity": "0 -> 1",
+        "_use": "Lower-third, quote pull, list items, chapter cards"
+      },
+      "rail_wipe": {
+        "duration": 10,
+        "_unit": "frames @ 30fps",
+        "easing": "cubic-bezier(0.7, 0, 0.3, 1)",
+        "_use": "Mono rail extending under a label or stat"
+      },
+      "node_pulse": {
+        "duration": 90,
+        "_unit": "frames @ 30fps (loops)",
+        "easing": "ease-in-out",
+        "_use": "Arch-nodes idle pulse — opacity .75↔1, scale 1↔1.18"
+      },
+      "out": {
+        "duration": 8,
+        "easing": "cubic-bezier(0.4, 0, 1, 1)",
+        "transform": "scale(1) -> scale(0.98)",
+        "opacity": "1 -> 0",
+        "_use": "Standard exit for all overlays"
+      }
+    },
+    "defaultDurationFrames": 120,
+    "defaultDurationSec": 4
+  },
+  "captions": {
+    "_rule": "Auto-captions match the brand body type. Word-by-word emphasis allowed: when the speaker hits a noun like 'automation' or a number, that word switches to the per-shot accent color and bumps to weight 800.",
+    "style": {
+      "fontFamily": "Gilroy",
+      "weight": 700,
+      "size": 56,
+      "lineHeight": 1.18,
+      "color": "#FCFCFC",
+      "background": "rgba(10,17,23,.55)",
+      "padding": "18px 28px",
+      "borderRadius": 14,
+      "maxLineChars": 22,
+      "maxLines": 2
+    },
+    "emphasis": {
+      "_rule": "Up to 1 word per caption may be emphasized.",
+      "weight": 800,
+      "color": "var(--shot-accent)"
+    },
+    "position": {
+      "anchor": "bottom",
+      "bottomPx": 480,
+      "_comment": "Sits ABOVE the IG bottom safe-zone (430px) with 50px breathing room."
+    }
+  },
+  "overlays": {
+    "_rule": "Every overlay component lives in /reels/components/. Filename must match the component name. Anchors must avoid the faceBoxApprox region — keep the talking head clear.",
+    "registry": [
+      {
+        "id": "lower-third",
+        "file": "reels/components/LowerThird.tsx",
+        "props": ["eyebrow", "title", "subtitle", "accent"],
+        "anchor": "lowerStrip",
+        "duration": "4s",
+        "motion": "soft_in",
+        "_use": "Name + handle / topic strip. Sits in the bottom 240px band below chest line so face stays clear. Single-line title preferred."
+      },
+      {
+        "id": "caption-strip",
+        "file": "reels/components/CaptionStrip.tsx",
+        "props": ["words", "emphasisWordIndex", "accent"],
+        "anchor": "lowerStrip (raised)",
+        "duration": "per-cue",
+        "motion": "snap_in",
+        "_use": "Burned-in captions. Anchored at y=1500 (above chest, below mouth) so they don't overlap the speaking face."
+      },
+      {
+        "id": "numbered-list",
+        "file": "reels/components/NumberedList.tsx",
+        "props": ["items", "revealStaggerFrames", "accent", "side"],
+        "anchor": "leftGutter | rightGutter",
+        "duration": "auto",
+        "motion": "soft_in",
+        "_use": "Side-anchored vertical list with localized gradient scrim that fades into the face — only dims the gutter, not the head."
+      },
+      {
+        "id": "quote-pull",
+        "file": "reels/components/QuotePull.tsx",
+        "props": ["body", "byline", "accent", "side"],
+        "anchor": "leftGutter | rightGutter",
+        "duration": "5s",
+        "motion": "soft_in"
+      },
+      {
+        "id": "system-diagram",
+        "file": "reels/components/SystemDiagram.tsx",
+        "props": ["nodes", "edges", "revealOrder", "accent", "side"],
+        "anchor": "leftGutter | rightGutter",
+        "duration": "auto",
+        "motion": "snap_in + node_pulse"
+      },
+      {
+        "id": "chapter-pill",
+        "file": "reels/components/ChapterPill.tsx",
+        "props": ["index", "label", "accent"],
+        "anchor": "topChapterStrip",
+        "duration": "3s",
+        "motion": "soft_in",
+        "_use": "Optional top-of-frame chapter marker, e.g. '02 · The 5 plays'. Lives in the IG top-chrome safe zone so it never touches the face."
+      }
+    ]
+  },
+  "assetPaths": {
+    "_rule": "These are the only paths Claude Code is allowed to read from when generating a Reel.",
+    "fonts": "fonts/",
+    "logos": "assets/",
+    "manifest": "brand-manifest.json",
+    "components": "reels/components/",
+    "presets": "reels/presets/",
+    "tokens": "reels/tokens.ts"
+  },
+  "forbidden": {
+    "fonts": ["Inter", "Roboto", "Arial", "Helvetica", "Outfit", "DM Sans", "system-ui"],
+    "colorOps": ["raw hex codes outside this manifest", "tailwind color classes (e.g. bg-purple-500)", "off-brand palettes"],
+    "patterns": [
+      "two saturated overlay colors at once",
+      "gradient text + colored highlight on the same line",
+      "emoji as graphic elements (use arch-nodes or icons)",
+      "stock photography",
+      "drop shadows under text",
+      "rounded corners > 32px on display surfaces"
+    ]
+  }
+}

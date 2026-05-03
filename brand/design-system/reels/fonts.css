@@ -1,0 +1,16 @@
+/* fonts.css — load before any Remotion component renders.
+   Path-resolves relative to project root: reference as href="/reels/fonts.css"
+   from a Remotion <Composition> staticFile. */
+
+@font-face { font-family: "Gilroy"; src: url("../fonts/Gilroy-Light.otf") format("opentype"); font-weight: 300 500; font-display: block; }
+@font-face { font-family: "Gilroy"; src: url("../fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 600 900; font-display: block; }
+
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-thin.otf")       format("opentype"); font-weight: 100; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-extralight.otf") format("opentype"); font-weight: 200; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-light.otf")      format("opentype"); font-weight: 300; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-regular.otf")    format("opentype"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-medium.otf")     format("opentype"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-bold.otf")       format("opentype"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-extrabold.otf")  format("opentype"); font-weight: 800; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-heavy.otf")      format("opentype"); font-weight: 900; font-display: block; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("../fonts/rocgroteskwide-black.otf")      format("opentype"); font-weight: 950; font-display: block; }

@@ -1,0 +1,288 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  .phone {
+    width: 260px;
+    height: 540px;
+    border-radius: 36px;
+    background: #0A1117;
+    border: 1px solid rgba(252,252,252,.10);
+    box-shadow: 0 12px 32px rgba(0,0,0,.5), inset 0 0 0 1px rgba(252,252,252,.04);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  /* IG DM header */
+  .dm-header {
+    height: 54px;
+    border-bottom: 1px solid rgba(252,252,252,.06);
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 14px;
+  }
+  .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #A055FF 0%, #31D8FE 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Roc Grotesk Wide", sans-serif; font-weight: 900;
+    font-size: 14px; color: #0A1117;
+    flex-shrink: 0;
+  }
+  .dm-name {
+    flex: 1; min-width: 0;
+  }
+  .dm-name .h {
+    font-family: "Gilroy", sans-serif; font-weight: 700; font-size: 13px; color: #FCFCFC;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .dm-name .h::after {
+    content: ""; width: 11px; height: 11px; border-radius: 50%;
+    background: #A055FF;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 6.2 L5 8 L9 4' stroke='white' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 100%;
+  }
+  .dm-name .s {
+    font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 9px;
+    color: #6B7280; letter-spacing: .04em; margin-top: 1px;
+  }
+
+  /* Messages */
+  .messages {
+    padding: 8px 12px 8px;
+    display: flex; flex-direction: column; gap: 4px;
+    height: calc(540px - 54px - 50px);
+    overflow: hidden;
+  }
+  .bubble {
+    max-width: 78%;
+    padding: 7px 11px;
+    border-radius: 16px;
+    font-family: "Gilroy", sans-serif; font-weight: 500;
+    font-size: 11px; line-height: 1.32;
+  }
+  .bubble.user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #A055FF 0%, #C084FC 100%);
+    color: #0A1117;
+    font-weight: 600;
+    border-bottom-right-radius: 5px;
+  }
+  .bubble.bot {
+    align-self: flex-start;
+    background: rgba(252,252,252,.06);
+    color: #FCFCFC;
+    border: 1px solid rgba(252,252,252,.08);
+    border-bottom-left-radius: 5px;
+  }
+  .bubble.bot strong { color: #31D8FE; font-weight: 700; }
+  .timestamp {
+    align-self: center;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 8.5px; color: #6B7280;
+    letter-spacing: .08em; text-transform: uppercase;
+    margin: 2px 0 1px;
+  }
+  /* tag-pill replies */
+  .quick-replies {
+    align-self: flex-end;
+    display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end;
+    max-width: 80%;
+  }
+  .qr {
+    padding: 5px 10px;
+    border-radius: 14px;
+    border: 1px solid #A055FF;
+    color: #A055FF;
+    font-family: "Gilroy", sans-serif; font-weight: 600;
+    font-size: 10.5px;
+    background: transparent;
+  }
+  /* delivered indicator */
+  .delivered {
+    align-self: flex-end;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 8.5px; color: #6B7280; letter-spacing: .06em;
+    margin-top: -2px;
+  }
+
+  /* Composer */
+  .composer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 50px;
+    border-top: 1px solid rgba(252,252,252,.06);
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 12px;
+    background: #0A1117;
+  }
+  .composer .input {
+    flex: 1;
+    height: 30px;
+    background: rgba(252,252,252,.04);
+    border: 1px solid rgba(252,252,252,.08);
+    border-radius: 15px;
+    display: flex; align-items: center;
+    padding: 0 12px;
+    font-family: "Gilroy", sans-serif; font-size: 11px;
+    color: #6B7280;
+  }
+
+  /* Annotation rail (right side) */
+  .rail {
+    width: 240px;
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+    gap: 12px;
+    padding-top: 14px;
+  }
+  .rail-row {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .rail-tick {
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    position: relative;
+  }
+  .rail-tick::before {
+    content: "";
+    position: absolute; left: 6px; top: 14px;
+    width: 1px; height: 32px;
+    background: rgba(168,162,158,.18);
+  }
+  .rail-row:last-child .rail-tick::before { display: none; }
+  .rail-tick::after {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: #A055FF;
+    position: absolute; left: 4px; top: 4px;
+    box-shadow: 0 0 0 3px rgba(160,85,255,.18);
+  }
+  .rail-body {
+    flex: 1;
+  }
+  .rail-mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 9.5px; color: #A055FF;
+    letter-spacing: .14em; text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .rail-text {
+    font-family: "Gilroy", sans-serif; font-weight: 500;
+    font-size: 12px; line-height: 1.4; color: #A8A29E;
+  }
+  .rail-text strong { color: #FCFCFC; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card" style="padding:22px 18px;">
+
+  <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
+    <div>
+      <div class="label" style="margin-bottom:4px;">DM-bot · lead-response automation</div>
+      <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:700; font-size:18px; color:#FCFCFC;">"AUDIT" → booked call</div>
+    </div>
+    <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:9.5px; color:#A8A29E;">avg 42s · 24/7</div>
+  </div>
+
+  <div class="row" style="gap:18px; align-items:flex-start; justify-content:center;">
+
+    <!-- Phone mock -->
+    <div class="phone">
+      <div class="dm-header">
+        <div class="avatar">S</div>
+        <div class="dm-name">
+          <div class="h">sameer_rijhsinghani</div>
+          <div class="s">Active now · auto-replies on</div>
+        </div>
+      </div>
+
+      <div class="messages">
+        <div class="timestamp">3:47 AM</div>
+
+        <!-- 1: User trigger -->
+        <div class="bubble user">AUDIT</div>
+        <div class="delivered">Delivered</div>
+
+        <!-- 2: Bot warm hello -->
+        <div class="bubble bot">Hey — Sameer's bot here 👋 I'll get you booked while he's asleep.<br><br>Quick one: <strong>what does your business do?</strong></div>
+
+        <!-- 3: User reply -->
+        <div class="bubble user">HVAC. Bay Area, residential.</div>
+
+        <!-- 4: Bot — qualify (compact) -->
+        <div class="bubble bot">Got it. <strong>How many leads/wk?</strong></div>
+
+        <!-- 5: Quick replies -->
+        <div class="quick-replies">
+          <div class="qr">&lt;20</div>
+          <div class="qr">20–50</div>
+          <div class="qr">50–100</div>
+          <div class="qr">100+</div>
+        </div>
+
+        <!-- 6: User picks -->
+        <div class="bubble user">50–100</div>
+
+        <!-- 7: Bot books (tightened) -->
+        <div class="bubble bot">Pays for itself <strong>week 1</strong> at that volume. Sending a slot ↓</div>
+
+        <!-- 8: Booking card -->
+        <div style="align-self: flex-start; max-width: 80%; padding: 8px; background: rgba(252,252,252,.04); border:1px solid rgba(49,216,254,.35); border-radius: 12px; display: flex; gap: 8px; align-items: center; margin-top: 1px;">
+          <div style="width:34px; height:34px; border-radius:7px; background:#31D8FE; display:flex; flex-direction:column; align-items:center; justify-content:center; flex-shrink:0;">
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:6.5px; color:#0A1117; letter-spacing:.1em;">TUE</div>
+            <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:900; font-size:14px; color:#0A1117; line-height:1;">29</div>
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-family:'Gilroy',sans-serif; font-weight:700; font-size:10.5px; color:#FCFCFC;">Ops audit · 45 min</div>
+            <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:8.5px; color:#A8A29E; letter-spacing:.06em; margin-top:1px;">2:00 PM PT · Loom</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div class="input">Message…</div>
+      </div>
+    </div>
+
+    <!-- Annotation rail -->
+    <div class="rail">
+      <div class="rail-row">
+        <div class="rail-tick"></div>
+        <div class="rail-body">
+          <div class="rail-mono">01 · TRIGGER</div>
+          <div class="rail-text">Keyword <strong>"AUDIT"</strong> from a Reel CTA. Fires the workflow in IG Graph API.</div>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-tick"></div>
+        <div class="rail-body">
+          <div class="rail-mono">02 · QUALIFY</div>
+          <div class="rail-text">Two questions max: <strong>industry + lead volume</strong>. Anything more = drop-off.</div>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-tick"></div>
+        <div class="rail-body">
+          <div class="rail-mono">03 · PERSONALIZE</div>
+          <div class="rail-text">Volume tier maps to a one-line value prop. <strong>"Pays for itself in week 1"</strong> for 50–100/wk.</div>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-tick"></div>
+        <div class="rail-body">
+          <div class="rail-mono">04 · BOOK</div>
+          <div class="rail-text">Native IG card → Cal.com slot. <strong>No leaving the app.</strong></div>
+        </div>
+      </div>
+      <div class="rail-row">
+        <div class="rail-tick"></div>
+        <div class="rail-body">
+          <div class="rail-mono">05 · HANDOFF</div>
+          <div class="rail-text">Slack ping to Sameer + CRM row. Bot exits gracefully.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="meta" style="margin-top:18px;">Conversation mock for the <strong style="color:#FCFCFC;">flagship lead-response automation</strong>. The bot bubble uses dark base + cyan-bold accents on the qualifying phrase; user bubble is the purple→softpurple gradient (matches the brand's primary). Quick-replies are outlined purple pills — the only place tap-targets enter the chat. The booking card mirrors the system's <em>spec-sheet</em> pattern at chat scale. Annotation rail uses the arch-node language to mark each automation step.</div>
+</div>
+</body></html>
