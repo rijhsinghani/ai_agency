@@ -5,7 +5,20 @@
 
 ### Mar 2, 2026
 
-| ID | Time | T | Title | Read |
-|----|------|---|-------|------|
-| #2751 | 11:29 AM | 🔵 | Comprehensive asset inventory across automation consultancy and content-engine repositories | ~646 |
+| ID    | Time     | T   | Title                                                                                       | Read |
+| ----- | -------- | --- | ------------------------------------------------------------------------------------------- | ---- |
+| #2751 | 11:29 AM | 🔵  | Comprehensive asset inventory across automation consultancy and content-engine repositories | ~646 |
+
 </claude-mem-context>
+
+## Design System
+
+The canonical Direction C design system lives at `brand/design-system/`. Read `brand/design-system/CLAUDE.md` before generating any IG asset (Reel cover, story, carousel, single post, profile composition, DM bot reply, etc.).
+
+Key files:
+
+- `brand/design-system/brand-manifest.json` — single source of truth for colors, fonts, motion
+- `brand/design-system/INSTAGRAM-INVENTORY.md` — index of the 8 IG templates
+- `brand/design-system/preview/ig-*.html` — rendered previews of every IG template
+
+The strategy/voice layer lives at the brand/ root: `SESSION-HANDOFF-2026-04-19.md` (Direction C brainstorm), `brand-voice.md` (voice/tone reference), `banned-phrases.json` (copy guardrails).
