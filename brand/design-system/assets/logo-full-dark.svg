@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" width="520" height="100" role="img" aria-label="Sameer Automations">
+  <title>Sameer Automations</title>
+  <defs>
+    
+
+    <linearGradient id="fl-flowGrad" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#A055FF"></stop>
+      <stop offset="50%" stop-color="#C084FC"></stop>
+      <stop offset="100%" stop-color="#31D8FE"></stop>
+    </linearGradient>
+
+    <radialGradient id="fl-haloInput" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#A055FF" stop-opacity="0.3"></stop>
+      <stop offset="100%" stop-color="#A055FF" stop-opacity="0"></stop>
+    </radialGradient>
+
+    <radialGradient id="fl-haloOutput" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#31D8FE" stop-opacity="0.3"></stop>
+      <stop offset="100%" stop-color="#31D8FE" stop-opacity="0"></stop>
+    </radialGradient>
+
+    <filter id="fl-coreGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"></feGaussianBlur>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.302  0 0 0 0 0.851  0 0 0 0 0.910  0 0 0 0.8 0" result="cyan"></feColorMatrix>
+      <feMerge>
+        <feMergeNode in="cyan"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+
+  
+  <circle cx="80" cy="20" r="20" fill="url(#fl-haloInput)"></circle>
+  <circle cx="20" cy="80" r="20" fill="url(#fl-haloOutput)"></circle>
+  <path d="M 80 20&#xA;       C 40 20, 20 20, 20 40&#xA;       C 20 60, 80 40, 80 60&#xA;       C 80 80, 60 80, 20 80" stroke="url(#fl-flowGrad)" stroke-width="8" stroke-linecap="round" fill="none"></path>
+  <circle cx="80" cy="20" r="6" fill="#A055FF" filter="url(#fl-coreGlow)"></circle>
+  <circle cx="80" cy="20" r="2" fill="#FFFFFF" opacity="0.85"></circle>
+  <circle cx="20" cy="80" r="6" fill="#31D8FE" filter="url(#fl-coreGlow)"></circle>
+  <circle cx="20" cy="80" r="2" fill="#FFFFFF" opacity="0.85"></circle>
+
+  
+  <text x="124" y="46" class="wordmark">SAMEER AUTOMATIONS</text>
+
+  
+  <text x="125" y="68" class="tagline">Smart systems. Built for your business. By Sameer.</text>
+</svg>

@@ -1,0 +1,318 @@
+/* ─────────────────────────────────────────────────────────
+   Sameer Automations — Design Tokens
+   Dark-mode-first. "System Architecture" visual language.
+   ───────────────────────────────────────────────────────── */
+
+/* ── Fonts ─────────────────────────────────────────────── */
+/* Roc Grotesk ships with this repo in five widths × nine weights.
+   Each width is exposed as its own font-family so compositions pick ONE.
+   Gilroy (body) — Light + ExtraBold on disk today (more weights incoming).
+   JetBrains Mono (code/data) loaded from Google Fonts. */
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+/* Roc Grotesk — default width: NOT licensed.
+   The brand uses Roc Grotesk WIDE (see below); the regular width was DEMO-only
+   and has been removed. If a licensed regular width is needed later, drop the
+   OTFs into fonts/ and re-add the @font-face block here. */
+
+/* Roc Grotesk Wide — LICENSED (full weight family on disk, April 2026 upload). */
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-thin.otf")       format("opentype"); font-weight: 100; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-extralight.otf") format("opentype"); font-weight: 200; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-light.otf")      format("opentype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-regular.otf")    format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-medium.otf")     format("opentype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-bold.otf")       format("opentype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-extrabold.otf")  format("opentype"); font-weight: 800; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-heavy.otf")      format("opentype"); font-weight: 900; font-display: swap; }
+@font-face { font-family: "Roc Grotesk Wide"; src: url("fonts/rocgroteskwide-black.otf")      format("opentype"); font-weight: 950; font-display: swap; }
+
+/* Roc Grotesk ExtraWide — NOT licensed (DEMO files removed). Re-add when licensed copies arrive. */
+
+/* Roc Grotesk Cond (Condensed) — NOT licensed (DEMO files removed). Re-add when licensed copies arrive. */
+
+/* Roc Grotesk Comp (Compressed) — NOT licensed (DEMO files removed). Re-add when licensed copies arrive. */
+
+/* Gilroy — body. TODO: Regular (400) + Medium (500) + SemiBold (600) + Bold (700) incoming.
+   For now 400 + 500 alias Light; 600 + 700 alias ExtraBold. Once the real OTFs land,
+   replace the alias rules below with weight-specific src entries. */
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-Light.otf")     format("opentype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-Light.otf")     format("opentype"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-Light.otf")     format("opentype"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Gilroy"; src: url("fonts/Gilroy-ExtraBold.otf") format("opentype"); font-weight: 800; font-display: swap; }
+
+:root {
+  /* ── Colors: core brand (verified against InstantEditAI guidelines pp.31-34) ──
+     Each value below appears verbatim in the brand book. Anything not listed
+     is OUT of palette and must NOT be added as a new token. */
+  --sa-purple:       #A055FF;        /* Pantone 266 C — Primary purple */
+  --sa-purple-soft:  #C084FC;        /* Derived gradient mid-stop / text highlight tint */
+  --sa-purple-muted: rgba(160, 85, 255, 0.12); /* Derived chip wash */
+  /* For "pressed" / "deep" purple states, use color-mix(in oklch, var(--sa-purple) 70%, black)
+     or a darker rgba on the fly. Do NOT introduce a separate hex token. */
+  --sa-cyan:         #31D8FE;        /* Pantone 2985 C */
+  --sa-yellow:       #FFCF01;        /* Pantone 116 C — display accent / tile headlines */
+  --sa-orange:       #FF8135;        /* Pantone 165 C — results / ROI */
+  --sa-lime:         #B5ED30;        /* Pantone 375 C */
+
+  /* ── Secondary palette (Brand Guidelines pp. 32–33) ───
+     Used in details and social-media graphics. Each maps to a
+     Pantone reference for print parity. Background-as-fill is
+     OK on social tiles only — never as a primary website surface. */
+  --sa-pink-soft:    #FFBAD6;        /* Pantone 1895 C */
+  --sa-pink-mid:     #FE8FC9;        /* Pantone 211 C  */
+  --sa-pink-hot:     #FA61AA;        /* Pantone 212 C  */
+  --sa-yellow-soft:  #FDFF9D;        /* Pantone 600 C  */
+  --sa-lime-soft:    #DDFF94;        /* Pantone 373 C  */
+  --sa-lime-bright:  #CEF868;        /* Pantone 374 C  */
+  --sa-cyan-soft:    #A7FAFF;        /* Pantone 318 C  */
+  --sa-cyan-mid:     #77E6FF;        /* Pantone 636 C  */
+  --sa-purple-pale:  #E9CAFF;        /* Pantone 530 C  */
+  --sa-purple-mid:   #DA8CFF;        /* Pantone 252 C  */
+
+  /* Semantic */
+  --sa-success: #10B981;
+  --sa-error:   #EF4444;
+
+  /* Neutrals — three official dark neutrals from the brand book (p.31).
+     Surface elevation = layered translucent whites on top of --sa-base, NOT new hexes. */
+  --sa-base:           #0A1117;      /* Pantone 7547 C — primary page background */
+  --sa-neutral-black:  #201F1C;      /* Pantone Neutral Black C — alt deep neutral */
+  --sa-true-black:     #000000;      /* Pantone Black 6C — for prints, masks, on-light type */
+
+  /* Surface elevation = derived layers. Render against --sa-base for correct values. */
+  --sa-surface:        rgba(252, 252, 252, 0.025); /* Section background overlay */
+  --sa-surface-raised: rgba(252, 252, 252, 0.045); /* Card background overlay */
+  --sa-border:         rgba(252, 252, 252, 0.06);
+  --sa-border-strong:  rgba(252, 252, 252, 0.12);
+  --sa-border-hover:   rgba(160, 85, 255, 0.32);
+
+  /* Foreground — guidelines specify white as #FCFCFC (Pantone 7541 C). */
+  --sa-white:       #FCFCFC;         /* Pantone 7541 C — primary text on dark */
+  --sa-cream:       #FCFCFC;         /* Alias kept for legacy uses */
+  --sa-cream-dim:   #A8A29E;         /* Secondary text — derived neutral */
+  --sa-cream-faint: rgba(252, 252, 252, 0.50);
+  --sa-gray:        #6B7280;
+
+  /* ── Signature gradient ─────────────────────────────── */
+  --sa-gradient-brand: linear-gradient(135deg, #A055FF 0%, #C084FC 55%, #31D8FE 100%);
+  --sa-gradient-purple-text: linear-gradient(135deg, #A055FF 0%, #C084FC 60%, #E9D5FF 100%);
+  --sa-gradient-s-wave: linear-gradient(180deg, #A055FF 0%, #C084FC 50%, #31D8FE 100%);
+
+  /* ── Atmosphere ─────────────────────────────────────── */
+  --sa-mesh-hero: radial-gradient(ellipse 55% 50% at 72% 28%, rgba(160, 85, 255, 0.10) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 20% 80%, rgba(192, 132, 252, 0.04) 0%, transparent 60%);
+  --sa-mesh-section: radial-gradient(ellipse 600px 400px at 20% 50%, rgba(160, 85, 255, 0.06), transparent),
+                     radial-gradient(ellipse 500px 300px at 80% 30%, rgba(192, 132, 252, 0.03), transparent);
+  --sa-mesh-results: radial-gradient(ellipse 600px 400px at 30% 60%, rgba(255, 129, 53, 0.05), transparent),
+                     radial-gradient(ellipse 500px 300px at 70% 40%, rgba(49, 216, 254, 0.04), transparent);
+  --sa-dot-grid: radial-gradient(rgba(168, 162, 158, 0.05) 0.6px, transparent 0.6px) 0 0 / 48px 48px;
+  --sa-grain-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+
+  /* ── Typography ───────────────────────────────────────
+     Per Brand Guidelines p.27: HEADINGS use Roc Grotesk WIDE.
+     Only the Wide width is licensed and on disk; the Cond / Comp / XWide /
+     Regular tokens below resolve to system fallbacks until licensed copies
+     are added. Do not use them for production work in the meantime. */
+  --sa-font-display:        "Roc Grotesk Wide", system-ui, sans-serif;
+  --sa-font-display-wide:   "Roc Grotesk Wide", system-ui, sans-serif;
+  --sa-font-display-regular:"Roc Grotesk", "Roc Grotesk Wide", system-ui, sans-serif;
+  --sa-font-display-xwide:  "Roc Grotesk XWide", "Roc Grotesk Wide", system-ui, sans-serif;
+  --sa-font-display-cond:   "Roc Grotesk Cond", system-ui, sans-serif;
+  --sa-font-display-comp:   "Roc Grotesk Comp", system-ui, sans-serif;
+  --sa-font-body: "Gilroy", system-ui, sans-serif;
+  --sa-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale — fluid where useful */
+  --sa-text-hero: clamp(3rem, 6.5vw, 5.75rem);  /* h1 page-hero */
+  --sa-text-h1:   clamp(2.25rem, 4vw, 3.25rem);
+  --sa-text-h2:   clamp(1.875rem, 3vw, 2.75rem);
+  --sa-text-h3:   1.5rem;    /* 24 */
+  --sa-text-h4:   1.25rem;   /* 20 */
+  --sa-text-lg:   1.125rem;  /* 18 */
+  --sa-text-base: 1rem;      /* 16 */
+  --sa-text-sm:   0.9375rem; /* 15 */
+  --sa-text-xs:   0.8125rem; /* 13 */
+  --sa-text-eyebrow: 0.75rem; /* 12 — uppercased, tracked 0.2em */
+
+  /* Weights */
+  --sa-weight-regular: 400;
+  --sa-weight-medium:  500;
+  --sa-weight-semibold: 600;
+  --sa-weight-bold:    700;
+
+  /* Tracking */
+  --sa-track-tight: -0.03em;
+  --sa-track-snug: -0.02em;
+  --sa-track-normal: 0;
+  --sa-track-wide: 0.04em;
+  --sa-track-eyebrow: 0.20em;
+
+  /* Line-height */
+  --sa-lh-display: 1.0;
+  --sa-lh-heading: 1.08;
+  --sa-lh-body: 1.55;
+
+  /* ── Spacing — 4pt base ─────────────────────────────── */
+  --sa-space-1: 4px;
+  --sa-space-2: 8px;
+  --sa-space-3: 12px;
+  --sa-space-4: 16px;
+  --sa-space-5: 20px;
+  --sa-space-6: 24px;
+  --sa-space-8: 32px;
+  --sa-space-10: 40px;
+  --sa-space-12: 48px;
+  --sa-space-16: 64px;
+  --sa-space-20: 80px;
+  --sa-space-24: 96px;
+  --sa-space-32: 128px;
+
+  /* ── Radii ──────────────────────────────────────────── */
+  --sa-radius-sm: 6px;
+  --sa-radius-md: 10px;
+  --sa-radius-lg: 12px;   /* buttons */
+  --sa-radius-xl: 16px;   /* input chips */
+  --sa-radius-2xl: 20px;
+  --sa-radius-card: 20px; /* default card rounding used by .card-premium */
+  --sa-radius-pill: 999px;
+
+  /* ── Shadows / elevation ────────────────────────────── */
+  --sa-shadow-cta:    0 4px 28px rgba(160, 85, 255, 0.40);
+  --sa-shadow-cta-sm: 0 2px 16px rgba(160, 85, 255, 0.36);
+  --sa-shadow-lift:   0 20px 60px -15px rgba(160, 85, 255, 0.28);
+  --sa-shadow-featured:
+      0 0 0 1px rgba(160, 85, 255, 0.40),
+      0 20px 60px -15px rgba(160, 85, 255, 0.32),
+      0 0 80px -20px rgba(160, 85, 255, 0.16);
+  --sa-shadow-node-purple: 0 0 8px rgba(160, 85, 255, 0.55);
+  --sa-shadow-node-cyan:   0 0 8px rgba(49, 216, 254, 0.55);
+  --sa-shadow-node-orange: 0 0 8px rgba(255, 129, 53, 0.55);
+  --sa-shadow-node-yellow: 0 0 8px rgba(255, 207, 1, 0.55);
+  --sa-shadow-circuit: 0 0 20px rgba(160, 85, 255, 0.35),
+                       0 0 40px rgba(160, 85, 255, 0.12),
+                       inset 0 0 12px rgba(160, 85, 255, 0.05);
+
+  /* ── Motion ─────────────────────────────────────────── */
+  --sa-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --sa-dur-fast: 200ms;
+  --sa-dur-med: 350ms;
+  --sa-dur-slow: 700ms;
+}
+
+/* ── Base ────────────────────────────────────────────── */
+html, body { background: var(--sa-base); color: var(--sa-cream); }
+body { font-family: var(--sa-font-body); font-weight: 400; }
+
+/* ── Semantic text elements ──────────────────────────── */
+.sa-hero,
+h1.sa-hero {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-size: var(--sa-text-hero);
+  line-height: var(--sa-lh-display);
+  letter-spacing: var(--sa-track-tight);
+}
+h1, .sa-h1 {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-size: var(--sa-text-h1);
+  line-height: var(--sa-lh-heading);
+  letter-spacing: var(--sa-track-snug);
+}
+h2, .sa-h2 {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-size: var(--sa-text-h2);
+  line-height: var(--sa-lh-heading);
+  letter-spacing: var(--sa-track-snug);
+}
+h3, .sa-h3 {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-size: var(--sa-text-h3);
+  line-height: 1.2;
+}
+h4, .sa-h4 {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-size: var(--sa-text-h4);
+  line-height: 1.25;
+}
+p, .sa-p {
+  font-family: var(--sa-font-body);
+  font-size: var(--sa-text-base);
+  line-height: var(--sa-lh-body);
+  color: var(--sa-cream-dim);
+}
+.sa-lead {
+  font-size: var(--sa-text-lg);
+  line-height: var(--sa-lh-body);
+  color: var(--sa-cream-dim);
+}
+code, kbd, samp, pre, .sa-mono {
+  font-family: var(--sa-font-mono);
+  font-feature-settings: "liga" 0;
+}
+.sa-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sa-font-body);
+  font-size: var(--sa-text-eyebrow);
+  font-weight: var(--sa-weight-semibold);
+  letter-spacing: var(--sa-track-eyebrow);
+  text-transform: uppercase;
+  color: var(--sa-purple);
+}
+.sa-eyebrow::before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.sa-eyebrow.cyan  { color: var(--sa-cyan);   }
+.sa-eyebrow.orange{ color: var(--sa-orange); }
+.sa-eyebrow.yellow{ color: var(--sa-yellow); }
+.sa-eyebrow.lime  { color: var(--sa-lime);  }
+
+/* Gradient text */
+.sa-text-gradient {
+  background: var(--sa-gradient-purple-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* ROI / metric number — always numerals, warm orange */
+.sa-metric {
+  font-family: var(--sa-font-display);
+  font-weight: var(--sa-weight-bold);
+  font-variant-numeric: tabular-nums;
+  color: var(--sa-orange);
+  letter-spacing: var(--sa-track-snug);
+}
+.sa-metric.cyan   { color: var(--sa-cyan); }
+.sa-metric.yellow { color: var(--sa-yellow); }
+.sa-metric.purple { background: var(--sa-gradient-purple-text); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+/* Inline phrase highlight — for body copy */
+.sa-phrase { color: var(--sa-purple); font-weight: 700; }
+.sa-phrase.cyan   { color: var(--sa-cyan); }
+.sa-phrase.yellow { color: var(--sa-yellow); }
+
+/* Data/code */
+.sa-code {
+  font-family: var(--sa-font-mono);
+  font-size: 0.875rem;
+  color: var(--sa-cream);
+  background: var(--sa-surface-raised);
+  border: 1px solid var(--sa-border);
+  border-radius: var(--sa-radius-sm);
+  padding: 2px 8px;
+}

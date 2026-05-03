@@ -1,0 +1,155 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="_base.css">
+<style>
+  /* Profile grid: 9 cells at 1080×1080 (1:1 grid view) → preview 124px each.
+     IG crops 4:5 carousel covers to 1:1 when shown in the grid; we show that crop. */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 168px);
+    gap: 6px;
+    background: rgba(252,252,252,.05);
+    padding: 6px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(252,252,252,.08);
+    width: max-content;
+    margin: 0 auto;
+  }
+  .cell {
+    width: 168px;
+    height: 168px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cell-inner {
+    position:absolute; top:0; left:0;
+    width: 1080px; height: 1080px;
+    transform-origin: top left;
+    transform: scale(0.1556); /* 168 / 1080 */
+  }
+
+  .ig-h1 { font-family:"Roc Grotesk Wide",sans-serif; font-weight:950; line-height:.88; letter-spacing:-.025em; color:#FCFCFC; }
+  .ig-mono { font-family:"JetBrains Mono",ui-monospace,monospace; letter-spacing:.14em; text-transform:uppercase; }
+  .ig-num { font-family:"Roc Grotesk Wide",sans-serif; font-weight:950; font-variant-numeric:tabular-nums; line-height:.82; letter-spacing:-.04em; }
+
+  /* Tag corner (carousel / reel marker) */
+  .tag {
+    position:absolute; top:14px; right:14px;
+    font-family:"JetBrains Mono",ui-monospace,monospace; font-size:8.5px;
+    color: rgba(252,252,252,.85); letter-spacing:.1em;
+    background:rgba(0,0,0,.45); padding:3px 6px; border-radius:4px;
+  }
+</style>
+</head>
+<body>
+<div class="card" style="padding:22px 18px;">
+
+  <div class="row" style="justify-content:space-between; align-items:flex-end; margin-bottom:14px;">
+    <div>
+      <div class="label" style="margin-bottom:4px;">Instagram · Profile grid</div>
+      <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:700; font-size:18px; color:#FCFCFC;">3×3 grid composition</div>
+    </div>
+    <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:9.5px; color:#A8A29E;">visual rhythm</div>
+  </div>
+
+  <!-- The grid is 624px wide inside a 700-padded card -->
+  <div class="grid" style="max-width:540px; margin:0 auto;">
+
+    <!-- Row 1: cyan stat · yellow tile · purple-mesh CTA -->
+    <div class="cell" style="background:#0A1117;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:80px; left:100px;">
+          <div class="ig-mono" style="font-size:32px; color:#31D8FE; margin-bottom:48px;">·  PROOF</div>
+          <div class="ig-num" style="font-size:420px; color:#31D8FE; white-space:nowrap; line-height:.82; letter-spacing:-.05em;">42<span style="font-size:200px; vertical-align:0.18em; letter-spacing:-.02em;">s</span></div>
+        </div>
+        <div style="position:absolute; bottom:120px; left:100px; right:100px; font-family:'Gilroy',sans-serif; font-weight:700; font-size:64px; color:#FCFCFC; line-height:1.1;">Lead → first reply.</div>
+      </div>
+      <div class="tag">REEL</div>
+    </div>
+    <div class="cell" style="background:#FFCF01;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:140px; left:100px; right:100px;">
+          <div class="ig-mono" style="font-size:32px; color:#0A1117; opacity:.55; margin-bottom:48px;">01 / 05</div>
+          <div class="ig-h1" style="font-size:172px; color:#0A1117;">REPLACE<br>YOUR<br>SELF.</div>
+        </div>
+      </div>
+      <div class="tag">CAROUSEL</div>
+    </div>
+    <div class="cell" style="background:#0A1117; background-image: radial-gradient(ellipse 65% 55% at 50% 35%, rgba(160,85,255,.28) 0%, transparent 65%);">
+      <div class="cell-inner">
+        <div style="position:absolute; top:140px; left:80px; right:80px;">
+          <div class="ig-mono" style="font-size:32px; color:#A055FF; margin-bottom:60px;">·  YOUR MOVE</div>
+          <div class="ig-h1" style="font-size:180px;">BOOK<br>THE<br>AUDIT.</div>
+        </div>
+      </div>
+      <div class="tag">POST</div>
+    </div>
+
+    <!-- Row 2: build-log · lime hot-take · client case -->
+    <div class="cell" style="background:#0A1117; background-image: radial-gradient(rgba(168,162,158,.06) 1.4px, transparent 1.4px); background-size: 96px 96px;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:120px; left:80px; right:80px;">
+          <div class="ig-mono" style="font-size:30px; color:#A055FF; margin-bottom:42px;">·  BUILD LOG · WK 14</div>
+          <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:800; font-size:96px; line-height:1.0; letter-spacing:-.012em; color:#FCFCFC;">Review-engine<br>shipped today.</div>
+        </div>
+      </div>
+      <div class="tag">CAROUSEL</div>
+    </div>
+    <div class="cell" style="background:#B5ED30;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:140px; left:80px; right:80px;">
+          <div class="ig-mono" style="font-size:32px; color:#0A1117; opacity:.55; margin-bottom:48px;">HOT TAKE</div>
+          <div class="ig-h1" style="font-size:170px; color:#0A1117;">YOUR<br>CRM IS<br>THE<br>PROBLEM.</div>
+        </div>
+      </div>
+      <div class="tag">REEL</div>
+    </div>
+    <div class="cell" style="background:#0A1117;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:80px; left:100px;">
+          <div class="ig-mono" style="font-size:32px; color:#FF8135; margin-bottom:48px;">·  CLIENT 047</div>
+          <div class="ig-num" style="font-size:380px; color:#FF8135; white-space:nowrap; line-height:.82; letter-spacing:-.06em;">+42<span style="font-size:140px; vertical-align:0.32em; letter-spacing:-.02em; margin-left:6px;">%</span></div>
+        </div>
+        <div style="position:absolute; bottom:160px; left:100px; right:100px; font-family:'Gilroy',sans-serif; font-weight:700; font-size:54px; color:#FCFCFC; line-height:1.15;">revenue · same team.</div>
+      </div>
+      <div class="tag">POST</div>
+    </div>
+
+    <!-- Row 3: pink quote · cyan announcement · numbered carousel -->
+    <div class="cell" style="background:#0A1117;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:140px; left:80px; right:80px;">
+          <div class="ig-mono" style="font-size:32px; color:#FA61AA; margin-bottom:60px;">·  ON SCALE</div>
+          <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:700; font-size:104px; line-height:1.05; letter-spacing:-.012em; color:#FCFCFC;">"You don't need 10<br>people. You need<br><span style="color:#FA61AA;">one good system.</span>"</div>
+        </div>
+      </div>
+      <div class="tag">POST</div>
+    </div>
+    <div class="cell" style="background:#31D8FE;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:140px; left:100px; right:100px;">
+          <div class="ig-mono" style="font-size:32px; color:#0A1117; opacity:.6; margin-bottom:48px;">NOW BOOKING</div>
+          <div class="ig-h1" style="font-size:200px; color:#0A1117;">3<br>SLOTS<br>OPEN.</div>
+        </div>
+      </div>
+      <div class="tag">POST</div>
+    </div>
+    <div class="cell" style="background:#0A1117;">
+      <div class="cell-inner">
+        <div style="position:absolute; top:120px; left:80px; right:80px;">
+          <div class="ig-mono" style="font-size:30px; color:#B5ED30; margin-bottom:48px;">·  THE STACK</div>
+          <div style="font-family:'Roc Grotesk Wide',sans-serif; font-weight:800; font-size:80px; line-height:1.0; letter-spacing:-.012em; color:#FCFCFC; margin-bottom:60px;">5 plays I run<br>for every client.</div>
+          <div style="font-family:'JetBrains Mono',ui-monospace,monospace; font-size:42px; line-height:1.7; color:#A8A29E;">
+            <div><span style="color:#31D8FE;">01</span> Lead-response · 60s</div>
+            <div><span style="color:#FFCF01;">02</span> Quote-builder · ½ day</div>
+            <div><span style="color:#B5ED30;">03</span> Review-engine · auto</div>
+          </div>
+        </div>
+      </div>
+      <div class="tag">CAROUSEL</div>
+    </div>
+
+  </div>
+
+  <div class="meta" style="margin-top:18px;">3×3 grid composition rule: <strong style="color:#FCFCFC;">never two saturated tiles touching.</strong> Yellow / cyan / lime / purple-mesh tiles must be separated by at least one dark cell. Reading row-by-row: dark · saturated · dark-mesh creates rhythm without strobing. Side cushions are now <strong style="color:#FCFCFC;">100px</strong> on every cell and the big numerals (+42%, 42s) are sized to fit on a single line so the last digit never clips. The format tag (CAROUSEL / REEL / POST) only appears in this preview — IG renders its own marker on the live grid.</div>
+</div>
+</body></html>

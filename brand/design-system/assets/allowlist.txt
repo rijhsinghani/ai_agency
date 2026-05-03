@@ -1,0 +1,46 @@
+# Sameer Automations — asset allowlist
+# Claude Code: read ONLY from these paths when editing Reels.
+# Anything not on this list is off-limits, including npm fonts, Google Fonts,
+# stock libraries, and random examples from the web.
+
+# === Source of truth ===
+brand-manifest.json
+CLAUDE.md
+README-FOR-EDITOR.md
+
+# === Fonts (the only two families allowed) ===
+fonts/Gilroy-Light.otf
+fonts/Gilroy-ExtraBold.otf
+fonts/rocgroteskwide-thin.otf
+fonts/rocgroteskwide-extralight.otf
+fonts/rocgroteskwide-light.otf
+fonts/rocgroteskwide-regular.otf
+fonts/rocgroteskwide-medium.otf
+fonts/rocgroteskwide-bold.otf
+fonts/rocgroteskwide-extrabold.otf
+fonts/rocgroteskwide-heavy.otf
+fonts/rocgroteskwide-black.otf
+
+# === Logos ===
+assets/logo-full-dark.svg
+assets/logo-full-light.svg
+assets/logo-icon-dark.svg
+assets/logo-icon-light.svg
+assets/logo-icon-white.svg
+assets/logo-wordmark-dark.svg
+assets/logo-wordmark-light.svg
+assets/favicon.svg
+
+# === Reel components (Remotion-ready) ===
+reels/tokens.ts
+reels/fonts.css
+reels/components/LowerThird.tsx
+reels/components/CaptionStrip.tsx
+reels/components/NumberedList.tsx
+reels/components/QuotePull.tsx
+reels/components/SystemDiagram.tsx
+reels/presets/shot-presets.ts
+
+# === Design-system reference (read-only context) ===
+colors_and_type.css
+SKILL.md
