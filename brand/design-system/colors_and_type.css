@@ -2,38 +2,30 @@
    Sameer Automations — Design Tokens
    Dark-mode-first. "System Architecture" visual language.
    ─────────────────────────────────────────────────────────
-   SYNC STATUS — May 2026
+   SYNC STATUS — RECONCILED 2026-05-15
    ────────────────────────
-   This file is the AI-agency design-system reference.
-   The RENDERING source of truth for all carousel, reel-cover, and caption
-   renders lives at:
-       sameer-automations/brand/profiles/consulting/brand_config.json
-       sameer-automations/brand/reference/colors_and_type.css
+   This file is the AI-agency design-system reference. The formal Pantone
+   brand book (InstantEditAI guidelines pp.31-34) is CANONICAL — Sameer's
+   decision 2026-05-15. sameer-automations now matches this file's values:
 
-   Known divergences that require Sameer's decision before this file can
-   be fully reconciled with the rendering source of truth:
+   1. --sa-purple-soft = #C084FC (Pantone 252 C)
+      sameer-automations brand/profiles/consulting/brand_config.json updated
+      from #9B4FDE -> #C084FC. Reconciled, no divergence.
 
-   1. --sa-purple-soft
-      This file:           #C084FC  (citing InstantEditAI guidelines pp.31-34,
-                                      Pantone 252 C derived gradient mid-stop)
-      sameer-automations:  #9B4FDE  (Direction C canonical, brand/profiles/consulting/)
-      Downstream impact:   gradient-brand mid-stop, gradient-purple-text, gradient-s-wave,
-                           --sa-mesh-hero rgba values
-      DECISION NEEDED: Which hex wins?
+   2. --sa-cream / --sa-white = #FCFCFC (Pantone 7541 C)
+      sameer-automations updated from #EDE9E3 -> #FCFCFC, including the reel
+      caption ASS token (&H00FCFCFC). Reconciled, no divergence.
 
-   2. --sa-cream / --sa-white
-      This file:           #FCFCFC  (Pantone 7541 C per brand book)
-      sameer-automations:  #EDE9E3  (warm off-white / --sa-cream)
-      Downstream impact:   primary text on dark backgrounds
-      DECISION NEEDED: Which hex wins?
+   3. JetBrains Mono is INTENTIONALLY bundled locally in sameer-automations
+      (brand/fonts/jetbrains-mono/) for offline reliability — Cloud Run cold
+      starts, Playwright strict CSP, and Remotion offline renders all break
+      on remote Google Fonts fetches. This file's @import is acceptable for
+      the AI-agency reference/preview context only; render pipelines use the
+      bundled fonts. Not a divergence — a context-appropriate difference.
 
-   3. JetBrains Mono loading
-      This file:           @import url("https://fonts.googleapis.com/css2?...") — remote Google Fonts
-      sameer-automations:  locally bundled at brand/fonts/jetbrains-mono/
-      RECOMMENDATION:      Use local bundled fonts (no CDN dependency at render time)
-
-   Until decisions are made, do not use this file as input to any render
-   pipeline. Use sameer-automations/brand/profiles/consulting/ instead.
+   No remaining open divergences. The rendering source of truth is
+   sameer-automations/brand/profiles/consulting/brand_config.json; this file
+   and that profile now agree on color values.
    ───────────────────────────────────────────────────────── */
 
 /* ── Fonts ─────────────────────────────────────────────── */
