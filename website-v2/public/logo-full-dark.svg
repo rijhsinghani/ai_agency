@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" width="520" height="100" role="img" aria-label="Sameer Automations">
+  <title>Sameer Automations</title>
+  <defs>
+    <style>
+      .wordmark {
+        font-family: 'Roc Grotesk', 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 900;
+        font-size: 28px;
+        letter-spacing: 1px;
+        fill: #FFFFFF;
+      }
+      .tagline {
+        font-family: 'Gilroy', 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: 0.3px;
+        fill: #888888;
+      }
+    </style>
+
+    <linearGradient id="fl-flowGrad" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7B2FBE"/>
+      <stop offset="50%" stop-color="#9B4FDE"/>
+      <stop offset="100%" stop-color="#4DD9E8"/>
+    </linearGradient>
+
+    <radialGradient id="fl-haloInput" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7B2FBE" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#7B2FBE" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="fl-haloOutput" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#4DD9E8" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#4DD9E8" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="fl-coreGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 0 0 0 0.302  0 0 0 0 0.851  0 0 0 0 0.910  0 0 0 0.8 0" result="cyan"/>
+      <feMerge>
+        <feMergeNode in="cyan"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Icon: S-wave (100x100 space) -->
+  <circle cx="80" cy="20" r="20" fill="url(#fl-haloInput)"/>
+  <circle cx="20" cy="80" r="20" fill="url(#fl-haloOutput)"/>
+  <path
+    d="M 80 20
+       C 40 20, 20 20, 20 40
+       C 20 60, 80 40, 80 60
+       C 80 80, 60 80, 20 80"
+    stroke="url(#fl-flowGrad)"
+    stroke-width="8"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <circle cx="80" cy="20" r="6" fill="#7B2FBE" filter="url(#fl-coreGlow)"/>
+  <circle cx="80" cy="20" r="2" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="20" cy="80" r="6" fill="#4DD9E8" filter="url(#fl-coreGlow)"/>
+  <circle cx="20" cy="80" r="2" fill="#FFFFFF" opacity="0.85"/>
+
+  <!-- Wordmark -->
+  <text x="124" y="46" class="wordmark">SAMEER AUTOMATIONS</text>
+
+  <!-- Tagline -->
+  <text x="125" y="68" class="tagline">Smart systems. Built for your business. By Sameer.</text>
+</svg>

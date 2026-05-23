@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 56" width="400" height="56" role="img" aria-label="Sameer Automations wordmark">
+  <title>Sameer Automations</title>
+  <defs>
+    <style>
+      .wordmark {
+        font-family: 'Roc Grotesk', 'Outfit', 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 900;
+        font-size: 28px;
+        letter-spacing: 1px;
+        fill: #FFFFFF;
+      }
+      .tagline {
+        font-family: 'Gilroy', 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: 0.3px;
+        fill: #888888;
+      }
+    </style>
+  </defs>
+
+  <!-- Wordmark -->
+  <text x="0" y="30" class="wordmark">SAMEER AUTOMATIONS</text>
+
+  <!-- Tagline -->
+  <text x="1" y="48" class="tagline">Smart systems. Built for your business. By Sameer.</text>
+</svg>
