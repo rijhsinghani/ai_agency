@@ -12,3 +12,7 @@ __pycache__/
 review/*.md
 review/*-transcript.txt
 review/*-transcript-chunks.json
+
+# Local agent tooling dirs (not project artifacts)
+.agents/
+.codex/

@@ -1,0 +1,319 @@
+/* ── Sameer Automations Brand Tokens ──────────────────────────────────────
+ * Canonical source: northstar/index.html + brand/reference/colors_and_type.css
+ * DO NOT add fallback hex values if you add new tokens — loud-fail is intentional.
+ * If this file is absent the build MUST fail. See app/lib/brand.ts for the
+ * server-side loud-fail check that runs at Next.js startup.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Font faces — licensed fonts served from /public/fonts/ ── */
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-thin.otf") format("opentype");
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-extralight.otf")
+    format("opentype");
+  font-weight: 200;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-light.otf")
+    format("opentype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-regular.otf")
+    format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-medium.otf")
+    format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-extrabold.otf")
+    format("opentype");
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-heavy.otf")
+    format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Roc Grotesk Wide";
+  src: url("/fonts/roc-grotesk-wide/rocgroteskwide-black.otf")
+    format("opentype");
+  font-weight: 950;
+  font-display: swap;
+}
+
+/* Gilroy — Light covers 300/400/500, ExtraBold covers 600/700/800 */
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-light.otf") format("opentype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-light.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-light.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-extrabold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-extrabold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/fonts/gilroy/gilroy-extrabold.otf") format("opentype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+/* JetBrains Mono — self-hosted (brand-approved for mono/eyebrow only; OFL license) */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono/JetBrainsMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono/JetBrainsMono-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono/JetBrainsMono-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono/JetBrainsMono-SemiBold.ttf")
+    format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono/JetBrainsMono-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Brand Design Tokens ── */
+:root {
+  /* Core palette */
+  --sa-purple: #a055ff;
+  --sa-purple-soft: #c084fc;
+  --sa-purple-muted: rgba(160, 85, 255, 0.12);
+  --sa-cyan: #31d8fe;
+  --sa-yellow: #ffcf01;
+  --sa-orange: #ff8135;
+  --sa-lime: #b5ed30;
+
+  --sa-pink-soft: #ffbad6;
+  --sa-pink-mid: #fe8fc9;
+  --sa-pink-hot: #fa61aa;
+  --sa-yellow-soft: #fdff9d;
+  --sa-lime-soft: #ddff94;
+  --sa-lime-bright: #cef868;
+  --sa-cyan-soft: #a7faff;
+  --sa-cyan-mid: #77e6ff;
+  --sa-purple-pale: #e9caff;
+  --sa-purple-mid: #da8cff;
+
+  --sa-success: #10b981;
+  --sa-error: #ef4444;
+
+  /* Neutrals */
+  --sa-base: #0a1117;
+  --sa-neutral-black: #201f1c;
+  --sa-true-black: #000000;
+
+  /* Surfaces */
+  --sa-surface: rgba(252, 252, 252, 0.025);
+  --sa-surface-raised: rgba(252, 252, 252, 0.045);
+  --sa-border: rgba(252, 252, 252, 0.06);
+  --sa-border-strong: rgba(252, 252, 252, 0.12);
+  --sa-border-hover: rgba(160, 85, 255, 0.32);
+
+  /* Foreground */
+  --sa-white: #fcfcfc;
+  --sa-cream: #fcfcfc;
+  --sa-cream-dim: #a8a29e;
+  --sa-cream-faint: rgba(252, 252, 252, 0.5);
+  --sa-gray: #6b7280;
+
+  /* Gradients */
+  --sa-gradient-brand: linear-gradient(
+    135deg,
+    #a055ff 0%,
+    #c084fc 55%,
+    #31d8fe 100%
+  );
+  --sa-gradient-purple-text: linear-gradient(
+    135deg,
+    #a055ff 0%,
+    #c084fc 60%,
+    #e9d5ff 100%
+  );
+  --sa-gradient-s-wave: linear-gradient(
+    180deg,
+    #a055ff 0%,
+    #c084fc 50%,
+    #31d8fe 100%
+  );
+
+  /* Atmosphere meshes */
+  --sa-mesh-hero:
+    radial-gradient(
+      ellipse 55% 50% at 72% 28%,
+      rgba(160, 85, 255, 0.1) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 20% 80%,
+      rgba(192, 132, 252, 0.04) 0%,
+      transparent 60%
+    );
+  --sa-mesh-section:
+    radial-gradient(
+      ellipse 600px 400px at 20% 50%,
+      rgba(160, 85, 255, 0.06),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 500px 300px at 80% 30%,
+      rgba(192, 132, 252, 0.03),
+      transparent
+    );
+
+  /* Dot grid */
+  --sa-dot-grid: radial-gradient(
+      rgba(168, 162, 158, 0.05) 0.6px,
+      transparent 0.6px
+    )
+    0 0 / 48px 48px;
+
+  /* Grain */
+  --sa-grain-url: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+
+  /* Typography */
+  --sa-font-display: "Roc Grotesk Wide", system-ui, sans-serif;
+  --sa-font-body: "Gilroy", system-ui, sans-serif;
+  --sa-font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale */
+  --sa-text-hero: clamp(3rem, 6.5vw, 5.75rem);
+  --sa-text-h1: clamp(2.25rem, 4vw, 3.25rem);
+  --sa-text-h2: clamp(1.875rem, 3vw, 2.75rem);
+  --sa-text-h3: 1.5rem;
+  --sa-text-h4: 1.25rem;
+  --sa-text-lg: 1.125rem;
+  --sa-text-base: 1rem;
+  --sa-text-sm: 0.9375rem;
+  --sa-text-xs: 0.8125rem;
+  --sa-text-eyebrow: 0.75rem;
+
+  /* Weights */
+  --sa-weight-regular: 400;
+  --sa-weight-medium: 500;
+  --sa-weight-semibold: 600;
+  --sa-weight-bold: 700;
+
+  /* Tracking */
+  --sa-track-tight: -0.03em;
+  --sa-track-snug: -0.02em;
+  --sa-track-normal: 0;
+  --sa-track-wide: 0.04em;
+  --sa-track-eyebrow: 0.2em;
+
+  /* Line-height */
+  --sa-lh-display: 1;
+  --sa-lh-heading: 1.08;
+  --sa-lh-body: 1.55;
+
+  /* Spacing */
+  --sa-space-1: 4px;
+  --sa-space-2: 8px;
+  --sa-space-3: 12px;
+  --sa-space-4: 16px;
+  --sa-space-5: 20px;
+  --sa-space-6: 24px;
+  --sa-space-8: 32px;
+  --sa-space-10: 40px;
+  --sa-space-12: 48px;
+  --sa-space-16: 64px;
+  --sa-space-20: 80px;
+  --sa-space-24: 96px;
+  --sa-space-32: 128px;
+
+  /* Radii */
+  --sa-radius-sm: 6px;
+  --sa-radius-md: 10px;
+  --sa-radius-lg: 12px;
+  --sa-radius-xl: 16px;
+  --sa-radius-2xl: 20px;
+  --sa-radius-card: 20px;
+  --sa-radius-pill: 999px;
+
+  /* Shadows */
+  --sa-shadow-cta: 0 4px 28px rgba(160, 85, 255, 0.4);
+  --sa-shadow-cta-sm: 0 2px 16px rgba(160, 85, 255, 0.36);
+  --sa-shadow-lift: 0 20px 60px -15px rgba(160, 85, 255, 0.28);
+  --sa-shadow-featured:
+    0 0 0 1px rgba(160, 85, 255, 0.4),
+    0 20px 60px -15px rgba(160, 85, 255, 0.32),
+    0 0 80px -20px rgba(160, 85, 255, 0.16);
+
+  /* Motion */
+  --sa-ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --sa-dur-fast: 200ms;
+  --sa-dur-med: 350ms;
+  --sa-dur-slow: 700ms;
+}
